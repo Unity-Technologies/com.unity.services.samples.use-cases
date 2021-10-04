@@ -1,0 +1,20 @@
+# For more information about the available options please visit: http://go/backstage (VPN required)
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  annotations:
+    github.com/project-slug: Unity-Technologies/game-operations-samples
+  name: game-operations-samples
+  description: "This is a collection of working examples of using Unity Gaming Services SDKs in a Unity project for the purposes of live gaming operations."
+  labels:
+    costcenter: "7021"
+  tags:
+    - planned-public
+  links:
+    - url: https://unity.slack.com/messages/CGHH4DE9J/
+      title: "#game-foundation-devs"
+      icon: chat
+spec:
+  type: other
+  lifecycle: production
+  owner: unity-technologies/game-foundation
