@@ -8,5 +8,20 @@ EditorBuildSettings:
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000
+  - enabled: 1
+    path: Assets/Start Here.unity
+    guid: a273b3224be324797890b26c35fd225a
+  - enabled: 1
+    path: Assets/Use Case Samples/Loot Boxes/LootBoxesSample.unity
+    guid: d8a6b745fe0c1e3469ec1173fd1354d6
+  - enabled: 1
+    path: Assets/Use Case Samples/Daily Rewards/DailyRewardsSample.unity
+    guid: 8b0950741814ff44296ae73091b678f4
+  - enabled: 1
+    path: Assets/Use Case Samples/Starter Pack/StarterPackSample.unity
+    guid: a88f0ec2e509c49818adeb0a6b048f2c
+  - enabled: 1
+    path: Assets/Use Case Samples/Seasonal Events/Seasonal Events.unity
+    guid: b0084fb1b8ca641b3aac55379330129f
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: c6ca533da370b4f2794f0c63c45e0e6f, type: 2}
