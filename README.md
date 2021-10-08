@@ -6,7 +6,7 @@ This project demonstrates several common ways in which [Unity Gaming Services](h
 
 > **Note**: This project is configured to use a shared read-only Unity Gaming Services account so that the samples will work for you right away. However, this means that you won't be able to log into the Unity Dashboard to see the server-side configuration for this project. Each use case has a README file which explains how the project is configured on the server.
 
-> **Note**: Unity Gaming Services are currently in Open Beta. In order to use the newest Services and the Dashboard for your own project, you can [sign up here](#).
+> **Note**: Unity Gaming Services are currently in Open Beta. To join the Open Beta and use the new Services, contact your Unity representative.
 
 ### Demonstrated Use Cases:
 
