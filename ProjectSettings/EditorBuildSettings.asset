@@ -5,9 +5,6 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: 
-    guid: 00000000000000000000000000000000
   - enabled: 1
     path: Assets/Start Here.unity
     guid: a273b3224be324797890b26c35fd225a
@@ -21,7 +18,10 @@ EditorBuildSettings:
     path: Assets/Use Case Samples/Starter Pack/StarterPackSample.unity
     guid: a88f0ec2e509c49818adeb0a6b048f2c
   - enabled: 1
-    path: Assets/Use Case Samples/Seasonal Events/Seasonal Events.unity
+    path: Assets/Use Case Samples/Seasonal Events/SeasonalEventsSample.unity
     guid: b0084fb1b8ca641b3aac55379330129f
+  - enabled: 1
+    path: Assets/Use Case Samples/AB Test Level Difficulty/ABTestLevelDifficultySample.unity
+    guid: 8cecb801cd9394106a66249b27317acb
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: c6ca533da370b4f2794f0c63c45e0e6f, type: 2}

@@ -1,11 +1,14 @@
 using System;
 using System.Collections.Generic;
 
-namespace SeasonalEvents
+namespace GameOperationsSamples
 {
-    [Serializable]
-    public struct Rewards
+    namespace SeasonalEvents
     {
-        public List<RewardDetail> rewards;
+        [Serializable]
+        public struct Rewards
+        {
+            public List<RewardDetail> rewards;
+        }
     }
 }

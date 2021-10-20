@@ -15,13 +15,13 @@ namespace GameOperationsSamples
         public string sceneName;
         public Object readmeFile;
 
-        private void Awake()
+        void Awake()
         {
             var button = GetComponent<Button>();
             button.onClick.AddListener(OnButtonClick);
         }
 
-        private void OnDestroy()
+        void OnDestroy()
         {
             var button = GetComponent<Button>();
             button.onClick.RemoveListener(OnButtonClick);

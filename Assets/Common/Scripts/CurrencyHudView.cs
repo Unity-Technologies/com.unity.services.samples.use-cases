@@ -5,9 +5,9 @@ namespace GameOperationsSamples
 {
     public class CurrencyHudView : MonoBehaviour
     {
-        [SerializeField] string definitionId;
+        public string definitionId;
 
-        [SerializeField] TextMeshProUGUI balanceField;
+        public TextMeshProUGUI balanceField;
 
         public void UpdateBalanceField(string definitionId, long balance)
         {

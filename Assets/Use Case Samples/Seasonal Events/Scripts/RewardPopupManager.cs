@@ -1,29 +1,36 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SeasonalEvents
+namespace GameOperationsSamples
 {
-    public class RewardPopupManager : MonoBehaviour
+    namespace SeasonalEvents
     {
-        public RewardDisplayView view;
-
-        public void Show(List<RewardDetail> rewards)
+        public class RewardPopupManager : MonoBehaviour
         {
-            view.PopulateView(rewards);
-            gameObject.SetActive(true);
-        }
+            public RewardDisplayView rewardDisplayView;
 
-        public async void CollectRewards()
-        {
-            await CloudCodeManager.instance.CallGrantEventRewardEndpoint();
-            Close();
-        }
+            public void Show(List<RewardDetail> rewards)
+            {
+                rewardDisplayView.PopulateView(rewards);
+                gameObject.SetActive(true);
+            }
 
-        void Close()
-        {
-            var currentGameObject = gameObject;
-            currentGameObject.SetActive(false);
-            Destroy(currentGameObject);
+            public async void CollectRewards()
+            {
+                await CloudCodeManager.instance.CallGrantEventRewardEndpoint();
+
+                // Check that scene has not been unloaded while processing async wait to prevent throw.
+                if (this == null) return;
+
+                Close();
+            }
+
+            void Close()
+            {
+                var currentGameObject = gameObject;
+                currentGameObject.SetActive(false);
+                Destroy(currentGameObject);
+            }
         }
     }
 }

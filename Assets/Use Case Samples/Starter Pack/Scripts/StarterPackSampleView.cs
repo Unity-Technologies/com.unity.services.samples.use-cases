@@ -12,30 +12,29 @@ namespace GameOperationsSamples
             public Button resetPlayerDataButton;
             public GameObject claimedOverlay;
 
-            public static StarterPackSampleView instance => m_Instance;
-            static StarterPackSampleView m_Instance;
+            public static StarterPackSampleView instance { get; private set; }
 
             bool m_Enabled;
 
             // using a tri-state boolean so that null can indicate that we don't know yet
             bool? m_StarterPackIsClaimed = null;
 
-            private void Awake()
+            void Awake()
             {
-                m_Instance = this;
+                instance = this;
                 Refresh();
             }
 
-            private void OnEnable()
+            void OnEnable()
             {
-                StarterPackSample.StarterPackStatusChecked += OnStarterPackStatusChecked;
-                StarterPackSample.CurrencyBalanceChanged += OnCurrencyBalanceChanged;
+                StarterPackSceneManager.StarterPackStatusChecked += OnStarterPackStatusChecked;
+                StarterPackSceneManager.CurrencyBalanceChanged += OnCurrencyBalanceChanged;
             }
 
-            private void OnDisable()
+            void OnDisable()
             {
-                StarterPackSample.StarterPackStatusChecked -= OnStarterPackStatusChecked;
-                StarterPackSample.CurrencyBalanceChanged -= OnCurrencyBalanceChanged;
+                StarterPackSceneManager.StarterPackStatusChecked -= OnStarterPackStatusChecked;
+                StarterPackSceneManager.CurrencyBalanceChanged -= OnCurrencyBalanceChanged;
             }
 
             void OnStarterPackStatusChecked(bool starterPackIsClaimed)

@@ -10,7 +10,7 @@ This sample demonstrates how to initialize Unity Services, log in, retrieve & up
 - **Economy:** Retrieves the starting and updated currency balances at runtime.
 - **Cloud Code:** Picks and grants random currency for the loot box through the Economy server and returns the result.
 
-See [Economy](https://docs.unity.com/Economy) and [Cloud Code](https://docs.unity.com/Cloud-Code) docs to learn how to install and configure these SDKs in your project.
+See the [Economy](https://docs.unity.com/Economy) and [Cloud Code](https://docs.unity.com/Cloud-Code) docs to learn how to install and configure these SDKs in your project.
 
 ### Dashboard Setup
 To use Economy, and Cloud Code services in your game, activate each service for your organization and project in the Unity Dashboard.
@@ -22,9 +22,9 @@ To use Economy, and Cloud Code services in your game, activate each service for 
 * Star - `ID:"STAR"` - a loot box reward item
 
 #### Cloud Code Scripts
-* ScriptName:
+* GrantRandomCurrency:
   * Parameters: `none`
-  * Script: `StreamingAssets/Grant Random Currency/GrantRandomCurrency.js`
+  * Script: `Assets/Use Case Samples/Loot Boxes/Cloud Code/GrantRandomCurrency.js`
 
 _**Note**:
-The Cloud Code scripts included in StreamingAssets are just local copies, since you can't see the sample's dashboard. Changes to these scripts will not affect the behavior of this sample since they will not be automatically uploaded to Cloud Code service._
+The Cloud Code scripts included in the `Cloud Code` folder are just local copies, since you can't see the sample's dashboard. Changes to these scripts will not affect the behavior of this sample since they will not be automatically uploaded to Cloud Code service._

@@ -1,5 +1,19 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &4414561484490933971
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6248938596584189568}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7518f8aae9625548a5d4f4030736a91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  definitionId: COIN
+  balanceField: {fileID: 7587110492004826873}
 --- !u!1001 &4365810603235862017
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7,14 +21,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2593918526865326196, guid: d0808c28cd825417394d76a95f602452, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2593918526865326196, guid: d0808c28cd825417394d76a95f602452, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2593918526865326196, guid: d0808c28cd825417394d76a95f602452, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2593918526865326196, guid: d0808c28cd825417394d76a95f602452, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2593918526865326196, guid: d0808c28cd825417394d76a95f602452, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5440026887838055824, guid: d0808c28cd825417394d76a95f602452, type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 4ee1efab245554e46b709e2d533935a0, type: 3}
-    - target: {fileID: 6187010579439802616, guid: d0808c28cd825417394d76a95f602452, type: 3}
-      propertyPath: m_text
-      value: 00000
-      objectReference: {fileID: 0}
     - target: {fileID: 6297702243588083492, guid: d0808c28cd825417394d76a95f602452, type: 3}
       propertyPath: m_Pivot.x
       value: 1
@@ -103,5 +133,37 @@ PrefabInstance:
       propertyPath: m_Name
       value: Currency Coin
       objectReference: {fileID: 0}
+    - target: {fileID: 8162302843665584631, guid: d0808c28cd825417394d76a95f602452, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8162302843665584631, guid: d0808c28cd825417394d76a95f602452, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8162302843665584631, guid: d0808c28cd825417394d76a95f602452, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8162302843665584631, guid: d0808c28cd825417394d76a95f602452, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d0808c28cd825417394d76a95f602452, type: 3}
+--- !u!1 &6248938596584189568 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7651273918814161025, guid: d0808c28cd825417394d76a95f602452, type: 3}
+  m_PrefabInstance: {fileID: 4365810603235862017}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7587110492004826873 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6187010579439802616, guid: d0808c28cd825417394d76a95f602452, type: 3}
+  m_PrefabInstance: {fileID: 4365810603235862017}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

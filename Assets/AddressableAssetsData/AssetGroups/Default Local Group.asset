@@ -33,26 +33,6 @@ MonoBehaviour:
     m_Address: Sprites/Currency/Star
     m_ReadOnly: 0
     m_SerializedLabels: []
-  - m_GUID: de79b1e89e8184a72a8883889f26998f
-    m_Address: Sprites/BackgroundImage
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Fall
-  - m_GUID: f55849cb332f744a0a4cf77b13a9ef44
-    m_Address: Sprites/BackgroundImage
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Winter
-  - m_GUID: 3824a52a6e1ae4a3087935e235abc0e0
-    m_Address: Sprites/BackgroundImage
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Spring
-  - m_GUID: b166edd1fcca54b83b7f063dda6e0734
-    m_Address: Sprites/BackgroundImage
-    m_ReadOnly: 0
-    m_SerializedLabels:
-    - Summer
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: d098d9082bf4e4f6b94dbf2997c0917c, type: 2}
   m_SchemaSet:

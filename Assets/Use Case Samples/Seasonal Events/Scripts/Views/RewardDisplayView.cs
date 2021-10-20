@@ -1,43 +1,46 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace SeasonalEvents
+namespace GameOperationsSamples
 {
-    public class RewardDisplayView : MonoBehaviour
+    namespace SeasonalEvents
     {
-        public GameOperationsSamples.RewardItemView rewardPrefab;
-
-        public void PopulateView(List<RewardDetail> rewards)
+        public class RewardDisplayView : MonoBehaviour
         {
-            ClearView();
+            public RewardItemView rewardPrefab;
 
-            foreach (var reward in rewards)
+            public void PopulateView(List<RewardDetail> rewards)
             {
-                var rewardItemView = InstantiateRewardItem();
-                rewardItemView.SetQuantity(reward.quantity);
+                ClearView();
 
-                if (!string.IsNullOrEmpty(reward.spriteAddress))
+                foreach (var reward in rewards)
                 {
-                    rewardItemView.LoadIconFromAddress(reward.spriteAddress);
+                    var rewardItemView = InstantiateRewardItem();
+                    rewardItemView.SetQuantity(reward.quantity);
+
+                    if (!string.IsNullOrEmpty(reward.spriteAddress))
+                    {
+                        rewardItemView.LoadIconFromAddress(reward.spriteAddress);
+                    }
                 }
             }
-        }
 
-        void ClearView()
-        {
-            for (var i = transform.childCount - 1; i >= 0; i--)
+            void ClearView()
             {
-                Destroy(transform.GetChild(i).gameObject);
+                for (var i = transform.childCount - 1; i > 0; i--)
+                {
+                    Destroy(transform.GetChild(i).gameObject);
+                }
             }
-        }
 
-        GameOperationsSamples.RewardItemView InstantiateRewardItem()
-        {
-            var rewardItem = Instantiate(rewardPrefab, transform, false);
-            rewardItem.transform.localScale = Vector3.one;
-            rewardItem.gameObject.SetActive(false);
+            RewardItemView InstantiateRewardItem()
+            {
+                var rewardItem = Instantiate(rewardPrefab, transform, false);
+                rewardItem.transform.localScale = Vector3.one;
+                rewardItem.gameObject.SetActive(false);
 
-            return rewardItem;
+                return rewardItem;
+            }
         }
     }
 }

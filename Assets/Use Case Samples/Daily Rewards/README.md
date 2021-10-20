@@ -19,28 +19,26 @@ Note: This sample also includes enhanced error handling to catch and resolve iss
 - **Cloud Save:** Stores and retrieves the last grant time to allow cooldown values to persist between sessions.
 - **Cloud Code:** Accesses the cooldown status, picks and grants random currency and inventory items through the Economy server, and returns the result of the reward.
 
-See [Economy](https://docs.unity.com/Economy), [Cloud Save](https://docs.unity.com/Cloud-Save) and [Cloud Code](https://docs.unity.com/Cloud-Code) docs to learn how to install and configure these SDKs in your project.
+See the [Economy](https://docs.unity.com/Economy), [Cloud Save](https://docs.unity.com/Cloud-Save) and [Cloud Code](https://docs.unity.com/Cloud-Code) docs to learn how to install and configure these SDKs in your project.
 
 ### Dashboard Setup
 To use Economy, Cloud Save, and Cloud Code services in your game, activate each service for your organization and project in the Unity Dashboard. You’ll need a few currency and inventory items for your reward, as well as scripts in Cloud Code:
 
-#### Economy Currencies
+#### Economy Items
 * Coin - `ID: "COIN"` - a currency reward
 * Gem - `ID: "GEM"` - a currency reward
 * Pearl - `ID: "PEARL"` - a currency reward
 * Star - `ID:"STAR"` - a currency reward
-
-#### Economy Inventory Items
 * Sword - `ID:"SWORD"` - an inventory item reward
 * Shield - `ID:"SHIELD"` - an inventory item reward
 
 #### Cloud Code Scripts
-* ScriptName:
+* GrantTimedRandomReward:
   * Parameters: `none`
-  * Script: `Assets/StreamingAssets/GrantTimedRandomReward.js`
-* ScriptName:
+  * Script: `Assets/Use Case Samples/Daily Rewards/Cloud Code/GrantTimedRandomReward.js`
+* GrantTimedRandomRewardCooldown:
   * Parameters: `none`
-  * Script: `Assets/StreamingAssets/GrantTimedRandomRewardCooldown.js`
+  * Script: `Assets/Use Case Samples/Daily Rewards/Cloud Code/GrantTimedRandomRewardCooldown.js`
 
 _**Note**:
-The Cloud Code scripts included in StreamingAssets are just local copies, since you can't see the sample's dashboard. Changes to these scripts will not affect the behavior of this sample since they will not be automatically uploaded to Cloud Code service._
+The Cloud Code scripts included in the `Cloud Code` folder are just local copies, since you can't see the sample's dashboard. Changes to these scripts will not affect the behavior of this sample since they will not be automatically uploaded to Cloud Code service._

@@ -1,25 +1,36 @@
-# Game Operations Samples
+# Welcome to Gaming Operations Samples
+_Tested with Unity 2020.3 for PC and Mac._
 
-_Tested with Unity 2020.3 for Mac and Windows._
+We're proud to present this collection of samples to demonstrate how to use various Unity Gaming Services together to solve common game development challenges.
 
-This project demonstrates several common ways in which [Unity Gaming Services](https://unity.com/solutions/gaming-services) are used with each other for game operations purposes. This includes things like daily rewards, seasonal events, and tuning the game balance and economy without releasing an update to the game.
+### Purpose
+This collection of samples is designed to guide developers to use multiple Unity Gaming Services in a single project. These samples demonstrate how various services can be used together to address and implement typical backend game use cases and game design elements, how to resolve specific development tasks, and show the efficiency you can achieve in your game backend by leveraging the Unity Gaming Services packages in your project.
 
-> **Note**: This project is configured to use a shared read-only Unity Gaming Services account so that the samples will work for you right away. However, this means that you won't be able to log into the Unity Dashboard to see the server-side configuration for this project. Each use case has a README file which explains how the project is configured on the server.
+To tackle common challenges game developers may face as they build their game, each of the following samples integrate several Unity Gaming Services to illustrate interactive solutions and detailed tutorials that explain how these services were used.
 
-> **Note**: Unity Gaming Services are currently in Open Beta. To join the Open Beta and use the new Services, contact your Unity representative.
+### Samples Overview
+In these 5 sample scenes and their associated script files, you will learn how to implement several common development challenges, including:
+* Loot Boxes - Reward players with a random Economy Currency using Cloud Code to perform the Economy grants.
+* Daily Rewards - Grant players random collections of both Currencies and Inventory Items at timed intervals.
+* Starter Packs - Allow players to purchase a Starter Pack using Cloud Code to implement the one-time-only purchase.
+* Seasonal Events - Update game content remotely based on timed special events.
+* A/B Testing Level Difficulty - Segment players into multiple test groups in order to determine which variation of a specific variable is the most engaging to the players (in this case, the amount of XP required for leveling up).
 
-### Demonstrated Use Cases:
+### Getting Started
+To test these samples, download this public Gaming Operations Samples repo and open the project in Unity 2020.3 or higher.
 
-* **Grant Random Currency**: The server grants the current player a bit of in-game currency.
-* **Grant Timed Random Reward**: The server grants the current player a recurring reward for a set time period.
-* **Seasonal Events**: Rewards, visual theme, and other content changes based on the current server time.
-* **Starter Pack**: A special virtual purchase that can only be purchased once, but can be offered again if the player resets their game.
-* **A/B Game Difficult/Balance Testing** - Try out multiple different gameplay balance adjustments across different random player groups to see which values work best for your game.
+Preview all the sample use cases by opening the Start Here scene located in the Assets folder. Press the Play button to test any of the available use case samples and see how they initialize and demonstrate a solution to each problem. Pay special attention to the Inspector window when you open each use case sample for detailed information. To test another sample, simply exit Play mode and restart to see the available use case samples menu where you can select a new option.
 
-## Getting Started
+When exploring the project, if you go to Project Settings -> Services you will see a notice saying "Unable to link project to Unity Services".
+Similarly, in the Build Settings window, you will see the message "Unable to access Unity services".
+These notices are expected and triggered because the samples project is linked to a read-only Unity Services account to provide an out-of-the-box working experience using preset dashboard settings.
+This read-only access will not interfere with testing the use cases in the editor, however it does prevent the use cases from functioning in a platform build.
+If you would like to experience these samples in a platform build you will need to create a new Unity Project ID using your own Unity organization, re-create the dashboard setup, and link that Project ID with this project.
+Please see the next section for more details.
 
-Clone this repository and open the working copy as a project in Unity (version 2020.3 or newer).
+### Packages Required & Dashboard Setup
+These samples use Unity Gaming Services Packages which have already been configured so you can easily explore the use case samples provided.
 
-## Running the Samples
+To use these implementations in your own project, you will need to set up the requisite Packages on the Unity Gaming Services Dashboard for your organization. To learn which packages are required to implement a specific use case sample, navigate to a specific use case, then the "Packages Required" section of that use case README.md file to see which exact packages are required.
 
-Open the scene named "Start Here". From there, you can choose which use case you want to see demonstrated. After you're done with a use case, stop Play Mode and reload the Start Here scene to choose another use case.
+Each README also contains a "Dashboard Setup" section, which describes what data has been created on the dashboard for each service used by that Use Case.

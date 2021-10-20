@@ -247,7 +247,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8655527328128398354, guid: 024b420a64ec64e87a2c32ab21d9685a, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 453.211
+      value: 400
       objectReference: {fileID: 0}
     - target: {fileID: 8655527328128398354, guid: 024b420a64ec64e87a2c32ab21d9685a, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -494,7 +494,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8655527328128398354, guid: 024b420a64ec64e87a2c32ab21d9685a, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 453.211
+      value: 400
       objectReference: {fileID: 0}
     - target: {fileID: 8655527328128398354, guid: 024b420a64ec64e87a2c32ab21d9685a, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -697,7 +697,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edc045b833d95426ba3ca500b55b7d5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneName: Seasonal Events
+  sceneName: SeasonalEventsSample
   readmeFile: {fileID: 4900000, guid: 497140dedf3c640d9beb90de3c94f996, type: 3}
 --- !u!1 &718447864
 GameObject:
@@ -978,8 +978,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: edc045b833d95426ba3ca500b55b7d5a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sceneName: 
-  readmeFile: {fileID: 0}
+  sceneName: ABTestLevelDifficultySample
+  readmeFile: {fileID: 4900000, guid: 00def9ddb1d140a9adaa8ac0da2dad42, type: 3}
 --- !u!1 &981693712
 GameObject:
   m_ObjectHideFlags: 0
@@ -1074,7 +1074,7 @@ GameObject:
   - component: {fileID: 1103894991}
   - component: {fileID: 1103894993}
   m_Layer: 5
-  m_Name: Main Screen
+  m_Name: Centered Column
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1096,10 +1096,10 @@ RectTransform:
   m_Father: {fileID: 2014552149}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 800, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!225 &1103894991
 CanvasGroup:
@@ -1226,7 +1226,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8655527328128398354, guid: 024b420a64ec64e87a2c32ab21d9685a, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 453.211
+      value: 400
       objectReference: {fileID: 0}
     - target: {fileID: 8655527328128398354, guid: 024b420a64ec64e87a2c32ab21d9685a, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -1371,7 +1371,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8655527328128398354, guid: 024b420a64ec64e87a2c32ab21d9685a, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 453.211
+      value: 400
       objectReference: {fileID: 0}
     - target: {fileID: 8655527328128398354, guid: 024b420a64ec64e87a2c32ab21d9685a, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -1572,7 +1572,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8655527328128398354, guid: 024b420a64ec64e87a2c32ab21d9685a, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 453.211
+      value: 400
       objectReference: {fileID: 0}
     - target: {fileID: 8655527328128398354, guid: 024b420a64ec64e87a2c32ab21d9685a, type: 3}
       propertyPath: m_AnchoredPosition.y

@@ -1,0 +1,45 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Summer
+  m_EditorClassIdentifier: 
+  m_GroupName: Summer
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 06ea3246a5ed3490183998cddffa4d3e
+  m_SerializeEntries:
+  - m_GUID: bc6edced2e6494c60a1c80f9267e01e9
+    m_Address: Prefabs/PlayChallengeButton
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Summer
+  - m_GUID: b166edd1fcca54b83b7f063dda6e0734
+    m_Address: Sprites/BackgroundImage
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Summer
+  - m_GUID: f7f3ead9eb8a84165a6ad50da09e2263
+    m_Address: Prefabs/PlayButton
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Summer
+  - m_GUID: d83c7931bc15741a59efe77af3d5d618
+    m_Address: Sprites/ButtonArt
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - Summer
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: d098d9082bf4e4f6b94dbf2997c0917c, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: ee8fb405a942a4950b07742662a3e609, type: 2}
+    - {fileID: 11400000, guid: 298cc7cb5ea3f422cbb043897137c814, type: 2}

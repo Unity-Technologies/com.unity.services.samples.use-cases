@@ -8,7 +8,7 @@ namespace GameOperationsSamples
         public Sprite swordSprite;
         public Sprite shieldSprite;
 
-        private Image m_IconImage;
+        Image m_IconImage;
 
         void Awake()
         {
@@ -17,12 +17,20 @@ namespace GameOperationsSamples
 
         public void SetKey(string key)
         {
-            m_IconImage.sprite = key switch
+            switch (key)
             {
-                "SWORD" => swordSprite,
-                "SHIELD" => shieldSprite,
-                _ => null
-            };
+                case "SWORD":
+                    m_IconImage.sprite = swordSprite;
+                    break;
+
+                case "SHIELD":
+                    m_IconImage.sprite = shieldSprite;
+                    break;
+
+                default:
+                    m_IconImage.sprite = null;
+                    break;
+            }
         }
     }
 }

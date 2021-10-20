@@ -2,92 +2,95 @@ using System;
 using Unity.Services.Core;
 using UnityEngine;
 
-namespace SeasonalEvents
+namespace GameOperationsSamples
 {
-    public class CountdownManager : MonoBehaviour
+    namespace SeasonalEvents
     {
-        public SceneView view;
-
-        int m_CurrentTimeMinutes = 0;
-        int m_CurrentTimeSeconds = 0;
-
-        void Start()
+        public class CountdownManager : MonoBehaviour
         {
-            UpdateCountdownIfReadyAndNeeded();
-            RemoteConfigManager.RemoteConfigValuesUpdated += OnRemoteConfigValuesUpdated;
-        }
+            public SeasonalEventsSampleView sceneView;
 
-        void LateUpdate()
-        {
-            UpdateCountdownIfReadyAndNeeded();
-        }
+            int m_CurrentTimeMinutes = 0;
+            int m_CurrentTimeSeconds = 0;
 
-        void UpdateCountdownIfReadyAndNeeded()
-        {
-            if (!IsRemoteConfigReady())
+            void Start()
             {
-                SetBlankCountdownText();
-                return;
+                UpdateCountdownIfReadyAndNeeded();
+                RemoteConfigManager.RemoteConfigValuesUpdated += OnRemoteConfigValuesUpdated;
             }
 
-            var newMinutes = DateTime.Now.Minute;
-            var newSeconds = DateTime.Now.Second;
-
-            if (IsUpdateNeeded(newMinutes, newSeconds))
+            void LateUpdate()
             {
-                UpdateCountdown(newMinutes, newSeconds);
-            }
-        }
-
-        bool IsRemoteConfigReady()
-        {
-            // 0 is used as the default value for activeEventEndTime in RemoteConfigManager.
-            // Note that no actual campaigns have an end time of 0.
-            return UnityServices.State == ServicesInitializationState.Initialized &&
-                   RemoteConfigManager.instance.activeEventEndTime != 0;
-        }
-
-        void SetBlankCountdownText()
-        {
-            view.UpdateCountdownText("");
-        }
-
-        bool IsUpdateNeeded(int newMinutes, int newSeconds)
-        {
-            return newMinutes != m_CurrentTimeMinutes || newSeconds != m_CurrentTimeSeconds;
-        }
-
-        void UpdateCountdown(int newMinutes, int newSeconds)
-        {
-            m_CurrentTimeMinutes = newMinutes;
-            m_CurrentTimeSeconds = newSeconds;
-
-            CalculateAndDisplayCurrentCountdownValue();
-        }
-
-        void CalculateAndDisplayCurrentCountdownValue()
-        {
-            var countdownMinutes = RemoteConfigManager.instance.activeEventEndTime - m_CurrentTimeMinutes % 10;
-            if (countdownMinutes < 0 || countdownMinutes > 3)
-            {
-                // This can occur when for a brief moment the current time has rolled over into the next event, but
-                // Remote Config hasn't finished updating with the new campaign data
-                countdownMinutes = 0;
+                UpdateCountdownIfReadyAndNeeded();
             }
 
-            var countdownSeconds = 59 - m_CurrentTimeSeconds;
-            SetCountdownText(countdownMinutes, countdownSeconds);
-        }
+            void UpdateCountdownIfReadyAndNeeded()
+            {
+                if (!IsRemoteConfigReady())
+                {
+                    SetBlankCountdownText();
+                    return;
+                }
 
-        void SetCountdownText(int minutes, int seconds)
-        {
-            var counter = "00:" + minutes.ToString("D2") + ":" + seconds.ToString("D2");
-            view.UpdateCountdownText(counter);
-        }
+                var newMinutes = DateTime.Now.Minute;
+                var newSeconds = DateTime.Now.Second;
 
-        void OnRemoteConfigValuesUpdated()
-        {
-            UpdateCountdown(DateTime.Now.Minute, DateTime.Now.Second);
+                if (IsUpdateNeeded(newMinutes, newSeconds))
+                {
+                    UpdateCountdown(newMinutes, newSeconds);
+                }
+            }
+
+            bool IsRemoteConfigReady()
+            {
+                // 0 is used as the default value for activeEventEndTime in RemoteConfigManager.
+                // Note that no actual campaigns have an end time of 0.
+                return UnityServices.State == ServicesInitializationState.Initialized &&
+                       RemoteConfigManager.instance.activeEventEndTime != 0;
+            }
+
+            void SetBlankCountdownText()
+            {
+                sceneView.UpdateCountdownText("");
+            }
+
+            bool IsUpdateNeeded(int newMinutes, int newSeconds)
+            {
+                return newMinutes != m_CurrentTimeMinutes || newSeconds != m_CurrentTimeSeconds;
+            }
+
+            void UpdateCountdown(int newMinutes, int newSeconds)
+            {
+                m_CurrentTimeMinutes = newMinutes;
+                m_CurrentTimeSeconds = newSeconds;
+
+                CalculateAndDisplayCurrentCountdownValue();
+            }
+
+            void CalculateAndDisplayCurrentCountdownValue()
+            {
+                var countdownMinutes = RemoteConfigManager.instance.activeEventEndTime - m_CurrentTimeMinutes % 10;
+                if (countdownMinutes < 0 || countdownMinutes > 3)
+                {
+                    // This can occur when for a brief moment the current time has rolled over into the next event, but
+                    // Remote Config hasn't finished updating with the new campaign data
+                    countdownMinutes = 0;
+                }
+
+                var countdownSeconds = 59 - m_CurrentTimeSeconds;
+                SetCountdownText(countdownMinutes, countdownSeconds);
+            }
+
+            void SetCountdownText(int minutes, int seconds)
+            {
+                var counter = "00:" + minutes.ToString("D2") + ":" + seconds.ToString("D2");
+                sceneView.UpdateCountdownText(counter);
+            }
+
+            void OnRemoteConfigValuesUpdated()
+            {
+                UpdateCountdown(DateTime.Now.Minute, DateTime.Now.Second);
+            }
         }
     }
 }

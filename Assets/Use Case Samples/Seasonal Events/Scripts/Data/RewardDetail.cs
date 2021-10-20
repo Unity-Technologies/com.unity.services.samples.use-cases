@@ -1,12 +1,15 @@
 using System;
 
-namespace SeasonalEvents
+namespace GameOperationsSamples
 {
-    [Serializable]
-    public struct RewardDetail
+    namespace SeasonalEvents
     {
-        public string id;
-        public int quantity;
-        public string spriteAddress;
+        [Serializable]
+        public struct RewardDetail
+        {
+            public string id;
+            public int quantity;
+            public string spriteAddress;
+        }
     }
 }

@@ -88,46 +88,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7680944319244774451}
     m_Modifications:
-    - target: {fileID: 2263352059709171317, guid: 7b5303dcd26ba420a95323ad37eb8f85, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2263352059709171317, guid: 7b5303dcd26ba420a95323ad37eb8f85, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2263352059709171317, guid: 7b5303dcd26ba420a95323ad37eb8f85, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2263352059709171317, guid: 7b5303dcd26ba420a95323ad37eb8f85, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2263352059709171317, guid: 7b5303dcd26ba420a95323ad37eb8f85, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5607028454757824502, guid: 7b5303dcd26ba420a95323ad37eb8f85, type: 3}
-      propertyPath: m_AnchorMax.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5607028454757824502, guid: 7b5303dcd26ba420a95323ad37eb8f85, type: 3}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5607028454757824502, guid: 7b5303dcd26ba420a95323ad37eb8f85, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5607028454757824502, guid: 7b5303dcd26ba420a95323ad37eb8f85, type: 3}
-      propertyPath: m_AnchoredPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5607028454757824502, guid: 7b5303dcd26ba420a95323ad37eb8f85, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6248938596584189568, guid: 7b5303dcd26ba420a95323ad37eb8f85, type: 3}
       propertyPath: m_Name
       value: Currency Gem

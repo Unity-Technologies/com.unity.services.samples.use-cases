@@ -9,7 +9,7 @@ namespace GameOperationsSamples
         public GameObject inventoryItemPrefab;
         public Transform itemListParentTransform;
 
-        public void RemoveAll()
+        void RemoveAll()
         {
             while (itemListParentTransform.childCount > 0)
             {

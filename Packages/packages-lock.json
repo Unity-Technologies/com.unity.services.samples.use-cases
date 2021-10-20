@@ -103,7 +103,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.collab-proxy": {
-      "version": "1.9.0",
+      "version": "1.11.2",
       "depth": 0,
       "source": "registry",
       "dependencies": {},
@@ -156,15 +156,15 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.remote-config-runtime": {
-      "version": "3.0.0-pre.7",
+      "version": "3.0.0-pre.11",
       "depth": 0,
       "source": "registry",
       "dependencies": {
         "com.unity.nuget.newtonsoft-json": "2.0.0",
         "com.unity.modules.unitywebrequest": "1.0.0",
         "com.unity.modules.unityanalytics": "1.0.0",
-        "com.unity.services.core": "1.1.0-pre.8",
-        "com.unity.services.authentication": "1.0.0-pre.4"
+        "com.unity.services.core": "1.1.0-pre.10",
+        "com.unity.services.authentication": "1.0.0-pre.6"
       },
       "url": "https://packages.unity.com"
     },
@@ -195,12 +195,12 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.services.authentication": {
-      "version": "1.0.0-pre.4",
-      "depth": 0,
+      "version": "1.0.0-pre.6",
+      "depth": 1,
       "source": "registry",
       "dependencies": {
         "com.unity.nuget.newtonsoft-json": "2.0.0",
-        "com.unity.services.core": "1.1.0-pre.8",
+        "com.unity.services.core": "1.1.0-pre.9",
         "com.unity.modules.unitywebrequest": "1.0.0"
       },
       "url": "https://packages.unity.com"
@@ -222,32 +222,33 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.services.cloudsave": {
-      "version": "1.0.0-pre.2",
+      "version": "1.0.0-pre.3",
       "depth": 0,
       "source": "registry",
       "dependencies": {
-        "com.unity.services.authentication": "1.0.0-pre.4",
-        "com.unity.services.core": "1.1.0-pre.8"
+        "com.unity.services.authentication": "1.0.0-pre.6",
+        "com.unity.services.core": "1.1.0-pre.10"
       },
       "url": "https://packages.unity.com"
     },
     "com.unity.services.core": {
-      "version": "1.1.0-pre.8",
+      "version": "1.1.0-pre.10",
       "depth": 1,
       "source": "registry",
       "dependencies": {
-        "com.unity.modules.unitywebrequest": "1.0.0"
+        "com.unity.modules.unitywebrequest": "1.0.0",
+        "com.unity.nuget.newtonsoft-json": "2.0.0"
       },
       "url": "https://packages.unity.com"
     },
     "com.unity.services.economy": {
-      "version": "1.0.0-pre.4",
+      "version": "1.0.0-pre.5",
       "depth": 0,
       "source": "registry",
       "dependencies": {
-        "com.unity.services.authentication": "1.0.0-pre.4",
-        "com.unity.remote-config-runtime": "3.0.0-pre.7",
-        "com.unity.services.core": "1.1.0-pre.8"
+        "com.unity.services.authentication": "1.0.0-pre.6",
+        "com.unity.remote-config-runtime": "3.0.0-pre.8",
+        "com.unity.services.core": "1.1.0-pre.10"
       },
       "url": "https://packages.unity.com"
     },

@@ -2,32 +2,46 @@ using System;
 using Unity.Services.Economy;
 using UnityEngine;
 
-namespace SeasonalEvents
+namespace GameOperationsSamples
 {
-    public class EconomyManager : MonoBehaviour
+    namespace SeasonalEvents
     {
-        public static EconomyManager instance { get; private set; }
-        public static event Action<string, long> CurrencyBalanceUpdated;
-
-        void Awake()
+        public class EconomyManager : MonoBehaviour
         {
-            if (instance != null && instance != this)
-            {
-                Destroy(gameObject);
-            }
-            else
-            {
-                instance = this;
-            }
-        }
+            public static EconomyManager instance { get; private set; }
+            public static event Action<string, long> CurrencyBalanceUpdated;
 
-        public async void GetUpdatedBalances()
-        {
-            var balancesOptions = new PlayerBalances.GetBalancesOptions {ItemsPerFetch = 100};
-            var getBalancesResult = await Economy.PlayerBalances.GetBalancesAsync(balancesOptions);
-            foreach (var balance in getBalancesResult.Balances)
+            void Awake()
             {
-                CurrencyBalanceUpdated?.Invoke(balance.CurrencyId, balance.Balance);
+                if (instance != null && instance != this)
+                {
+                    Destroy(gameObject);
+                }
+                else
+                {
+                    instance = this;
+                }
+            }
+
+            public async void GetUpdatedBalances()
+            {
+                try
+                {
+                    var balancesOptions = new PlayerBalances.GetBalancesOptions { ItemsPerFetch = 100 };
+                    var getBalancesResult = await Economy.PlayerBalances.GetBalancesAsync(balancesOptions);
+
+                    // Check that scene has not been unloaded while processing async wait to prevent throw.
+                    if (this == null) return;
+
+                    foreach (var balance in getBalancesResult.Balances)
+                    {
+                        CurrencyBalanceUpdated?.Invoke(balance.CurrencyId, balance.Balance);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
+                }
             }
         }
     }

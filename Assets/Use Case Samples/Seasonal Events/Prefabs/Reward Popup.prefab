@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0c3915646c58430bb544136db35b32e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  view: {fileID: 5667192814467700516}
+  rewardDisplayView: {fileID: 5667192814467700516}
 --- !u!1 &843579685715042685
 GameObject:
   m_ObjectHideFlags: 0
@@ -108,7 +108,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 4
-  m_Spacing: 24
+  m_Spacing: 0
   m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0

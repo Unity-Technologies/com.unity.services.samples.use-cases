@@ -9,7 +9,7 @@ Once the countdown on the main screen hits 0, the scene will automatically chang
 
 ### Implementation Overview
 When this scene first loads, it will initialize Unity Services and sign the player in anonymously using Authentication. This can be seen in the SeasonalEventsSceneManager script.
-Once Unity Services completes initialization, Remote Config is queried to get the current values for the event-related keys. These values allow for displaying the active event name, the potential rewards for completing the event challenge, and the themed background image.
+Once Unity Services completes initialization, Remote Config is queried to get the current values for the event-related keys. These values allow for displaying the active event name, the potential rewards for completing the event challenge, and the themed background image and play buttons.
 
 Remote Config also tells us when the event ends, which is used in the CountdownManager for determining and displaying how much time is left in the current event.
 When that time runs out, it triggers a new call to remote config, to get the updated values for the next event.
@@ -26,7 +26,7 @@ This script calls Remote Config to determine which rewards should be distributed
 - **Economy:** Keeps track of the player's currencies.
 - **Cloud Code:** Keeps important validation logic on the server side. In this sample it is used to distribute the rewards for the event challenge when the player clicks the "Collect Rewards" button. It independently verifies the timestamp at the time of reward distribution on the server-side to confirm which event's rewards should be distributed.
 - **Remote Config:** Provides key-value pairs where the value that is mapped to a given key can be changed on the server-side, either manually or based on specific campaigns. In this sample, we use the campaigns feature to create the four seasonal events and return different values for certain keys based on the campaign. 
-- **Addressables:** Allows developers to ask for an asset via its address. Wherever the asset resides (local or remote), the system will locate it and its dependencies, then return it. Here we use it to look up event specific images based on the information we receive from Remote Config.
+- **Addressables:** Allows developers to ask for an asset via its address. Wherever the asset resides (local or remote), the system will locate it and its dependencies, then return it. Here we use it to look up event specific images and prefabs based on the information we receive from Remote Config.
 
 See the [Authentication](https://docs.unity.com/authentication/Content/InstallAndConfigureSDK.htm),
 [Economy](https://docs.unity.com/economy/Content/implementation.htm?tocpath=Implementation%7C_____0),
@@ -118,9 +118,7 @@ To duplicate this sample scene's setup on your own dashboard, you'll need a few 
 #### Cloud Code Scripts
 * GrantEventReward:
   * Parameters: `none`
-  * Script: `Assets/StreamingAssets/Seasonal Events/GrantEventReward.js`
+  * Script: `Assets/Use Case Samples/Seasonal Events/Cloud Code/GrantEventReward.js`
 
 _**Note**:
-The Cloud Code scripts included in StreamingAssets are just local copies, since you can't see the sample's dashboard.
-Changes to these script files will not have any effect._
-
+The Cloud Code scripts included in the `Cloud Code` folder are just local copies, since you can't see the sample's dashboard. Changes to these scripts will not affect the behavior of this sample since they will not be automatically uploaded to Cloud Code service._
