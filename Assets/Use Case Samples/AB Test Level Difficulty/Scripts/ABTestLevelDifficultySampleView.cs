@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,9 +9,6 @@ namespace GameOperationsSamples
     {
         public class ABTestLevelDifficultySampleView : MonoBehaviour
         {
-            public CurrencyHudView[] currencyHudViews;
-
-            [Space]
             public TextMeshProUGUI playerLevel;
             public Slider progressBar;
             public TextMeshProUGUI playerXPProgressText;
@@ -27,10 +25,11 @@ namespace GameOperationsSamples
             public TextMeshProUGUI abTestGroupText;
 
             [Space]
-            public GameObject levelUpPopup;
+            public RewardPopupView rewardPopupPrefab;
 
             bool m_Enabled;
             bool m_IsSignedIn;
+
 
             void OnEnable()
             {
@@ -44,23 +43,11 @@ namespace GameOperationsSamples
 
             void StartSubscribe()
             {
-                foreach (var currencyHudView in currencyHudViews)
-                {
-                    EconomyManager.CurrencyBalanceUpdated += currencyHudView.UpdateBalanceField;
-                    CloudCodeManager.CurrencyBalanceUpdated += currencyHudView.UpdateBalanceField;
-                }
-
                 CloudCodeManager.XPIncreased += ShowXPUpdateToast;
             }
 
             void StopSubscribe()
             {
-                foreach (var currencyHudView in currencyHudViews)
-                {
-                    EconomyManager.CurrencyBalanceUpdated -= currencyHudView.UpdateBalanceField;
-                    CloudCodeManager.CurrencyBalanceUpdated -= currencyHudView.UpdateBalanceField;
-                }
-
                 CloudCodeManager.XPIncreased -= ShowXPUpdateToast;
             }
 
@@ -84,8 +71,8 @@ namespace GameOperationsSamples
 
             void UpdateProgressBar()
             {
-                progressBar.value = CloudSaveManager.instance.playerXP;
                 progressBar.maxValue = RemoteConfigManager.instance.levelUpXPNeeded;
+                progressBar.value = CloudSaveManager.instance.playerXP;
                 playerXPProgressText.text = $"{CloudSaveManager.instance.playerXP}/{RemoteConfigManager.instance.levelUpXPNeeded}";
             }
 
@@ -103,12 +90,6 @@ namespace GameOperationsSamples
             public void OnSignedOut()
             {
                 m_IsSignedIn = false;
-            }
-
-            public void DisableAndUpdate()
-            {
-                m_Enabled = false;
-                UpdateScene();
             }
 
             public void EnableAndUpdate()
@@ -131,14 +112,20 @@ namespace GameOperationsSamples
                 xpUpdateToast.gameObject.SetActive(false);
             }
 
-            public void OpenLevelUpPopup()
+            public void OpenLevelUpPopup(List<RewardDetail> rewards)
             {
-                levelUpPopup.SetActive(true);
-            }
+                var gamePopup = Instantiate(rewardPopupPrefab, transform, false)
+                    .GetComponent<RewardPopupView>();
 
-            public void CloseLevelUpPopup()
-            {
-                levelUpPopup.SetActive(false);
+                gamePopup.transform.localScale = Vector3.one;
+
+                gamePopup.headerText.text = "<size=45>Congratulations!</size>\n" +
+                                            "<size=10>\n</size>" +
+                                            "<size=25>You leveled up and received:</size>";
+
+                gamePopup.closeButtonText.text = "Yay!";
+
+                gamePopup.Show(rewards);
             }
         }
     }

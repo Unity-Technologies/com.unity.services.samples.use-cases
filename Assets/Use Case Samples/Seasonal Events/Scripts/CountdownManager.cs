@@ -16,7 +16,6 @@ namespace GameOperationsSamples
             void Start()
             {
                 UpdateCountdownIfReadyAndNeeded();
-                RemoteConfigManager.RemoteConfigValuesUpdated += OnRemoteConfigValuesUpdated;
             }
 
             void LateUpdate()
@@ -87,7 +86,7 @@ namespace GameOperationsSamples
                 sceneView.UpdateCountdownText(counter);
             }
 
-            void OnRemoteConfigValuesUpdated()
+            public void StartCountdownFromNow()
             {
                 UpdateCountdown(DateTime.Now.Minute, DateTime.Now.Second);
             }

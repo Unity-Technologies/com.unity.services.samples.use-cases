@@ -21,18 +21,22 @@ In a real app, developers likely set up a campaign to have specific start and en
 When a player clicks "Play Challenge", followed by "Collect Rewards" it initiates a call to the Cloud Code script "Grant Event Reward".
 This script calls Remote Config to determine which rewards should be distributed (this has the potential to differ from what the player expects, if they're altering their device clock or if they clicked claim right at the very end of an event), and then calls Economy to add those rewards to their currency balances.
 
+Additionally, Analytics custom events are sent each time the scene loads (`SceneOpened`), whenever a button is pressed (`ActionButtonPressed`), and when the back button in the scene is pressed, returning the player to the "Start Here" scene (`SceneSessionLength`).
+
 ### Packages Required
 - **Authentication:** Automatically signs in the user anonymously to keep track of their data on the server side.
 - **Economy:** Keeps track of the player's currencies.
 - **Cloud Code:** Keeps important validation logic on the server side. In this sample it is used to distribute the rewards for the event challenge when the player clicks the "Collect Rewards" button. It independently verifies the timestamp at the time of reward distribution on the server-side to confirm which event's rewards should be distributed.
 - **Remote Config:** Provides key-value pairs where the value that is mapped to a given key can be changed on the server-side, either manually or based on specific campaigns. In this sample, we use the campaigns feature to create the four seasonal events and return different values for certain keys based on the campaign. 
 - **Addressables:** Allows developers to ask for an asset via its address. Wherever the asset resides (local or remote), the system will locate it and its dependencies, then return it. Here we use it to look up event specific images and prefabs based on the information we receive from Remote Config.
+- **Analytics:** Sends events that allows tracking of a player's in-game interactions, retention, and other information which can be used for analyzing and improving game experience.
 
 See the [Authentication](https://docs.unity.com/authentication/Content/InstallAndConfigureSDK.htm),
 [Economy](https://docs.unity.com/economy/Content/implementation.htm?tocpath=Implementation%7C_____0),
 [Cloud Code](https://docs.unity.com//cloud-code/Content/implementation.htm?tocpath=Implementation%7C_____0#SDK_installation),
 [Remote Config](https://docs.unity3d.com/Packages/com.unity.remote-config@2.0/manual/ConfiguringYourProject.html),
-and [Addressables](https://docs.unity3d.com/Packages/com.unity.addressables@latest) docs to learn how to install and configure these SDKs in your project.
+[Addressables](https://docs.unity3d.com/Packages/com.unity.addressables@latest),
+and [Analytics](https://docs.unity.com/analytics/SDKInstallation.htm) docs to learn how to install and configure these SDKs in your project.
 
 ### Dashboard Setup
 To use Economy, Remote Config, and Cloud Code services in your game, activate each service for your organization and project in the Unity Dashboard.
@@ -49,41 +53,24 @@ To duplicate this sample scene's setup on your own dashboard, you'll need a few 
 * EVENT_NAME - The name of the event to display in the scene.
   * Type: `string`
   * Default value: `""`
-  * Campaign Override value examples: "Fall Event", "Winter Event", etc.
 * EVENT_KEY - The key used to look up event-specific values, such as the addresses for the specific images.
   * Type: `string`
   * Default value: `""`
-  * Campaign Override value examples: "Fall", "Winter", etc
-* CHALLENGE_REWARD 
+* EVENT_END_TIME - The last digit that matches in the Audience JEXL statement, i.e. the last digit of the latest timestamp that would return this campaign.
+  * Type: `int`
+  * Default value: `0`
+* CHALLENGE_REWARD - The json that specifies what rewards are distributed when a challenge has been "won".
   * Type: `json`
   * Default value:
   ```json
     {
         "rewards": [{
-          "id": "COIN",
-          "quantity": 100,
-          "sprite_address": "Sprites/Currency/Coin"
+            "id": "COIN",
+            "quantity": 100,
+            "sprite_address": "Sprites/Currency/Coin"
         }]
     }
     ```
-  * Campaign Override value examples:
-  ```json
-    {
-        "rewards": [{
-            "id": "COIN",
-            "quantity": 100,
-            "spriteAddress": "Sprites/Currency/Coin"
-        }, {
-            "id": "PEARL",
-            "quantity": 50,
-            "spriteAddress": "Sprites/Currency/Pearl"
-        }]
-    }
-  ```
-* EVENT_END_TIME
-  * Type: `int`
-  * Default value: `0`
-  * Campaign Override value examples: 2, 4, etc
 
 ##### Campaigns
 * Fall Event
@@ -92,28 +79,97 @@ To duplicate this sample scene's setup on your own dashboard, you'll need a few 
     * `user.timestampMinutes % 10 == 0 || user.timestampMinutes % 10 == 1 || user.timestampMinutes % 10 == 2`
   * Start Date: Immediately
   * End Date: Indefinitely
-  * Overrides: See examples in the Config Values section
+  * Overrides:
+    * EVENT_NAME: `Fall Event`
+    * EVENT_KEY: `Fall`
+    * EVENT_END_TIME: `2`
+    * CHALLENGE_REWARD:
+      ```json
+        {
+            "rewards": [{
+                "id": "COIN",
+                "quantity": 100,
+                "spriteAddress": "Sprites/Currency/Coin"
+            }, {
+                "id": "PEARL",
+                "quantity": 50,
+                "spriteAddress": "Sprites/Currency/Pearl"
+            }]
+        }
+      ```
 * Winter Event
   * Status: Active
   * Audience: Stateless JEXL
     * `user.timestampMinutes % 10 == 3 || user.timestampMinutes % 10 == 4`
   * Start Date: Immediately
   * End Date: Indefinitely
-  * Overrides: See examples in the Config Values section
+    * EVENT_NAME: `Winter Event`
+    * EVENT_KEY: `Winter`
+    * EVENT_END_TIME: `4`
+    * CHALLENGE_REWARD:
+      ```json
+        {
+            "rewards": [{
+                "id": "COIN",
+                "quantity": 100,
+                "spriteAddress": "Sprites/Currency/Coin"
+            }, {
+                "id": "GEM",
+                "quantity": 50,
+                "spriteAddress": "Sprites/Currency/Gem"
+            }]
+        }
+      ```
 * Spring Event
   * Status: Active
   * Audience: Stateless JEXL
     * `user.timestampMinutes % 10 == 5 || user.timestampMinutes % 10 == 6 || user.timestampMinutes % 10 == 7`
   * Start Date: Immediately
   * End Date: Indefinitely
-  * Overrides: See examples in the Config Values section
+    * EVENT_NAME: `Spring Event`
+    * EVENT_KEY: `Spring`
+    * EVENT_END_TIME: `7`
+    * CHALLENGE_REWARD:
+      ```json
+        {
+            "rewards": [{
+                "id": "COIN",
+                "quantity": 100,
+                "spriteAddress": "Sprites/Currency/Coin"
+            }, {
+                "id": "STAR",
+                "quantity": 50,
+                "spriteAddress": "Sprites/Currency/Star"
+            }]
+        }
+      ```
 * Summer Event
   * Status: Active
   * Audience: Stateless JEXL
     * `user.timestampMinutes % 10 == 8 || user.timestampMinutes % 10 == 9`
   * Start Date: Immediately
   * End Date: Indefinitely
-  * Overrides: See examples in the Config Values section
+    * EVENT_NAME: `Summer Event`
+    * EVENT_KEY: `Summer`
+    * EVENT_END_TIME: `9`
+    * CHALLENGE_REWARD:
+      ```json
+        {
+            "rewards": [{
+                "id": "STAR",
+                "quantity": 50,
+                "spriteAddress": "Sprites/Currency/Star"
+            }, {
+                "id": "PEARL",
+                "quantity": 50,
+                "spriteAddress": "Sprites/Currency/Pearl"
+            }, {
+                "id": "GEM",
+                "quantity": 50,
+                "spriteAddress": "Sprites/Currency/Gem"
+            }]
+        }
+      ```
 
 #### Cloud Code Scripts
 * GrantEventReward:
@@ -122,3 +178,68 @@ To duplicate this sample scene's setup on your own dashboard, you'll need a few 
 
 _**Note**:
 The Cloud Code scripts included in the `Cloud Code` folder are just local copies, since you can't see the sample's dashboard. Changes to these scripts will not affect the behavior of this sample since they will not be automatically uploaded to Cloud Code service._
+
+#### Analytics
+In the configuration of the Analytics custom events and parameters, you can see a fairly long list of potential parameters that are sent with some of the events.
+This extended list allows for a more flexible analysis of different parameter groupings in the Data Explorer on the Analytics tab of the Unity dashboard.
+Alternatively, one could send just the ungrouped parameters (buttonName, sceneName, etc), and do any kind of grouped analysis desired using the Data Export feature within the Data Explorer on the dashboard.
+
+##### Custom Events
+* `SceneOpened`
+  * Description: Event sent each time the scene is loaded.
+  * Enabled: true
+  * Custom Parameters:
+    * `sceneName`
+* `ActionButtonPressed`
+  * Description: Event sent for each button press in the scene.
+  * Enabled: true
+  * Custom Parameters:
+    * `buttonName`
+    * `sceneName`
+    * `remoteConfigActiveEvent`
+    * `buttonNameBySceneName`
+    * `buttonNameByRemoteConfigEvent`
+    * `buttonNameBySceneNameAndRemoteConfigEvent`
+* `SceneSessionLength`
+  * Description: Event sent to indicate the length of time between when `Start()` is triggered on the AnalyticsManager script and the back button in the scene is pressed (effectively the time spent in the scene).
+  * Enabled: true
+  * Custom Parameters:
+    * `timeRange`
+    * `sceneName`
+    * `remoteConfigActiveEvent`
+    * `timeRangeBySceneName`
+    * `timeRangeByRemoteConfigEvent`
+    * `timeRangeBySceneNameAndABGroup`
+
+##### Custom Parameters
+* `sceneName`
+  * Description: The name of the scene where the event was triggered.
+  * Type: `STRING`
+* `buttonName`
+  * Description: The name of the button that has been pressed.
+  * Type: `STRING`
+* `remoteConfigActiveEvent`
+  * Description: The active event as defined in and determined by Remote Config.
+  * Type: `STRING`
+* `timeRange`
+  * Description: A range of time spent in the scene where the event was triggered.
+  * Type: `STRING`
+* `buttonNameBySceneName`
+  * Description: Formatted string grouping button name with scene name. Formatted like "Button Name - Scene Name".
+  * Type: `STRING`
+* `buttonNameByRemoteConfigEvent`
+  * Description: Formatted string grouping button name with Remote Config active event. Formatted like "Button Name - Event Key".
+  * Type: `STRING`
+* `buttonNameBySceneNameAndRemoteConfigEvent`
+  * Description: Formatted string grouping button name with scene name and Remote Config active event. Formatted like "Button Name - Scene Name - Event Key".
+  * Type: `STRING`
+* `timeRangeBySceneName`
+  * Description: Formatted string grouping time range with the name of the scene where the time was spent. Formatted like "Time Range - Scene Name".
+  * Type: `STRING`
+* `timeRangeByRemoteConfigEvent`
+  * Description: Formatted string grouping time range with the active Remote Config Event at the time the event was sent. Formatted like "Time Range - Event Key".
+  * Type: `STRING`
+* `timeRangeBySceneNameAndRemoteConfigEvent`
+  * Description: Formatted string grouping time range with the scene name and the Remote Config event that was active at the time the analytics event was sent. Formatted like "Time Range - Scene Name - Event Key".
+  * Type: `STRING`
+  

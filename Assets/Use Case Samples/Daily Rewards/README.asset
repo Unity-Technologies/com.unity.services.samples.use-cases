@@ -1,0 +1,229 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfbabd22c62c640a6ba459d46825055b, type: 3}
+  m_Name: README
+  m_EditorClassIdentifier: 
+  header:
+    title: Daily Rewards README
+    icon: {fileID: 2800000, guid: 83f0684dab5534e2492f651aaaf4a151, type: 3}
+  sections:
+  - subHeader1: Intro
+    subHeader2: 
+    subHeader3: 
+    body: 'Similar to a loot box, daily rewards such as currencies and inventory
+      items can be granted to players at timed intervals as a strategy to boost player
+      retention and interest over time. Daily rewards are a great way for players
+      to feel engaged and motivated to keep playing and get rewarded for it. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'This sample shows how to set up a random daily reward in your game, or
+      in other words, how to grant players timed rewards consisting of multiple,
+      random currencies and inventory items. This sample covers the case where, after
+      a player claims a reward, they must wait a pre-set amount of time before claiming
+      another. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: Implementation Overview
+    subHeader2: 
+    subHeader3: 
+    body: 'This sample demonstrates how to initialize Unity Services, retrieve and
+      update current values from the Economy service, call Cloud Code to pick random
+      Currencies and Inventory Items from internal lists, then call the Economy service
+      directly to grant the reward, returning the final results to the calling Unity
+      C# script. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'Cloud Code is used to access Cloud Save to implement a cooldown between
+      rewards and returns: '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: A flag if the claim button should be enabled
+      bodyFormat: 0
+      bulletList: []
+    - body: The current cooldown in seconds
+      bodyFormat: 0
+      bulletList: []
+    - body: The default cooldown needed to reset the timer locally when a reward
+        is claimed
+      bodyFormat: 0
+      bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 'Note: This sample also includes enhanced error handling to catch
+      and resolve issues arising from calling the Economy service too frequently
+      (more than 5x per second) which causes the "EconomyException" with reason "RateLimited".
+      This sample catches the exception, pauses .1 seconds with exponential back-off,
+      then retries until success. '
+    bulletList: []
+    linkList: []
+  - subHeader1: Packages Required
+    subHeader2: 
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: 'Economy: Retrieves the starting and updated currency balances at runtime.'
+      bodyFormat: 0
+      bulletList: []
+    - body: 'Cloud Save: Stores and retrieves the last grant time to allow cooldown
+        values to persist between sessions.'
+      bodyFormat: 0
+      bulletList: []
+    - body: 'Cloud Code: Accesses the cooldown status, picks and grants random currency
+        and inventory items through the Economy server, and returns the result of
+        the reward.'
+      bodyFormat: 0
+      bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: See the package docs to learn how to install and configure these SDKs in
+      your project.
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList:
+    - linkText: Economy
+      url: https://docs.unity.com/Economy
+    - linkText: Cloud Save
+      url: https://docs.unity.com/Cloud-Save
+    - linkText: Cloud Code
+      url: https://docs.unity.com/Cloud-Code
+  - subHeader1: Dashboard Setup
+    subHeader2: 
+    subHeader3: 
+    body: "To use Economy, Cloud Save, and Cloud Code services in your game, activate
+      each service for your organization and project in the Unity Dashboard. You\u2019ll
+      need a few currency and inventory items for your reward, as well as scripts
+      in Cloud Code: "
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: Economy Items
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: Coin
+      bodyFormat: 1
+      bulletList:
+      - body: A currency reward
+        bodyFormat: 0
+        bulletList: []
+      - body: 'ID: "COIN"'
+        bodyFormat: 0
+        bulletList: []
+    - body: Gem
+      bodyFormat: 1
+      bulletList:
+      - body: A currency reward
+        bodyFormat: 0
+        bulletList: []
+      - body: 'ID: "GEM"'
+        bodyFormat: 0
+        bulletList: []
+    - body: Pearl
+      bodyFormat: 1
+      bulletList:
+      - body: A currency reward
+        bodyFormat: 0
+        bulletList: []
+      - body: 'ID: "PEARL"'
+        bodyFormat: 0
+        bulletList: []
+    - body: Star
+      bodyFormat: 1
+      bulletList:
+      - body: A currency reward
+        bodyFormat: 0
+        bulletList: []
+      - body: 'ID: "STAR"'
+        bodyFormat: 0
+        bulletList: []
+    - body: Sword
+      bodyFormat: 1
+      bulletList:
+      - body: A currency reward
+        bodyFormat: 0
+        bulletList: []
+      - body: 'ID: "SWORD"'
+        bodyFormat: 0
+        bulletList: []
+    - body: Shield
+      bodyFormat: 1
+      bulletList:
+      - body: A currency reward
+        bodyFormat: 0
+        bulletList: []
+      - body: 'ID: "SHIELD"'
+        bodyFormat: 0
+        bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: Cloud Code Scripts
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: 'GrantTimedRandomReward:'
+      bodyFormat: 1
+      bulletList:
+      - body: 'Parameters: `none`'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Script: "Assets/Use Case Samples/Daily Rewards/Cloud Code/GrantTimedRandomReward.js"'
+        bodyFormat: 0
+        bulletList: []
+    - body: 'GrantTimedRandomRewardCooldown:'
+      bodyFormat: 1
+      bulletList:
+      - body: 'Parameters: `none`'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Script: "Assets/Use Case Samples/Daily Rewards/Cloud Code/GrantTimedRandomRewardCooldown.js"'
+        bodyFormat: 0
+        bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 'Note: The Cloud Code scripts included in the "Cloud Code" folder
+      are just local copies, since you can''t see the sample''s dashboard. Changes
+      to these scripts will not affect the behavior of this sample since they will
+      not be automatically uploaded to Cloud Code service.'
+    bulletList: []
+    linkList: []

@@ -16,146 +16,137 @@ namespace GameOperationsSamples
         public class StarterPackSceneManager : MonoBehaviour
         {
             public static event Action<bool> StarterPackStatusChecked;
-            public static event Action<string, long> CurrencyBalanceChanged;
 
-            public CurrencyHudView[] currencyHudViews;
-            public InventoryHudView inventoryHudView;
+            const string k_StarterPackCloudSaveKey = "STARTER_PACK_STATUS";
 
-            void OnEnable()
-            {
-                foreach (var currencyHudView in currencyHudViews)
-                {
-                    CurrencyBalanceChanged += currencyHudView.UpdateBalanceField;
-                }
-            }
-
-            void OnDisable()
-            {
-                foreach (var currencyHudView in currencyHudViews)
-                {
-                    CurrencyBalanceChanged -= currencyHudView.UpdateBalanceField;
-                }
-            }
 
             async void Start()
             {
-                await UnityServices.InitializeAsync();
-
-                // Check that scene has not been unloaded while processing async wait to prevent throw.
-                if (this == null) return;
-
-                if (!AuthenticationService.Instance.IsSignedIn)
-                {
-                    await AuthenticationService.Instance.SignInAnonymouslyAsync();
-                    if (this == null) return;
-                }
-
-                Debug.Log($"Player id: {AuthenticationService.Instance.PlayerId}");
-
-                await Task.WhenAll(RefreshCurrencies(),
-                    RefreshInventory(),
-                    RefreshStarterPackStatus());
-                if (this == null) return;
-
-                StarterPackSampleView.instance.Enable();
-            }
-
-            async Task RefreshCurrencies()
-            {
                 try
                 {
-                    var balancesOptions = new PlayerBalances.GetBalancesOptions { ItemsPerFetch = 100 };
-                    var getBalancesResult = await Economy.PlayerBalances.GetBalancesAsync(balancesOptions);
+                    await UnityServices.InitializeAsync();
+
+                    // Check that scene has not been unloaded while processing async wait to prevent throw.
                     if (this == null) return;
 
-                    foreach (var balance in getBalancesResult.Balances)
+                    if (!AuthenticationService.Instance.IsSignedIn)
                     {
-                        CurrencyBalanceChanged?.Invoke(balance.CurrencyId, balance.Balance);
+                        await AuthenticationService.Instance.SignInAnonymouslyAsync();
+                        if (this == null) return;
                     }
+
+                    Debug.Log($"Player id: {AuthenticationService.Instance.PlayerId}");
+
+                    await Task.WhenAll(EconomyManager.instance.RefreshCurrencyBalances(),
+                        EconomyManager.instance.RefreshInventory(),
+                        RefreshStarterPackStatus());
                 }
                 catch (Exception e)
                 {
                     Debug.LogException(e);
                 }
-            }
-
-            async Task RefreshInventory()
-            {
-                try
+                finally
                 {
-                    var getInventoryResponse = await Economy.PlayerInventory.GetInventoryAsync();
-                    if (this == null) return;
-
-                    inventoryHudView.Refresh(getInventoryResponse.PlayersInventoryItems);
-                }
-                catch (Exception e)
-                {
-                    Debug.LogException(e);
+                    if (this != null)
+                    {
+                        StarterPackSampleView.instance.Enable();
+                    }
                 }
             }
 
             public async void OnBuyButtonPressed()
             {
-                StarterPackSampleView.instance.Disable();
+                try
+                { 
+                    StarterPackSampleView.instance.Disable();
 
+                    await ProcessStarterPackPurchaseRequest();
+                    if (this == null) return;
+
+                    await Task.WhenAll(EconomyManager.instance.RefreshCurrencyBalances(),
+                        EconomyManager.instance.RefreshInventory(),
+                        RefreshStarterPackStatus());
+                }
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
+                }
+                finally
+                {
+                    if (this != null)
+                    {
+                        StarterPackSampleView.instance.Enable();
+                    }
+                }
+            }
+
+            public async Task ProcessStarterPackPurchaseRequest()
+            {
                 // We normally use the Economy.Purchase.MakeVirtualPurchaseAsync method to make a virtual purchase.
                 // In this case, we also want to track if a player has purchased a Starter Pack or not by using a flag.
                 // While that flag is set, this player cannot make the same purchase again.
                 // This flag could be removed so that the player could purchase it again.
                 try
                 {
-                    await CloudCode.CallEndpointAsync<MakeVirtualPurchaseResult>("PurchaseStarterPack", "");
-                    if (this == null) return;
-
-                    await Task.WhenAll(RefreshCurrencies(),
-                        RefreshInventory(),
-                        RefreshStarterPackStatus());
-                    if (this == null) return;
+                    await CloudCode.CallEndpointAsync<MakeVirtualPurchaseResult>(
+                        "PurchaseStarterPack", new object());
                 }
                 catch (Exception e)
                 {
                     Debug.LogError("Something went wrong! Make sure you can afford the Starter Pack.");
                     Debug.LogException(e);
                 }
-
-                StarterPackSampleView.instance.Enable();
-
-                await SaveData.LoadAsync(new HashSet<string> { "STARTER_PACK_STATUS" });
-                if (this == null) return;
-
-                await RefreshStarterPackStatus();
             }
 
             public async void OnGiveTenGemsButtonPressed()
             {
-                StarterPackSampleView.instance.Disable();
-
-                var balanceResponse = await Economy.PlayerBalances.IncrementBalanceAsync("GEM", 10);
-                if (this == null) return;
-
-                CurrencyBalanceChanged?.Invoke("GEM", balanceResponse.Balance);
-
-                StarterPackSampleView.instance.Enable();
-            }
-
-            public async void OnResetPlayerDataButtonPressed()
-            {
-                StarterPackSampleView.instance.Disable();
-
                 try
-                {
-                    await CloudCode.CallEndpointAsync("ResetStarterPackFlag", "");
+                { 
+                    StarterPackSampleView.instance.Disable();
+
+                    var balanceResponse = await Economy.PlayerBalances.IncrementBalanceAsync("GEM", 10);
                     if (this == null) return;
+
+                    EconomyManager.instance.SetCurrencyBalance(balanceResponse.CurrencyId, balanceResponse.Balance);
                 }
                 catch (Exception e)
                 {
                     Debug.LogException(e);
                 }
+                finally
+                {
+                    if (this != null)
+                    {
+                        StarterPackSampleView.instance.Enable();
+                    }
+                }
+            }
 
-                await RefreshStarterPackStatus();
-                if (this == null) return;
+            public async void OnResetPlayerDataButtonPressed()
+            {
+                try
+                {
+                    StarterPackSampleView.instance.Disable();
 
-                StarterPackSampleView.instance.Enable();
+                    // Delete the Starter-Pack-purchased key ("STARTER_PACK_STATUS") from Cloud Save so
+                    // Starter Pack can be purchased again. This is used for testing to permit repurchasing
+                    // this one-time-only product.
+                    await SaveData.ForceDeleteAsync(k_StarterPackCloudSaveKey);
+                    if (this == null) return;
+
+                    await RefreshStarterPackStatus();
+                }
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
+                }
+                finally
+                {
+                    if (this != null)
+                    {
+                        StarterPackSampleView.instance.Enable();
+                    }
+                }
             }
 
             static async Task RefreshStarterPackStatus()
@@ -164,18 +155,23 @@ namespace GameOperationsSamples
 
                 try
                 {
-                    var starterPackStatusCloudSaveResult = await SaveData.LoadAsync(new HashSet<string> { "STARTER_PACK_STATUS" });
+                    // Read the "STARTER_PACK_STATUS" key from Cloud Save
+                    var starterPackStatusCloudSaveResult = await SaveData.LoadAsync(
+                        new HashSet<string> { k_StarterPackCloudSaveKey });
 
-                    if (starterPackStatusCloudSaveResult.ContainsKey("STARTER_PACK_STATUS"))
+                    // If key is found, mark it as purchased if it it contains:  "claimed":true
+                    if (starterPackStatusCloudSaveResult.TryGetValue(k_StarterPackCloudSaveKey, out var result))
                     {
-                        if (starterPackStatusCloudSaveResult["STARTER_PACK_STATUS"].Contains("\"claimed\":true"))
+                        Debug.Log($"{k_StarterPackCloudSaveKey} value: {result}");
+
+                        if (result.Contains("\"claimed\":true"))
                         {
                             starterPackIsClaimed = true;
                         }
                     }
                     else
                     {
-                        Debug.Log("STARTER_PACK_STATUS key not set");
+                        Debug.Log($"{k_StarterPackCloudSaveKey} key not set");
                     }
                 }
                 catch (Exception e)

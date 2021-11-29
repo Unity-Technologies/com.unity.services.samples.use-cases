@@ -42,7 +42,7 @@ module.exports = async ({ params, context, logger }) => {
             distributeLevelUpRewards(economy, projectId, playerId),
             saveUpdatedCloudSaveData(cloudSave, projectId, playerId, updatedPlayerXP, updatedPlayerLevel)
         ]);
-
+        
         levelUpRewards = promiseResponses[0];
     }
     else
@@ -109,7 +109,7 @@ async function distributeLevelUpRewards(economy, projectId, playerId)
     const rewardId = "COIN";
     const rewardAmount = 100;
     const updatedCurrency = await economy.incrementPlayerCurrencyBalance(projectId, playerId, rewardId, { rewardId, amount: rewardAmount });
-    return { currencyId: updatedCurrency.data.currencyId, balance: updatedCurrency.data.balance };
+    return { currencyId: updatedCurrency.data.currencyId, rewardAmount: rewardAmount, balance: updatedCurrency.data.balance };
 }
 
 async function saveUpdatedCloudSaveData(cloudSave, projectId, playerId, updatedPlayerXP, updatedPlayerLevel)

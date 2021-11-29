@@ -21,20 +21,25 @@ namespace GameOperationsSamples
 
             void Awake()
             {
-                instance = this;
+                if (instance != null && instance != this)
+                {
+                    Destroy(gameObject);
+                }
+                else
+                {
+                    instance = this;
+                }
                 Refresh();
             }
 
             void OnEnable()
             {
                 StarterPackSceneManager.StarterPackStatusChecked += OnStarterPackStatusChecked;
-                StarterPackSceneManager.CurrencyBalanceChanged += OnCurrencyBalanceChanged;
             }
 
             void OnDisable()
             {
                 StarterPackSceneManager.StarterPackStatusChecked -= OnStarterPackStatusChecked;
-                StarterPackSceneManager.CurrencyBalanceChanged -= OnCurrencyBalanceChanged;
             }
 
             void OnStarterPackStatusChecked(bool starterPackIsClaimed)

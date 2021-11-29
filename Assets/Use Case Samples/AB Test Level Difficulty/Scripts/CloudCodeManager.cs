@@ -10,8 +10,7 @@ namespace GameOperationsSamples
         public class CloudCodeManager : MonoBehaviour
         {
             public static CloudCodeManager instance { get; private set; }
-            public static event Action<string, long> CurrencyBalanceUpdated;
-            public static event Action LeveledUp;
+            public static event Action<string, long> LeveledUp;
             public static event Action<int> XPIncreased;
 
             void Awake()
@@ -63,14 +62,23 @@ namespace GameOperationsSamples
 
             void CompleteLevelUpUpdates(GainXPAndLevelResult levelUpResults)
             {
-                LeveledUp?.Invoke();
-                CurrencyBalanceUpdated?.Invoke(levelUpResults.levelUpRewards.currencyId, levelUpResults.levelUpRewards.balance);
+                var rewardCurrencyId = levelUpResults.levelUpRewards.currencyId;
+                LeveledUp?.Invoke(rewardCurrencyId, levelUpResults.levelUpRewards.rewardAmount);
+                EconomyManager.instance.SetCurrencyBalance(rewardCurrencyId,
+                    levelUpResults.levelUpRewards.balance);
+
                 CloudSaveManager.instance.UpdateCachedPlayerLevel(levelUpResults.playerLevel);
+            }
+
+            void OnDestroy()
+            {
+                instance = null;
             }
 
             public struct LevelUpRewards
             {
                 public string currencyId;
+                public int rewardAmount;
                 public int balance;
             }
 

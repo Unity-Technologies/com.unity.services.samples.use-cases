@@ -1,4 +1,4 @@
-using System;
+using System.Threading.Tasks;
 using Unity.Services.Economy;
 using UnityEngine;
 
@@ -8,8 +8,10 @@ namespace GameOperationsSamples
     {
         public class EconomyManager : MonoBehaviour
         {
+            public CurrencyHudView currencyHudView;
+
             public static EconomyManager instance { get; private set; }
-            public static event Action<string, long> CurrencyBalanceUpdated;
+
 
             void Awake()
             {
@@ -23,25 +25,26 @@ namespace GameOperationsSamples
                 }
             }
 
-            public async void GetUpdatedBalances()
+            public async Task RefreshCurrencyBalances()
             {
-                try
-                {
-                    var balancesOptions = new PlayerBalances.GetBalancesOptions { ItemsPerFetch = 100 };
-                    var getBalancesResult = await Economy.PlayerBalances.GetBalancesAsync(balancesOptions);
+                var options = new PlayerBalances.GetBalancesOptions { ItemsPerFetch = 100 };
+                var getBalancesTask = Economy.PlayerBalances.GetBalancesAsync(options);
+                var balances = await Utils.ProcessEconomyTaskWithRetry(getBalancesTask);
 
-                    // Check that scene has not been unloaded while processing async wait to prevent throw.
-                    if (this == null) return;
+                // Check that scene has not been unloaded while processing async wait to prevent throw.
+                if (this == null) return;
 
-                    foreach (var balance in getBalancesResult.Balances)
-                    {
-                        CurrencyBalanceUpdated?.Invoke(balance.CurrencyId, balance.Balance);
-                    }
-                }
-                catch (Exception e)
-                {
-                    Debug.LogException(e);
-                }
+                currencyHudView.SetBalances(balances);
+            }
+
+            public void SetCurrencyBalance(string currencyId, long balance)
+            {
+                currencyHudView.SetBalance(currencyId, balance);
+            }
+
+            void OnDestroy()
+            {
+                instance = null;
             }
         }
     }

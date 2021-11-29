@@ -10,7 +10,6 @@ namespace GameOperationsSamples
         public class CloudCodeManager : MonoBehaviour
         {
             public static CloudCodeManager instance { get; private set; }
-            public static event Action<string, long> CurrencyBalanceUpdated;
 
             void Awake()
             {
@@ -44,7 +43,7 @@ namespace GameOperationsSamples
                     // displays directly with these new balances.
                     foreach (var reward in updatedRewardBalances.grantedRewards)
                     {
-                        CurrencyBalanceUpdated?.Invoke(reward.id, reward.quantity);
+                        EconomyManager.instance.SetCurrencyBalance(reward.id, reward.quantity);
                     }
                 }
                 catch (Exception e)
@@ -52,6 +51,11 @@ namespace GameOperationsSamples
                     Debug.Log("Problem calling cloud code endpoint: " + e.Message);
                     Debug.LogException(e);
                 }
+            }
+
+            void OnDestroy()
+            {
+                instance = null;
             }
 
             public struct GrantEventRewardRequest

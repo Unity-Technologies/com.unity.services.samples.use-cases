@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
@@ -24,42 +26,95 @@ namespace GameOperationsSamples
             void StartSubscribe()
             {
                 CloudCodeManager.LeveledUp += OpenLeveledUpPopup;
-                RemoteConfigManager.ConfigValuesUpdated += OnRemoteConfigValuesUpdated;
             }
 
             void StopSubscribe()
             {
                 CloudCodeManager.LeveledUp -= OpenLeveledUpPopup;
-                RemoteConfigManager.ConfigValuesUpdated -= OnRemoteConfigValuesUpdated;
             }
 
             async void Start()
             {
-                await InitializeServices();
-
-                // Check that scene has not been unloaded while processing async wait to prevent throw.
-                if (this == null) return;
-
-                SignIn();
+                try
+                {
+                    await InitializeServices();
+                }
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
+                }
             }
 
             async Task InitializeServices()
             {
                 await UnityServices.InitializeAsync();
+
+                // Check that scene has not been unloaded while processing async wait to prevent throw.
                 if (this == null) return;
 
-                RemoteConfigManager.instance.StartSubscribe();
+                // Analytics events must be sent after UnityServices.Initialize() is finished.
+                AnalyticsManager.instance.SendSceneOpenedEvent();
+
+                await SignInAndLoadDataFromServices();
+                if (this == null) return;
+
+                Debug.Log("Initialization and signin complete.");
             }
 
-            public async void SignInAsNewUser()
+            async Task SignInAndLoadDataFromServices()
             {
-                await SignOut();
+                await SignInIfNecessary();
+                if (this == null) return;
+                Debug.Log($"Player id: {AuthenticationService.Instance.PlayerId}");
+
+                await LoadServicesData();
                 if (this == null) return;
 
-                SignIn();
+                UpdateSceneViewAfterSignIn();
             }
 
-            async Task SignOut()
+            async Task SignInIfNecessary()
+            {
+                if (!AuthenticationService.Instance.IsSignedIn)
+                {
+                    Debug.Log("Signing in...");
+                    await AuthenticationService.Instance.SignInAnonymouslyAsync();
+                }
+            }
+
+            async Task LoadServicesData()
+            {
+                await Task.WhenAll(
+                    CloudSaveManager.instance.LoadAndCacheData(),
+                    EconomyManager.instance.RefreshCurrencyBalances(),
+                    RemoteConfigManager.instance.FetchConfigs()
+                );
+            }
+
+            void UpdateSceneViewAfterSignIn()
+            {
+                sceneView.OnSignedIn();
+                sceneView.EnableAndUpdate();
+            }
+
+            public async void OnSignInAsNewUserButtonPressed()
+            {
+                try
+                {
+                    AnalyticsManager.instance.SendActionButtonPressedEvent("SignInAsNewUser");
+
+                    SignOut();
+                    if (this == null) return;
+
+                    await SignInAndLoadDataFromServices();
+                }
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
+                }
+            }
+
+            void SignOut()
             {
                 // Note that signing out here signs you out of this player ID across all the use case samples.
                 if (AuthenticationService.Instance.IsSignedIn)
@@ -67,68 +122,56 @@ namespace GameOperationsSamples
                     Debug.Log("Signing out current player...");
                     CloudSaveManager.instance.ClearCachedData();
                     RemoteConfigManager.instance.ClearCachedData();
-
-                    // The ClearCachedView method in EconomyManager is getting the list of Currencies to be cleared
-                    // from the server, so we must call that method before signing out in the Authentication service
-                    await EconomyManager.instance.ClearCachedView();
-                    if (this == null) return;
+                    EconomyManager.instance.ClearCurrencyBalances();
 
                     AuthenticationService.Instance.SignOut();
-                    sceneView.OnSignedOut();
-                    sceneView.UpdateScene();
+                    UpdateSceneViewAfterSignOut();
                 }
             }
 
-            async void SignIn()
+            void UpdateSceneViewAfterSignOut()
             {
-                if (!AuthenticationService.Instance.IsSignedIn)
-                {
-                    Debug.Log("Signing in...");
-                    await AuthenticationService.Instance.SignInAnonymouslyAsync();
-                    if (this == null) return;
-                    
-                    Debug.Log($"Player id: {AuthenticationService.Instance.PlayerId}");
-
-                    await CloudSaveManager.instance.LoadAndCacheData();
-                    if (this == null) return;
-
-                    await EconomyManager.instance.GetUpdatedBalances();
-                    if (this == null) return;
-
-                    // Remote Config Fetch Configs is not awaitable, and instead triggers an event.
-                    // Our RemoteConfigManager will handle that event and trigger a ConfigValuesUpdated event when
-                    // it's done saving the newly fetched configs.
-                    RemoteConfigManager.instance.FetchConfigsIfServicesAreInitialized();
-                }
-            }
-
-            void OnRemoteConfigValuesUpdated()
-            {
-                // We only fetch Remote Config values at sign-in for this implementation. So, we know that when the
-                // ConfigValuesUpdated event invokes this method, the last step for updating the scene to its
-                // signed-in state has been completed.
-                sceneView.OnSignedIn();
-                sceneView.EnableAndUpdate();
-            }
-
-            public async void GainXP()
-            {
-                await CloudCodeManager.instance.CallGainXPAndLevelIfReadyEndpoint();
-                if (this == null) return;
-
+                sceneView.OnSignedOut();
                 sceneView.UpdateScene();
             }
 
-            public void OpenLeveledUpPopup()
+            public async void OnGainXPButtonPressed()
             {
-                sceneView.DisableAndUpdate();
-                sceneView.OpenLevelUpPopup();
+                try
+                {
+                    AnalyticsManager.instance.SendActionButtonPressedEvent("GainXP");
+
+                    await CloudCodeManager.instance.CallGainXPAndLevelIfReadyEndpoint();
+                    if (this == null) return;
+
+                    sceneView.UpdateScene();
+                }
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
+                }
             }
 
-            public void CloseLeveledUpPopup()
+            void OpenLeveledUpPopup(string currencyId, long rewardQuantity)
             {
-                sceneView.CloseLevelUpPopup();
-                sceneView.EnableAndUpdate();
+                sceneView.UpdateScene();
+
+                string spriteAddress = default;
+
+                // Convert the currency ID (ex: "COIN") to Addressable address (ex: "Sprites/Currency/Coin")
+                if (RemoteConfigManager.instance.currencyDataDictionary.TryGetValue(currencyId, out var currencyData))
+                {
+                    spriteAddress = currencyData.spriteAddress;
+                }
+
+                var rewards = new List<RewardDetail>();
+                rewards.Add(new RewardDetail { 
+                    id = currencyId,
+                    spriteAddress = spriteAddress, 
+                    quantity = rewardQuantity 
+                });
+
+                sceneView.OpenLevelUpPopup(rewards);
             }
         }
     }

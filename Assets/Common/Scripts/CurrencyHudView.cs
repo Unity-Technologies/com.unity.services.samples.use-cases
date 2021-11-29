@@ -1,25 +1,71 @@
-using TMPro;
+using System.Text;
+using Unity.Services.Economy.Model;
 using UnityEngine;
 
 namespace GameOperationsSamples
 {
     public class CurrencyHudView : MonoBehaviour
     {
-        public string definitionId;
+        CurrencyItemView[] m_CurrencyItemViews;
 
-        public TextMeshProUGUI balanceField;
 
-        public void UpdateBalanceField(string definitionId, long balance)
+        void Awake()
         {
-            if (string.Equals(definitionId, this.definitionId))
+            m_CurrencyItemViews = GetComponentsInChildren<CurrencyItemView>();
+        }
+
+        public void SetBalances(GetBalancesResult getBalancesResult)
+        {
+            // Check that scene has not been unloaded while processing async wait to prevent throw.
+            if (this == null) return;
+
+            if (getBalancesResult is null) return;
+
+            var currenciesString = new StringBuilder();
+            
+            foreach (var balance in getBalancesResult.Balances)
             {
-                SetBalance(balance);
+                if (balance.Balance > 0)
+                {
+                    currenciesString.Append($", {balance.CurrencyId}:{balance.Balance}");
+                }
+                
+                foreach (var currencyItemView in m_CurrencyItemViews)
+                {
+                    if (string.Equals(balance.CurrencyId, currencyItemView.definitionId))
+                    {
+                        currencyItemView.SetBalance(balance.Balance);
+                    }
+                }
+            }
+
+            if (currenciesString.Length > 0)
+            {
+                Debug.Log($"Currency balances updated. Value(s): {currenciesString.Remove(0, 2)}");
+            }
+            else
+            {
+                Debug.Log("Currency balances updated -- none found.");
             }
         }
 
-        void SetBalance(long balance)
+        public void SetBalance(string currencyId, long balance)
         {
-            balanceField.text = balance.ToString();
+            foreach (var currencyItemView in m_CurrencyItemViews)
+            {
+                if (string.Equals(currencyId, currencyItemView.definitionId))
+                {
+                    currencyItemView.SetBalance(balance);
+                }
+            }
+        }
+
+        public void ClearBalances()
+        {
+            foreach (var currencyItemView in m_CurrencyItemViews)
+            {
+                currencyItemView.SetBalance(0);
+            }
         }
     }
 }

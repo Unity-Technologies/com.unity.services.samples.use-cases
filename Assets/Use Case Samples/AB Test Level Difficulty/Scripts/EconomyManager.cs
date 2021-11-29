@@ -9,8 +9,9 @@ namespace GameOperationsSamples
     {
         public class EconomyManager : MonoBehaviour
         {
+            public CurrencyHudView currencyHudView;
+
             public static EconomyManager instance { get; private set; }
-            public static event Action<string, long> CurrencyBalanceUpdated;
 
             void Awake()
             {
@@ -24,31 +25,39 @@ namespace GameOperationsSamples
                 }
             }
 
-            public async Task GetUpdatedBalances()
+            public async Task RefreshCurrencyBalances()
             {
-                var balancesOptions = new PlayerBalances.GetBalancesOptions {ItemsPerFetch = 100};
-                var getBalancesResult = await Economy.PlayerBalances.GetBalancesAsync(balancesOptions);
-
-                // Check that scene has not been unloaded while processing async wait to prevent throw.
-                if (this == null) return;
-
-                foreach (var balance in getBalancesResult.Balances)
+                try
                 {
-                    CurrencyBalanceUpdated?.Invoke(balance.CurrencyId, balance.Balance);
+                    var options = new PlayerBalances.GetBalancesOptions { ItemsPerFetch = 100 };
+                    var getBalancesTask = Economy.PlayerBalances.GetBalancesAsync(options);
+                    var balances = await Utils.ProcessEconomyTaskWithRetry(getBalancesTask);
+
+                    // Check that scene has not been unloaded while processing async wait to prevent throw.
+                    if (this == null) return;
+
+                    currencyHudView.SetBalances(balances);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
                 }
             }
 
-            public async Task ClearCachedView()
+            public void SetCurrencyBalance(string currencyId, long balance)
             {
-                var currencyDefinitions = await Economy.Configuration.GetCurrenciesAsync();
-                if (this == null) return;
+                currencyHudView.SetBalance(currencyId, balance);
+            }
 
-                foreach (var currencyDefinition in currencyDefinitions)
-                {
-                    CurrencyBalanceUpdated?.Invoke(currencyDefinition.Id, 0);
-                }
+            public void ClearCurrencyBalances()
+            {
+                currencyHudView.ClearBalances();
+            }
+
+            void OnDestroy()
+            {
+                instance = null;
             }
         }
     }
-
 }

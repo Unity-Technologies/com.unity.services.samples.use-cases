@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Unity.RemoteConfig;
-using Unity.Services.Core;
 using UnityEngine;
 
 namespace GameOperationsSamples
@@ -11,8 +11,6 @@ namespace GameOperationsSamples
         public class RemoteConfigManager : MonoBehaviour
         {
             public static RemoteConfigManager instance { get; private set; }
-            public static event Action RemoteConfigValuesUpdated;
-            public static event Action RemoteConfigFetchConfigAborted;
 
             public string activeEventName { get; private set; }
             public int activeEventEndTime { get; private set; }
@@ -31,31 +29,30 @@ namespace GameOperationsSamples
                 }
             }
 
-            public void StartSubscribe()
+            public async Task FetchConfigs()
             {
-                // ConfigManager.FetchCompleted can only be subscribed to after Unity Services has finished initializing.
-                ConfigManager.FetchCompleted += OnFetchCompleted;
-            }
-
-            public void FetchConfigsIfServicesAreInitialized()
-            {
-                if (UnityServices.State != ServicesInitializationState.Initialized)
+                try
                 {
-                    RemoteConfigFetchConfigAborted?.Invoke();
-                    return;
-                }
+                    await ConfigManager.FetchConfigsAsync(GetUserAttributes(), new AppAttributes());
 
-                ConfigManager.FetchConfigs(GetUserAttributes(), new AppAttributes());
+                    // Check that scene has not been unloaded while processing async wait to prevent throw.
+                    if (this == null) return;
+
+                    GetConfigValues();
+                }
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
+                }
             }
 
-            void OnFetchCompleted(ConfigResponse configResponse)
+            void GetConfigValues()
             {
                 activeEventName = ConfigManager.appConfig.GetString("EVENT_NAME");
                 activeEventEndTime = ConfigManager.appConfig.GetInt("EVENT_END_TIME");
                 activeEventKey = ConfigManager.appConfig.GetString("EVENT_KEY");
                 var challengeRewardsJson = ConfigManager.appConfig.GetJson("CHALLENGE_REWARD");
                 challengeRewards = JsonUtility.FromJson<Rewards>(challengeRewardsJson).rewards;
-                RemoteConfigValuesUpdated?.Invoke();
             }
 
             UserAttributes GetUserAttributes()
@@ -73,6 +70,11 @@ namespace GameOperationsSamples
                 return new UserAttributes { timestampMinutes = DateTime.Now.Minute };
             }
 
+            void OnDestroy()
+            {
+                instance = null;
+            }
+
             // Remote Config's FetchConfigs call requires passing two non-nullable objects to the method, regardless of
             // whether any data needs to be passed in them. In this case we are using the UserAttributes struct to pass
             // the current timestamp, used to determine which seasonal event should be returned (See a longer explanation
@@ -86,6 +88,12 @@ namespace GameOperationsSamples
             // is on, or what version of the app is installed. The candidates are completely customizable.
             public struct AppAttributes
             {
+            }
+
+            [Serializable]
+            public struct Rewards
+            {
+                public List<RewardDetail> rewards;
             }
         }
     }

@@ -132,6 +132,11 @@ namespace GameOperationsSamples
                 m_CachedCloudData.Clear();
                 InitializeDefaultCachedData();
             }
+
+            void OnDestroy()
+            {
+                instance = null;
+            }
         }
     }
 }

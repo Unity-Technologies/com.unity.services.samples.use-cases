@@ -1,0 +1,160 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfbabd22c62c640a6ba459d46825055b, type: 3}
+  m_Name: README
+  m_EditorClassIdentifier: 
+  header:
+    title: Loot Boxes README
+    icon: {fileID: 2800000, guid: 83f0684dab5534e2492f651aaaf4a151, type: 3}
+  sections:
+  - subHeader1: Intro
+    subHeader2: 
+    subHeader3: 
+    body: 'Games of various genres - from team-based multiplayers to first person
+      shooters - make use of loot boxes and grand random currency, items, and equipment
+      to the player to reward them for leveling up or completing long stretches of
+      gameplay without quitting. Loot boxes are a great way for players to feel engaged
+      and motivated to keep playing and get rewarded for it. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'This sample shows how to set up a basic loot box in your game, or in other
+      words, how to grant random currency to players. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: Implementation Overview
+    subHeader2: 
+    subHeader3: 
+    body: 'This sample demonstrates how to initialize Unity Services, log in, retrieve
+      & update Currency balances from the Economy service and call Cloud Code to
+      pick a currency at random from an internal list, choose a random quantity,
+      then call the Currency service directly to grant the Currency, and return the
+      results to the calling Unity C# script. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: Packages Required
+    subHeader2: 
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: 'Economy: Retrieves the starting and updated currency balances at runtime.'
+      bodyFormat: 0
+      bulletList: []
+    - body: 'Cloud Code: Picks and grants random currency for the loot box through
+        the Economy server and returns the result.'
+      bodyFormat: 0
+      bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: See the package docs to learn how to install and configure these SDKs in
+      your project.
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList:
+    - linkText: Economy
+      url: https://docs.unity.com/Economy
+    - linkText: Cloud Code
+      url: https://docs.unity.com/Cloud-Code
+  - subHeader1: Dashboard Setup
+    subHeader2: 
+    subHeader3: 
+    body: 'To use Economy, and Cloud Code services in your game, activate each service
+      for your organization and project in the Unity Dashboard. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: Economy Items
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: Coin
+      bodyFormat: 1
+      bulletList:
+      - body: A loot box reward item
+        bodyFormat: 0
+        bulletList: []
+      - body: 'ID: "COIN"'
+        bodyFormat: 0
+        bulletList: []
+    - body: Gem
+      bodyFormat: 1
+      bulletList:
+      - body: A loot box reward item
+        bodyFormat: 0
+        bulletList: []
+      - body: 'ID: "GEM"'
+        bodyFormat: 0
+        bulletList: []
+    - body: Pearl
+      bodyFormat: 1
+      bulletList:
+      - body: A loot box reward item
+        bodyFormat: 0
+        bulletList: []
+      - body: 'ID: "PEARL"'
+        bodyFormat: 0
+        bulletList: []
+    - body: Star
+      bodyFormat: 1
+      bulletList:
+      - body: A loot box reward item
+        bodyFormat: 0
+        bulletList: []
+      - body: 'ID: "STAR"'
+        bodyFormat: 0
+        bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: Cloud Code Scripts
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: 'GrantRandomCurrency:'
+      bodyFormat: 1
+      bulletList:
+      - body: 'Parameters: `none`'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Script: "Assets/Use Case Samples/Loot Boxes/Cloud Code/GrantRandomCurrency.js"'
+        bodyFormat: 0
+        bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 'Note: The Cloud Code scripts included in the "Cloud Code" folder
+      are just local copies, since you can''t see the sample''s dashboard. Changes
+      to these scripts will not affect the behavior of this sample since they will
+      not be automatically uploaded to Cloud Code service.'
+    bulletList: []
+    linkList: []
