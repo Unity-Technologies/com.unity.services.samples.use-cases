@@ -50,9 +50,13 @@ namespace GameOperationsSamples
 
         const string k_Prefix = "gameOperationsSamples";
         const string k_SceneOpenedEvent = k_Prefix + "SceneOpened";
+        const int k_SceneOpenedEventVersion = 2;
         const string k_ButtonPressedInPlayModeEvent = k_Prefix + "ButtonPressedInPlayMode";
+        const int k_ButtonPressedInPlayModeEventVersion = 2;
         const string k_SceneTotalSessionLengthEvent = k_Prefix + "SceneTotalSessionLength";
+        const int k_SceneTotalSessionLengthEventVersion = 2;
         const string k_TotalEditorSessionLengthEvent = k_Prefix + "TotalEditorSessionLength";
+        const int k_TotalEditorSessionLengthEventVersion = 4;
 
         static string m_CurrentSceneName;
         static DateTime m_CurrentSceneOpenedDateTime;
@@ -67,16 +71,32 @@ namespace GameOperationsSamples
             if (EditorAnalytics.enabled)
             {
                 EditorAnalytics.RegisterEventWithLimit(
-                    k_ButtonPressedInPlayModeEvent, k_MaxEventsPerHour, k_MaxNumberOfElements, k_VendorKey);
+                    k_ButtonPressedInPlayModeEvent,
+                    k_MaxEventsPerHour,
+                    k_MaxNumberOfElements,
+                    k_VendorKey,
+                    k_ButtonPressedInPlayModeEventVersion);
 
                 EditorAnalytics.RegisterEventWithLimit(
-                    k_SceneOpenedEvent, k_MaxEventsPerHour, k_MaxNumberOfElements, k_VendorKey);
+                    k_SceneOpenedEvent,
+                    k_MaxEventsPerHour,
+                    k_MaxNumberOfElements,
+                    k_VendorKey,
+                    k_SceneOpenedEventVersion);
 
                 EditorAnalytics.RegisterEventWithLimit(
-                    k_SceneTotalSessionLengthEvent, k_MaxEventsPerHour, k_MaxNumberOfElements, k_VendorKey);
+                    k_SceneTotalSessionLengthEvent,
+                    k_MaxEventsPerHour,
+                    k_MaxNumberOfElements,
+                    k_VendorKey,
+                    k_SceneTotalSessionLengthEventVersion);
 
                 EditorAnalytics.RegisterEventWithLimit(
-                    k_TotalEditorSessionLengthEvent, k_MaxEventsPerHour, k_MaxNumberOfElements, k_VendorKey);
+                    k_TotalEditorSessionLengthEvent,
+                    k_MaxEventsPerHour,
+                    k_MaxNumberOfElements,
+                    k_VendorKey,
+                    k_TotalEditorSessionLengthEventVersion);
             }
         }
 
@@ -85,10 +105,9 @@ namespace GameOperationsSamples
             if (EditorAnalytics.enabled)
             {
                 EditorAnalytics.SendEventWithLimit(
-                    k_ButtonPressedInPlayModeEvent, new PlayModeButtonPressedData
-                    {
-                        buttonName = buttonName
-                    });
+                    k_ButtonPressedInPlayModeEvent,
+                    new PlayModeButtonPressedData { buttonName = buttonName },
+                    k_ButtonPressedInPlayModeEventVersion);
             }
         }
 
@@ -108,10 +127,9 @@ namespace GameOperationsSamples
             if (EditorAnalytics.enabled)
             {
                 EditorAnalytics.SendEventWithLimit(
-                    k_SceneOpenedEvent, new SceneOpenedData
-                    {
-                        sceneName = scene.name
-                    });
+                    k_SceneOpenedEvent,
+                    new SceneOpenedData { sceneName = scene.name },
+                    k_SceneOpenedEventVersion);
             }
         }
 
@@ -151,12 +169,14 @@ namespace GameOperationsSamples
                         {
                             sceneName = kvp.Key,
                             sessionLengthSeconds = kvp.Value
-                        });
+                        },
+                        k_SceneTotalSessionLengthEventVersion);
                 }
 
                 EditorAnalytics.SendEventWithLimit(
                     k_TotalEditorSessionLengthEvent,
-                    new TotalUnitySessionLengthData { sessionLengthSeconds = totalUnitySessionLengthSeconds });
+                    new TotalUnitySessionLengthData { sessionLengthSeconds = totalUnitySessionLengthSeconds },
+                    k_TotalEditorSessionLengthEventVersion);
             }
 
             return true;
