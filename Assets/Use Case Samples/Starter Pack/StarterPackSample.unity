@@ -3404,6 +3404,7 @@ GameObject:
   - component: {fileID: 1925250289}
   - component: {fileID: 1925250288}
   - component: {fileID: 1925250290}
+  - component: {fileID: 1925250291}
   m_Layer: 0
   m_Name: StarterPackSample
   m_TagString: Untagged
@@ -3451,6 +3452,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currencyHudView: {fileID: 235145259}
   inventoryHudView: {fileID: 642337211}
+--- !u!114 &1925250291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1925250287}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1a5c9cb1ff0f40e8b9de9abcfb1ad92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1963157606
 PrefabInstance:
   m_ObjectHideFlags: 0

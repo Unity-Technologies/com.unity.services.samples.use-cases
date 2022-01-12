@@ -67,5 +67,18 @@ namespace GameOperationsSamples
                 currencyItemView.SetBalance(0);
             }
         }
+
+        public CurrencyItemView GetCurrencyItemView(string currencyDefinitionId)
+        {
+            foreach (var view in m_CurrencyItemViews)
+            {
+                if (string.Equals(view.definitionId, currencyDefinitionId))
+                {
+                    return view;
+                }
+            }
+
+            return default;
+        }
     }
 }

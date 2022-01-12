@@ -244,6 +244,7 @@ GameObject:
   - component: {fileID: 8655527328128398355}
   - component: {fileID: 3640802502625345094}
   - component: {fileID: 8430640656901595050}
+  - component: {fileID: -8930848736664698210}
   m_Layer: 5
   m_Name: SummerPlayChallengeButton
   m_TagString: Untagged
@@ -406,3 +407,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 2
   m_VerticalFit: 0
+--- !u!114 &-8930848736664698210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8655527328128398353}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06b0a11160ab444328f4c66e07c105dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonName: SeasonalEvents_PlayChallengeButton

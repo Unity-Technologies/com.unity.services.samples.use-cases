@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using TMPro;
+using Unity.Services.Core;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,26 +13,46 @@ namespace GameOperationsSamples
             public TextMeshProUGUI eventWelcomeText;
             public RewardDisplayView challengeRewardsDisplay;
             public TextMeshProUGUI countdownText;
-            public GameObject playChallengeButtonContainter;
+            public GameObject playChallengeButtonContainer;
             public Button playChallengeButton;
+            public TextMeshProUGUI playChallengeButtonText;
 
             [Space]
             public Image backgroundImage;
             public GameObject playButtonContainer;
             public Button playButton;
+            public TextMeshProUGUI playButtonText;
 
             [Space]
-            public RewardPopupView rewardPopupPrefab;
+            public RewardPopupView rewardPopup;
 
+            internal bool playChallengeAllowed;
+            internal bool sceneInitialized;
 
             public void Disable()
             {
+                UpdateButtonTexts();
                 playChallengeButton.interactable = false;
             }
 
             public void Enable()
             {
-                playChallengeButton.interactable = true;
+                UpdateButtonTexts();
+                playChallengeButton.interactable = playChallengeAllowed && sceneInitialized;
+            }
+
+            void UpdateButtonTexts()
+            {
+                if (sceneInitialized)
+                {
+                    playButtonText.text = "Play";
+                    playChallengeButtonText.text = playChallengeAllowed ? "Play Challenge" : "Challenge Won!";
+                }
+                else
+                {
+                    playButtonText.text = "Initializing";
+                    playChallengeButtonText.text = "Initializing";
+                }
             }
 
             public void UpdateBackgroundImage(Sprite image)
@@ -46,18 +67,18 @@ namespace GameOperationsSamples
             {
                 ClearContainer(playButtonContainer.transform);
                 var newPlayButtonGameObject = Instantiate(playButtonPrefab, playButtonContainer.transform);
-                var playTextComponent = newPlayButtonGameObject.GetComponentInChildren<TextMeshProUGUI>();
-                playTextComponent.text = "Play";
+                playButtonText = newPlayButtonGameObject.GetComponentInChildren<TextMeshProUGUI>();
+                playButtonText.text = "Play";
                 playButton = newPlayButtonGameObject.GetComponent<Button>();
                 playButton.interactable = false;
             }
 
             public void UpdatePlayChallengeButton(GameObject playChallengeButtonPrefab)
             {
-                ClearContainer(playChallengeButtonContainter.transform);
-                var newPlayChallengeButtonGameObject = Instantiate(playChallengeButtonPrefab, playChallengeButtonContainter.transform);
-                var playChallengeTextComponent = newPlayChallengeButtonGameObject.GetComponentInChildren<TextMeshProUGUI>();
-                playChallengeTextComponent.text = "Play Challenge";
+                ClearContainer(playChallengeButtonContainer.transform);
+                var newPlayChallengeButtonGameObject = Instantiate(playChallengeButtonPrefab, playChallengeButtonContainer.transform);
+                playChallengeButtonText = newPlayChallengeButtonGameObject.GetComponentInChildren<TextMeshProUGUI>();
+                playChallengeButtonText.text = "Play Challenge";
                 playChallengeButton = newPlayChallengeButtonGameObject.GetComponent<Button>();
                 playChallengeButton.interactable = false;
             }
@@ -88,19 +109,16 @@ namespace GameOperationsSamples
                 countdownText.text = counterText;
             }
 
-            public RewardPopupView InstantiateRewardPopup(List<RewardDetail> rewards)
+            public void ShowRewardPopup(List<RewardDetail> rewards)
             {
-                var gamePopup = Instantiate(rewardPopupPrefab, transform, false)
-                    .GetComponent<RewardPopupView>();
-                
-                gamePopup.transform.localScale = Vector3.one;
+                rewardPopup.transform.localScale = Vector3.one;
 
-                // Disconnect the reward popup 'close' button so we can call the custom close to permit grant.
-                gamePopup.closeButton.onClick = new Button.ButtonClickedEvent();
+                rewardPopup.Show(rewards);
+            }
 
-                gamePopup.Show(rewards);
-
-                return gamePopup;
+            public void CloseRewardPopup()
+            {
+                rewardPopup.Close();
             }
         }
     }

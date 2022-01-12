@@ -94,7 +94,12 @@ MonoBehaviour:
       calls Remote Config to determine which rewards should be distributed (this
       has the potential to differ from what the player expects, if they''re altering
       their device clock or if they clicked claim right at the very end of an event),
-      and then calls Economy to add those rewards to their currency balances. '
+      and then calls Economy to add those rewards to their currency balances. The
+      challenge can only be played once per active season, so once the Cloud Code
+      script distributes the rewards, it saves the current season name and timestamp
+      to Cloud Save. This info is used by the client to determine whether the current
+      season''s challenge has already been played, and if it has, to disable the
+      "Play Challenge" button. '
     bodyFormat: 0
     boxCallout: 
     bulletList: []
@@ -133,6 +138,16 @@ MonoBehaviour:
         images and prefabs based on the information we receive from Remote Config. '
       bodyFormat: 0
       bulletList: []
+    - body: 'Analytics: Sends events that allow the tracking of a player''s in-game
+        interactions, retention, and other information which can be used for analyzing
+        and improving game experience.'
+      bodyFormat: 0
+      bulletList: []
+    - body: 'Cloud Save: Stores if the current season''s challenge has already been
+        played to prevent the user from playing the same season''s challenge multiple
+        times.'
+      bodyFormat: 0
+      bulletList: []
     linkList: []
   - subHeader1: 
     subHeader2: 
@@ -153,6 +168,10 @@ MonoBehaviour:
       url: https://docs.unity3d.com/Packages/com.unity.remote-config@2.0/manual/ConfiguringYourProject.html
     - linkText: Addressables
       url: https://docs.unity3d.com/Packages/com.unity.addressables@latest
+    - linkText: Analytics
+      url: https://docs.unity.com/analytics/SDKInstallation.htm
+    - linkText: Cloud Save
+      url: https://docs.unity.com/cloud-save/implementation.htm
   - subHeader1: Dashboard Setup
     subHeader2: 
     subHeader3: 

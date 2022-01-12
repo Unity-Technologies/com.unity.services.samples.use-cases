@@ -22,8 +22,6 @@ namespace GameOperationsSamples
             AsyncOperationHandle<IList<GameObject>> m_PlayButtonPrefabHandle;
             AsyncOperationHandle<IList<GameObject>> m_PlayChallengeButtonPrefabHandle;
 
-            RewardPopupView m_RewardPopupView = null;
-
 
             async void Start()
             {
@@ -61,8 +59,13 @@ namespace GameOperationsSamples
                     }
                     Debug.Log($"Player id: {AuthenticationService.Instance.PlayerId}");
 
-                    await Task.WhenAll(EconomyManager.instance.RefreshCurrencyBalances(),
-                        GetRemoteConfigUpdates());
+                    await Task.WhenAll(
+                        EconomyManager.instance.RefreshCurrencyBalances(),
+                        GetRemoteConfigUpdates(),
+                        CloudSaveManager.instance.LoadAndCacheData());
+                    if (this == null) return;
+
+                    sceneView.sceneInitialized = true;
                 }
                 finally
                 {
@@ -86,7 +89,49 @@ namespace GameOperationsSamples
             void UpdateFinished()
             {
                 m_Updating = false;
+                UpdateStateAndEnableSceneView();
+            }
+
+            void UpdateStateAndEnableSceneView()
+            {
+                // The Cloud Code script GrantEventReward will only distribute rewards once per season in a given cycle.
+                // So that players don't click the PlayChallenge button thinking they'll get rewards when they won't, we
+                // set playChallengeAllowed to false, which disables the button.
+                sceneView.playChallengeAllowed = IsPlayingChallengeAllowed();
                 sceneView.Enable();
+            }
+
+            private bool IsPlayingChallengeAllowed()
+            {
+                // If you'd like to leave the PlayChallenge button enabled, in order to test the Cloud Code script's 
+                // distribution protections, uncomment the next line:
+                // return true;
+
+                if (IsLastCompletedEventKeyDifferentFromActiveEvent())
+                {
+                    return true;
+                }
+
+                // Because the seasonal events cycle, and do not have unique keys for each cycle, we need to check that
+                // the last time the event challenge was completed, is outside of the possible timespan for the current
+                // event.
+                return IsLastCompletedEventTimestampOld();
+            }
+
+            private bool IsLastCompletedEventKeyDifferentFromActiveEvent()
+            {
+                return !string.Equals(
+                    CloudSaveManager.instance.GetLastCompletedActiveEvent(),
+                    RemoteConfigManager.instance.activeEventKey);
+            }
+
+            private bool IsLastCompletedEventTimestampOld()
+            {
+                var currentTime = DateTime.UtcNow;
+                var eventDuration = new TimeSpan(0, RemoteConfigManager.instance.activeEventDurationMinutes, 0);
+                var earliestPotentialStartForActiveEvent = currentTime - eventDuration;
+
+                return CloudSaveManager.instance.GetLastCompletedEventTimestamp() < earliestPotentialStartForActiveEvent;
             }
 
             async Task GetRemoteConfigUpdates()
@@ -198,9 +243,12 @@ namespace GameOperationsSamples
                     try
                     {
                         UpdateStarted();
-                        Debug.Log("Getting next seasonal event from Remote Config...");
+                        Debug.Log(
+                            "Getting next seasonal event from Remote Config and refreshing Cloud Save data...");
 
-                        await RemoteConfigManager.instance.FetchConfigs();
+                        await Task.WhenAll(
+                            RemoteConfigManager.instance.FetchConfigs(),
+                            CloudSaveManager.instance.LoadAndCacheData());
                         if (this == null) return;
 
                         await UpdateSeasonOnView();
@@ -223,22 +271,18 @@ namespace GameOperationsSamples
             {
                 AnalyticsManager.instance.SendActionButtonPressedEvent("PlayChallenge");
 
-                m_RewardPopupView = sceneView.InstantiateRewardPopup(RemoteConfigManager.instance.challengeRewards);
-
-                // Connect the reward popup 'close' button to grant reward before closing dialog.
-                m_RewardPopupView.closeButton.onClick.AddListener(OnCloseRewardPopupPressed);
+                sceneView.ShowRewardPopup(RemoteConfigManager.instance.challengeRewards);
+                sceneView.Disable();
             }
 
             public async void OnCloseRewardPopupPressed()
             {
                 try
                 {
-                    if (this == null || m_RewardPopupView == null) return;
+                    await CloudCodeManager.instance.CallGrantEventRewardEndpoint();
+                    if (this == null) return;
 
-                    m_RewardPopupView.closeButton.onClick.RemoveListener(OnCloseRewardPopupPressed);
-
-                    AnalyticsManager.instance.SendActionButtonPressedEvent("CollectRewards");
-                    await GrantEventReward();
+                    await CloudSaveManager.instance.LoadAndCacheData();
                 }
                 catch (Exception e)
                 {
@@ -250,23 +294,12 @@ namespace GameOperationsSamples
                     // so our check for whether the scene has been unloaded while processing the last async wait
                     // of the try block has to happen in the finally. Since we can't exit a finally block early
                     // we will only call Close if the scene hasn't been unloaded.
-                    if (this != null && m_RewardPopupView != null)
+                    if (this != null)
                     {
-                        CloseRewardPopup();
+                        sceneView.CloseRewardPopup();
+                        UpdateStateAndEnableSceneView();
                     }
                 }
-            }
-
-            public async Task GrantEventReward()
-            {
-                Debug.Log("Collecting event rewards via Cloud Code...");
-                await CloudCodeManager.instance.CallGrantEventRewardEndpoint();
-            }
-
-            public void CloseRewardPopup()
-            {
-                m_RewardPopupView.Close();
-                m_RewardPopupView = null;
             }
         }
     }

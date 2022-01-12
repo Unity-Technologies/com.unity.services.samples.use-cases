@@ -217,6 +217,7 @@ GameObject:
   - component: {fileID: 468777610}
   - component: {fileID: 468777609}
   - component: {fileID: 468777611}
+  - component: {fileID: 468777612}
   m_Layer: 0
   m_Name: LootBoxesSample
   m_TagString: Untagged
@@ -265,6 +266,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currencyHudView: {fileID: 555200703}
+--- !u!114 &468777612
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 468777608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1a5c9cb1ff0f40e8b9de9abcfb1ad92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &555200701
 PrefabInstance:
   m_ObjectHideFlags: 0

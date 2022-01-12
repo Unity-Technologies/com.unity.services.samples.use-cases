@@ -20,6 +20,8 @@ In a real app, developers likely set up a campaign to have specific start and en
 
 When a player clicks "Play Challenge", followed by "Collect Rewards" it initiates a call to the Cloud Code script "Grant Event Reward".
 This script calls Remote Config to determine which rewards should be distributed (this has the potential to differ from what the player expects, if they're altering their device clock or if they clicked claim right at the very end of an event), and then calls Economy to add those rewards to their currency balances.
+The challenge can only be played once per active season, so once the Cloud Code script distributes the rewards, it saves the current season name and timestamp to Cloud Save.
+This info is used by the client to determine whether the current season's challenge has already been played, and if it has, to disable the "Play Challenge" button.
 
 Additionally, Analytics custom events are sent each time the scene loads (`SceneOpened`), whenever a button is pressed (`ActionButtonPressed`), and when the back button in the scene is pressed, returning the player to the "Start Here" scene (`SceneSessionLength`).
 
@@ -29,14 +31,16 @@ Additionally, Analytics custom events are sent each time the scene loads (`Scene
 - **Cloud Code:** Keeps important validation logic on the server side. In this sample it is used to distribute the rewards for the event challenge when the player clicks the "Collect Rewards" button. It independently verifies the timestamp at the time of reward distribution on the server-side to confirm which event's rewards should be distributed.
 - **Remote Config:** Provides key-value pairs where the value that is mapped to a given key can be changed on the server-side, either manually or based on specific campaigns. In this sample, we use the campaigns feature to create the four seasonal events and return different values for certain keys based on the campaign. 
 - **Addressables:** Allows developers to ask for an asset via its address. Wherever the asset resides (local or remote), the system will locate it and its dependencies, then return it. Here we use it to look up event specific images and prefabs based on the information we receive from Remote Config.
-- **Analytics:** Sends events that allows tracking of a player's in-game interactions, retention, and other information which can be used for analyzing and improving game experience.
+- **Analytics:** Sends events that allow the tracking of a player's in-game interactions, retention, and other information which can be used for analyzing and improving game experience.
+- **Cloud Save:** Stores if the current season's challenge has already been played to prevent the user from playing the same season's challenge multiple times.
 
 See the [Authentication](https://docs.unity.com/authentication/Content/InstallAndConfigureSDK.htm),
 [Economy](https://docs.unity.com/economy/Content/implementation.htm?tocpath=Implementation%7C_____0),
 [Cloud Code](https://docs.unity.com//cloud-code/Content/implementation.htm?tocpath=Implementation%7C_____0#SDK_installation),
 [Remote Config](https://docs.unity3d.com/Packages/com.unity.remote-config@2.0/manual/ConfiguringYourProject.html),
 [Addressables](https://docs.unity3d.com/Packages/com.unity.addressables@latest),
-and [Analytics](https://docs.unity.com/analytics/SDKInstallation.htm) docs to learn how to install and configure these SDKs in your project.
+[Analytics](https://docs.unity.com/analytics/SDKInstallation.htm),
+and [Cloud Save](https://docs.unity.com/cloud-save/implementation.htm) docs to learn how to install and configure these SDKs in your project.
 
 ### Dashboard Setup
 To use Economy, Remote Config, and Cloud Code services in your game, activate each service for your organization and project in the Unity Dashboard.

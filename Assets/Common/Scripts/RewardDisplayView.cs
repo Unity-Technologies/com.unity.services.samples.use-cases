@@ -25,7 +25,7 @@ namespace GameOperationsSamples
 
         void ClearView()
         {
-            for (var i = transform.childCount - 1; i > 0; i--)
+            for (var i = transform.childCount - 1; i >= 0; i--)
             {
                 Destroy(transform.GetChild(i).gameObject);
             }

@@ -61,7 +61,7 @@ MonoBehaviour:
   - subHeader1: 
     subHeader2: Samples Overview
     subHeader3: 
-    body: 'In these 5 sample scenes and their associated script files, you will learn
+    body: 'In these 6 sample scenes and their associated script files, you will learn
       how to implement several common development challenges, including: '
     bodyFormat: 0
     boxCallout: 
@@ -86,6 +86,10 @@ MonoBehaviour:
         in order to determine which variation of a specific variable is the most
         engaging to the players (in this case, the amount of XP required for leveling
         up).
+      bodyFormat: 0
+      bulletList: []
+    - body: Idle Clicker Mini Game - Update server authoritative game state in real time, 
+        similar to idle clicker and social games.
       bodyFormat: 0
       bulletList: []
     linkList: []

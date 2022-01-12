@@ -25,9 +25,7 @@ namespace GameOperationsSamples
 
         public void Close()
         {
-            var currentGameObject = gameObject;
-            currentGameObject.SetActive(false);
-            Destroy(currentGameObject);
+            gameObject.SetActive(false);
         }
     }
 }

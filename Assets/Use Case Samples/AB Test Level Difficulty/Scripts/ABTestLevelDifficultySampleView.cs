@@ -25,7 +25,7 @@ namespace GameOperationsSamples
             public TextMeshProUGUI abTestGroupText;
 
             [Space]
-            public RewardPopupView rewardPopupPrefab;
+            public RewardPopupView rewardPopup;
 
             bool m_Enabled;
             bool m_IsSignedIn;
@@ -114,18 +114,13 @@ namespace GameOperationsSamples
 
             public void OpenLevelUpPopup(List<RewardDetail> rewards)
             {
-                var gamePopup = Instantiate(rewardPopupPrefab, transform, false)
-                    .GetComponent<RewardPopupView>();
-
-                gamePopup.transform.localScale = Vector3.one;
-
-                gamePopup.headerText.text = "<size=45>Congratulations!</size>\n" +
+                rewardPopup.headerText.text = "<size=45>Congratulations!</size>\n" +
                                             "<size=10>\n</size>" +
                                             "<size=25>You leveled up and received:</size>";
 
-                gamePopup.closeButtonText.text = "Yay!";
+                rewardPopup.closeButtonText.text = "Yay!";
 
-                gamePopup.Show(rewards);
+                rewardPopup.Show(rewards);
             }
         }
     }

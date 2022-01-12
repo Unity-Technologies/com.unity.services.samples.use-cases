@@ -14,6 +14,7 @@ namespace GameOperationsSamples
 
             public string activeEventName { get; private set; }
             public int activeEventEndTime { get; private set; }
+            public int activeEventDurationMinutes { get; private set; }
             public string activeEventKey { get; private set; }
             public List<RewardDetail> challengeRewards { get; private set; }
 
@@ -50,6 +51,7 @@ namespace GameOperationsSamples
             {
                 activeEventName = ConfigManager.appConfig.GetString("EVENT_NAME");
                 activeEventEndTime = ConfigManager.appConfig.GetInt("EVENT_END_TIME");
+                activeEventDurationMinutes = ConfigManager.appConfig.GetInt("EVENT_TOTAL_DURATION_MINUTES");
                 activeEventKey = ConfigManager.appConfig.GetString("EVENT_KEY");
                 var challengeRewardsJson = ConfigManager.appConfig.GetJson("CHALLENGE_REWARD");
                 challengeRewards = JsonUtility.FromJson<Rewards>(challengeRewardsJson).rewards;

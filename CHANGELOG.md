@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.1.0] - 2022-01-12
+
+### Added
+
+* "Idle Clicker Mini-Game" use case sample that demonstrates server authoritative game state in real time,
+  similar to idle clicker and social games.
+  
+### Changed
+
+* Limited the frame rate during play mode to 30 FPS.
+* Prevented Cloud Code double seasonal reward distribution in Seasonal Event use case.
+* Updated RewardPopup prefab to allow for codeless customization.
+
 ## [1.0.1] - 2021-11-29
 
 ### Added

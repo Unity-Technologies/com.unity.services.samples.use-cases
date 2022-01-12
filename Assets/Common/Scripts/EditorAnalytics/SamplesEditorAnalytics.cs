@@ -9,7 +9,6 @@
 // the AB Test Level Difficulty sample or the Seasonal Events sample.
 
 using System;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
@@ -38,12 +37,6 @@ namespace GameOperationsSamples
             public int sessionLengthSeconds;
         }
 
-        [Serializable]
-        struct TotalUnitySessionLengthData
-        {
-            public int sessionLengthSeconds;
-        }
-
         const int k_MaxEventsPerHour = 100;
         const int k_MaxNumberOfElements = 10;
         const string k_VendorKey = "unity.gamingservicessamples";
@@ -55,131 +48,123 @@ namespace GameOperationsSamples
         const int k_ButtonPressedInPlayModeEventVersion = 2;
         const string k_SceneTotalSessionLengthEvent = k_Prefix + "SceneTotalSessionLength";
         const int k_SceneTotalSessionLengthEventVersion = 2;
-        const string k_TotalEditorSessionLengthEvent = k_Prefix + "TotalEditorSessionLength";
-        const int k_TotalEditorSessionLengthEventVersion = 4;
 
         static string m_CurrentSceneName;
-        static DateTime m_CurrentSceneOpenedDateTime;
-        static Dictionary<string, int> m_SceneTotalSessionLengths = new Dictionary<string, int>();
+        static DateTime m_CurrentSceneSessionCheckpoint;
 
         static SamplesEditorAnalytics()
         {
-            EditorSceneManager.sceneOpened += OnEditorSceneOpened;
-            EditorSceneManager.sceneClosed += OnEditorSceneClosed;
+            m_CurrentSceneName = SceneManager.GetActiveScene().name;
+            m_CurrentSceneSessionCheckpoint = DateTime.Now;
+
+            SceneManager.sceneLoaded += OnSceneLoaded;
+            EditorSceneManager.sceneOpened += OnSceneOpened;
+            AssemblyReloadEvents.beforeAssemblyReload += OnBeforeAssemblyReload;
+            EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
             EditorApplication.wantsToQuit += OnEditorWantsToQuit;
 
-            if (EditorAnalytics.enabled)
-            {
-                EditorAnalytics.RegisterEventWithLimit(
-                    k_ButtonPressedInPlayModeEvent,
-                    k_MaxEventsPerHour,
-                    k_MaxNumberOfElements,
-                    k_VendorKey,
-                    k_ButtonPressedInPlayModeEventVersion);
+            EditorAnalytics.RegisterEventWithLimit(
+                k_ButtonPressedInPlayModeEvent,
+                k_MaxEventsPerHour,
+                k_MaxNumberOfElements,
+                k_VendorKey,
+                k_ButtonPressedInPlayModeEventVersion);
 
-                EditorAnalytics.RegisterEventWithLimit(
-                    k_SceneOpenedEvent,
-                    k_MaxEventsPerHour,
-                    k_MaxNumberOfElements,
-                    k_VendorKey,
-                    k_SceneOpenedEventVersion);
+            EditorAnalytics.RegisterEventWithLimit(
+                k_SceneOpenedEvent,
+                k_MaxEventsPerHour,
+                k_MaxNumberOfElements,
+                k_VendorKey,
+                k_SceneOpenedEventVersion);
 
-                EditorAnalytics.RegisterEventWithLimit(
-                    k_SceneTotalSessionLengthEvent,
-                    k_MaxEventsPerHour,
-                    k_MaxNumberOfElements,
-                    k_VendorKey,
-                    k_SceneTotalSessionLengthEventVersion);
-
-                EditorAnalytics.RegisterEventWithLimit(
-                    k_TotalEditorSessionLengthEvent,
-                    k_MaxEventsPerHour,
-                    k_MaxNumberOfElements,
-                    k_VendorKey,
-                    k_TotalEditorSessionLengthEventVersion);
-            }
+            EditorAnalytics.RegisterEventWithLimit(
+                k_SceneTotalSessionLengthEvent,
+                k_MaxEventsPerHour,
+                k_MaxNumberOfElements,
+                k_VendorKey,
+                k_SceneTotalSessionLengthEventVersion);
         }
 
         public static void SendButtonPressedInPlayModeEvent(string buttonName)
         {
-            if (EditorAnalytics.enabled)
-            {
-                EditorAnalytics.SendEventWithLimit(
-                    k_ButtonPressedInPlayModeEvent,
-                    new PlayModeButtonPressedData { buttonName = buttonName },
-                    k_ButtonPressedInPlayModeEventVersion);
-            }
+            EditorAnalytics.SendEventWithLimit(
+                k_ButtonPressedInPlayModeEvent,
+                new PlayModeButtonPressedData { buttonName = buttonName },
+                k_ButtonPressedInPlayModeEventVersion);
         }
 
-        static void OnEditorSceneOpened(Scene scene, OpenSceneMode openSceneMode)
+        static void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)
         {
-            if (!m_CurrentSceneName.Equals(scene.name))
-            {
-                m_CurrentSceneName = scene.name;
-                m_CurrentSceneOpenedDateTime = DateTime.Now;
-
-                if (!m_SceneTotalSessionLengths.ContainsKey(m_CurrentSceneName))
-                {
-                    m_SceneTotalSessionLengths.Add(m_CurrentSceneName, 0);
-                }
-            }
-
-            if (EditorAnalytics.enabled)
-            {
-                EditorAnalytics.SendEventWithLimit(
-                    k_SceneOpenedEvent,
-                    new SceneOpenedData { sceneName = scene.name },
-                    k_SceneOpenedEventVersion);
-            }
+            SendSceneSessionLengthEvent();
+            SendSceneOpenedEvent(scene);
+            m_CurrentSceneName = scene.name;
         }
 
-        static void OnEditorSceneClosed(Scene scene)
+        static void OnSceneOpened(Scene scene, OpenSceneMode openSceneMode)
         {
-            AddThisSceneSessionLengthToTotals();
-
-            m_CurrentSceneName = "";
+            SendSceneSessionLengthEvent();
+            SendSceneOpenedEvent(scene);
+            m_CurrentSceneName = scene.name;
         }
 
-        static void AddThisSceneSessionLengthToTotals()
+        static void SendSceneOpenedEvent(Scene scene)
         {
-            if (!string.IsNullOrEmpty(m_CurrentSceneName)
-                && m_SceneTotalSessionLengths.ContainsKey(m_CurrentSceneName))
-            {
-                var elapsedSeconds = Convert.ToInt32(DateTime.Now.Subtract(m_CurrentSceneOpenedDateTime).TotalSeconds);
+            EditorAnalytics.SendEventWithLimit(
+                k_SceneOpenedEvent,
+                new SceneOpenedData { sceneName = scene.name },
+                k_SceneOpenedEventVersion);
+        }
 
-                m_SceneTotalSessionLengths[m_CurrentSceneName] += elapsedSeconds;
+        // All static fields will be reset if something triggers a recompile (or reimport, etc).
+        // Therefore, we can't store a running total of session length.
+        // We should send the current value before the recompile starts.
+        static void OnBeforeAssemblyReload()
+        {
+            SendSceneSessionLengthEvent();
+        }
+
+        // All static fields will be reset when entering play mode.
+        // Therefore, we can't store a running total of session length.
+        // We should send the current value while exiting edit mode.
+        static void OnPlayModeStateChanged(PlayModeStateChange playModeStateChange)
+        {
+            if (playModeStateChange == PlayModeStateChange.ExitingEditMode)
+            {
+                SendSceneSessionLengthEvent();
             }
         }
 
         static bool OnEditorWantsToQuit()
         {
-            AddThisSceneSessionLengthToTotals();
-
-            if (EditorAnalytics.enabled)
-            {
-                var totalUnitySessionLengthSeconds = 0;
-
-                foreach (var kvp in m_SceneTotalSessionLengths)
-                {
-                    totalUnitySessionLengthSeconds += kvp.Value;
-
-                    EditorAnalytics.SendEventWithLimit(
-                        k_SceneTotalSessionLengthEvent,
-                        new SceneTotalSessionLengthData
-                        {
-                            sceneName = kvp.Key,
-                            sessionLengthSeconds = kvp.Value
-                        },
-                        k_SceneTotalSessionLengthEventVersion);
-                }
-
-                EditorAnalytics.SendEventWithLimit(
-                    k_TotalEditorSessionLengthEvent,
-                    new TotalUnitySessionLengthData { sessionLengthSeconds = totalUnitySessionLengthSeconds },
-                    k_TotalEditorSessionLengthEventVersion);
-            }
+            SendSceneSessionLengthEvent();
 
             return true;
+        }
+
+        static void SendSceneSessionLengthEvent()
+        {
+            if (string.IsNullOrEmpty(m_CurrentSceneName))
+            {
+                return;
+            }
+
+            var elapsedSeconds = Convert.ToInt32(DateTime.Now.Subtract(m_CurrentSceneSessionCheckpoint).TotalSeconds);
+
+            if (elapsedSeconds <= 0)
+            {
+                return;
+            }
+
+            m_CurrentSceneSessionCheckpoint = DateTime.Now;
+
+            EditorAnalytics.SendEventWithLimit(
+                k_SceneTotalSessionLengthEvent,
+                new SceneTotalSessionLengthData
+                {
+                    sceneName = m_CurrentSceneName,
+                    sessionLengthSeconds = elapsedSeconds
+                },
+                k_SceneTotalSessionLengthEventVersion);
         }
     }
 }
