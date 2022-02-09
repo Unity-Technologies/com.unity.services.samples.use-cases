@@ -188,6 +188,10 @@ In the configuration of the Analytics custom events and parameters, you can see 
 This extended list allows for a more flexible analysis of different parameter groupings in the Data Explorer on the Analytics tab of the Unity dashboard.
 Alternatively, one could send just the ungrouped parameters (buttonName, sceneName, etc), and do any kind of grouped analysis desired using the Data Export feature within the Data Explorer on the dashboard.
 
+_**Note**:
+This sample demonstrates the code needed to trigger analytics events, however additional code may be necessary to meet legal requirements such as GDPR, CCPA, and PIPL.
+See more info about managing data privacy [here](https://docs.unity.com/analytics/ManagingDataPrivacy.html)._
+
 ##### Custom Events
 * `SceneOpened`
   * Description: Event sent each time the scene is loaded.

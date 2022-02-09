@@ -9,13 +9,16 @@ This collection of samples is designed to guide developers to use multiple Unity
 To tackle common challenges game developers may face as they build their game, each of the following samples integrate several Unity Gaming Services to illustrate interactive solutions and detailed tutorials that explain how these services were used.
 
 ### Samples Overview
-In these 6 sample scenes and their associated script files, you will learn how to implement several common development challenges, including:
+In these sample scenes and their associated script files, you will learn how to implement several common development challenges, including:
 * Loot Boxes - Reward players with a random Economy Currency using Cloud Code to perform the Economy grants.
 * Daily Rewards - Grant players random collections of both Currencies and Inventory Items at timed intervals.
 * Starter Packs - Allow players to purchase a Starter Pack using Cloud Code to implement the one-time-only purchase.
 * Seasonal Events - Update game content remotely based on timed special events.
 * A/B Testing Level Difficulty - Segment players into multiple test groups in order to determine which variation of a specific variable is the most engaging to the players (in this case, the amount of XP required for leveling up).
 * Idle Clicker Mini Game - Update server authoritative game state in real time, similar to idle clicker and social games.
+* Cloud AI Mini Game - Server authoritative gameplay in a simple Tic-Tac-Toe game played against AI running on UGS with persistent state, Currency rewards, stats, and straightforward AI.
+* Command Batching - Group game Commands into a queue and process on the server in a single batch to reduce the volume and frequency of server calls made during gameplay.
+* Battle Pass - A seasonal reward tier system with a free track and a premium track.
 
 ### Getting Started
 To test these samples, download this public Gaming Operations Samples repo and open the project in Unity 2020.3 or higher.

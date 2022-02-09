@@ -1,0 +1,517 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfbabd22c62c640a6ba459d46825055b, type: 3}
+  m_Name: README
+  m_EditorClassIdentifier: 
+  header:
+    title: Cloud AI Mini Game README
+    icon: {fileID: 2800000, guid: 83f0684dab5534e2492f651aaaf4a151, type: 3}
+  sections:
+  - subHeader1: Intro
+    subHeader2: 
+    subHeader3: 
+    body: 'In some games, it''s desirable to play a mini game as a reward or to advance
+      game play. This sample demonstrates how to use Cloud Code and other UGS packages
+      to validate game play in a mini game that implements a simple artificial opponent
+      against the player. Additionally, this sample demonstrates how gameplay can
+      be rewarded based on game outcome by awarding bonus Coins for wins and ties.
+      This can make the mini games more enjoyable and even affect game economy going
+      forward. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'This sample demonstrates how a user can play a Tic-Tac-Toe game against
+      the AI and receive a Coin Currency reward based on the outcome: 100 Coins for
+      a win, 25 for a tie. Each game begins with a random player (50% human, 50%
+      AI) and progresses until a player successfully places 3 pieces in a row (win)
+      or the board is full (tie). '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: Implementation Overview
+    subHeader2: 
+    subHeader3: 
+    body: 'This sample uses 3 Cloud Code scripts to manage the game: '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: CloudAi_GetState is called once at startup to return the existing game
+        if possible or generate a random game if none exists. This script will also
+        clear the player's Coin total to 0 at the start of the first game so win/tie
+        count should reflect the current Coin quantity, unless other Use Case Samples
+        are visited.
+      bodyFormat: 0
+      bulletList: []
+    - body: CloudAi_PlayerMove is called for each player move. The script is called
+        with x,y coordinates and Cloud Code validates the player's move, makes an
+        AI move if the game isn't over, determines if the game should end, and returns
+        the final updated state. This script also maintains a win/loss/tie count
+        and calls Economy to grant Coins for Wins and Ties.
+      bodyFormat: 0
+      bulletList: []
+    - body: CloudAi_StartNewGame is called when the player presses the [New Game]
+        or [Forfeit] button (Forfeit replaces New Game whenever a game is in progress).
+        This script checks if a game is in progress (isGameOver is false), and if
+        so, the Loss Count is increased. Next, a new game is created, a random starting
+        player is selected, and if AI is to go first, a piece is added at a random
+        location on the board. Finally, the new game state is then returned to the
+        client.
+      bodyFormat: 0
+      bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'At the start of the first game or whenever [Reset Game] is pressed, Cloud
+      Code will reset the quantity of the Coin Currency to zero. By removing any
+      initial Coins, the quantity will be a multiple of 100 or 25 which simplifies
+      reward visualization. This also serves as example of how Currencies can be
+      set to specific quantities from Cloud Code. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'To verify that the AI works as expected, the AI is programmed to follow
+      3 simple rules:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: If the AI can win, it always will (for example, if the AI has 2 pieces
+        in a row with an empty space, it will make the winning play).
+      bodyFormat: 0
+      bulletList: []
+    - body: If the player has 2 in a row, the AI will always block the player's winning
+        move.
+      bodyFormat: 0
+      bulletList: []
+    - body: Otherwise, it plays randomly.
+      bodyFormat: 0
+      bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'Popups occur at various key moments in the game, such as at startup to
+      explain who plays first, at game over to notify the player of the winner (or
+      tie), whenever the player makes an invalid move (for example, a player placing
+      a piece atop an existing piece or plays after the game is over), and so on. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'Cloud Code directly accesses the Economy service to set a starting Coin
+      quantity when no Cloud Save file is found (for example, the first time a player
+      ever plays the game), as well as to grant Coins as a reward. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: Cloud Save keeps a json record of the full game state using the key "CLOUD_AI_GAME_STATE".
+      The associated value stores sequential moves made by each player, the overall
+      state, flags for game over, player turn, if this is a new game/move (so UI
+      can show a popup, if appropriate), as well as a permanent counter for wins,
+      losses and ties. To demonstrate the full game cycle, we've added the [Debug
+      Reset Game] button which will remove the "CLOUD_AI_GAME_STATE" key from Cloud
+      Save and call "CloudAi_GetState" as it did at the start of the session. Since
+      Cloud Code then believes this to be a new player, it will reset Coin quantity
+      to 0, create a new save state with all counters set to 0 and generate a new
+      starting game with a random starting player.
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: Packages Required
+    subHeader2: 
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: 'Authentication: Automatically signs in the user anonymously to keep
+        track of their data on the server side.'
+      bodyFormat: 0
+      bulletList: []
+    - body: 'Cloud Code: 3 scripts used to generate random games, validate game logic,
+        execute AI turns, and grant Economy rewards based on game outcomes.'
+      bodyFormat: 0
+      bulletList: []
+    - body: 'Economy: Stores current "COIN" count which is granted as a reward for
+        winning/tying.'
+      bodyFormat: 0
+      bulletList: []
+    - body: 'Cloud Save: Stores game state.'
+      bodyFormat: 0
+      bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: See the package docs to learn how to install and configure these SDKs in
+      your project.
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList:
+    - linkText: Authentication
+      url: http://documentation.cloud.unity3d.com/en/articles/5385907-unity-authentication-anonymous-sign-in-guide
+    - linkText: Cloud Code
+      url: https://docs.unity.com/cloud-code
+    - linkText: Economy
+      url: https://docs.unity.com/economy/Content/implementation.htm?tocpath=Implementation%7C_____0
+    - linkText: Cloud Save
+      url: https://docs.unity.com/cloud-save
+  - subHeader1: Dashboard Setup
+    subHeader2: 
+    subHeader3: 
+    body: 'To use Economy, Cloud Code and Cloud Save services in your game, activate
+      each service for your organization and project in the Unity Dashboard. You''ll
+      need a Currency item in the Economy, as well as a few scripts in Cloud Code:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: Economy Item
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: Coin
+      bodyFormat: 1
+      bulletList:
+      - body: Granted by the Cloud Code script CloudAi_PlayerMove for Wins and, in
+          a lesser quantity, for Ties.
+        bodyFormat: 0
+        bulletList: []
+      - body: 'ID: "COIN"'
+        bodyFormat: 0
+        bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: Cloud Code Scripts
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: 'CloudAi_GetState:'
+      bodyFormat: 1
+      bulletList:
+      - body: Create and save the random game if no game is in progress. If this
+          is a player's first game or after [Reset Game] is pressed, the Coin quantity
+          will be reset to 0. Finally, the current game state will be returned.
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Parameters: none'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Script: "Assets/Use Case Samples/Cloud AI Mini Game/Cloud Code/CloudAi_GetState.js"'
+        bodyFormat: 0
+        bulletList: []
+    - body: 'CloudAi_PlayerMove:'
+      bodyFormat: 1
+      bulletList:
+      - body: Validate the player's requested move and add it to the game state based
+          on coordinate passed, detect game over, if not game over then place 'AI'
+          piece, detect game over again, and return final updated state to client.
+          If player wins or draws, coins are awarded using the Economy service.
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Parameters: coord - x,y coordinate for the player piece to add.'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Script: "Assets/Use Case Samples/Cloud AI Mini Game/Cloud Code/CloudAi_PlayerMove.js"'
+        bodyFormat: 0
+        bulletList: []
+    - body: 'CloudAi_StartNewGame:'
+      bodyFormat: 1
+      bulletList:
+      - body: Called when [New game] or [Forfeit] button is pressed to grant the
+          player a loss (if [Forfeit] is pressed mid-game) and generate a new random
+          game with a random starting player.
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Parameters: none'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Script: "Assets/Use Case Samples/Cloud AI Mini Game/Cloud Code/CloudAi_StartNewGame.js"'
+        bodyFormat: 0
+        bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 'Note: The Cloud Code scripts included in the "Cloud Code" folder
+      are just local copies, since you can''t see the sample''s dashboard. Changes
+      to these scripts will not affect the behavior of this sample since they will
+      not be automatically uploaded to Cloud Code service.'
+    bulletList: []
+    linkList: []
+  - subHeader1: 'Sample Cloud Save "CLOUD_AI_GAME_STATE" entries:'
+    subHeader2: 
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'Sample starting state with AI playing first (notice the isNewGame flag
+      is true and aiPieces array already contains a move):'
+    bodyFormat: 1
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: '  {'
+    bodyFormat: 2
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: '    "winCount":1,'
+    bodyFormat: 2
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: '    "lossCount":1,'
+    bodyFormat: 2
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: '    "tieCount":0,'
+    bodyFormat: 2
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: '    "playerPieces":[],'
+    bodyFormat: 2
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: '    "aiPieces":[{"x":0,"y":1}],'
+    bodyFormat: 2
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: '    "isNewGame":true,'
+    bodyFormat: 2
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: '    "isNewMove":true,'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: '    "isPlayerTurn":true,'
+    bodyFormat: 2
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: '    "isGameOver":false,'
+    bodyFormat: 2
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: '    "status":"playing"'
+    bodyFormat: 2
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: '  }'
+    bodyFormat: 2
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'Sample ending game state after the player wins the game (notice the isGameOver
+      flag is true and the status is "playerWon"):'
+    bodyFormat: 1
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: '  {'
+    bodyFormat: 2
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: '    "winCount":2,'
+    bodyFormat: 2
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: '    "lossCount":1,'
+    bodyFormat: 2
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: '    "tieCount":0,'
+    bodyFormat: 2
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: '    "playerPieces":[{"x":0,"y":0},{"x":0,"y":2},{"x":2,"y":2},{"x":1,"y":1}],'
+    bodyFormat: 2
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: '    "aiPieces":[{"x":0,"y":1},{"x":2,"y":0},{"x":1,"y":2}],'
+    bodyFormat: 2
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: '    "isNewGame":false,'
+    bodyFormat: 2
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: '    "isNewMove":false,'
+    bodyFormat: 2
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: '    "isPlayerTurn":false,'
+    bodyFormat: 2
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: '    "isGameOver":true,'
+    bodyFormat: 2
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: '    "status":"playerWon"'
+    bodyFormat: 2
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: '  }'
+    bodyFormat: 2
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []

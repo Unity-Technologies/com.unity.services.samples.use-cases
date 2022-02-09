@@ -130,6 +130,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 840922365}
     m_Modifications:
+    - target: {fileID: 78877521766190466, guid: be18d6569c7655e478508aab89bed839, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 78877521766190476, guid: be18d6569c7655e478508aab89bed839, type: 3}
       propertyPath: m_Name
       value: Grid Entity (10)
@@ -244,6 +248,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 840922365}
     m_Modifications:
+    - target: {fileID: 78877521766190466, guid: be18d6569c7655e478508aab89bed839, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 78877521766190476, guid: be18d6569c7655e478508aab89bed839, type: 3}
       propertyPath: m_Name
       value: Grid Entity (1)
@@ -358,6 +366,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 840922365}
     m_Modifications:
+    - target: {fileID: 78877521766190466, guid: be18d6569c7655e478508aab89bed839, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 78877521766190476, guid: be18d6569c7655e478508aab89bed839, type: 3}
       propertyPath: m_Name
       value: Grid Entity (13)
@@ -476,6 +488,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 840922365}
     m_Modifications:
+    - target: {fileID: 78877521766190466, guid: be18d6569c7655e478508aab89bed839, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 78877521766190476, guid: be18d6569c7655e478508aab89bed839, type: 3}
       propertyPath: m_Name
       value: Grid Entity (9)
@@ -599,6 +615,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 840922365}
     m_Modifications:
+    - target: {fileID: 78877521766190466, guid: be18d6569c7655e478508aab89bed839, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 78877521766190476, guid: be18d6569c7655e478508aab89bed839, type: 3}
       propertyPath: m_Name
       value: Grid Entity (5)
@@ -953,6 +973,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 840922365}
     m_Modifications:
+    - target: {fileID: 78877521766190466, guid: be18d6569c7655e478508aab89bed839, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 78877521766190476, guid: be18d6569c7655e478508aab89bed839, type: 3}
       propertyPath: m_Name
       value: Grid Entity (14)
@@ -1071,6 +1095,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 840922365}
     m_Modifications:
+    - target: {fileID: 78877521766190466, guid: be18d6569c7655e478508aab89bed839, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 78877521766190476, guid: be18d6569c7655e478508aab89bed839, type: 3}
       propertyPath: m_Name
       value: Grid Entity (19)
@@ -1189,6 +1217,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 840922365}
     m_Modifications:
+    - target: {fileID: 78877521766190466, guid: be18d6569c7655e478508aab89bed839, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 78877521766190476, guid: be18d6569c7655e478508aab89bed839, type: 3}
       propertyPath: m_Name
       value: Grid Entity (7)
@@ -1307,6 +1339,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 840922365}
     m_Modifications:
+    - target: {fileID: 78877521766190466, guid: be18d6569c7655e478508aab89bed839, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 78877521766190476, guid: be18d6569c7655e478508aab89bed839, type: 3}
       propertyPath: m_Name
       value: Grid Entity (24)
@@ -1499,6 +1535,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 840922365}
     m_Modifications:
+    - target: {fileID: 78877521766190466, guid: be18d6569c7655e478508aab89bed839, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 78877521766190476, guid: be18d6569c7655e478508aab89bed839, type: 3}
       propertyPath: m_Name
       value: Grid Entity (6)
@@ -1683,6 +1723,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 840922365}
     m_Modifications:
+    - target: {fileID: 78877521766190466, guid: be18d6569c7655e478508aab89bed839, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 78877521766190476, guid: be18d6569c7655e478508aab89bed839, type: 3}
       propertyPath: m_Name
       value: Grid Entity (23)
@@ -1801,6 +1845,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 840922365}
     m_Modifications:
+    - target: {fileID: 78877521766190466, guid: be18d6569c7655e478508aab89bed839, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 78877521766190476, guid: be18d6569c7655e478508aab89bed839, type: 3}
       propertyPath: m_Name
       value: Grid Entity (2)
@@ -1926,6 +1974,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 840922365}
     m_Modifications:
+    - target: {fileID: 78877521766190466, guid: be18d6569c7655e478508aab89bed839, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 78877521766190476, guid: be18d6569c7655e478508aab89bed839, type: 3}
       propertyPath: m_Name
       value: Grid Entity (11)
@@ -2169,6 +2221,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 840922365}
     m_Modifications:
+    - target: {fileID: 78877521766190466, guid: be18d6569c7655e478508aab89bed839, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 78877521766190476, guid: be18d6569c7655e478508aab89bed839, type: 3}
       propertyPath: m_Name
       value: Grid Entity (16)
@@ -2287,6 +2343,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 840922365}
     m_Modifications:
+    - target: {fileID: 78877521766190466, guid: be18d6569c7655e478508aab89bed839, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 78877521766190476, guid: be18d6569c7655e478508aab89bed839, type: 3}
       propertyPath: m_Name
       value: Grid Entity (4)
@@ -2401,6 +2461,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 840922365}
     m_Modifications:
+    - target: {fileID: 78877521766190466, guid: be18d6569c7655e478508aab89bed839, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 78877521766190476, guid: be18d6569c7655e478508aab89bed839, type: 3}
       propertyPath: m_Name
       value: Grid Entity (15)
@@ -2603,6 +2667,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 840922365}
     m_Modifications:
+    - target: {fileID: 78877521766190466, guid: be18d6569c7655e478508aab89bed839, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 78877521766190476, guid: be18d6569c7655e478508aab89bed839, type: 3}
       propertyPath: m_Name
       value: Grid Entity (3)
@@ -2717,6 +2785,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 840922365}
     m_Modifications:
+    - target: {fileID: 78877521766190466, guid: be18d6569c7655e478508aab89bed839, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 78877521766190476, guid: be18d6569c7655e478508aab89bed839, type: 3}
       propertyPath: m_Name
       value: Grid Entity (12)
@@ -2835,6 +2907,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 840922365}
     m_Modifications:
+    - target: {fileID: 78877521766190466, guid: be18d6569c7655e478508aab89bed839, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 78877521766190476, guid: be18d6569c7655e478508aab89bed839, type: 3}
       propertyPath: m_Name
       value: Grid Entity (8)
@@ -3133,6 +3209,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 840922365}
     m_Modifications:
+    - target: {fileID: 78877521766190466, guid: be18d6569c7655e478508aab89bed839, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 78877521766190476, guid: be18d6569c7655e478508aab89bed839, type: 3}
       propertyPath: m_Name
       value: Grid Entity (22)
@@ -3392,6 +3472,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 840922365}
     m_Modifications:
+    - target: {fileID: 78877521766190466, guid: be18d6569c7655e478508aab89bed839, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 78877521766190476, guid: be18d6569c7655e478508aab89bed839, type: 3}
       propertyPath: m_Name
       value: Grid Entity (20)
@@ -3506,6 +3590,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 840922365}
     m_Modifications:
+    - target: {fileID: 78877521766190466, guid: be18d6569c7655e478508aab89bed839, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 78877521766190476, guid: be18d6569c7655e478508aab89bed839, type: 3}
       propertyPath: m_Name
       value: Grid Entity (18)
@@ -3629,6 +3717,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 840922365}
     m_Modifications:
+    - target: {fileID: 78877521766190466, guid: be18d6569c7655e478508aab89bed839, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 78877521766190476, guid: be18d6569c7655e478508aab89bed839, type: 3}
       propertyPath: m_Name
       value: Grid Entity (21)
@@ -3913,6 +4005,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 840922365}
     m_Modifications:
+    - target: {fileID: 78877521766190466, guid: be18d6569c7655e478508aab89bed839, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 78877521766190476, guid: be18d6569c7655e478508aab89bed839, type: 3}
       propertyPath: m_Name
       value: Grid Entity (17)
@@ -4031,6 +4127,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 840922365}
     m_Modifications:
+    - target: {fileID: 78877521766190466, guid: be18d6569c7655e478508aab89bed839, type: 3}
+      propertyPath: m_Interactable
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 78877521766190476, guid: be18d6569c7655e478508aab89bed839, type: 3}
       propertyPath: m_Name
       value: Grid Entity

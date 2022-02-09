@@ -23,7 +23,7 @@ namespace GameOperationsSamples
             {
                 if (instance != null && instance != this)
                 {
-                    Destroy(gameObject);
+                    Destroy(this);
                 }
                 else
                 {
@@ -59,10 +59,10 @@ namespace GameOperationsSamples
                 // Then if we have heard from the server,
                 // we enable the Buy button or the Claimed panel.
 
-                resetPlayerDataButton.interactable = m_Enabled;
                 giveTenGemsButton.interactable = m_Enabled;
                 buyStarterPackButton.gameObject.SetActive(true);
                 buyStarterPackButton.interactable = false;
+                resetPlayerDataButton.interactable = false;
                 claimedOverlay.SetActive(false);
 
                 switch (m_StarterPackIsClaimed)
@@ -79,6 +79,7 @@ namespace GameOperationsSamples
 
                     case true:
                         buyStarterPackButton.gameObject.SetActive(false);
+                        resetPlayerDataButton.interactable = m_Enabled;
                         claimedOverlay.SetActive(true);
                         break;
                 }
@@ -94,6 +95,13 @@ namespace GameOperationsSamples
             {
                 m_Enabled = true;
                 Refresh();
+            }
+            void OnDestroy()
+            {
+                if (instance == this)
+                {
+                    instance = null;
+                }
             }
         }
     }

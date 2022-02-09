@@ -125,6 +125,10 @@ namespace GameOperationsSamples
                     EconomyManager.instance.ClearCurrencyBalances();
 
                     AuthenticationService.Instance.SignOut();
+
+                    // Because this use case wants to immediately sign back in as a new anonymous user, instead of
+                    // the same one that had been previously signed in we will clear the session token.tct
+                    AuthenticationService.Instance.ClearSessionToken();
                     UpdateSceneViewAfterSignOut();
                 }
             }

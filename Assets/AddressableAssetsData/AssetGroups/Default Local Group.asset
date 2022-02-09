@@ -33,6 +33,14 @@ MonoBehaviour:
     m_Address: Sprites/Currency/Star
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 9c3d3ffeab49644e39a97ddc9f7c7bd8
+    m_Address: Sprites/Inventory/Sword
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f4d03b8cee7f34daf8cec2cff609cf5c
+    m_Address: Sprites/Inventory/Shield
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: d098d9082bf4e4f6b94dbf2997c0917c, type: 2}
   m_SchemaSet:

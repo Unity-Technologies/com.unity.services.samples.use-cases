@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: README
   m_EditorClassIdentifier: 
   header:
-    title: 'Gaming Operations Samples: Start Here'
+    title: 'Gaming Operations Samples'
     icon: {fileID: 2800000, guid: 83f0684dab5534e2492f651aaaf4a151, type: 3}
   sections:
   - subHeader1: Welcome to Gaming Operations Samples
@@ -61,7 +61,7 @@ MonoBehaviour:
   - subHeader1: 
     subHeader2: Samples Overview
     subHeader3: 
-    body: 'In these 6 sample scenes and their associated script files, you will learn
+    body: 'In these sample scenes and their associated script files, you will learn
       how to implement several common development challenges, including: '
     bodyFormat: 0
     boxCallout: 
@@ -88,22 +88,27 @@ MonoBehaviour:
         up).
       bodyFormat: 0
       bulletList: []
-    - body: Idle Clicker Mini Game - Update server authoritative game state in real time, 
-        similar to idle clicker and social games.
+    - body: Idle Clicker Mini Game - Update server authoritative game state in real
+        time,  similar to idle clicker and social games.
+      bodyFormat: 0
+      bulletList: []
+    - body: Cloud AI Mini Game - Server authoritative gameplay in a simple Tic-Tac-Toe  
+        game played against AI running on UGS with persistent state, Currency rewards,
+        stats, and straightforward AI.
+      bodyFormat: 0
+      bulletList: []
+    - body: Command Batching - Group game Commands into a queue and process on the
+        server in a single batch to reduce the volume and frequency of server calls
+        made during gameplay.
+      bodyFormat: 0
+      bulletList: []
+    - body: Battle Pass - A seasonal reward tier system with a free track and a premium
+        track.
       bodyFormat: 0
       bulletList: []
     linkList: []
   - subHeader1: 
     subHeader2: Getting Started
-    subHeader3: 
-    body: 'To test these samples, download this public Gaming Operations Samples
-      repo and open the project in Unity 2020.3 or higher. '
-    bodyFormat: 0
-    boxCallout: 
-    bulletList: []
-    linkList: []
-  - subHeader1: 
-    subHeader2: 
     subHeader3: 
     body: Preview all the sample use cases by opening the Start Here scene located
       in the Assets folder. Press the Play button and select any of the available

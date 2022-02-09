@@ -17,7 +17,7 @@ namespace GameOperationsSamples
             {
                 if (instance != null && instance != this)
                 {
-                    Destroy(gameObject);
+                    Destroy(this);
                 }
                 else
                 {
@@ -72,7 +72,10 @@ namespace GameOperationsSamples
 
             void OnDestroy()
             {
-                instance = null;
+                if (instance == this)
+                {
+                    instance = null;
+                }
             }
 
             public struct LevelUpRewards

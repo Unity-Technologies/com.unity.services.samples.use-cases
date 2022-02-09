@@ -26,5 +26,14 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Use Case Samples/Idle Clicker Game/IdleClickerGameSample.unity
     guid: 0ab0346ca5b68ae4792a1ab8720bd3da
+  - enabled: 1
+    path: Assets/Use Case Samples/Battle Pass/BattlePassSample.unity
+    guid: 0bc50e3f9d3864455b80c5b1907454b8
+  - enabled: 1
+    path: Assets/Use Case Samples/Cloud AI Mini Game/CloudAIMiniGameSample.unity
+    guid: d5a9517de1f1bca4e9b1cf57cae2c1dc
+  - enabled: 1
+    path: Assets/Use Case Samples/Command Batching/CommandBatchingSample.unity
+    guid: 2be8bde25ddb04845b904dc0c1ff462b
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: c6ca533da370b4f2794f0c63c45e0e6f, type: 2}

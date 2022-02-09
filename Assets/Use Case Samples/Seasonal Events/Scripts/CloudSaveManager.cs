@@ -24,7 +24,7 @@ namespace GameOperationsSamples
             {
                 if (instance != null && instance != this)
                 {
-                    Destroy(gameObject);
+                    Destroy(this);
                 }
                 else
                 {
@@ -82,6 +82,13 @@ namespace GameOperationsSamples
                 }
 
                 return k_DefaultCompletedEventTimestamp;
+            }
+            void OnDestroy()
+            {
+                if (instance == this)
+                {
+                    instance = null;
+                }
             }
         }
     }

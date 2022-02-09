@@ -383,3 +383,224 @@ MonoBehaviour:
       not be automatically uploaded to Cloud Code service.'
     bulletList: []
     linkList: []
+  - subHeader1: 
+    subHeader2: Analytics
+    subHeader3: 
+    body: 'In the configuration of the Analytics custom events and parameters, you
+      can see a fairly long list of potential parameters that are sent with some
+      of the events. This extended list allows for a more flexible analysis of different
+      parameter groupings in the Data Explorer on the Analytics tab of the Unity
+      dashboard. Alternatively, you could send just the ungrouped parameters (buttonName,
+      sceneName, etc), and do any kind of grouped analysis desired using the Data
+      Export feature within the Data Explorer on the dashboard. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 'Note: This sample demonstrates the code needed to trigger analytics
+      events, however additional code may be necessary to meet legal requirements
+      such as GDPR, CCPA, and PIPL. See more info about managing data privacy at
+      https://docs.unity.com/analytics/ManagingDataPrivacy.html'
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: Custom Events
+    body: 
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: SceneOpened
+      bodyFormat: 2
+      bulletList:
+      - body: 'Description: Event sent each time the scene is loaded.'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Enabled: true'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Custom Parameters:'
+        bodyFormat: 0
+        bulletList:
+        - body: sceneName
+          bodyFormat: 2
+          bulletList: []
+    - body: ActionButtonPressed
+      bodyFormat: 2
+      bulletList:
+      - body: 'Description: Event sent for each button press in the scene.'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Enabled: true'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Custom Parameters:'
+        bodyFormat: 0
+        bulletList:
+        - body: buttonName
+          bodyFormat: 2
+          bulletList: []
+        - body: sceneName
+          bodyFormat: 2
+          bulletList: []
+        - body: abGroup
+          bodyFormat: 2
+          bulletList: []
+        - body: buttonNameBySceneName
+          bodyFormat: 2
+          bulletList: []
+        - body: buttonNameByABGroup
+          bodyFormat: 2
+          bulletList: []
+        - body: buttonNameBySceneNameAndABGroup
+          bodyFormat: 2
+          bulletList: []
+    - body: SceneSessionLength
+      bodyFormat: 2
+      bulletList:
+      - body: 'Description: Event sent to indicate the length of time between when
+          `Start()` is triggered on the AnalyticsManager script and the back button
+          in the scene is pressed (effectively the time spent in the scene).'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Enabled: true'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Custom Parameters:'
+        bodyFormat: 0
+        bulletList:
+        - body: timeRange
+          bodyFormat: 2
+          bulletList: []
+        - body: sceneName
+          bodyFormat: 2
+          bulletList: []
+        - body: abGroup
+          bodyFormat: 2
+          bulletList: []
+        - body: timeRangeBySceneName
+          bodyFormat: 2
+          bulletList: []
+        - body: timeRangeByABGroup
+          bodyFormat: 2
+          bulletList: []
+        - body: timeRangeBySceneNameAndABGroup
+          bodyFormat: 2
+          bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: Custom Parameters
+    body: 
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: sceneName
+      bodyFormat: 2
+      bulletList:
+      - body: 'Description: The name of the scene where the event was triggered.'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Type: `STRING`'
+        bodyFormat: 0
+        bulletList: []
+    - body: buttonName
+      bodyFormat: 2
+      bulletList:
+      - body: 'Description: The name of the button that has been pressed.'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Type: `STRING`'
+        bodyFormat: 0
+        bulletList: []
+    - body: abGroup
+      bodyFormat: 2
+      bulletList:
+      - body: 'Description: The AB group and AB Test ID the user sending the analytics
+          event has been grouped into. Formatted: "AB Group Name (AB Test ID)".'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Type: `STRING`'
+        bodyFormat: 0
+        bulletList: []
+    - body: timeRange
+      bodyFormat: 2
+      bulletList:
+      - body: 'Description: A range of time spent in the scene where the event was
+          triggered.'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Type: `STRING`'
+        bodyFormat: 0
+        bulletList: []
+    - body: buttonNameBySceneName
+      bodyFormat: 2
+      bulletList:
+      - body: 'Description: Formatted string grouping button name with scene name.
+          Formatted like "Button Name - Scene Name".'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Type: `STRING`'
+        bodyFormat: 0
+        bulletList: []
+    - body: buttonNameByABGroup
+      bodyFormat: 2
+      bulletList:
+      - body: 'Description: Formatted string grouping button name with the A/B Group
+          the user is in as determined by Remote Config. Formatted like "Button Name
+          - AB Group (AB Test ID)".'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Type: `STRING`'
+        bodyFormat: 0
+        bulletList: []
+    - body: buttonNameBySceneNameAndABGroup
+      bodyFormat: 2
+      bulletList:
+      - body: 'Description: Formatted string grouping button name with the scene
+          name and A/B Group the user is in as determined by Remote Config. Formatted
+          like "Button Name - Scene Name - AB Group (AB Test ID)".'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Type: `STRING`'
+        bodyFormat: 0
+        bulletList: []
+    - body: timeRangeBySceneName
+      bodyFormat: 2
+      bulletList:
+      - body: 'Description: Formatted string grouping time range with the name of
+          the scene where the time was spent. Formatted like "Time Range - Scene
+          Name".'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Type: `STRING`'
+        bodyFormat: 0
+        bulletList: []
+    - body: timeRangeByABGroup
+      bodyFormat: 2
+      bulletList:
+      - body: 'Description: Formatted string grouping time range with the the A/B
+          Group the user is in as determined by Remote Config. Formatted like "Time
+          Range - AB Group (AB Test ID)".'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Type: `STRING`'
+        bodyFormat: 0
+        bulletList: []
+    - body: timeRangeBySceneNameAndABGroup
+      bodyFormat: 2
+      bulletList:
+      - body: 'Description: Formatted string grouping time range with the the scene
+          name and the A/B Group the user is in as determined by Remote Config. Formatted
+          like "Time Range - Scene Name - AB Group (AB Test ID)".'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Type: `STRING`'
+        bodyFormat: 0
+        bulletList: []
+    linkList: []

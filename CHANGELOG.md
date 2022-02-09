@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.2.0] - 2022-02-09
+
+### Added
+
+* "Cloud AI Mini Game" use case sample demonstrates server authoritative gameplay in a simple Tic-Tac-Toe
+  game played against AI running on UGS with persistent state, Currency rewards, stats, and straightforward AI.
+* "Command Batching" use case demonstrates how to group game Commands into a single batch for server processing.
+* "Battle Pass" use case sample demonstrates a seasonal reward tier system with a free track and a premium track.
+
+### Changed
+
+* Updated Unity Services packages to the group of packages released as of 02/07/22. If there are any Burst errors logged after updating, restart Unity, or delete the Library folder to resolve the errors.
+* In the AB Test scene, after calling Authentication.Instance.SignOut a call to Authentication.Instance.ClearSessionToken has been added to maintain current functionality of being able to immediately sign in again as a new anonymous user.
+* Disabled "Reset Starter Pack" button during startup and when starter pack has not been purchased.
+* Disabled playfield buttons during startup in Idle Clicker use case sample to permit initialization to complete before making UGS requests.
+* Fixed singletons so they don't break when multiple components accidentally added to the same scene.
+
 ## [1.1.0] - 2022-01-12
 
 ### Added

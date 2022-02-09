@@ -1,0 +1,333 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfbabd22c62c640a6ba459d46825055b, type: 3}
+  m_Name: README
+  m_EditorClassIdentifier: 
+  header:
+    title: Command Batching Readme
+    icon: {fileID: 2800000, guid: 83f0684dab5534e2492f651aaaf4a151, type: 3}
+  sections:
+  - subHeader1: Intro
+    subHeader2: 
+    subHeader3: 
+    body: Command batching is the concept where each game action is a Command which
+      can be collected into a queue to be sent to the server in batches for processing.
+      Using Command batching can optimize the bandwidth your game uses to be as energy
+      efficient as possible or to prevent your game from running slowly because of
+      frequent server calls or server bottlenecks (rate limiting). This optimization
+      provides users with a more pleasant game experience with less wait times by
+      reducing the number and/or frequency of server calls made by your game.
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: This sample demonstrates a game where the player has a specified number
+      of turns, and Commands are created and saved for each move the player makes
+      on a turn. At the end of the game, all Commands that were created are then
+      processed by the server as a group.
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'This strategy reduces how many server calls need to be made in a game.
+      Imagine a game that distributes rewards on the server after every Command,
+      in particular rewarding a player XP by calling Cloud Save and Coins by calling
+      Economy. For example:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: The first command increases XP by 100 and distributes 10 Coins.
+      bodyFormat: 0
+      bulletList: []
+    - body: The second command increases XP by 50 and distributes 5 Coins.
+      bodyFormat: 0
+      bulletList: []
+    - body: The third command increases XP by 100 and distributes 30 Coins.
+      bodyFormat: 0
+      bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'These three Commands would then result in a minimum of six calls to various
+      Unity Services (in this case Cloud Save and Economy). You can see how in a
+      full game this could end up with a lot of server calls being made while the
+      game is being played, potentially slowing the game. However, if all three of
+      these Commands are stored in a batch and processed at one time (described in
+      greater detail in the Implementation Overview section below), it would result
+      in just two Unity Services calls: one to Cloud Save to increase XP by 250,
+      and one to Economy to add 45 Coins. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: Implementation Overview
+    subHeader2: 
+    subHeader3: 
+    body: This use case is structured such that a single "game" involves making a
+      specified number of turns, where a single turn is completed by clicking on
+      one of four buttons. Each button generates a different Command, with different
+      corresponding rewards. The Command is processed by being added to a batch queue
+      (for future server processing) as well as by distributing its rewards locally.
+      This local reward distribution allows players to immediately see the results
+      of the turn, but is not considered truly authoritative; you'll see momentarily
+      that any local distributions will get overwritten by the server after it validates
+      and processes the Commands. Once the player has completed all their turns,
+      the game is over and the queue of Commands are sent to Cloud Code as a single
+      json blob.
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: "The first step of the Cloud Code script is to unpack the json blob into
+      a list of Commands again. The next step is to verify that the batch contains
+      exactly the number of Commands expected (in this example the batch is always
+      the same number of Commands, however that does not have to be a requirement),
+      and that the Commands are in an order that is legal game play (for example
+      the Achieve Bonus Goal Command cannot be triggered until the Open Chest Command
+      has occurred). If anything about the batch of Commands is deemed invalid, the
+      script will return a failure and the Commands' rewards will not be distributed
+      on the server. However if the batch is valid, the Cloud Code script will proceed
+      to the next step. This step is to determine what rewards should be distributed
+      as a result of the Commands (for example, Command = \u201Cenemy defeated\u201D;
+      reward = \u201Cadd 10 XP\u201D). This information is received from Remote Config.
+      Storing the Command and Reward mapping on Remote Config allows for rewards
+      to be tuned remotely in a single place, while still changing the distributions
+      done locally by the client, as well as remotely by the server. The rewards
+      for all the Commands in the batch are grouped by type (for example, all Commands
+      may increase XP, these XP increases would be added up so that a single server
+      call updates the XP by the total amount). Finally, the Cloud Code script will
+      make all the necessary calls to the Unity Services APIs (in this case, Economy
+      and Cloud Save) to distribute the rewards. Once distribution is complete, the
+      script returns, indicating the successful action to the client."
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: Whenever the Cloud Code script returns (either on success or failure) the
+      client code calls the Unity Services to get their latest data. If the batch
+      was processed successfully by the server, this should result in no visible
+      change to the player's wallet or other stats (because from their perspective
+      the rewards were distributed immediately during game play). However, if the
+      batch was invalid and the Cloud Code script failed to process the batch, the
+      client will update the player's wallet and other stats back to where they were
+      at before the game was played, overwriting the local state.
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: This creates a bit of a mixed-authoritative game. During certain periods
+      of time the game relies on the local authority to know what the player's wallet
+      and stats are. However, the server ultimately has the final authority on the
+      player's state. While this mixed-authority is not appropriate for all game
+      styles, it can be very useful for the game styles that can use it, such as
+      turn-based, single-player, infinite runner, and puzzle games. Additionally,
+      Command batching can be a good starting point when developing a solution for
+      offline support or bad connection tolerance in games that choose to provide
+      such features.
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: Packages Required
+    subHeader2: 
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: 'Cloud Code: Processes Commands at the end of a game.'
+      bodyFormat: 0
+      bulletList: []
+    - body: 'Remote Config: Contains the mapping between Commands and their rewards
+        used by both the client and Cloud Code when distributing rewards.'
+      bodyFormat: 0
+      bulletList: []
+    - body: 'Economy: Manages the currencies that are distributed as rewards.'
+      bodyFormat: 0
+      bulletList: []
+    - body: 'Cloud Save: Manages certain player stats (XP and Goals Achieved) that
+        are increased as rewards.'
+      bodyFormat: 0
+      bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: See the package docs to learn how to install and configure these SDKs in
+      your project.
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList:
+    - linkText: Cloud Code
+      url: https://docs.unity.com//cloud-code/Content/implementation.htm?tocpath=Implementation%7C_____0#SDK_installation
+    - linkText: Remote Config
+      url: https://docs.unity3d.com/Packages/com.unity.remote-config@2.0/manual/ConfiguringYourProject.html
+    - linkText: Economy
+      url: https://docs.unity.com/economy/Content/implementation.htm?tocpath=Implementation%7C_____0
+    - linkText: Cloud Save
+      url: https://docs.unity.com/cloud-save/Content/index.htm#Implementation
+  - subHeader1: Dashboard Setup
+    subHeader2: 
+    subHeader3: 
+    body: 'To use Cloud Code, Remote Config, Economy, and Cloud Save services in
+      your game, activate each service for your organization and project in the Unity
+      Dashboard. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: Economy Items
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: Coin
+      bodyFormat: 1
+      bulletList:
+      - body: A reward for certain Commands
+        bodyFormat: 0
+        bulletList: []
+      - body: 'ID: "COIN"'
+        bodyFormat: 0
+        bulletList: []
+    - body: Gem
+      bodyFormat: 1
+      bulletList:
+      - body: A reward for certain Commands
+        bodyFormat: 0
+        bulletList: []
+      - body: 'ID: "GEM"'
+        bodyFormat: 0
+        bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: Remote Config
+    subHeader3: Config Values
+    body: 
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: COMMANDBATCH_ACHIEVE_BONUS_GOAL
+      bodyFormat: 1
+      bulletList:
+      - body: Maps the Command Achieve Bonus Goal to its rewards.
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Type: json'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Default value: See markdown README for details'
+        bodyFormat: 0
+        bulletList: []
+    - body: COMMANDBATCH_DEFEAT_BLUE_ENEMY
+      bodyFormat: 1
+      bulletList:
+      - body: Maps the Command Defeat Blue Enemy to its rewards.
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Type: json'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Default value: See markdown README for details'
+        bodyFormat: 0
+        bulletList: []
+    - body: COMMANDBATCH_DEFEAT_RED_ENEMY
+      bodyFormat: 1
+      bulletList:
+      - body: Maps the Command Defeat Red Enemy to its rewards.
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Type: json'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Default value: See markdown README for details'
+        bodyFormat: 0
+        bulletList: []
+    - body: COMMANDBATCH_OPEN_CHEST
+      bodyFormat: 1
+      bulletList:
+      - body: Maps the Command Open Chest to its rewards.
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Type: json'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Default value: See markdown README for details'
+        bodyFormat: 0
+        bulletList: []
+    - body: COMMANDBATCH_GAME_OVER
+      bodyFormat: 1
+      bulletList:
+      - body: Maps the Command Game Over to its rewards.
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Type: json'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Default value: See markdown README for details'
+        bodyFormat: 0
+        bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: Cloud Code Scripts
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: 'CommandBatch_ProcessBatch:'
+      bodyFormat: 1
+      bulletList:
+      - body: 'Parameters:'
+        bodyFormat: 0
+        bulletList:
+        - body: batch
+          bodyFormat: 2
+          bulletList:
+          - An array of Command keys
+          - 'i.e. ''{"commands": ["COMMANDBATCH_DEFEAT_RED_ENEMY", "COMMANDBATCH_OPEN_CHEST",
+            "COMMANDBATCH_ACHIEVE_BONUS_GOAL", "COMMANDBATCH_DEFEAT_BLUE_ENEMY",
+            "COMMANDBATCH_OPEN_CHEST", "COMMANDBATCH_ACHIEVE_BONUS_GOAL", "COMMANDBATCH_GAME_OVER"]}'''
+      - body: 'Script: "Assets/Use Case Samples/Command Batching/Cloud Code/CommandBatch_ProcessBatch.js"'
+        bodyFormat: 0
+        bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 'Note: The Cloud Code scripts included in the "Cloud Code" folder
+      are just local copies, since you can''t see the sample''s dashboard. Changes
+      to these scripts will not affect the behavior of this sample since they will
+      not be automatically uploaded to Cloud Code service.'
+    bulletList: []
+    linkList: []
