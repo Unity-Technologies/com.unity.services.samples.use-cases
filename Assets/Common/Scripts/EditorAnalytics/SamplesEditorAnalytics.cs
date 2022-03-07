@@ -9,6 +9,7 @@
 // the AB Test Level Difficulty sample or the Seasonal Events sample.
 
 using System;
+using System.Threading.Tasks;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
@@ -37,8 +38,10 @@ namespace GameOperationsSamples
             public int sessionLengthSeconds;
         }
 
-        const int k_MaxEventsPerHour = 100;
-        const int k_MaxNumberOfElements = 10;
+        const int k_WaitForEnabledMilliseconds = 500;
+
+        const int k_MaxEventsPerHour = 3600;
+        const int k_MaxItems = 10;
         const string k_VendorKey = "unity.gamingservicessamples";
 
         const string k_Prefix = "gameOperationsSamples";
@@ -63,24 +66,48 @@ namespace GameOperationsSamples
             EditorApplication.playModeStateChanged += OnPlayModeStateChanged;
             EditorApplication.wantsToQuit += OnEditorWantsToQuit;
 
+// disable the warning that we aren't awaiting this call
+#pragma warning disable 4014
+
+            RegisterEvents();
+
+#pragma warning restore 4014
+        }
+
+        static async Task RegisterEvents()
+        {
+            var timeout = 0;
+
+            while (!EditorAnalytics.enabled)
+            {
+                await Task.Delay(k_WaitForEnabledMilliseconds);
+                timeout += k_WaitForEnabledMilliseconds;
+
+                if (timeout >= 30000)
+                {
+                    // let's stop trying after 30 seconds because the editor user might have disabled EditorAnalytics
+                    return;
+                }
+            }
+
             EditorAnalytics.RegisterEventWithLimit(
                 k_ButtonPressedInPlayModeEvent,
                 k_MaxEventsPerHour,
-                k_MaxNumberOfElements,
+                k_MaxItems,
                 k_VendorKey,
                 k_ButtonPressedInPlayModeEventVersion);
 
             EditorAnalytics.RegisterEventWithLimit(
                 k_SceneOpenedEvent,
                 k_MaxEventsPerHour,
-                k_MaxNumberOfElements,
+                k_MaxItems,
                 k_VendorKey,
                 k_SceneOpenedEventVersion);
 
             EditorAnalytics.RegisterEventWithLimit(
                 k_SceneTotalSessionLengthEvent,
                 k_MaxEventsPerHour,
-                k_MaxNumberOfElements,
+                k_MaxItems,
                 k_VendorKey,
                 k_SceneTotalSessionLengthEventVersion);
         }
