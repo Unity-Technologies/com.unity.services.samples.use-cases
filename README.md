@@ -1,46 +1,61 @@
-# Welcome to Gaming Operations Samples
+# Unity Gaming Services Use Cases
+
+This Unity Gaming Services (UGS) Samples package contains a collection of samples designed to show you how you can use multiple UGS products to solve common game development challenges. These samples implement typical backend game use cases and game design elements, show how to resolve specific development tasks, and highlight the efficiency you can achieve in your game backend by integrating different UGS packages in your project.
+
+## Table of Contents
+
+- [Getting Started](#getting-started)
+- [List of Samples](#list-of-samples)
+- [Using your own Unity Services Account](#using-your-own-unity-services-account)
+- [Feedback and Samples Requests](#feedback-and-sample-requests)
+
+## Getting Started
+
+- Download Unity Editor 2020.3 or later
+  - [Unity Hub](unityhub://2020.3.30f1/1fb1bf06830e)
+  - [Download (Win)](https://download.unity3d.com/download_unity/1fb1bf06830e/UnityDownloadAssistant-2020.3.30f1.exe)
+  - [Download (Mac)](https://download.unity3d.com/download_unity/1fb1bf06830e/UnityDownloadAssistant-2020.3.30f1.dmg)
+- Clone the repository: `git clone https://github.com/Unity-Technnologies/com.unity.services.samples.git`
+- Open the project from the Unity Hub or Unity Editor
+
+To view each sample in action, open the Start Here scene in the Assets directory and hit Play. To review an individual sample, find the use case directory in Assets/Use Case Samples and view the README file for implementation details.
+
+_Note: This project is tied to a Unity Services Account that allows read-only testing in the Editor. The messages "Unable to link project to Unity Services" in Project Settings and "Unable to access Unity Services" in Build Settings are expected. Additionally, you will be unable to create a device build of this project._
+
+## List of Samples
+
+- [Loot Boxes](Assets/Use%20Case%20Samples/Loot%20Boxes/README.md) - Reward players with a random Economy currency using Cloud Code to perform the Economy grants.
+- [Loot Boxes With Cooldown](Assets/Use%20Case%20Samples/Loot%20Boxes%20With%20Cooldown/README.md) - Grant players random collections of both Currencies and Inventory Items at timed intervals.
+- [Starter Packs](Assets/Use%20Case%20Samples/Starter%20Pack/README.md) - Allow players to purchase a Starter Pack using Cloud Code to implement the one-time-only purchase.
+- [Seasonal Events](Assets/Use%20Case%20Samples/Seasonal%20Events/README.md) - Update game content remotely based on timed special events.
+- [A/B Testing Level Difficulty](Assets/Use%20Case%20Samples/AB%20Test%20Level%20Difficulty/README.md) - Segment players into multiple test groups in order to determine which variation of a specific variable is the most engaging to the players (in this case, the amount of XP required for leveling up).
+- [Idle Clicker Mini Game](Assets/Use%20Case%20Samples/Idle%20Clicker%20Game/README.md) - Update server authoritative game state in real time, similar to idle clicker and social games.
+- [Cloud AI Mini Game](Assets/Use%20Case%20Samples/Cloud%20AI%20Mini%20Game/README.md) - Server authoritative gameplay in a simple Tic-Tac-Toe game played against AI running on UGS with persistent state, Currency rewards, stats, and straightforward AI.
+- [Command Batching](Assets/Use%20Case%20Samples/Command%20Batching/README.md) - Group game Commands into a queue and process on the server in a single batch to reduce the volume and frequency of server calls made during gameplay.
+- [Battle Pass](Assets/Use%20Case%20Samples/Battle%20Pass/README.md) - A seasonal reward tier system with a free track and a premium track.
+- [Rewarded Ads With Unity Mediation](Assets/Use%20Case%20Samples/Rewarded%20Ads%20With%20Unity%20Mediation/README.md) - Offer players opportunity to boost level end rewards by interacting with a reward booster meter and watching a rewarded ad.
+- [Daily Rewards](Assets/Use%20Case%20Samples/Daily%20Rewards/README.md) - A prevalent engagement feature that can boost retention by showing players an escalating series of rewards incentivizes them to keep logging in to claim better and better prizes.
+
 _Tested with Unity 2020.3 for PC and Mac._
 
-We're proud to present this collection of samples to demonstrate how to use various Unity Gaming Services together to solve common game development challenges.
+## Using your own Unity Services Account
 
-### Purpose
-This collection of samples is designed to guide developers to use multiple Unity Gaming Services in a single project. These samples demonstrate how various services can be used together to address and implement typical backend game use cases and game design elements, how to resolve specific development tasks, and show the efficiency you can achieve in your game backend by leveraging the Unity Gaming Services packages in your project.
+These samples use UGS packages which have already been configured so you can easily explore the use case samples provided.
 
-To tackle common challenges game developers may face as they build their game, each of the following samples integrate several Unity Gaming Services to illustrate interactive solutions and detailed tutorials that explain how these services were used.
+To use these implementations in your own project, you will need to setup and configure the services used in your own UGS Dashboard. Learn more about each configuration in the README.md file within each samples directory.
 
-### Samples Overview
-In these sample scenes and their associated script files, you will learn how to implement several common development challenges, including:
-* Loot Boxes - Reward players with a random Economy Currency using Cloud Code to perform the Economy grants.
-* Daily Rewards - Grant players random collections of both Currencies and Inventory Items at timed intervals.
-* Starter Packs - Allow players to purchase a Starter Pack using Cloud Code to implement the one-time-only purchase.
-* Seasonal Events - Update game content remotely based on timed special events.
-* A/B Testing Level Difficulty - Segment players into multiple test groups in order to determine which variation of a specific variable is the most engaging to the players (in this case, the amount of XP required for leveling up).
-* Idle Clicker Mini Game - Update server authoritative game state in real time, similar to idle clicker and social games.
-* Cloud AI Mini Game - Server authoritative gameplay in a simple Tic-Tac-Toe game played against AI running on UGS with persistent state, Currency rewards, stats, and straightforward AI.
-* Command Batching - Group game Commands into a queue and process on the server in a single batch to reduce the volume and frequency of server calls made during gameplay.
-* Battle Pass - A seasonal reward tier system with a free track and a premium track.
+## Feedback and Sample Requests
 
-### Getting Started
-To test these samples, download this public Gaming Operations Samples repo and open the project in Unity 2020.3 or higher.
+If you have feedback or would like us to demonstrate a new use-case with a sample, please let us know in the [Unity Gaming Services Forum](https://forum.unity.com/forums/unity-gaming-services-general-discussion.561/). We even have a helpful [tag](https://forum.unity.com/tags/unity-gaming-services-samples/) to filter by!
 
-Preview all the sample use cases by opening the Start Here scene located in the Assets folder.
-Press the Play button and select any of the available use case samples to see how they initialize and demonstrate a solution to each problem.
-Pay special attention to the Inspector window when you select each use case sample for detailed information.
-To test another sample, simply press the back button in the scene to be returned to the Start Here scene.
+Additionally, you can submit feedback directly from the samples project by using the feedback button in the bottom left corner of each scene during Play Mode.
 
-Note: The UGS samples in this project were verified to build on Android, iOS, MacOS, and Windows platforms.
-However, since the UGS Samples project serves as a demonstration project only, the Unity Services account used in the project only allows read-only testing in the Editor, and therefore does not allow device builds.
+## Cloud Diagnostics & User Reporting
 
-Consequently, if you go to Project Settings > Services when exploring the UGS Samples project, you will see a notice saying, "Unable to link project to Unity Services".
-Similarly, in the Build Settings window, you will see the message "Unable to access Unity Services".
-These notices are expected and triggered because the Samples project is linked to a read-only Unity Services account to provide an out-of-the-box working experience using preset Unity Dashboard settings.
+Unity's Cloud Diagnostics service helps to ensure the quality of this project by automatically sending diagnostic data to the dashboard when you encounter errors.
+Additionally, the User Reporting feature lets you submit a screenshot and detailed feedback about a sample by clicking the Feedback button in any of the Sample scenes during Play Mode.
 
-To see an end-to-end, fully functional implementation, from setting up a backend to building similar use cases in your game to a native device, you will need to create your own implementation in your project and backend infrastructure in your own Unity Services account.
-See the next section for more guidance on how to create a backend infrastructure in your own Unity Services account.
+To set up Cloud Diagnostics and User Reporting in your own project, follow the set-up instructions provided in the dashboard.
+[Setting up Cloud Diagnostics](https://unitytech.github.io/clouddiagnostics/userreporting/UnityCloudDiagnosticsSettingUp.html)
 
-### Packages Required & Dashboard Setup
-These samples use Unity Gaming Services Packages which have already been configured so you can easily explore the use case samples provided.
-
-To use these implementations in your own project, you will need to set up the requisite Packages on the Unity Gaming Services Dashboard for your organization. To learn which packages are required to implement a specific use case sample, navigate to a specific use case, then the "Packages Required" section of that use case README.md file to see which exact packages are required.
-
-Each README also contains a "Dashboard Setup" section, which describes what data has been created on the dashboard for each service used by that Use Case.
+_Note: If you don't want to automatically send exception data, disable Cloud Diagnostics under Project Settings > Services > Cloud Diagnostics._
