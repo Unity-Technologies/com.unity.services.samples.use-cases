@@ -5,6 +5,8 @@
 const playfieldSize = 3;
 const currencyId = "COIN";
 const initialQuantity = 0;
+const rateLimitError = 429;
+const validationError = 400;
 
 const _ = require("lodash-4.17");
 const { CurrenciesApi } = require("@unity-services/economy-2.0");
@@ -22,27 +24,36 @@ module.exports = async ({ params, context, logger }) => {
 
   const services = { projectId, playerId, cloudSaveApi, economyCurrencyApi, logger };
 
-  let gameState = await readState(services);
+  let gameState;
+
+  try
+  {
+    gameState = await readState(services);
   
-  if (gameState)
-  {
-    gameState.isNewMove = false;
-    gameState.isNewGame = false;
+    if (gameState)
+    {
+      gameState.isNewMove = false;
+      gameState.isNewGame = false;
 
-    logger.info("read start state: " + JSON.stringify(gameState));
+      logger.info("read start state: " + JSON.stringify(gameState));
+    }
+    else
+    {
+      gameState = createInitialPlayerProgressState(services);
+
+      startRandomGame(services, gameState);
+
+      await setInitialCurrency(services, gameState);
+      
+      logger.info("created starting state: " + JSON.stringify(gameState));
+    }
+
+    await saveState(services, gameState);
   }
-  else
+  catch (error)
   {
-    gameState = createInitialPlayerProgressState(services);
-
-    startRandomGame(services, gameState);
-
-    await setInitialCurrency(services, gameState);
-    
-    logger.info("created starting state: " + JSON.stringify(gameState));
+    TransformAndThrowCaughtError(error);
   }
-
-  await saveState(services, gameState);
 
   return gameState;
 }
@@ -91,4 +102,42 @@ async function setInitialCurrency(services, gameState) {
 
 async function saveState(services, gameState) {
   await services.cloudSaveApi.setItem(services.projectId, services.playerId, { key: "CLOUD_AI_GAME_STATE", value: JSON.stringify(gameState) } );
+}
+
+// Some form of this function appears in all Cloud Code scripts.
+// Its purpose is to parse the errors thrown from the script into a standard exception object which can be stringified.
+function TransformAndThrowCaughtError(error) {
+  let result = {
+    status: 0,
+    title: "",
+    message: "",
+    retryAfter: null,
+    additionalDetails: ""
+  };
+
+  if (error.response)
+  {
+    result.status = error.response.data.status ? error.response.data.status : 0;
+    result.title = error.response.data.title ? error.response.data.title : "Unknown Error";
+    result.message = error.response.data.detail ? error.response.data.detail : error.response.data;
+    if (error.response.status === rateLimitError)
+    {
+      result.retryAfter = error.response.headers['retry-after'];
+    }
+    else if (error.response.status === validationError)
+    {
+      let arr = [];
+      _.forEach(error.response.data.errors, error => {
+        arr = _.concat(arr, error.messages);
+      });
+      result.additionalDetails = arr;
+    }
+  }
+  else
+  {
+    result.title = error.name;
+    result.message = error.message;
+  }
+
+  throw new Error(JSON.stringify(result));
 }

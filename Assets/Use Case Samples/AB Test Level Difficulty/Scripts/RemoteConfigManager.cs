@@ -5,7 +5,7 @@ using Unity.RemoteConfig;
 using Unity.Services.Authentication;
 using UnityEngine;
 
-namespace GameOperationsSamples
+namespace UnityGamingServicesUseCases
 {
     namespace ABTestLevelDifficulty
     {

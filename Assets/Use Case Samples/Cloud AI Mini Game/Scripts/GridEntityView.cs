@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace GameOperationsSamples
+namespace UnityGamingServicesUseCases
 {
     namespace CloudAIMiniGame
     {
@@ -13,15 +13,14 @@ namespace GameOperationsSamples
 
             public Coord coord;
 
-            public Button button { get; private set; }
+            Button m_Button;
+            GridContents m_ButtonState = GridContents.Empty;
+            bool m_IsPointerHovering = false;
 
-            GameObject pieceAiImage;
-            GameObject piecePlayerImage;
-            GameObject uiHighlightImage;
-            GameObject inProgressImage;
-            
-
-            public GridContents buttonState { get; private set; } = GridContents.Empty;
+            GameObject m_PieceAiImage;
+            GameObject m_PiecePlayerImage;
+            GameObject m_UiHighlightImage;
+            GameObject m_InProgressImage;
 
 
             public enum GridContents
@@ -34,24 +33,32 @@ namespace GameOperationsSamples
 
             void Start()
             {
-                button = GetComponent<Button>();
+                m_Button = GetComponent<Button>();
 
-                pieceAiImage = transform.Find("PieceAiImage").gameObject;
-                piecePlayerImage = transform.Find("PiecePlayerImage").gameObject;
-                uiHighlightImage = transform.Find("UiHighlightImage").gameObject;
-                inProgressImage = transform.Find("InProgressImage").gameObject;
+                m_PieceAiImage = transform.Find("PieceAiImage").gameObject;
+                m_PiecePlayerImage = transform.Find("PiecePlayerImage").gameObject;
+                m_UiHighlightImage = transform.Find("UiHighlightImage").gameObject;
+                m_InProgressImage = transform.Find("InProgressImage").gameObject;
 
                 sceneView.RegisterGridEntityView(this);
             }
 
             public void OnPointerEnter()
             {
-                uiHighlightImage.SetActive(button.interactable);
+                m_UiHighlightImage.SetActive(m_Button.interactable);
+                m_IsPointerHovering = true;
             }
 
             public void OnPointerExit()
             {
-                uiHighlightImage.SetActive(false);
+                m_UiHighlightImage.SetActive(false);
+                m_IsPointerHovering = false;
+            }
+
+            public void UpdateButton(bool isInteractable)
+            {
+                m_Button.interactable = isInteractable;
+                m_UiHighlightImage.SetActive(m_IsPointerHovering && isInteractable);
             }
 
             async public void OnButtonPressed()
@@ -68,30 +75,30 @@ namespace GameOperationsSamples
 
             public void ShowInProgress(bool flag)
             {
-                inProgressImage.SetActive(flag);
+                m_InProgressImage.SetActive(flag);
             }
 
             public void SetGridContents(GridContents gridContents)
             {
-                this.buttonState = gridContents;
+                this.m_ButtonState = gridContents;
 
-                pieceAiImage.SetActive(gridContents == GridContents.AiPiece);
-                piecePlayerImage.SetActive(gridContents == GridContents.PlayerPiece);
+                m_PieceAiImage.SetActive(gridContents == GridContents.AiPiece);
+                m_PiecePlayerImage.SetActive(gridContents == GridContents.PlayerPiece);
             }
 
             public void ShowUiHighlight(bool showFlag)
             {
-                uiHighlightImage.SetActive(showFlag);
+                m_UiHighlightImage.SetActive(showFlag);
             }
 
             public void ShowInProgressImage(bool showFlag)
             {
-                inProgressImage.SetActive(showFlag);
+                m_InProgressImage.SetActive(showFlag);
             }
 
             void OnDestroy()
             {
-                button.onClick.RemoveListener(OnButtonPressed);
+                m_Button.onClick.RemoveListener(OnButtonPressed);
             }
         }
     }

@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Unity.Services.Authentication;
-using Unity.Services.CloudCode;
 using Unity.Services.CloudSave;
 using Unity.Services.Core;
-using UnityEditor;
 using UnityEngine;
 
-namespace GameOperationsSamples
+namespace UnityGamingServicesUseCases
 {
     namespace IdleClickerGame
     {
@@ -17,8 +15,6 @@ namespace GameOperationsSamples
             public const int k_PlayfieldSize = 5;
 
             public IdleClickerGameSampleView sceneView;
-
-            public MessagePopup messagePopup;
 
             List<Coord> m_Obstacles;
             List<FactoryInfo> m_Factories;
@@ -61,16 +57,26 @@ namespace GameOperationsSamples
 
             async Task GetUpdatedState()
             {
-                var updatedState = await CloudCode.CallEndpointAsync<UpdatedState>(
-                    "IdleClicker_GetUpdatedState", new object());
-                if (this == null) return;
+                try
+                {
+                    var updatedState = await CloudCodeManager.instance.CallGetUpdatedStateEndpoint();
+                    if (this == null) return;
 
-                SimulatedCurrencyManager.instance.UpdateServerTimestampOffset(updatedState.timestamp);
+                    SimulatedCurrencyManager.instance.UpdateServerTimestampOffset(updatedState.timestamp);
 
-                Debug.Log($"Starting State: {updatedState}");
+                    Debug.Log($"Starting State: {updatedState}");
 
-                m_Obstacles = updatedState.obstacles;
-                m_Factories = updatedState.factories;
+                    m_Obstacles = updatedState.obstacles;
+                    m_Factories = updatedState.factories;
+                }
+                catch (CloudCodeResultUnavailableException)
+                {
+                    // Exception already handled by CloudCodeManager
+                }
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
+                }
             }
 
             public async Task PlayfieldButtonPressed(int x, int y)
@@ -89,9 +95,6 @@ namespace GameOperationsSamples
                     if (this == null) return;
 
                     await EconomyManager.instance.RefreshCurrencyBalances();
-                    if (this == null) return;
-
-                    ShowStateAndStartSimulating();
                 }
                 catch (Exception e)
                 {
@@ -99,42 +102,41 @@ namespace GameOperationsSamples
                 }
                 finally
                 {
-                    sceneView.ShowInProgress(coord, false);
+                    if (this != null)
+                    { 
+                        ShowStateAndStartSimulating();
 
-                    sceneView.EnableButtons();
+                        sceneView.ShowInProgress(coord, false);
+
+                        sceneView.EnableButtons();
+                    }
                 }
             }
 
             async Task PlaceWell(Vector2 coord)
             {
-                var placePieceResult = await CloudCode.CallEndpointAsync<PlacePieceResult>(
-                    "IdleClicker_PlaceWell", new CoordParam { coord = { x = (int)coord.x, y = (int)coord.y } });
-                if (this == null) return;
-
-                SimulatedCurrencyManager.instance.UpdateServerTimestampOffset(placePieceResult.timestamp);
-
-                m_Obstacles = placePieceResult.obstacles;
-                m_Factories = placePieceResult.factories;
-
-                switch (placePieceResult.placePieceResult)
+                try
                 {
-                    case "success":
-                        sceneView.ShowPurchaseAnimation(coord);
-                        break;
+                    var placePieceResult = await CloudCodeManager.instance.CallPlaceWellEndpoint(coord);
+                    if (this == null) return;
 
-                    case "spaceAlreadyOccupied":
-                        messagePopup.Show("Unable to place piece.", "Space already occupied.\n\n" +
-                            "Please ensure target space is empty when placing a Well.");
-                        break;
+                    SimulatedCurrencyManager.instance.UpdateServerTimestampOffset(placePieceResult.timestamp);
 
-                    case "virtualPurchaseFailure":
-                        messagePopup.Show("Unable to place piece.", "Virtual purchase failed.\n\n" +
-                            "Please ensure that you have sufficient funds when purchasing a Well.");
-                        break;
+                    m_Obstacles = placePieceResult.obstacles;
+                    m_Factories = placePieceResult.factories;
+
+                    sceneView.ShowPurchaseAnimation(coord);
+
+                    Debug.Log($"New state: {placePieceResult}");
                 }
-
-
-                Debug.Log($"New state: {placePieceResult}");
+                catch (CloudCodeResultUnavailableException)
+                {
+                    // Exception already handled by CloudCodeManager
+                }
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
+                }
             }
 
             public async void OnResetGameButton()

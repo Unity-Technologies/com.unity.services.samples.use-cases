@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Unity.RemoteConfig;
 using UnityEngine;
 
-namespace GameOperationsSamples
+namespace UnityGamingServicesUseCases
 {
     namespace BattlePass
     {
@@ -82,12 +82,14 @@ namespace GameOperationsSamples
 
             UserAttributes GetUserAttributes()
             {
-                // In this sample we are using the current minute to determine which campaign to serve, and passing that info
-                // to Remote Config via the UserAttributes to get the correct campaign's data.
-                // This is useful for testing different campaign information, and for filtering out which users get which campaigns
-                // based on certain data. The user's timestamp would not typically be used to determine their campaign however,
-                // since campaigns can be enabled/disabled or set to start and end at specific times on the Remote Config dashboard.
-                // For the purposes of this demo however, this was the easiest way to demonstrate cycling through several special events.
+                // In this sample we are using the current minute to determine which game override to serve, and passing
+                // that info to Remote Config via the UserAttributes to get the correct game override's data.
+                //
+                // This is useful for testing different game overrides, and for filtering out which users et which game
+                // override based on certain data. The user's timestamp would not typically be used to determine their
+                // game override however, since game overrides can be enabled/disabled or set to start and end at
+                // specific times on the Remote Config dashboard. For the purposes of this demo however, this was the
+                // easiest way to demonstrate cycling through several special events.
                 // Fall Event: Data is returned for minutes that end in 0, 1, or 2.
                 // Winter Event: Data is returned for minutes ending in 3 or 4.
                 // Spring Event: Data is returned for minutes ending in 5, 6, or 7.

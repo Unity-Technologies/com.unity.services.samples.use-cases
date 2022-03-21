@@ -11,7 +11,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace GameOperationsSamples
+namespace UnityGamingServicesUseCases
 {
     [RequireComponent(typeof(Button))]
     public class ButtonEditorAnalytics : MonoBehaviour

@@ -106,8 +106,9 @@ MonoBehaviour:
     body: "Please note that a simpler approach to display different art according
       to a player\u2019s segmentation is to attach additional information to the
       Custom Data associated with Currencies in the Economy configuration data. However,
-      for the purpose of this segmentation sample, the data was added to the Campaigns
-      themselves to demonstrate the flexibility permitted by the Remote Config service.  "
+      for the purpose of this segmentation sample, the data was added to the Game
+      Overrides themselves to demonstrate the flexibility permitted by the Remote
+      Config service.  "
     bodyFormat: 0
     boxCallout: 
     bulletList: []
@@ -171,10 +172,10 @@ MonoBehaviour:
       bulletList: []
     - body: 'Remote Config: Provides key-value pairs where the value that is mapped
         to a given key can be changed on the server-side, either manually or based
-        on specific campaigns. In this sample, a single campaign with a built-in
-        A/B test is used to return different values for the amount of XP required
-        to level up. Remote Config also stores data associated with Currency icon
-        Addressable addresses.'
+        on specific Game Overrides. In this sample, a single Game Override with a
+        built-in A/B test is used to return different values for the amount of XP
+        required to level up. Remote Config also stores data associated with Currency
+        icon Addressable addresses.'
       bodyFormat: 0
       bulletList: []
     - body: 'Cloud Code: Keeps important validation logic for increasing XP and leveling
@@ -207,8 +208,8 @@ MonoBehaviour:
     body: 'To use Cloud Save, Economy, Remote Config, and Cloud Code services in
       your game, activate each service for your organization and project in the Unity
       Dashboard. To duplicate this sample scene''s setup on your own dashboard, you''ll
-      need a a currency in the Economy setup, some Config Values and a Campaign set
-      up in Remote Config, and a script published in Cloud Code:'
+      need a a currency in the Economy setup, some Config Values and a Game Override
+      set up in Remote Config, and a script published in Cloud Code:'
     bodyFormat: 0
     boxCallout: 
     bulletList: []
@@ -246,7 +247,7 @@ MonoBehaviour:
       - body: 'Type: string'
         bodyFormat: 0
         bulletList: []
-      - body: 'Default value: ""'
+      - body: 'Value: ""'
         bodyFormat: 0
         bulletList: []
     - body: A_B_TEST_ID
@@ -258,7 +259,7 @@ MonoBehaviour:
       - body: 'Type: string'
         bodyFormat: 0
         bulletList: []
-      - body: 'Default value: ""'
+      - body: 'Value: ""'
         bodyFormat: 0
         bulletList: []
     - body: LEVEL_UP_XP_NEEDED
@@ -270,7 +271,7 @@ MonoBehaviour:
       - body: 'Type: int'
         bodyFormat: 0
         bulletList: []
-      - body: 'Default value: 100'
+      - body: 'Value: 100'
         bodyFormat: 0
         bulletList: []
     - body: XP_INCREASE
@@ -282,7 +283,7 @@ MonoBehaviour:
       - body: 'Type: int'
         bodyFormat: 0
         bulletList: []
-      - body: 'Default value: 10'
+      - body: 'Value: 10'
         bodyFormat: 0
         bulletList: []
     - body: CURRENCIES
@@ -295,13 +296,13 @@ MonoBehaviour:
       - body: 'Type: json'
         bodyFormat: 0
         bulletList: []
-      - body: 'Default value: See markdown README for details'
+      - body: 'Value: See markdown README for details'
         bodyFormat: 0
         bulletList: []
     linkList: []
   - subHeader1: 
     subHeader2: 
-    subHeader3: Campaigns
+    subHeader3: Game Overrides
     body: 
     bodyFormat: 0
     boxCallout: 
@@ -362,13 +363,13 @@ MonoBehaviour:
     bodyFormat: 0
     boxCallout: 
     bulletList:
-    - body: 'GainXPAndLevelIfReady:'
+    - body: 'ABTest_GainXPAndLevelIfReady:'
       bodyFormat: 1
       bulletList:
       - body: 'Parameters: `none`'
         bodyFormat: 0
         bulletList: []
-      - body: 'Script: "Assets/Use Case Samples/AB Test Level Difficulty/Cloud Code/GainXPAndLevelIfReady.js"'
+      - body: 'Script: "Assets/Use Case Samples/AB Test Level Difficulty/Cloud Code/ABTest_GainXPAndLevelIfReady.js"'
         bodyFormat: 0
         bulletList: []
     linkList: []

@@ -6,6 +6,8 @@ const initialQuantity = 2000;
 const factoryGrantFrequencySeconds = 1;
 const factoryGrantFrequency = factoryGrantFrequencySeconds * 1000;
 const factoryGrantPerCycle = 1;
+const rateLimitError = 429;
+const validationError = 400;
 
 const _ = require("lodash-4.17");
 const { CurrenciesApi } = require("@unity-services/economy-2.0");
@@ -21,30 +23,37 @@ module.exports = async ({ params, context, logger }) => {
   
   logger.info("Authenticated within the following context: " + JSON.stringify(context));
 
-  let instance = { projectId, playerId, cloudSaveApi, economyCurrencyApi, logger };
+  let instance = { projectId, playerId, cloudSaveApi, economyCurrencyApi, logger};
 
-  instance.state = await readState(instance);
-  
-  instance.timestamp = getCurrentTimestamp();
-
-  if (instance.state)
+  try
   {
-    logger.info("read start state: " + JSON.stringify(instance.state));
-
-    await updateState(instance);
-    logger.info("updated state: " + JSON.stringify(instance.state));
-  }
-  else
-  {
-    createRandomState(instance);
-    logger.info("created random start state: " + JSON.stringify(instance.state));
+    instance.state = await readState(instance);
     
-    await setInitialCurrency(instance);
+    instance.timestamp = getCurrentTimestamp();
+
+    if (instance.state)
+    {
+      logger.info("read start state: " + JSON.stringify(instance.state));
+
+      await updateState(instance);
+      logger.info("updated state: " + JSON.stringify(instance.state));
+    }
+    else
+    {
+      createRandomState(instance);
+      logger.info("created random start state: " + JSON.stringify(instance.state));
+      
+      await setInitialCurrency(instance);
+    }
+
+    await saveState(instance);
+
+    return instance.state;
   }
-
-  await saveState(instance);
-
-  return instance.state;
+  catch (error)
+  {
+    TransformAndThrowCaughtError(error);
+  }
 }
 
 async function readState(instance) {
@@ -135,4 +144,42 @@ async function grantCurrency(instance, amount) {
 
 function getCurrentTimestamp() {
   return Date.now();
+}
+
+// Some form of this function appears in all Cloud Code scripts.
+// Its purpose is to parse the errors thrown from the script into a standard exception object which can be stringified.
+function TransformAndThrowCaughtError(error) {
+  let result = {
+    status: 0,
+    title: "",
+    message: "",
+    retryAfter: null,
+    additionalDetails: ""
+  };
+
+  if (error.response)
+  {
+    result.status = error.response.data.status ? error.response.data.status : 0;
+    result.title = error.response.data.title ? error.response.data.title : "Unknown Error";
+    result.message = error.response.data.detail ? error.response.data.detail : error.response.data;
+    if (error.response.status === rateLimitError)
+    {
+      result.retryAfter = error.response.headers['retry-after'];
+    }
+    else if (error.response.status === validationError)
+    {
+      let arr = [];
+      _.forEach(error.response.data.errors, error => {
+        arr = _.concat(arr, error.messages);
+      });
+      result.additionalDetails = arr;
+    }
+  }
+  else
+  {
+    result.title = error.name;
+    result.message = error.message;
+  }
+
+  throw new Error(JSON.stringify(result));
 }

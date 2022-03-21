@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace GameOperationsSamples.Editor
+namespace UnityGamingServicesUseCases.Editor
 {
     /// <remarks>
     /// Custom readme class based on the readme done in Boss Room sample. For more context, see:
@@ -39,6 +39,7 @@ namespace GameOperationsSamples.Editor
             public string body;
             public FontFormat bodyFormat;
             public BulletItemLevel2[] bulletList;
+            public LinkListItem[] linkList;
         }
         
         [Serializable]

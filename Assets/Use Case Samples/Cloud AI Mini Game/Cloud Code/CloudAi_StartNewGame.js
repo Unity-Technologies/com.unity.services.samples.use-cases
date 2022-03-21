@@ -3,6 +3,8 @@
 // Unity Dashboard.
 
 const playfieldSize = 3;
+const rateLimitError = 429;
+const validationError = 400;
 
 const _ = require("lodash-4.17");
 const { CurrenciesApi } = require("@unity-services/economy-2.0");
@@ -20,29 +22,38 @@ module.exports = async ({ params, context, logger }) => {
 
   const services = { projectId, playerId, cloudSaveApi, economyCurrencyApi, logger };
 
-  let gameState = await readState(services);
+  let gameState;
+
+  try
+  {
+    gameState = await readState(services);
   
-  // If save state is found (normal condition) then remember this isn't a new game/move to avoid duplicate popups.
-  if (gameState)
-  {
-    logger.info("read start state: " + JSON.stringify(gameState));
-
-    if (!gameState.isGameOver)
+    // If save state is found (normal condition) then remember this isn't a new game/move to avoid duplicate popups.
+    if (gameState)
     {
-      gameState.lossCount += 1;
-      logger.info("player forfeited; updated state: " + JSON.stringify(gameState));
+      logger.info("read start state: " + JSON.stringify(gameState));
+
+      if (!gameState.isGameOver)
+      {
+        gameState.lossCount += 1;
+        logger.info("player forfeited; updated state: " + JSON.stringify(gameState));
+      }
     }
+    else
+    {
+      // DASHBOARD TESTING CODE: If the starting state is not found (only occurs in dashboard) then setup dummy state. 
+      gameState = { winCount:0, lossCount:0, tieCount:0};
+      logger.info("created starting state: " + JSON.stringify(gameState));
+    }
+
+    startRandomGame(services, gameState);
+
+    await saveState(services, gameState);
   }
-  else
+  catch (error)
   {
-    // DASHBOARD TESTING CODE: If the starting state is not found (only occurs in dashboard) then setup dummy state. 
-    gameState = { winCount:0, lossCount:0, tieCount:0};
-    logger.info("created starting state: " + JSON.stringify(gameState));
+    TransformAndThrowCaughtError(error);
   }
-
-  startRandomGame(services, gameState);
-
-  await saveState(services, gameState);
 
   return gameState;
 }
@@ -80,4 +91,42 @@ function startRandomGame(services, gameState) {
 
 async function saveState(services, gameState) {
   await services.cloudSaveApi.setItem(services.projectId, services.playerId, { key: "CLOUD_AI_GAME_STATE", value: JSON.stringify(gameState) } );
+}
+
+// Some form of this function appears in all Cloud Code scripts.
+// Its purpose is to parse the errors thrown from the script into a standard exception object which can be stringified.
+function TransformAndThrowCaughtError(error) {
+  let result = {
+    status: 0,
+    title: "",
+    message: "",
+    retryAfter: null,
+    additionalDetails: ""
+  };
+
+  if (error.response)
+  {
+    result.status = error.response.data.status ? error.response.data.status : 0;
+    result.title = error.response.data.title ? error.response.data.title : "Unknown Error";
+    result.message = error.response.data.detail ? error.response.data.detail : error.response.data;
+    if (error.response.status === rateLimitError)
+    {
+      result.retryAfter = error.response.headers['retry-after'];
+    }
+    else if (error.response.status === validationError)
+    {
+      let arr = [];
+      _.forEach(error.response.data.errors, error => {
+        arr = _.concat(arr, error.messages);
+      });
+      result.additionalDetails = arr;
+    }
+  }
+  else
+  {
+    result.title = error.name;
+    result.message = error.message;
+  }
+
+  throw new Error(JSON.stringify(result));
 }

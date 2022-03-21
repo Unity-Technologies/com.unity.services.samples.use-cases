@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Drawing;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace GameOperationsSamples
+namespace UnityGamingServicesUseCases
 {
     namespace IdleClickerGame
     {

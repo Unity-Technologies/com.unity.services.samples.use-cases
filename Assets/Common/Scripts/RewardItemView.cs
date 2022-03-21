@@ -4,7 +4,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using UnityEngine.UI;
 
-namespace GameOperationsSamples
+namespace UnityGamingServicesUseCases
 {
     public class RewardItemView : MonoBehaviour
     {

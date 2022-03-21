@@ -15,15 +15,14 @@ const commandKeys = {
     GameOver: "COMMANDBATCH_GAME_OVER"
 };
 
+const rateLimitError = 429;
+const validationError = 400;
+
 module.exports = async ({ params, context, logger }) => {
     const { projectId, playerId, environmentId, accessToken} = context;
     const economyCurrency = new CurrenciesApi({ accessToken });
     const cloudSave = new DataApi({ accessToken });
     const remoteConfig = new SettingsApi({ accessToken });
-
-    let batchProcessingResult = "success";
-    let batchProcessingErrorMessage = "";
-
 
     try
     {
@@ -33,14 +32,8 @@ module.exports = async ({ params, context, logger }) => {
     }
     catch (error)
     {
-        batchProcessingResult = "failure";
-        batchProcessingErrorMessage = error.message;
+        transformAndThrowCaughtError(error);
     }
-
-    return {
-        batchProcessingResult,
-        batchProcessingErrorMessage
-    };
 };
 
 function parseCommandsFromJson(batch)
@@ -55,12 +48,12 @@ function parseCommandsFromJson(batch)
         }
         else
         {
-            throw { message: 'Batch misconfigured: Missing commands list.' };
+            throw new InvalidArgumentError('Batch misconfigured: Missing commands list.');
         }
     }
     else
     {
-        throw { message: 'Batch not provided.' };
+        throw new InvalidArgumentError('Batch not provided.');
     }
 
     return commandsList;
@@ -78,12 +71,12 @@ function validateBatchHasCorrectNumberOfCommands(commands)
     // The correct number of commands is 7 exactly (6 turns + 1 game over)
     if (commands.length > 7)
     {
-        throw { message: 'Invalid gameplay: Too many commands in batch.' };
+        throw new InvalidArgumentError('Too many commands in batch.');
     }
 
     if (commands.length < 7)
     {
-        throw { message: 'Invalid gameplay: Not enough commands in batch.' };
+        throw new InvalidArgumentError('Not enough commands in batch.');
     }
 }
 
@@ -91,7 +84,7 @@ function validateGameOverIsLastCommand(commands)
 {
     if (commands[commands.length - 1] !== commandKeys.GameOver)
     {
-        throw { message: 'Invalid gameplay: Last command must be Game Over.' };
+        throw new InvalidArgumentError('Last command must be Game Over.');
     }
 }
 
@@ -109,7 +102,7 @@ function validateCommandsAreInLegalOrder(commands)
     {
         if (gameOverSeen)
         {
-            throw { message: 'Invalid gameplay: There can be no commands after Game Over.' };
+            throw new InvalidArgumentError('There can be no commands after Game Over.');
         }
 
         switch (commands[i])
@@ -126,7 +119,7 @@ function validateCommandsAreInLegalOrder(commands)
                 }
                 else
                 {
-                    throw { message: 'Invalid gameplay: Chests can only be opened immediately after a red or blue enemy has been defeated.' };
+                    throw new InvalidGameplayError('Chests can only be opened immediately after a red or blue enemy has been defeated.');
                 }
                 break;
 
@@ -137,7 +130,7 @@ function validateCommandsAreInLegalOrder(commands)
                 }
                 else
                 {
-                    throw { message: 'Invalid gameplay: Bonus goals can only be achieved once a chest has been opened.' };
+                    throw new InvalidGameplayError('Bonus goals can only be achieved once a chest has been opened.');
                 }
                 break;
 
@@ -173,7 +166,7 @@ async function getCommandRewardOptions(remoteConfig, projectId, environmentId)
     if (remoteConfigResponse.data.configs == null ||
         remoteConfigResponse.data.configs.settings == null)
     {
-        throw { message: 'There was a problem getting command reward data from Remote Config.' };
+        throw new CloudCodeCustomError('There was a problem getting command reward data from Remote Config.');
     }
 
     return getRewardsInDesiredStructure(remoteConfigResponse.data.configs.settings);
@@ -302,4 +295,70 @@ async function saveUpdatedCloudSaveData(cloudSave, projectId, playerId, updatedC
         playerId,
         { data: updatedCloudSaveData }
     );
+}
+
+// Some form of this function appears in all Cloud Code scripts.
+// Its purpose is to parse the errors thrown from the script into a standard exception object which can be stringified.
+function transformAndThrowCaughtError(error) {
+    let result = {
+        status: 0,
+        title: "",
+        message: "",
+        retryAfter: null,
+        additionalDetails: ""
+    };
+
+    if (error.response)
+    {
+        result.status = error.response.data.status ? error.response.data.status : 0;
+        result.title = error.response.data.title ? error.response.data.title : "Unknown Error";
+        result.message = error.response.data.detail ? error.response.data.detail : error.response.data;
+        if (error.response.status === rateLimitError)
+        {
+            result.retryAfter = error.response.headers['retry-after'];
+        }
+        else if (error.response.status === validationError)
+        {
+            let arr = [];
+            _.forEach(error.response.data.errors, error => {
+                arr = _.concat(arr, error.messages);
+            });
+            result.additionalDetails = arr;
+        }
+    }
+    else
+    {
+        if (error instanceof CloudCodeCustomError)
+        {
+            result.status = error.status;
+        }
+        result.title = error.name;
+        result.message = error.message;
+    }
+
+    throw new Error(JSON.stringify(result));
+}
+
+class CloudCodeCustomError extends Error {
+    constructor(message) {
+        super(message);
+        this.name = "CloudCodeCustomError";
+        this.status = 1;
+    }
+}
+
+class InvalidArgumentError extends CloudCodeCustomError {
+    constructor(message) {
+        super(message);
+        this.name = "InvalidArgumentError";
+        this.status = 2;
+    }
+}
+
+class InvalidGameplayError extends CloudCodeCustomError {
+    constructor(message) {
+        super(message);
+        this.name = "InvalidGameplayError";
+        this.status = 3;
+    }
 }

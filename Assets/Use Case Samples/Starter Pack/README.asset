@@ -185,22 +185,13 @@ MonoBehaviour:
     bodyFormat: 0
     boxCallout: 
     bulletList:
-    - body: 'PurchaseStarterPack:'
+    - body: 'StarterPack_PurchaseStarterPack:'
       bodyFormat: 1
       bulletList:
       - body: 'Parameters: `none`'
         bodyFormat: 0
         bulletList: []
-      - body: 'Script: "Assets/Use Case Samples/Starter Pack/Cloud Code/PurchaseStarterPack.js"'
-        bodyFormat: 0
-        bulletList: []
-    - body: 'ResetStarterPackFlag:'
-      bodyFormat: 1
-      bulletList:
-      - body: 'Parameters: `none`'
-        bodyFormat: 0
-        bulletList: []
-      - body: 'Script: "Assets/Use Case Samples/Starter Pack/Cloud Code/ResetStarterPackFlag.js"'
+      - body: 'Script: "Assets/Use Case Samples/Starter Pack/Cloud Code/StarterPack_PurchaseStarterPack.js"'
         bodyFormat: 0
         bulletList: []
     linkList: []

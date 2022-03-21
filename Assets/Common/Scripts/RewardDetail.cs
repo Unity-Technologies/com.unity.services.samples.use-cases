@@ -1,6 +1,6 @@
 using System;
 
-namespace GameOperationsSamples
+namespace UnityGamingServicesUseCases
 {
     [Serializable]
     public struct RewardDetail

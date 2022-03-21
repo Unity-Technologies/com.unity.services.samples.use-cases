@@ -1466,6 +1466,7 @@ GameObject:
   - component: {fileID: 468777611}
   - component: {fileID: 468777609}
   - component: {fileID: 468777612}
+  - component: {fileID: 468777613}
   m_Layer: 0
   m_Name: IdleClickerGameSample
   m_TagString: Untagged
@@ -1513,7 +1514,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneView: {fileID: 2014552150}
-  messagePopup: {fileID: 1887673341}
 --- !u!114 &468777612
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1528,6 +1528,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currencyHudView: {fileID: 6872036785173546811}
   sampleView: {fileID: 2014552150}
+--- !u!114 &468777613
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 468777608}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08f75bf88383c6a4d89248cb9f6c09bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneView: {fileID: 2014552150}
 --- !u!1001 &642232923
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3893,6 +3906,7 @@ GameObject:
   - component: {fileID: 2014552147}
   - component: {fileID: 2014552146}
   - component: {fileID: 2014552150}
+  - component: {fileID: 2014552151}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -3997,7 +4011,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c72e15bbb5e9ba24289b5cd1f81e97c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  messagePopup: {fileID: 1887673341}
   resetGameButton: {fileID: 801268788}
+--- !u!114 &2014552151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2014552145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24e34a91379924d8591a37b0eb9e8f6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  feedbackPrefab: {fileID: 3825729743558114910, guid: 0e13d3038da4f45529efa8e9f399717a, type: 3}
 --- !u!1001 &2076092445
 PrefabInstance:
   m_ObjectHideFlags: 0

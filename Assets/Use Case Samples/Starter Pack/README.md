@@ -43,12 +43,9 @@ You'll need a few currencies and inventory items in the Economy setup, as well a
 * Sword - `ID: "SWORD"` - An inventory item reward from the Starter Pack
 
 #### Cloud Code Scripts
-* PurchaseStarterPack:
+* StarterPack_PurchaseStarterPack:
   * Parameters: `none`
-  * Script: `Assets/Use Case Samples/Starter Pack/Cloud Code/PurchaseStarterPack.js`
-* ResetStarterPackFlag:
-  * Parameters: `none`
-  * Script: `Assets/Use Case Samples/Starter Pack/Cloud Code/ResetStarterPackFlag.js`
+  * Script: `Assets/Use Case Samples/Starter Pack/Cloud Code/StarterPack_PurchaseStarterPack.js`
 
 _**Note**:
 The Cloud Code scripts included in the `Cloud Code` folder are just local copies, since you can't see the sample's dashboard. Changes to these scripts will not affect the behavior of this sample since they will not be automatically uploaded to Cloud Code service._

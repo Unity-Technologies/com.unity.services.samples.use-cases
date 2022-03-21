@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GameOperationsSamples
+namespace UnityGamingServicesUseCases
 {
     public class RewardDisplayView : MonoBehaviour
     {

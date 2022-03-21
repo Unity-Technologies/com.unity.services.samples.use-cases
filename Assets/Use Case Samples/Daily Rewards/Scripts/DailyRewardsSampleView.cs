@@ -1,38 +1,69 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
-namespace GameOperationsSamples
+namespace UnityGamingServicesUseCases
 {
     namespace DailyRewards
     {
         public class DailyRewardsSampleView : MonoBehaviour
         {
-            public Button grantRandomRewardButton;
+            public Canvas dailyRewardsWindowCanvas;
+            
+            public GameObject endedEventGameObject;
 
-            public TextMeshProUGUI grantRandomRewardButtonText;
+            public TextMeshProUGUI daysLeftText;
+            public TextMeshProUGUI comeBackInText;
+
+            public CalendarView calendar;
+            public BonusDayView bonusDay;
 
 
-            public void UpdateCooldown(int seconds)
+            public void UpdateStatus(DailyRewardsEventManager eventManager)
             {
-                if (seconds > 0)
+                calendar.UpdateStatus(eventManager);
+                bonusDay.UpdateStatus(eventManager);
+
+                UpdateTimers(eventManager);
+            }
+
+            public void UpdateTimers(DailyRewardsEventManager eventManager)
+            {
+                if (eventManager.daysRemaining <= 0)
                 {
-                    grantRandomRewardButton.interactable = false;
-                    grantRandomRewardButtonText.text = seconds > 1
-                        ? $"... ready in {seconds} seconds."
-                        : "... ready in 1 second.";
+                    endedEventGameObject.SetActive(true);
+                    daysLeftText.text = "Days Left: 0";
+                    comeBackInText.text = "Event Over";
                 }
                 else
                 {
-                    grantRandomRewardButton.interactable = true;
-                    grantRandomRewardButtonText.text = "Claim Daily Reward";
+                    endedEventGameObject.SetActive(false);
+                    daysLeftText.text = $"Days Left: {eventManager.daysRemaining}";
+                    if (eventManager.secondsTillClaimable > 0)
+                    {
+                        comeBackInText.text = $"Come Back in: {eventManager.secondsTillClaimable:0.0} seconds";
+                    }
+                    else
+                    {
+                        comeBackInText.text = "Claim Now!";
+                    }
                 }
             }
-
-            public void OnClaimingDailyReward()
+            
+            public void OpenEventWindow()
             {
-                grantRandomRewardButtonText.text = "Claiming Daily Reward";
-                grantRandomRewardButton.interactable = false;
+                dailyRewardsWindowCanvas.enabled = true;
+            }
+
+            public void OnCloseEventButtonPressed()
+            {
+                dailyRewardsWindowCanvas.enabled = false;
+            }
+
+            public void SetAllDaysUnclaimable()
+            {
+                calendar.SetUnclaimable();
+                bonusDay.SetUnclaimable();
             }
         }
     }

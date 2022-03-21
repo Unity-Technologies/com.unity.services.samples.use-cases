@@ -1,0 +1,335 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfbabd22c62c640a6ba459d46825055b, type: 3}
+  m_Name: README
+  m_EditorClassIdentifier: 
+  header:
+    title: Rewarded Ads with Unity Mediation Readme
+    icon: {fileID: 2800000, guid: 83f0684dab5534e2492f651aaaf4a151, type: 3}
+  sections:
+  - subHeader1: Intro
+    subHeader2: 
+    subHeader3: 
+    body: 'Offering players the opportunity to receive rewards in exchange for viewing
+      an ad can be a great way to increase your game''s revenue. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'In this sample we demonstrate offering players the opportunity to increase
+      the rewards they can receive at the end of a level by watching a rewarded ad.
+      We''ve also added an additional feature to encourage interaction with the rewarded
+      ad: a periodically-appearing booster challenge where players can get up to
+      a 5x multiplier (instead of the standard 2x) by clicking at just the right
+      time.  In this way we gamify the rewarded ad opportunity making it more fun
+      and tempting for players to interact with. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 'Note: Unity Mediation only supports iOS and Android, so if the project''s
+      build target is any platform other than these two you will see warnings in
+      the console at playmode initialization and at Unity Services initialization
+      indicating the platform is unsupported. The use case will still function in
+      the editor despite the warnings, however if you were to create a build for
+      one of the unsupported platforms the ad would not show. If you would like to
+      see the use case without the warnings, you can change the project''s build
+      target to either the iOS or Android platforms. This can be done by navigating
+      to File -> Build Settings. '
+    bulletList: []
+    linkList: []
+  - subHeader1: Implementation Overview
+    subHeader2: Scene Initialization
+    subHeader3: 
+    body: 'When the scene first loads it will make calls to the Unity Services APIs
+      in order to set up the scene: '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: Initialize Unity Services
+      bodyFormat: 0
+      bulletList: []
+    - body: Get currency balances from Economy
+      bodyFormat: 0
+      bulletList: []
+    - body: Get turn count data from Cloud Save
+      bodyFormat: 0
+      bulletList: []
+    - body: Load the first ad from Unity Mediation
+      bodyFormat: 0
+      bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: Level Ended Popup
+    subHeader3: 
+    body: 'Players will see a "Complete Level" button on the screen (this is to shortcut
+      the real-life experience of actually playing and completing a level). When
+      clicked, a popup will appear. This popup could display one of three scenarios:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: Gamified Rewarded Ad option
+      bodyFormat: 0
+      bulletList: []
+    - body: Standard Rewarded Ad option
+      bodyFormat: 0
+      bulletList: []
+    - body: Collect Level End Rewards only (no rewarded ad option)
+      bodyFormat: 0
+      bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'For the first scenario, our gamified rewarded ad challenge is a metronome-type
+      arrow bouncing back and forth and highlighting different multiplier options
+      (2x, 3x, 5x) with a button indicating an ad watch to claim the rewards. Below
+      the rewarded ad challenge is a second button for players who opt to collect
+      their level rewards without any multipliers and without watching an ad. This
+      scenario will appear the first time a player sees this popup, and every third
+      time after that (i.e. first, fourth, seventh, etc). The periodicity of seeing
+      the gamified challenge is intended to make its appearance more exciting and
+      increase the desire to interact with it due to its rareness. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'The second, non-gamified, scenario includes a standard rewarded ad button
+      indicating they can claim double the amount of their level rewards by watching
+      an ad. As with the first scenario, this button is followed by a second button
+      for players who do not want to watch an ad and want only their base amount
+      of level rewards. This scenario occurs any time the gamified scenario doesn''t
+      appear (i.e. the second, third, fifth, sixth, etc). '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'The third and final scenario only has a basic level end reward collection
+      button, and no watch rewarded ads options. In our case this scenario only occurs
+      when no ads have been successfully loaded. This can occur for various reasons,
+      such as lack of internet connectivity, or the sample having been built on an
+      unsupported platform, etc. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: Claiming Base Rewards
+    subHeader3: 
+    body: 'When any of the buttons are clicked (either the rewarded ad options or
+      the basic collect rewards option), a Cloud Code script is executed to distribute
+      the base rewards via the Economy service. This ensures that if the player stops
+      the rewarded ad partially through (thereby losing their boosted rewards) that
+      they still receive the standard amount of level end rewards. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: Watching a Rewarded Ad and Receiving Rewards
+    subHeader3: 
+    body: 'After the base reward distribution call to Cloud Code finishes, if they
+      have clicked one of the rewarded ad buttons, Mediation is asked to show the
+      ad that was previously loaded. As soon as the ad has successfully started to
+      be shown, we tell Mediation to load the next ad. This gives the ad time to
+      load and be ready for the next time we want to offer that interaction. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'Once the ad has fully completed, we call the Cloud Code script again,
+      this time indicating a multiplier. The Cloud Code script verifies that this
+      multiplier is a legitimate value based on the current level count (from Cloud
+      Save) and the appropriate multiplier for that level (i.e. 2, 3, and 5 are valid
+      on turn 1, but only 2 is valid on turn 2). Once verified, the script distributes
+      the appropriate amount of rewards via the Economy service. At this point, the
+      Cloud Code script has executed twice and the player has received the base reward
+      * the multiplier amount of currency rewards. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'Depending on the rewarded ad placement settings (as setup on the Mediation
+      Dashboard), the player may be able to skip the ad before its finished. This
+      is how the fake ad in the editor works as well. In that case, our sample simply
+      does not call the Cloud Code script the second time, so that no boosted rewards
+      are distributed. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: Packages Required
+    subHeader2: 
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: 'Mediation: Shows the Rewarded Ad.'
+      bodyFormat: 0
+      bulletList: []
+    - body: 'Cloud Code: Validates and distributes the level end and rewarded ad
+        watched rewards.'
+      bodyFormat: 0
+      bulletList: []
+    - body: 'Economy: Maintains the balance for the currency being rewarded for level
+        end.'
+      bodyFormat: 0
+      bulletList: []
+    - body: 'Cloud Save: Tracks information needed for validating appropriate level
+        end reward distribution, including how many times a level has been completed,
+        and the time the last time the rewards were distributed.'
+      bodyFormat: 0
+      bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: See the package docs to learn how to install and configure these SDKs in
+      your project.
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList:
+    - linkText: Mediation
+      url: https://docs.unity.com/mediation/MediationSetupChecklist.html
+    - linkText: Cloud Code
+      url: https://docs.unity.com//cloud-code/Content/implementation.htm?tocpath=Implementation%7C_____0#SDK_installation
+    - linkText: Economy
+      url: https://docs.unity.com/economy/Content/implementation.htm?tocpath=Implementation%7C_____0
+    - linkText: Cloud Save
+      url: https://docs.unity.com/cloud-save/Content/index.htm#Implementation
+  - subHeader1: Dashboard Setup
+    subHeader2: 
+    subHeader3: 
+    body: 'To use Mediation, Cloud Code, Economy, and Cloud Save services in your
+      game, activate each service for your organization and project in the Unity
+      Dashboard. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: Unity Mediation
+    subHeader3: Ad Units
+    body: 
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: RewardedAds_Android
+      bodyFormat: 1
+      bulletList:
+      - body: 'Platform: Android'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Ad Format: Rewarded'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Waterfall: "Android_Rewarded" (this is a default waterfall provided
+          by Mediation, but it needs to be attached to this Ad Unit)'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Custom Settings:'
+        bodyFormat: 0
+        bulletList:
+        - body: 'Allow Skip: After 5 seconds'
+          bodyFormat: 0
+          bulletList: []
+    - body: RewardedAds_iOS
+      bodyFormat: 1
+      bulletList:
+      - body: 'Platform: iOS'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Ad Format: Rewarded'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Waterfall: "iOS_Rewarded" (this is a default waterfall provided by
+          Mediation, but it needs to be attached to this Ad Unit)'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Custom Settings:'
+        bodyFormat: 0
+        bulletList:
+        - body: 'Allow Skip: After 5 seconds'
+          bodyFormat: 0
+          bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: Economy Items
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: Gem
+      bodyFormat: 1
+      bulletList:
+      - body: The currency being rewarded for completing the level and watching a
+          rewarded ad.
+        bodyFormat: 0
+        bulletList: []
+      - body: 'ID: "GEM"'
+        bodyFormat: 0
+        bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: Cloud Code Scripts
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: RewardedAds_GrantLevelEndRewards
+      bodyFormat: 1
+      bulletList:
+      - body: 'Parameters: `multiplier` - Optional. An int representing the amount
+          the base rewards should be multiplied with, if any. Not included if just
+          distributing base rewards.'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Script: "Assets/Use Case Samples/Rewarded Ads With Unity Mediation/Cloud
+          Code/RewardedAds_GrantLevelEndRewards.js"'
+        bodyFormat: 0
+        bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 'Note: The Cloud Code scripts included in the "Cloud Code" folder
+      are just local copies, since you can''t see the sample''s dashboard. Changes
+      to these scripts will not affect the behavior of this sample since they will
+      not be automatically uploaded to Cloud Code service.'
+    bulletList: []
+    linkList: []

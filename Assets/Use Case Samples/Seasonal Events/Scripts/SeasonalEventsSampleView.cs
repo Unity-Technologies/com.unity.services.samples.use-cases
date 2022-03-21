@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace GameOperationsSamples
+namespace UnityGamingServicesUseCases
 {
     namespace SeasonalEvents
     {

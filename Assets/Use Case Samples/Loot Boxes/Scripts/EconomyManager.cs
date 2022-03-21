@@ -2,7 +2,7 @@ using System.Threading.Tasks;
 using Unity.Services.Economy;
 using UnityEngine;
 
-namespace GameOperationsSamples
+namespace UnityGamingServicesUseCases
 {
     namespace LootBoxes
     {

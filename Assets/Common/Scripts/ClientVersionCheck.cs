@@ -5,20 +5,20 @@ using Unity.Services.Authentication;
 using Unity.Services.Core;
 using UnityEngine;
 
-namespace GameOperationsSamples
+namespace UnityGamingServicesUseCases
 {
     public class ClientVersionCheck : MonoBehaviour
     {
         static bool s_VersionWasChecked;
 
         const string k_NewerMinimumVersionMessage =
-            "This working copy of the Game Operations Samples project is older than the " +
+            "This working copy of the Unity Gaming Services Use Cases project is older than the " +
             "minimum version required by the backend. Please download a new version from " +
-            "https://github.com/Unity-Technologies/com.unity.services.samples.game-operations";
+            "https://github.com/Unity-Technologies/com.unity.services.samples.use-cases";
 
         const string k_NewerLatestVersionMessage =
-            "There is a newer version of the Game Operations Samples project available! You can download it from " +
-            "https://github.com/Unity-Technologies/com.unity.services.samples.game-operations";
+            "There is a newer version of the Unity Gaming Services Use Cases project available! You can download it from " +
+            "https://github.com/Unity-Technologies/com.unity.services.samples.use-cases";
 
         async void Start()
         {

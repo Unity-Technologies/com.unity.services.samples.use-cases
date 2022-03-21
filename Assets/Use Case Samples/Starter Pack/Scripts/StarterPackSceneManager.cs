@@ -1,15 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Unity.Services.Economy.Model;
 using Unity.Services.Authentication;
-using Unity.Services.CloudCode;
 using Unity.Services.CloudSave;
 using Unity.Services.Core;
 using Unity.Services.Economy;
 using UnityEngine;
 
-namespace GameOperationsSamples
+namespace UnityGamingServicesUseCases
 {
     namespace StarterPack
     {
@@ -60,7 +58,7 @@ namespace GameOperationsSamples
                 { 
                     StarterPackSampleView.instance.Disable();
 
-                    await ProcessStarterPackPurchaseRequest();
+                    await CloudCodeManager.instance.CallPurchaseStarterPackEndpoint();
                     if (this == null) return;
 
                     await Task.WhenAll(EconomyManager.instance.RefreshCurrencyBalances(),
@@ -77,24 +75,6 @@ namespace GameOperationsSamples
                     {
                         StarterPackSampleView.instance.Enable();
                     }
-                }
-            }
-
-            public async Task ProcessStarterPackPurchaseRequest()
-            {
-                // We normally use the Economy.Purchase.MakeVirtualPurchaseAsync method to make a virtual purchase.
-                // In this case, we also want to track if a player has purchased a Starter Pack or not by using a flag.
-                // While that flag is set, this player cannot make the same purchase again.
-                // This flag could be removed so that the player could purchase it again.
-                try
-                {
-                    await CloudCode.CallEndpointAsync<MakeVirtualPurchaseResult>(
-                        "PurchaseStarterPack", new object());
-                }
-                catch (Exception e)
-                {
-                    Debug.LogError("Something went wrong! Make sure you can afford the Starter Pack.");
-                    Debug.LogException(e);
                 }
             }
 

@@ -6,6 +6,8 @@ const playfieldSize = 3;
 const currencyId = "COIN";
 const winCurrencyQuantity = 100;
 const tieCurrencyQuantity = 25;
+const rateLimitError = 429;
+const validationError = 400;
 
 const _ = require("lodash-4.17");
 const { CurrenciesApi } = require("@unity-services/economy-2.0");
@@ -14,7 +16,7 @@ const { DataApi } = require("@unity-services/cloud-save-1.0");
 
 // Entry point for the Cloud Code script 
 module.exports = async ({ params, context, logger }) => {
-  
+
   logger.info("Script parameters: " + JSON.stringify(params));
   logger.info("Authenticated within the following context: " + JSON.stringify(context));
   
@@ -26,69 +28,78 @@ module.exports = async ({ params, context, logger }) => {
 
   const services = { projectId, playerId, cloudSaveApi, economyCurrencyApi, logger };
 
-  let gameState = await readState(services);
-  
-  // If save state is found (normal condition) then remember this isn't a new game/move to avoid duplicate popups.
-  if (gameState)
-  {
-    gameState.isNewGame = false;  
-    gameState.isNewMove = false;
-  }
-  else
-  {
-    // DASHBOARD TESTING CODE: If the starting state is not found (only occurs in dashboard) then setup dummy state 
-    // for testing only. By not randomizing here, testing can request valid or invalid locations as needed.
-    gameState = { playerPieces:[], aiPieces:[{x:0, y:1}], isPlayerTurn:true, isNewGame:true, isNewMove:true, isGameOver:false, 
-                  status:"playing", winCount: 0, lossCount: 0, tieCount: 0 };
+  let gameState;
 
-    logger.info("created debug start state: " + JSON.stringify(gameState));
-  }
-  
-  // If game is already over, return status to signal select-new-game popup.
-  if (gameState.isGameOver)
+  try
   {
-    logger.error("attempted to place when game over");
-    gameState.status = "gameOver";
-  }
-
-  // If player placed a piece in occupied space, show popup on client.
-  else if (isSpaceOccupied(services, gameState, coord))
-  {
-    logger.error("space already occupied.");
-    gameState.status = "spaceOccupied";
-  }
-
-  // Handle valid move by placing the new piece.
-  else
-  {
-    gameState.isNewMove = true;  
-    gameState.status = "playing";
-    gameState.isPlayerTurn = false;
-
-    placePlayerPiece(services, gameState, coord);
-    logger.info("player placement successful");
+    gameState = await readState(services);
     
-    if (await detectAndHandleGameOver(services, gameState))
+    // If save state is found (normal condition) then remember this isn't a new game/move to avoid duplicate popups.
+    if (gameState)
     {
-      logger.info("player triggered game over. updated status: " + gameState.status);
+      gameState.isNewGame = false;  
+      gameState.isNewMove = false;
     }
     else
     {
-      placeAiPiece(services, gameState);
-      logger.info("ai placement successful");
+      // DASHBOARD TESTING CODE: If the starting state is not found (only occurs in dashboard) then setup dummy state 
+      // for testing only. By not randomizing here, testing can request valid or invalid locations as needed.
+      gameState = { playerPieces:[], aiPieces:[{x:0, y:1}], isPlayerTurn:true, isNewGame:true, isNewMove:true, isGameOver:false, 
+                    status:"playing", winCount: 0, lossCount: 0, tieCount: 0 };
 
+      logger.info("created debug start state: " + JSON.stringify(gameState));
+    }
+    
+    // If game is already over, return status to signal select-new-game popup.
+    if (gameState.isGameOver)
+    {
+      logger.error("attempted to place when game over");
+      throw new GameOverError("Game over when player attempted to place a piece.");
+    }
+
+    // If player placed a piece in occupied space, show popup on client.
+    else if (isSpaceOccupied(services, gameState, coord))
+    {
+      logger.error("space already occupied.");
+      throw new SpaceOccupiedError("Player attemped to place a piece in an occupied space.");
+    }
+
+    // Handle valid move by placing the new piece.
+    else
+    {
+      gameState.isNewMove = true;  
+      gameState.status = "playing";
+      gameState.isPlayerTurn = false;
+
+      placePlayerPiece(services, gameState, coord);
+      logger.info("player placement successful");
+      
       if (await detectAndHandleGameOver(services, gameState))
       {
-        logger.info("ai triggered game over. updated status: " + gameState.status);
+        logger.info("player triggered game over. updated status: " + gameState.status);
       }
       else
       {
-        gameState.isPlayerTurn = true;
+        placeAiPiece(services, gameState);
+        logger.info("ai placement successful");
+
+        if (await detectAndHandleGameOver(services, gameState))
+        {
+          logger.info("ai triggered game over. updated status: " + gameState.status);
+        }
+        else
+        {
+          gameState.isPlayerTurn = true;
+        }
       }
     }
-  }
 
-  await saveState(services, gameState);
+    await saveState(services, gameState);
+  }
+  catch (error)
+  {
+    TransformAndThrowCaughtError(error);
+  }
 
   return gameState;
 }
@@ -312,4 +323,70 @@ async function saveState(services, gameState) {
 async function grantCurrencyReward(services, gameState, amount) {
   await services.economyCurrencyApi.incrementPlayerCurrencyBalance(services.projectId, services.playerId, currencyId, 
     { currencyId, amount });
+}
+
+// Some form of this function appears in all Cloud Code scripts.
+// Its purpose is to parse the errors thrown from the script into a standard exception object which can be stringified.
+function TransformAndThrowCaughtError(error) {
+  let result = {
+    status: 0,
+    title: "",
+    message: "",
+    retryAfter: null,
+    additionalDetails: ""
+  };
+
+  if (error.response)
+  {
+    result.status = error.response.data.status ? error.response.data.status : 0;
+    result.title = error.response.data.title ? error.response.data.title : "Unknown Error";
+    result.message = error.response.data.detail ? error.response.data.detail : error.response.data;
+    if (error.response.status === rateLimitError)
+    {
+      result.retryAfter = error.response.headers['retry-after'];
+    }
+    else if (error.response.status === validationError)
+    {
+      let arr = [];
+      _.forEach(error.response.data.errors, error => {
+        arr = _.concat(arr, error.messages);
+      });
+      result.additionalDetails = arr;
+    }
+  }
+  else
+  {
+    if (error instanceof CloudCodeCustomError)
+    {
+      result.status = error.status;
+    }
+    result.title = error.name;
+    result.message = error.message;
+  }
+
+  throw new Error(JSON.stringify(result));
+}
+
+class CloudCodeCustomError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = "CloudCodeCustomError";
+    this.status = 1;
+  }
+}
+
+class SpaceOccupiedError extends CloudCodeCustomError {
+  constructor(message) {
+    super(message);
+    this.name = "SpaceOccupiedError";
+    this.status = 2;
+  }
+}
+
+class GameOverError extends CloudCodeCustomError {
+  constructor(message) {
+    super(message);
+    this.name = "GameOverError";
+    this.status = 3;
+  }
 }

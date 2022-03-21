@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace GameOperationsSamples
+namespace UnityGamingServicesUseCases
 {
     namespace StarterPack
     {
@@ -11,6 +11,7 @@ namespace GameOperationsSamples
             public Button giveTenGemsButton;
             public Button resetPlayerDataButton;
             public GameObject claimedOverlay;
+            public MessagePopup messagePopup;
 
             public static StarterPackSampleView instance { get; private set; }
 
@@ -40,6 +41,11 @@ namespace GameOperationsSamples
             void OnDisable()
             {
                 StarterPackSceneManager.StarterPackStatusChecked -= OnStarterPackStatusChecked;
+            }
+
+            public void ShowCantAffordStarterPackPopup()
+            {
+                messagePopup.Show("Not Enough Gems", "You don't have enough gems to be able to afford the Starter Pack!");
             }
 
             void OnStarterPackStatusChecked(bool starterPackIsClaimed)

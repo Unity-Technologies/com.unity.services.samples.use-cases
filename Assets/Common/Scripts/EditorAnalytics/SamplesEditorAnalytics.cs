@@ -14,7 +14,7 @@ using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
 
-namespace GameOperationsSamples
+namespace UnityGamingServicesUseCases
 {
     [InitializeOnLoad]
     public static class SamplesEditorAnalytics

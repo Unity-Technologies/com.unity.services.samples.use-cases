@@ -4,15 +4,13 @@ using Unity.Services.CloudCode;
 using Unity.Services.Core;
 using UnityEngine;
 
-namespace GameOperationsSamples
+namespace UnityGamingServicesUseCases
 {
     namespace LootBoxes
     {
         public class LootBoxesSceneManager : MonoBehaviour
         {
             public LootBoxesSampleView sceneView;
-
-            public string cloudCodeScriptName = "GrantRandomCurrency";
 
 
             async void Start()
@@ -49,24 +47,17 @@ namespace GameOperationsSamples
             {
                 try
                 {
-                    Debug.Log($"Calling Cloud Code {cloudCodeScriptName} to grant random reward now.");
-
-                    if (!AuthenticationService.Instance.IsSignedIn)
-                    {
-                        Debug.LogError("Cloud Code can't be called to grant random currency because you're not logged in.");
-                        return;
-                    }
-
                     sceneView.Disable();
 
-                    // Call Cloud Code js script and wait for return values
-                    var grantResult = await CloudCode.CallEndpointAsync<GrantRandomCurrencyResult>(
-                        cloudCodeScriptName, new object());
+                    // Call Cloud Code js script and wait for grant to complete.
+                    await CloudCodeManager.instance.CallGrantRandomCurrencyEndpoint();
                     if (this == null) return;
 
-                    Debug.Log($"CloudCode script rewarded currency id: {grantResult.currencyId} amount: {grantResult.amount}");
-
                     await EconomyManager.instance.RefreshCurrencyBalances();
+                }
+                catch (CloudCodeResultUnavailableException)
+                {
+                    // Exception already handled by CloudCodeManager
                 }
                 catch (Exception e)
                 {
@@ -79,13 +70,6 @@ namespace GameOperationsSamples
                         sceneView.Enable();
                     }
                 }
-            }
-
-            // Struct used to receive result from Cloud Code.
-            public struct GrantRandomCurrencyResult
-            {
-                public string currencyId;
-                public int amount;
             }
         }
     }

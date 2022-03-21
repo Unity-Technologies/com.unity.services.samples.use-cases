@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace GameOperationsSamples
+namespace UnityGamingServicesUseCases
 {
     namespace IdleClickerGame
     {
         public class IdleClickerGameSampleView : MonoBehaviour
         {
             const int k_PlayfieldSize = IdleClickerGameSceneManager.k_PlayfieldSize;
+
+            public MessagePopup messagePopup;
 
             public Button resetGameButton;
 
@@ -79,6 +80,18 @@ namespace GameOperationsSamples
             public void RegisterGridEntity(GridEntity gridEntity)
             {
                 m_GridEntity[(int)gridEntity.gridLocation.x, (int)gridEntity.gridLocation.y] = gridEntity;
+            }
+
+            public void ShowSpaceOccupiedErrorPopup()
+            {
+                messagePopup.Show("Unable to place piece.", "Space already occupied.\n\n" +
+                    "Please ensure target space is empty when placing a Well.");
+            }
+
+            public void ShowVirtualPurchaseFailedErrorPopup()
+            {
+                messagePopup.Show("Unable to place piece.", "Virtual purchase failed.\n\n" +
+                    "Please ensure that you have sufficient funds when purchasing a Well.");
             }
         }
     }

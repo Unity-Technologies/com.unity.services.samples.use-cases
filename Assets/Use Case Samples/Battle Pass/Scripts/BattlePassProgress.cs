@@ -1,4 +1,4 @@
-namespace GameOperationsSamples
+namespace UnityGamingServicesUseCases
 {
     namespace BattlePass
     {

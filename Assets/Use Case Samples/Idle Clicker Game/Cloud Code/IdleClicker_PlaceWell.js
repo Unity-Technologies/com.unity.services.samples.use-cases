@@ -4,6 +4,8 @@ const currencyId = "WATER";
 const factoryGrantFrequencySeconds = 1;
 const factoryGrantFrequency = factoryGrantFrequencySeconds * 1000;
 const factoryGrantPerCycle = 1;
+const rateLimitError = 429;
+const validationError = 400;
 
 const _ = require("lodash-4.17");
 const { CurrenciesApi } = require("@unity-services/economy-2.0");
@@ -26,55 +28,49 @@ module.exports = async ({ params, context, logger }) => {
 
   let instance = { projectId, playerId, cloudSaveApi, economyCurrencyApi, purchasesApi, logger };
 
-  instance.state = await readState(instance);
-  
-  instance.timestamp = getCurrentTimestamp();
-  
-  // If save state is found (normal condition) then update it based on duration since last update.
-  if (instance.state)
+  try
   {
-    logger.info("read start state: " + JSON.stringify(instance.state));
+    instance.state = await readState(instance);
     
-    await updateState(instance);
-    logger.info("updated state: " + JSON.stringify(instance.state));
-  }
-  else
-  {
-    // DASHBOARD TESTING CODE: If the starting state is not found (only occurs in dashboard) then setup dummy state 
-    // for testing only. By not randomizing here, testing can request valid or invalid locations as needed.
-    instance.state = { timestamp:instance.timestamp, factories:[], obstacles:[{x:1, y:2}, {x:2, y:2}, {x:3, y:2}] };
-    await economyCurrencyApi.setPlayerCurrencyBalance(projectId, playerId, currencyId, 
-      { currencyId, balance:2000 });
-    logger.info("created debug start state: " + JSON.stringify(instance.state));
-  }
-  
-  let result = null;
-  if (!isValidPlacement(instance, coord))
-  {
-    logger.error("space already occupied.");
-    result = "spaceAlreadyOccupied";
-  }
-  else
-  {
-    if (!await isVirtualPurchaseSuccessful(instance))
+    instance.timestamp = getCurrentTimestamp();
+    
+    // If save state is found (normal condition) then update it based on duration since last update.
+    if (instance.state)
     {
-      logger.error("virtual purchase failed.");
-      result = "virtualPurchaseFailure";
+      logger.info("read start state: " + JSON.stringify(instance.state));
+      
+      await updateState(instance);
+      logger.info("updated state: " + JSON.stringify(instance.state));
     }
     else
     {
-      placeFactory(instance, coord);
-
-      logger.info("placement successful.");
-      result = "success";
+      // DASHBOARD TESTING CODE: If the starting state is not found (only occurs in dashboard) then setup dummy state 
+      // for testing only. By not randomizing here, testing can request valid or invalid locations as needed.
+      instance.state = { timestamp:instance.timestamp, factories:[], obstacles:[{x:1, y:2}, {x:2, y:2}, {x:3, y:2}] };
+      await economyCurrencyApi.setPlayerCurrencyBalance(projectId, playerId, currencyId, 
+        { currencyId, balance:2000 });
+      logger.info("created debug start state: " + JSON.stringify(instance.state));
     }
+
+    // Check the placement coord for Obstacles and Wells. Throws if placement is found to be invalid.    
+    throwIfSpaceOccupied(instance, coord);
+
+    // Attempt the Virtual Purchase for the Well. Throws if purchase is unsuccessful.
+    await instance.purchasesApi.makeVirtualPurchase(instance.projectId, instance.playerId, { id: "IDLE_CLICKER_GAME_WELL" });
+
+    // If we get to this point, the space is empty and Virtual Purchases has succeeded so we can add the factory to the game state.
+    placeFactory(instance, coord);
+
+    await saveState(instance);
+
+    logger.info("placement successful.");
+
+    return instance.state;
   }
-
-  await saveState(instance);
-  
-  instance.state.placePieceResult = result;
-
-  return instance.state;
+  catch (error)
+  {
+    TransformAndThrowCaughtError(error);
+  }
 }
 
 async function readState(instance) {
@@ -99,35 +95,12 @@ async function updateState(instance) {
   await grantCurrencyForCycles(instance, totalElapsedCycles);
 }
 
-function isValidPlacement(instance, coord) {
-  if (coord.x < 0 || coord.x >= playfieldSize || coord.y < 0 || coord.y >= playfieldSize)
-  {
-    return false;
-  }
-  
+function throwIfSpaceOccupied(instance, coord) {
   if (instance.state.factories.some(item => item.x == coord.x && item.y == coord.y) ||
     instance.state.obstacles.some(item => item.x == coord.x && item.y == coord.y))
   {
-    return false;
+    throw new SpaceOccupiedError("Player attemped to place a piece in an occupied space.");
   }
-  
-  return true;
-}
-
-async function isVirtualPurchaseSuccessful(instance) {
-  try
-  {
-    await instance.purchasesApi.makeVirtualPurchase(instance.projectId, instance.playerId, { id: "IDLE_CLICKER_GAME_WELL" });
-  }
-  catch (error)
-  {
-    //TODO: check error for insufficient funds once feature is available
-    instance.logger.info("virtual purchase threw exception: " + JSON.stringify(error));
-    
-    return false;
-  }
-  
-  return true;
 }
 
 function placeFactory(instance, coord) {
@@ -175,4 +148,62 @@ async function grantCurrency(instance, amount) {
 
 function getCurrentTimestamp() {
   return Date.now();
+}
+
+// Some form of this function appears in all Cloud Code scripts.
+// Its purpose is to parse the errors thrown from the script into a standard exception object which can be stringified.
+function TransformAndThrowCaughtError(error) {
+  let result = {
+    status: 0,
+    title: "",
+    message: "",
+    retryAfter: null,
+    additionalDetails: ""
+  };
+
+  if (error.response)
+  {
+    result.status = error.response.data.status ? error.response.data.status : 0;
+    result.title = error.response.data.title ? error.response.data.title : "Unknown Error";
+    result.message = error.response.data.detail ? error.response.data.detail : error.response.data;
+    if (error.response.status === rateLimitError)
+    {
+      result.retryAfter = error.response.headers['retry-after'];
+    }
+    else if (error.response.status === validationError)
+    {
+      let arr = [];
+      _.forEach(error.response.data.errors, error => {
+        arr = _.concat(arr, error.messages);
+      });
+      result.additionalDetails = arr;
+    }
+  }
+  else
+  {
+    if (error instanceof CloudCodeCustomError)
+    {
+      result.status = error.status;
+    }
+    result.title = error.name;
+    result.message = error.message;
+  }
+
+  throw new Error(JSON.stringify(result));
+}
+
+class CloudCodeCustomError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = "CloudCodeCustomError";
+    this.status = 1;
+  }
+}
+
+class SpaceOccupiedError extends CloudCodeCustomError {
+  constructor(message) {
+    super(message);
+    this.name = "SpaceOccupiedError";
+    this.status = 2;
+  }
 }

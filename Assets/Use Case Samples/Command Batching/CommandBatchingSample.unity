@@ -4889,6 +4889,7 @@ GameObject:
   - component: {fileID: 2014552147}
   - component: {fileID: 2014552146}
   - component: {fileID: 2014552150}
+  - component: {fileID: 2014552151}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -5003,6 +5004,19 @@ MonoBehaviour:
   achieveBonusGoalButton: {fileID: 126833909}
   gameOverPlayAgainButton: {fileID: 682347152}
   gameOverButtonLoadingOverlay: {fileID: 2063366328}
+--- !u!114 &2014552151
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2014552145}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 24e34a91379924d8591a37b0eb9e8f6a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  feedbackPrefab: {fileID: 3825729743558114910, guid: 0e13d3038da4f45529efa8e9f399717a, type: 3}
 --- !u!1 &2062030815
 GameObject:
   m_ObjectHideFlags: 0

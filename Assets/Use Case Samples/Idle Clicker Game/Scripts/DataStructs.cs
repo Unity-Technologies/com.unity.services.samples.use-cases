@@ -1,8 +1,7 @@
-
 using System;
 using System.Collections.Generic;
 
-namespace GameOperationsSamples
+namespace UnityGamingServicesUseCases
 {
     namespace IdleClickerGame
     {
@@ -49,14 +48,13 @@ namespace GameOperationsSamples
         [Serializable]
         public struct PlacePieceResult
         {
-            public string placePieceResult;
             public long timestamp;
             public List<Coord> obstacles;
             public List<FactoryInfo> factories;
 
             public override string ToString()
             {
-                return $"result:{placePieceResult} timestamp:{timestamp} " +
+                return $"timestamp:{timestamp} " +
                     $"obstacles:[{string.Join(",", obstacles)}] " +
                     $"factories:[{string.Join(",", factories)}]";
             }

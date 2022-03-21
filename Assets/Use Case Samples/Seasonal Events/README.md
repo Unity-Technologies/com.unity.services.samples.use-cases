@@ -14,9 +14,9 @@ Once Unity Services completes initialization, Remote Config is queried to get th
 Remote Config also tells us when the event ends, which is used in the CountdownManager for determining and displaying how much time is left in the current event.
 When that time runs out, it triggers a new call to remote config, to get the updated values for the next event.
 
-Note: This sample determines which Remote Config campaign data should be returned based on the user’s timestamp, to demonstrate how events can change and update local variables.
+Note: This sample determines which Game Override data should be returned based on the user’s timestamp, to demonstrate how events can change and update local variables.
 This is a simplification.
-In a real app, developers likely set up a campaign to have specific start and end dates, then Remote Config determines when the campaign is shown based on the server’s date/time.
+In a real app, developers likely set up a Game Override to have specific start and end dates, then Remote Config determines when the Game Override is shown based on the server’s date/time.
 
 When a player clicks "Play Challenge", followed by "Collect Rewards" it initiates a call to the Cloud Code script "Grant Event Reward".
 This script calls Remote Config to determine which rewards should be distributed (this has the potential to differ from what the player expects, if they're altering their device clock or if they clicked claim right at the very end of an event), and then calls Economy to add those rewards to their currency balances.
@@ -29,7 +29,7 @@ Additionally, Analytics custom events are sent each time the scene loads (`Scene
 - **Authentication:** Automatically signs in the user anonymously to keep track of their data on the server side.
 - **Economy:** Keeps track of the player's currencies.
 - **Cloud Code:** Keeps important validation logic on the server side. In this sample it is used to distribute the rewards for the event challenge when the player clicks the "Collect Rewards" button. It independently verifies the timestamp at the time of reward distribution on the server-side to confirm which event's rewards should be distributed.
-- **Remote Config:** Provides key-value pairs where the value that is mapped to a given key can be changed on the server-side, either manually or based on specific campaigns. In this sample, we use the campaigns feature to create the four seasonal events and return different values for certain keys based on the campaign. 
+- **Remote Config:** Provides key-value pairs where the value that is mapped to a given key can be changed on the server-side, either manually or based on specific Game Overrides. In this sample, we use the Game Overrides feature to create the four seasonal events and return different values for certain keys based on the Game Override. 
 - **Addressables:** Allows developers to ask for an asset via its address. Wherever the asset resides (local or remote), the system will locate it and its dependencies, then return it. Here we use it to look up event specific images and prefabs based on the information we receive from Remote Config.
 - **Analytics:** Sends events that allow the tracking of a player's in-game interactions, retention, and other information which can be used for analyzing and improving game experience.
 - **Cloud Save:** Stores if the current season's challenge has already been played to prevent the user from playing the same season's challenge multiple times.
@@ -44,7 +44,7 @@ and [Cloud Save](https://docs.unity.com/cloud-save/implementation.htm) docs to l
 
 ### Dashboard Setup
 To use Economy, Remote Config, and Cloud Code services in your game, activate each service for your organization and project in the Unity Dashboard.
-To duplicate this sample scene's setup on your own dashboard, you'll need a few currencies in the Economy setup, some Config Values and Campaigns set up in Remote Config, and a script published in Cloud Code:
+To duplicate this sample scene's setup on your own dashboard, you'll need a few currencies in the Economy setup, some Config Values and Game Overrides set up in Remote Config, and a script published in Cloud Code:
 
 #### Economy Items
 * Coin - `ID: "COIN"` - A challenge reward during the fall, winter, and spring events
@@ -56,16 +56,19 @@ To duplicate this sample scene's setup on your own dashboard, you'll need a few 
 ##### Config Values
 * EVENT_NAME - The name of the event to display in the scene.
   * Type: `string`
-  * Default value: `""`
+  * Value: `""`
 * EVENT_KEY - The key used to look up event-specific values, such as the addresses for the specific images.
   * Type: `string`
-  * Default value: `""`
-* EVENT_END_TIME - The last digit that matches in the Audience JEXL statement, i.e. the last digit of the latest timestamp that would return this campaign.
+  * Value: `""`
+* EVENT_END_TIME - The last digit of the last minute during which the Game Override is active. Used when determining how much time is left in the current event.
   * Type: `int`
-  * Default value: `0`
+  * Value: `0`
+* EVENT_TOTAL_DURATION_MINUTES - The total number of minutes that a given season's Game Override is active for.
+  * Type: `int`
+  * Value: `0`
 * CHALLENGE_REWARD - The json that specifies what rewards are distributed when a challenge has been "won".
   * Type: `json`
-  * Default value:
+  * Value:
   ```json
     {
         "rewards": [{
@@ -76,7 +79,7 @@ To duplicate this sample scene's setup on your own dashboard, you'll need a few 
     }
     ```
 
-##### Campaigns
+##### Game Overrides
 * Fall Event
   * Status: Active
   * Audience: Stateless JEXL
@@ -87,6 +90,7 @@ To duplicate this sample scene's setup on your own dashboard, you'll need a few 
     * EVENT_NAME: `Fall Event`
     * EVENT_KEY: `Fall`
     * EVENT_END_TIME: `2`
+    * EVENT_TOTAL_DURATION_MINUTES: `3`
     * CHALLENGE_REWARD:
       ```json
         {
@@ -110,6 +114,7 @@ To duplicate this sample scene's setup on your own dashboard, you'll need a few 
     * EVENT_NAME: `Winter Event`
     * EVENT_KEY: `Winter`
     * EVENT_END_TIME: `4`
+    * EVENT_TOTAL_DURATION_MINUTES: `2`
     * CHALLENGE_REWARD:
       ```json
         {
@@ -133,6 +138,7 @@ To duplicate this sample scene's setup on your own dashboard, you'll need a few 
     * EVENT_NAME: `Spring Event`
     * EVENT_KEY: `Spring`
     * EVENT_END_TIME: `7`
+    * EVENT_TOTAL_DURATION_MINUTES: `3`
     * CHALLENGE_REWARD:
       ```json
         {
@@ -156,6 +162,7 @@ To duplicate this sample scene's setup on your own dashboard, you'll need a few 
     * EVENT_NAME: `Summer Event`
     * EVENT_KEY: `Summer`
     * EVENT_END_TIME: `9`
+    * EVENT_TOTAL_DURATION_MINUTES: `2`
     * CHALLENGE_REWARD:
       ```json
         {
@@ -176,9 +183,9 @@ To duplicate this sample scene's setup on your own dashboard, you'll need a few 
       ```
 
 #### Cloud Code Scripts
-* GrantEventReward:
+* SeasonalEvents_GrantEventReward:
   * Parameters: `none`
-  * Script: `Assets/Use Case Samples/Seasonal Events/Cloud Code/GrantEventReward.js`
+  * Script: `Assets/Use Case Samples/Seasonal Events/Cloud Code/SeasonalEvents_GrantEventReward.js`
 
 _**Note**:
 The Cloud Code scripts included in the `Cloud Code` folder are just local copies, since you can't see the sample's dashboard. Changes to these scripts will not affect the behavior of this sample since they will not be automatically uploaded to Cloud Code service._

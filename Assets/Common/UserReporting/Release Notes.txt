@@ -1,0 +1,16 @@
+Unity User Reporting SDK Version 1.0
+
+Included all source in the SDK instead of relying on DLLs.
+
+
+Upgraded from WWW to UnityWebRequest.
+For 2018.3 and above, added a new IUserReportingPlatform for asynchronous screen shots and report generation (DirectX only). To enable this feature, switch the UserReportingPlatform to Async on the UserReporting game object.
+
+
+Fixed an issue where successful user report submissions were reporting as an error.
+
+
+Fixed a possible memory leak when taking screenshots.
+
+
+Fixed various small bugs.

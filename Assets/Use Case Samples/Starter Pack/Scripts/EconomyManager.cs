@@ -3,7 +3,7 @@ using Unity.Services.Economy;
 using Unity.Services.Economy.Model;
 using UnityEngine;
 
-namespace GameOperationsSamples
+namespace UnityGamingServicesUseCases
 {
     namespace StarterPack
     {

@@ -1,13 +1,16 @@
 using UnityEngine;
 
-// We don't need a ton of frames to run this project.
-// Lower frame rates use less energy.
-
-public static class FrameRateLimiter
+namespace UnityGamingServicesUseCases
 {
-    [RuntimeInitializeOnLoadMethod]
-    public static void LimitFrameRate()
+    // We don't need a ton of frames to run this project.
+    // Lower frame rates use less energy.
+
+    public static class FrameRateLimiter
     {
-        Application.targetFrameRate = 30;
+        [RuntimeInitializeOnLoadMethod]
+        public static void LimitFrameRate()
+        {
+            Application.targetFrameRate = 30;
+        }
     }
 }

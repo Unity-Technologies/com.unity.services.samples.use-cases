@@ -41,6 +41,10 @@ MonoBehaviour:
     m_Address: Sprites/Inventory/Shield
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: d3f05dd2be8626341bdeaeed4320cc04
+    m_Address: Sprites/Currency/Water
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: d098d9082bf4e4f6b94dbf2997c0917c, type: 2}
   m_SchemaSet:

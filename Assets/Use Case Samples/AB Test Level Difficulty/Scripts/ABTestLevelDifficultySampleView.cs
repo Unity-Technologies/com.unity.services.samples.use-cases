@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace GameOperationsSamples
+namespace UnityGamingServicesUseCases
 {
     namespace ABTestLevelDifficulty
     {
@@ -26,6 +26,9 @@ namespace GameOperationsSamples
 
             [Space]
             public RewardPopupView rewardPopup;
+
+            [Space]
+            public MessagePopup signOutConfirmationPopup;
 
             bool m_Enabled;
             bool m_IsSignedIn;
@@ -114,13 +117,17 @@ namespace GameOperationsSamples
 
             public void OpenLevelUpPopup(List<RewardDetail> rewards)
             {
-                rewardPopup.headerText.text = "<size=45>Congratulations!</size>\n" +
-                                            "<size=10>\n</size>" +
-                                            "<size=25>You leveled up and received:</size>";
-
-                rewardPopup.closeButtonText.text = "Yay!";
-
                 rewardPopup.Show(rewards);
+            }
+
+            public void ShowSignOutConfirmationPopup()
+            {
+                signOutConfirmationPopup.gameObject.SetActive(true);
+            }
+
+            public void CloseSignOutConfirmationPopup()
+            {
+                signOutConfirmationPopup.Hide();
             }
         }
     }

@@ -78,12 +78,12 @@ MonoBehaviour:
     subHeader3: 
     body: 
     bodyFormat: 0
-    boxCallout: "Note: This sample determines which Remote Config campaign data should
-      be returned based on the user\u2019s timestamp, to demonstrate how events can
+    boxCallout: "Note: This sample determines which Game Override data should be
+      returned based on the user\u2019s timestamp, to demonstrate how events can
       change and update local variables. This is a simplification. In a real app,
-      developers likely set up a campaign to have specific start and end dates, then
-      Remote Config determines when the campaign is shown based on the server\u2019s
-      date/time. "
+      developers likely set up a Game Override to have specific start and end dates,
+      then Remote Config determines when the Game Override is shown based on the
+      server\u2019s date/time. "
     bulletList: []
     linkList: []
   - subHeader1: 
@@ -127,9 +127,9 @@ MonoBehaviour:
       bulletList: []
     - body: 'Remote Config: Provides key-value pairs where the value that is mapped
         to a given key can be changed on the server-side, either manually or based
-        on specific campaigns. In this sample, we use the campaigns feature to create
-        the four seasonal events and return different values for certain keys based
-        on the campaign.  '
+        on specific Game Overrides. In this sample, we use the Game Overrides feature
+        to create the four seasonal events and return different values for certain
+        keys based on the Game Override.'
       bodyFormat: 0
       bulletList: []
     - body: 'Addressables: Allows developers to ask for an asset via its address.
@@ -178,8 +178,8 @@ MonoBehaviour:
     body: 'To use Economy, Remote Config, and Cloud Code services in your game, activate
       each service for your organization and project in the Unity Dashboard. To duplicate
       this sample scene''s setup on your own dashboard, you''ll need a few currencies
-      in the Economy setup, some Config Values and Campaigns set up in Remote Config,
-      and a script published in Cloud Code: '
+      in the Economy setup, some Config Values and Game Overrides set up in Remote
+      Config, and a script published in Cloud Code: '
     bodyFormat: 0
     boxCallout: 
     bulletList: []
@@ -244,7 +244,7 @@ MonoBehaviour:
       - body: 'Type: string'
         bodyFormat: 0
         bulletList: []
-      - body: 'Default value: ""'
+      - body: 'Value: ""'
         bodyFormat: 0
         bulletList: []
     - body: EVENT_KEY
@@ -257,20 +257,33 @@ MonoBehaviour:
       - body: 'Type: string'
         bodyFormat: 0
         bulletList: []
-      - body: 'Default value: ""'
+      - body: 'Value: ""'
         bodyFormat: 0
         bulletList: []
     - body: EVENT_END_TIME
       bodyFormat: 1
       bulletList:
-      - body: The last digit that matches in the Audience JEXL statement, i.e. the
-          last digit of the latest timestamp that would return this campaign.
+      - body: The last digit of the last minute during which the Game Override is
+          active. Used when determining how much time is left in the current event.
         bodyFormat: 0
         bulletList: []
       - body: 'Type: int'
         bodyFormat: 0
         bulletList: []
-      - body: 'Default value: 0'
+      - body: 'Value: 0'
+        bodyFormat: 0
+        bulletList: []
+    - body: EVENT_TOTAL_DURATION_MINUTES
+      bodyFormat: 1
+      bulletList:
+      - body: The total number of minutes that a given season's Game Override is
+          active for.
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Type: int'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Value: 0'
         bodyFormat: 0
         bulletList: []
     - body: CHALLENGE_REWARD
@@ -283,13 +296,13 @@ MonoBehaviour:
       - body: 'Type: json'
         bodyFormat: 0
         bulletList: []
-      - body: 'Default value: See markdown README for details'
+      - body: 'Value: See markdown README for details'
         bodyFormat: 0
         bulletList: []
     linkList: []
   - subHeader1: 
     subHeader2: 
-    subHeader3: Campaigns
+    subHeader3: Game Overrides
     body: 
     bodyFormat: 0
     boxCallout: 
@@ -323,6 +336,9 @@ MonoBehaviour:
           bodyFormat: 0
           bulletList: []
         - body: 'EVENT_END_TIME: 2'
+          bodyFormat: 0
+          bulletList: []
+        - body: 'EVENT_TOTAL_DURATION_MINUTES: 3'
           bodyFormat: 0
           bulletList: []
         - body: 'CHALLENGE_REWARD: See markdown README for details'
@@ -359,6 +375,9 @@ MonoBehaviour:
         - body: 'EVENT_END_TIME: 4'
           bodyFormat: 0
           bulletList: []
+        - body: 'EVENT_TOTAL_DURATION_MINUTES: 2'
+          bodyFormat: 0
+          bulletList: []
         - body: 'CHALLENGE_REWARD: See markdown README for details'
           bodyFormat: 0
           bulletList: []
@@ -391,6 +410,9 @@ MonoBehaviour:
           bodyFormat: 0
           bulletList: []
         - body: 'EVENT_END_TIME: 7'
+          bodyFormat: 0
+          bulletList: []
+        - body: 'EVENT_TOTAL_DURATION_MINUTES: 3'
           bodyFormat: 0
           bulletList: []
         - body: 'CHALLENGE_REWARD: See markdown README for details'
@@ -427,6 +449,9 @@ MonoBehaviour:
         - body: 'EVENT_END_TIME: 9'
           bodyFormat: 0
           bulletList: []
+        - body: 'EVENT_TOTAL_DURATION_MINUTES: 2'
+          bodyFormat: 0
+          bulletList: []
         - body: 'CHALLENGE_REWARD: See markdown README for details'
           bodyFormat: 0
           bulletList: []
@@ -438,13 +463,13 @@ MonoBehaviour:
     bodyFormat: 0
     boxCallout: 
     bulletList:
-    - body: 'GrantEventReward:'
+    - body: 'SeasonalEvents_GrantEventReward:'
       bodyFormat: 1
       bulletList:
       - body: 'Parameters: `none`'
         bodyFormat: 0
         bulletList: []
-      - body: 'Script: "Assets/Use Case Samples/Seasonal Events/Cloud Code/GrantEventReward.js"'
+      - body: 'Script: "Assets/Use Case Samples/Seasonal Events/Cloud Code/SeasonalEvents_GrantEventReward.js"'
         bodyFormat: 0
         bulletList: []
     linkList: []

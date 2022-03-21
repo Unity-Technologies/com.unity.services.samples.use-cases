@@ -12,8 +12,8 @@ EditorBuildSettings:
     path: Assets/Use Case Samples/Loot Boxes/LootBoxesSample.unity
     guid: d8a6b745fe0c1e3469ec1173fd1354d6
   - enabled: 1
-    path: Assets/Use Case Samples/Daily Rewards/DailyRewardsSample.unity
-    guid: 8b0950741814ff44296ae73091b678f4
+    path: Assets/Use Case Samples/Loot Boxes With Cooldown/LootBoxesWithCooldownSample.unity
+    guid: 2dd6ae7b284c688488b2d1e3f6e30d04
   - enabled: 1
     path: Assets/Use Case Samples/Starter Pack/StarterPackSample.unity
     guid: a88f0ec2e509c49818adeb0a6b048f2c
@@ -35,5 +35,11 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Use Case Samples/Command Batching/CommandBatchingSample.unity
     guid: 2be8bde25ddb04845b904dc0c1ff462b
+  - enabled: 1
+    path: Assets/Use Case Samples/Rewarded Ads With Unity Mediation/RewardedAdsSample.unity
+    guid: e9fe350f2968e464984761ec718859f6
+  - enabled: 1
+    path: Assets/Use Case Samples/Daily Rewards/DailyRewardsSample.unity
+    guid: 6f18edb8d6a94c046be10e296ef3a19f
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: c6ca533da370b4f2794f0c63c45e0e6f, type: 2}

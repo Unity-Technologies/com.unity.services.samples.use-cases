@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using Unity.Services.Economy;
 
-namespace GameOperationsSamples
+namespace UnityGamingServicesUseCases
 {
     public static class Utils
     {

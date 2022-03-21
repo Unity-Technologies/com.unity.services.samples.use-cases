@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace GameOperationsSamples
+namespace UnityGamingServicesUseCases
 {
     namespace CommandBatching
     {

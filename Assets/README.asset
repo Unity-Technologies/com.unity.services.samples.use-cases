@@ -13,36 +13,13 @@ MonoBehaviour:
   m_Name: README
   m_EditorClassIdentifier: 
   header:
-    title: 'Gaming Operations Samples'
+    title: Unity Gaming Services Use Cases
     icon: {fileID: 2800000, guid: 83f0684dab5534e2492f651aaaf4a151, type: 3}
   sections:
-  - subHeader1: Welcome to Gaming Operations Samples
+  - subHeader1: Welcome to Unity Gaming Services Use Cases
     subHeader2: 
     subHeader3: 
-    body: Tested with Unity 2020.3 for PC and Mac.
-    bodyFormat: 0
-    boxCallout: 
-    bulletList: []
-    linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
-    body: 'We''re proud to present this collection of samples to demonstrate how
-      to use various Unity Gaming Services together to solve common game development
-      challenges. '
-    bodyFormat: 0
-    boxCallout: 
-    bulletList: []
-    linkList: []
-  - subHeader1: 
-    subHeader2: Purpose
-    subHeader3: 
-    body: 'This collection of samples is designed to guide developers to use multiple
-      Unity Gaming Services in a single project. These samples demonstrate how various
-      services can be used together to address and implement typical backend game
-      use cases and game design elements, how to resolve specific development tasks,
-      and show the efficiency you can achieve in your game backend by leveraging
-      the Unity Gaming Services packages in your project. '
+    body: 
     bodyFormat: 0
     boxCallout: 
     bulletList: []
@@ -50,72 +27,22 @@ MonoBehaviour:
   - subHeader1: 
     subHeader2: 
     subHeader3: 
-    body: 'To tackle common challenges game developers may face as they build their
-      game, each of the following samples integrate several Unity Gaming Services
-      to illustrate interactive solutions and detailed tutorials that explain how
-      these services were used. '
+    body: This Unity Gaming Services (UGS) Samples package contains a collection
+      of samples designed to show you how you can use multiple UGS products to solve
+      common game development challenges. These samples implement typical backend
+      game use cases and game design elements, show how to resolve specific development
+      tasks, and highlight the efficiency you can achieve in your game backend by
+      integrating different UGS packages in your project.
     bodyFormat: 0
     boxCallout: 
     bulletList: []
-    linkList: []
-  - subHeader1: 
-    subHeader2: Samples Overview
-    subHeader3: 
-    body: 'In these sample scenes and their associated script files, you will learn
-      how to implement several common development challenges, including: '
-    bodyFormat: 0
-    boxCallout: 
-    bulletList:
-    - body: Loot Boxes - Reward players with a random Economy Currency using Cloud
-        Code to perform the Economy grants.
-      bodyFormat: 0
-      bulletList: []
-    - body: Daily Rewards - Grant players random collections of both Currencies and
-        Inventory Items at timed intervals.
-      bodyFormat: 0
-      bulletList: []
-    - body: Starter Packs - Allow players to purchase a Starter Pack using Cloud
-        Code to implement the one-time-only purchase.
-      bodyFormat: 0
-      bulletList: []
-    - body: Seasonal Events - Update game content remotely based on timed special
-        events.
-      bodyFormat: 0
-      bulletList: []
-    - body: A/B Testing Level Difficulty - Segment players into multiple test groups
-        in order to determine which variation of a specific variable is the most
-        engaging to the players (in this case, the amount of XP required for leveling
-        up).
-      bodyFormat: 0
-      bulletList: []
-    - body: Idle Clicker Mini Game - Update server authoritative game state in real
-        time,  similar to idle clicker and social games.
-      bodyFormat: 0
-      bulletList: []
-    - body: Cloud AI Mini Game - Server authoritative gameplay in a simple Tic-Tac-Toe  
-        game played against AI running on UGS with persistent state, Currency rewards,
-        stats, and straightforward AI.
-      bodyFormat: 0
-      bulletList: []
-    - body: Command Batching - Group game Commands into a queue and process on the
-        server in a single batch to reduce the volume and frequency of server calls
-        made during gameplay.
-      bodyFormat: 0
-      bulletList: []
-    - body: Battle Pass - A seasonal reward tier system with a free track and a premium
-        track.
-      bodyFormat: 0
-      bulletList: []
     linkList: []
   - subHeader1: 
     subHeader2: Getting Started
     subHeader3: 
-    body: Preview all the sample use cases by opening the Start Here scene located
-      in the Assets folder. Press the Play button and select any of the available
-      use case samples to see how they initialize and demonstrate a solution to each
-      problem. Pay special attention to the Inspector window when you select each
-      use case sample for detailed information. To test another sample, simply press
-      the back button in the scene to be returned to the Start Here scene.
+    body: To view each sample in action, open the Start Here scene in the Assets
+      directory and hit Play. To review an individual sample, find the use case directory
+      in Assets/Use Case Samples and view the README file for implementation details.
     bodyFormat: 0
     boxCallout: 
     bulletList: []
@@ -125,23 +52,101 @@ MonoBehaviour:
     subHeader3: 
     body: 
     bodyFormat: 0
-    boxCallout: 'Note: The UGS samples in this project were verified to build on
-      Android, iOS, MacOS, and Windows platforms. However, since the UGS Samples
-      project serves as a demonstration project only, the Unity Services account
-      used in the project only allows read-only testing in the Editor, and therefore
-      does not allow device builds. '
+    boxCallout: 'Note: This project is tied to a Unity Services Account that allows
+      read-only testing in the Editor. The messages "Unable to link project to Unity
+      Services" in Project Settings and "Unable to access Unity Services" in Build
+      Settings are expected. Additionally, you will be unable to create a device
+      build of this project.'
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: List of Samples
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: Loot Boxes - Reward players with a random Economy currency using Cloud
+        Code to perform the Economy grants.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: Loot Boxes With Cooldown - Grant players random collections of both Currencies
+        and Inventory Items at timed intervals.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: Starter Packs - Allow players to purchase a Starter Pack using Cloud
+        Code to implement the one-time-only purchase.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: Seasonal Events - Update game content remotely based on timed special
+        events.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: A/B Testing Level Difficulty - Segment players into multiple test groups
+        in order to determine which variation of a specific variable is the most
+        engaging to the players (in this case, the amount of XP required for leveling
+        up).
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: Idle Clicker Mini Game - Update server authoritative game state in real
+        time, similar to idle clicker and social games.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: Cloud AI Mini Game - Server authoritative gameplay in a simple Tic-Tac-Toe
+        game played against AI running on UGS with persistent state, Currency rewards,
+        stats, and straightforward AI.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: Command Batching - Group game Commands into a queue and process on the
+        server in a single batch to reduce the volume and frequency of server calls
+        made during gameplay.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: Battle Pass - A seasonal reward tier system with a free track and a premium
+        track.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: Rewarded Ads With Unity Mediation - Offer players opportunity to boost
+        level end rewards by interacting with a reward booster meter and watching
+        a rewarded ad.
+      bodyFormat: 0
+      bulletList: []
+    - body: Daily Rewards - A prevalent engagement feature that can boost retention
+        by showing players an escalating series of rewards incentivizes them to keep
+        logging in to claim better and better prizes.
+      bodyFormat: 0
+      bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: Tested with Unity 2020.3 for PC and Mac.
+    bodyFormat: 2
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: Using your own Unity Services Account
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 
     bulletList: []
     linkList: []
   - subHeader1: 
     subHeader2: 
     subHeader3: 
-    body: 'Consequently, if you go to Project Settings > Services when exploring
-      the UGS Samples project, you will see a notice saying, "Unable to link project
-      to Unity Services". Similarly, in the Build Settings window, you will see the
-      message "Unable to access Unity Services". These notices are expected and triggered
-      because the Samples project is linked to a read-only Unity Services account
-      to provide an out-of-the-box working experience using preset Unity Dashboard
-      settings. '
+    body: These samples use UGS packages which have already been configured so you
+      can easily explore the use case samples provided.
     bodyFormat: 0
     boxCallout: 
     bulletList: []
@@ -149,32 +154,17 @@ MonoBehaviour:
   - subHeader1: 
     subHeader2: 
     subHeader3: 
-    body: 'To see an end-to-end, fully functional implementation, from setting up
-      a backend to building similar use cases in your game to a native device, you
-      will need to create your own implementation in your project and backend infrastructure
-      in your own Unity Services account. See the next section for more guidance
-      on how to create a backend infrastructure in your own Unity Services account. '
+    body: To use these implementations in your own project, you will need to setup
+      and configure the services used in your own UGS Dashboard. Learn more about
+      each configuration in the README asset within each samples directory.
     bodyFormat: 0
     boxCallout: 
     bulletList: []
     linkList: []
   - subHeader1: 
-    subHeader2: Packages Required & Dashboard Setup
+    subHeader2: Feedback and Sample Requests
     subHeader3: 
-    body: 'These samples use Unity Gaming Services Packages which have already been
-      configured so you can easily explore the use case samples provided. '
-    bodyFormat: 0
-    boxCallout: 
-    bulletList: []
-    linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
-    body: 'To use these implementations in your own project, you will need to set
-      up the requisite Packages on the Unity Gaming Services Dashboard for your organization.
-      To learn which packages are required to implement a specific use case sample,
-      navigate to a specific use case, then the "Packages Required" section of that
-      use case README.md file to see which exact packages are required. '
+    body: 
     bodyFormat: 0
     boxCallout: 
     bulletList: []
@@ -182,10 +172,64 @@ MonoBehaviour:
   - subHeader1: 
     subHeader2: 
     subHeader3: 
-    body: 'Each README also contains a "Dashboard Setup" section, which describes
-      what data has been created on the dashboard for each service used by that Use
-      Case. '
+    body: If you have feedback or would like us to demonstrate a new use-case with
+      a sample, please let us know in the Unity Gaming Services Forum. We even have
+      a helpful tag to filter by!
     bodyFormat: 0
     boxCallout: 
+    bulletList: []
+    linkList:
+    - linkText: Unity Gaming Services Forum
+      url: https://forum.unity.com/forums/unity-gaming-services-general-discussion.561/
+    - linkText: Posts Tagged with "unity gaming services samples"
+      url: https://forum.unity.com/tags/unity-gaming-services-samples/
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: Additionally, you can submit feedback directly from the samples project
+      by using the feedback button in the bottom left corner of each scene during
+      Play Mode.
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: Cloud Diagnostics & User Reporting
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: Unity's Cloud Diagnostics service helps to ensure the quality of this project
+      by automatically sending diagnostic data to the dashboard when you encounter
+      errors. Additionally, the User Reporting feature lets you submit a screenshot
+      and detailed feedback about a sample by clicking the Feedback button in any
+      of the Sample scenes during Play Mode.
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: To set up Cloud Diagnostics and User Reporting in your own project, follow
+      the set-up instructions provided in the dashboard.
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList:
+    - linkText: Setting up Cloud Diagnostics
+      url: https://unitytech.github.io/clouddiagnostics/userreporting/UnityCloudDiagnosticsSettingUp.html
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 'Note: If you don''t want to automatically send exception data, disable
+      Cloud Diagnostics under Project Settings > Services > Cloud Diagnostics.'
     bulletList: []
     linkList: []

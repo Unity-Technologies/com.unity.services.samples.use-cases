@@ -1,5 +1,25 @@
 # Changelog
 
+## [1.3.0] - 2022-03-21
+
+### Added
+* Rewarded Ad use case which demonstrates how to offer rewarded ads via Unity Mediation to give bonus rewards at the end of a level.
+* Daily Rewards use case sample demonstrates an escalating series of daily rewards incentivizing players to keep logging in to claim better and better prizes.
+* Enabled the Unity Cloud Diagnostics service for this project.
+    Crashes and exceptions are automatically sent to the backend for analysis, so that we can ensure the quality of the samples.
+    You can disable Cloud Diagnostics in the Services window.
+* Added the User Reporting feature, so you can send us feedback about the samples from directly within the sample scenes, with automatic screenshots included.
+  This is a feature you can use in your projects for your customers to send feedback to your Unity Dashboard.
+
+### Changed
+
+* Fixed minor UI bug where Cloud AI Use Case Sample cursor does not appear correctly at startup or when moved between plays.
+* Improved throw handling to permit Cloud Code to throw standard and custom exceptions which are caught and handled correctly in Unity client scripts.
+* Changed the name of the project from "Game Operations Samples" to "Unity Gaming Services Use Cases".
+* Updated Unity Services packages to the group of packages released as of 2022-02-23.
+* Removed unused networking and multiplayer-related packages.
+* Renamed existing "Daily Rewards" use case to "Loot Boxes With Cooldown" to better describe its behavior and avoid confusion with existing live games that use a monthly calendar to grant rewards on a daily basis.
+
 ## [1.2.0] - 2022-02-09
 
 ### Added
@@ -11,7 +31,7 @@
 
 ### Changed
 
-* Updated Unity Services packages to the group of packages released as of 02/07/22. If there are any Burst errors logged after updating, restart Unity, or delete the Library folder to resolve the errors.
+* Updated Unity Services packages to the group of packages released as of 2022-02-07. If there are any Burst errors logged after updating, restart Unity, or delete the Library folder to resolve the errors.
 * In the AB Test scene, after calling Authentication.Instance.SignOut a call to Authentication.Instance.ClearSessionToken has been added to maintain current functionality of being able to immediately sign in again as a new anonymous user.
 * Disabled "Reset Starter Pack" button during startup and when starter pack has not been purchased.
 * Disabled playfield buttons during startup in Idle Clicker use case sample to permit initialization to complete before making UGS requests.

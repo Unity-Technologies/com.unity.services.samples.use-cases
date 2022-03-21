@@ -1,6 +1,6 @@
 using System;
 
-namespace GameOperationsSamples
+namespace UnityGamingServicesUseCases
 {
     namespace BattlePass
     {

@@ -3,7 +3,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace GameOperationsSamples.Editor
+namespace UnityGamingServicesUseCases.Editor
 {
     [CustomEditor(typeof(Readme))]
     [InitializeOnLoad]
@@ -18,10 +18,9 @@ namespace GameOperationsSamples.Editor
         const float k_BulletLevel3LabelWidth = 55;
         const float k_BulletLevel4LabelWidth = 70;
         bool m_StylesInitialized;
-        
+
         const string k_ShowedReadmeSessionStateName = "ReadmeEditor.showedReadme";
         const string k_DefaultReadmeLabel = "StartHereReadme";
-        
 
         [SerializeField] GUIStyle m_BodyStyle;
         [SerializeField] GUIStyle m_HeaderTitleStyle;
@@ -36,7 +35,7 @@ namespace GameOperationsSamples.Editor
         {
             m_Readme = target as Readme;
         }
-        
+
         static ReadmeEditor()
         {
             EditorApplication.delayCall += SelectReadmeAutomatically;
@@ -50,14 +49,15 @@ namespace GameOperationsSamples.Editor
                 SessionState.SetBool(k_ShowedReadmeSessionStateName, true);
             }
         }
-        
+
         static void SelectReadme()
         {
             var ids = AssetDatabase.FindAssets($"l:{k_DefaultReadmeLabel}");
+
             if (ids.Length > 0)
             {
                 var readmeObject = AssetDatabase.LoadMainAssetAtPath(AssetDatabase.GUIDToAssetPath(ids[0]));
-                Selection.objects = new UnityEngine.Object[] { readmeObject };
+                Selection.objects = new [] { readmeObject };
             }
             else
             {
@@ -68,7 +68,9 @@ namespace GameOperationsSamples.Editor
         void InitStyles()
         {
             if (m_StylesInitialized)
+            {
                 return;
+            }
 
             m_BodyStyle = new GUIStyle(EditorStyles.label)
             {
@@ -186,7 +188,7 @@ namespace GameOperationsSamples.Editor
                 {
                     DisplayFormattedLinkList(section.linkList);
                 }
-                
+
                 GUILayout.Space(k_SectionSpacer);
             }
         }
@@ -214,9 +216,15 @@ namespace GameOperationsSamples.Editor
             foreach (var item in list)
             {
                 DisplayFormattedBulletListItem(item.body, item.bodyFormat);
+
                 if (item.bulletList != null && item.bulletList.Length > 0)
                 {
                     DisplayFormattedBulletItemLevel2List(item.bulletList);
+                }
+
+                if (item.linkList != null && item.linkList.Length > 0)
+                {
+                    DisplayFormattedLinkList(item.linkList);
                 }
             }
 
@@ -230,6 +238,7 @@ namespace GameOperationsSamples.Editor
             foreach (var item in list)
             {
                 DisplayFormattedBulletListItem(item.body, item.bodyFormat);
+
                 if (item.bulletList != null && item.bulletList.Length > 0)
                 {
                     DisplayFormattedBulletItemLevel3List(item.bulletList);
@@ -246,6 +255,7 @@ namespace GameOperationsSamples.Editor
             foreach (var item in list)
             {
                 DisplayFormattedBulletListItem(item.body, item.bodyFormat);
+
                 if (item.bulletList != null && item.bulletList.Length > 0)
                 {
                     DisplayFormattedBulletItemLevel4List(item.bulletList);
@@ -270,6 +280,7 @@ namespace GameOperationsSamples.Editor
         void DisplayFormattedBulletListItem(string text, Readme.FontFormat format)
         {
             EditorGUILayout.LabelField("*", text, GetStyle(format));
+
             GUILayout.Space(k_BulletItemSpacer);
         }
 
@@ -290,6 +301,7 @@ namespace GameOperationsSamples.Editor
             using (new EditorGUILayout.HorizontalScope())
             {
                 EditorGUILayout.PrefixLabel("*");
+
                 if (GUILayout.Button(text, m_LinkStyle))
                 {
                     Application.OpenURL(url);
@@ -314,15 +326,12 @@ namespace GameOperationsSamples.Editor
 
         GUIStyle GetStyle(Readme.FontFormat format)
         {
-            switch (format)
+            return format switch
             {
-                case Readme.FontFormat.Bold:
-                    return m_BoldStyle;
-                case Readme.FontFormat.Italic:
-                    return m_ItalicsStyle;
-                default:
-                    return m_BodyStyle;
-            }
+                Readme.FontFormat.Bold => m_BoldStyle,
+                Readme.FontFormat.Italic => m_ItalicsStyle,
+                _ => m_BodyStyle
+            };
         }
     }
 }

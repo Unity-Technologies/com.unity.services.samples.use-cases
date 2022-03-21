@@ -25,7 +25,7 @@ If it does, Economy is called to distribute the level-up rewards (100 COIN), and
 
 The client code then opens a dialog to indicate that the player has leveled up, what currency reward was granted, and updates the relevant data in the scene. Note: A cross reference dictionary located in the Remote Config and initialized at start-up is used to convert the rewarded currency ID (i.e. "COIN") to an Addressable address, which can be used to display the sprite (i.e. "Sprites/Currency/Coin"). This step allows players to experience different art based on their segmentation and provides a convenient way to retrieve additional data for a specific currency at runtime.
 
-Please note that a simpler approach to display different art according to a player’s segmentation is to attach additional information to the Custom Data associated with Currencies in the Economy configuration data. However, for the purpose of this segmentation sample, the data was added to the Campaigns themselves to demonstrate the flexibility permitted by the Remote Config service.
+Please note that a simpler approach to display different art according to a player’s segmentation is to attach additional information to the Custom Data associated with Currencies in the Economy configuration data. However, for the purpose of this segmentation sample, the data was added to the Game Overrides themselves to demonstrate the flexibility permitted by the Remote Config service.
 
 If a player instead clicks "Sign In As New Player", the current anonymous player ID is deleted, the cached values are reset to empty/default state, and then a new sign in is initiated with the Authentication service, following the same flow as when the scene first loads.
 Once again, an `ActionButtonPressed` event is also triggered when the "Sign In As New Player" button is pressed. 
@@ -44,7 +44,7 @@ To resolve either of these exceptions, wait a minute and try again, or sign out 
 - **Authentication:** Automatically signs in the user anonymously to keep track of their data on the server side.
 - **Cloud Save:** Server authoritative way to save player data and game state. In this sample, it stores the player's level and XP.
 - **Economy:** Keeps track of the player's currencies.
-- **Remote Config:** Provides key-value pairs where the value that is mapped to a given key can be changed on the server-side, either manually or based on specific campaigns. In this sample, a single campaign with a built-in A/B test is used to return different values for the amount of XP required to level up. Remote Config also stores data associated with Currency icon Addressable addresses.
+- **Remote Config:** Provides key-value pairs where the value that is mapped to a given key can be changed on the server-side, either manually or based on specific Game Overrides. In this sample, a single Game Override with a built-in A/B test is used to return different values for the amount of XP required to level up. Remote Config also stores data associated with Currency icon Addressable addresses.
 - **Cloud Code:** Keeps important validation logic for increasing XP and leveling up the player on the server side.
 - **Analytics:** Sends events that allows tracking of a player's in-game interactions, retention, and other information which can be used for analyzing and improving game experience.
 
@@ -58,7 +58,7 @@ and [Analytics](https://docs.unity.com/analytics/SDKInstallation.htm) docs to le
 
 ### Dashboard Setup
 To use Cloud Save, Economy, Remote Config, and Cloud Code services in your game, activate each service for your organization and project in the Unity Dashboard.
-To duplicate this sample scene's setup on your own dashboard, you'll need a a currency in the Economy setup, some Config Values and a Campaign set up in Remote Config, and a script published in Cloud Code:
+To duplicate this sample scene's setup on your own dashboard, you'll need a a currency in the Economy setup, some Config Values and a Game Override set up in Remote Config, and a script published in Cloud Code:
 
 #### Economy Items
 * Coin - `ID: "COIN"` - The currency distributed as a reward for the player leveling up.
@@ -67,19 +67,19 @@ To duplicate this sample scene's setup on your own dashboard, you'll need a a cu
 ##### Config Values
 * A_B_TEST_GROUP - The identifier for which test user group the player is in.
   * Type: `string`
-  * Default value: `""`
+  * Value: `""`
 * A_B_TEST_ID - The identifier for which AB Test is actively being run for this user.
   * Type: `string`
-  * Default value: `""`
+  * Value: `""`
 * LEVEL_UP_XP_NEEDED - The amount of XP needed in order for the player to level up.
   * Type: `int`
-  * Default value: `100`
+  * Value: `100`
 * XP_INCREASE - The amount the player's XP will increase by each time they gain XP.
   * Type: `int`
-  * Default value: `10`
+  * Value: `10`
 * CURRENCIES - A cross reference from currencyId to spriteAddresses for all currency types
   * Type: `json`
-  * Default value:
+  * Value:
   ```json
     {
         "currencyData": [{
@@ -106,7 +106,7 @@ To duplicate this sample scene's setup on your own dashboard, you'll need a a cu
     }
     ```
 
-##### Campaigns
+##### Game Overrides
 * Level Difficulty A/B Test
   * Status: Active
   * Audience: true, 100%
@@ -135,9 +135,9 @@ To duplicate this sample scene's setup on your own dashboard, you'll need a a cu
       * A_B_TEST_ID: LevelDifficultyTest1
 
 #### Cloud Code Scripts
-* GainXPAndLevelIfReady:
+* ABTest_GainXPAndLevelIfReady:
   * Parameters: `none`
-  * Script: `Assets/Use Case Samples/AB Test Level Difficulty/Cloud Code/GainXPAndLevelIfReady.js`
+  * Script: `Assets/Use Case Samples/AB Test Level Difficulty/Cloud Code/ABTest_GainXPAndLevelIfReady.js`
 
 _**Note**:
 The Cloud Code scripts included in the `Cloud Code` folder are just local copies, since you can't see the sample's dashboard. Changes to these scripts will not affect the behavior of this sample since they will not be automatically uploaded to Cloud Code service._

@@ -4,12 +4,15 @@ using Unity.Services.Authentication;
 using Unity.Services.Core;
 using UnityEngine;
 
-namespace GameOperationsSamples
+namespace UnityGamingServicesUseCases
 {
     namespace BattlePass
     {
         public class BattlePassSceneManager : MonoBehaviour
         {
+            const int k_GainFreeGemsAmount = 30;
+            const int k_PlayGamePointsAmount = 85;
+
             public BattlePassSampleView sceneView;
             public BattlePassView battlePassView;
             public TierPopupView tierPopupView;
@@ -130,14 +133,14 @@ namespace GameOperationsSamples
 
             public async void OnTierPopupClaimButtonClicked(int tierIndexToClaim)
             {
-                sceneView.SetInteractable(false);
-
-                var result = await CloudCodeManager.instance.CallClaimTierEndpoint(tierIndexToClaim);
-
-                if (this == null) return;
-
-                if (result.validationResult == "valid")
+                try
                 {
+                    sceneView.SetInteractable(false);
+
+                    var result = await CloudCodeManager.instance.CallClaimTierEndpoint(tierIndexToClaim);
+
+                    if (this == null) return;
+
                     UpdateCachedBattlePassProgress(battlePassProgress.seasonXP, battlePassProgress.ownsBattlePass, result.seasonTierStates);
 
                     battlePassView.Refresh(battlePassProgress);
@@ -145,12 +148,14 @@ namespace GameOperationsSamples
                     await EconomyManager.instance.RefreshCurrencyBalances();
 
                     if (this == null) return;
-
-                    battlePassView.Refresh(battlePassProgress);
                 }
-                else
+                catch (CloudCodeResultUnavailableException)
                 {
-                    Debug.LogWarning($"Battle Pass purchase was not successful. Reason given: {result.validationResult}");
+                    // Exception already handled by CloudCodeManager
+                }
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
                 }
 
                 sceneView.SetInteractable(true);
@@ -158,51 +163,77 @@ namespace GameOperationsSamples
 
             public async void OnGainGemsButtonPressed()
             {
-                sceneView.SetInteractable(false);
+                try
+                {
+                    sceneView.SetInteractable(false);
 
-                await EconomyManager.instance.GainCurrency("GEM", 30);
+                    await EconomyManager.instance.GainCurrency("GEM", k_GainFreeGemsAmount);
+                }
+                catch (CloudCodeResultUnavailableException)
+                {
+                    // Exception already handled by CloudCodeManager
+                }
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
+                }
 
                 sceneView.SetInteractable(true);
             }
 
             public async void OnPlayGameButtonPressed()
             {
-                sceneView.SetInteractable(false);
+                try
+                {
+                    sceneView.SetInteractable(false);
 
-                var result = await CloudCodeManager.instance.CallGainSeasonXpEndpoint(85);
+                    var result = await CloudCodeManager.instance.CallGainSeasonXpEndpoint(k_PlayGamePointsAmount);
 
-                if (this == null) return;
+                    if (this == null) return;
 
-                UpdateCachedBattlePassProgress(result.seasonXp, battlePassProgress.ownsBattlePass, result.seasonTierStates);
+                    UpdateCachedBattlePassProgress(result.seasonXp, battlePassProgress.ownsBattlePass,
+                        result.seasonTierStates);
 
-                battlePassView.Refresh(battlePassProgress);
+                    battlePassView.Refresh(battlePassProgress);
+                }
+                catch (CloudCodeResultUnavailableException)
+                {
+                    // Exception already handled by CloudCodeManager
+                }
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
+                }
 
                 sceneView.SetInteractable(true);
             }
 
             public async void OnBuyBattlePassButtonPressed()
             {
-                sceneView.SetInteractable(false);
-
-                var result = await CloudCodeManager.instance.CallPurchaseBattlePassEndpoint();
-
-                if (this == null) return;
-
-                if (result.purchaseResult == "success")
+                try
                 {
+                    sceneView.SetInteractable(false);
+
+                    var result = await CloudCodeManager.instance.CallPurchaseBattlePassEndpoint();
+
+                    if (this == null) return;
+
                     UpdateCachedBattlePassProgress(battlePassProgress.seasonXP, true, result.seasonTierStates);
+
                     battlePassView.Refresh(battlePassProgress);
+
+                    await EconomyManager.instance.RefreshCurrencyBalances();
+
+                    if (this == null) return;
                 }
-                else
+                catch (CloudCodeResultUnavailableException)
                 {
-                    Debug.LogWarning($"Battle Pass purchase was not successful. Reason given: {result.purchaseResult}");
+                    // Exception already handled by CloudCodeManager
                 }
-
-                await EconomyManager.instance.RefreshCurrencyBalances();
-
-                if (this == null) return;
-
-                battlePassView.Refresh(battlePassProgress);
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
+                }
 
                 sceneView.SetInteractable(true);
             }
@@ -230,9 +261,9 @@ namespace GameOperationsSamples
             {
                 // Because our events are time-based and change so rapidly (every 2 - 3 minutes), we will check each
                 // update if it's time to refresh Remote Config's local data, and refresh it if the current
-                // last digit of the minutes equals the start of the next campaign time (See more info in the comments
-                // in GetUserAttributes). More typically you would probably fetch new configs at app launch and under
-                // other less frequent circumstances.
+                // last digit of the minutes equals the start of the next game override's time (See more info in the
+                // comments in GetUserAttributes). More typically you would probably fetch new configs at app launch
+                // and under other less frequent circumstances.
                 var currentMinuteLastDigit = DateTime.Now.Minute % 10;
 
                 if (currentMinuteLastDigit > RemoteConfigManager.instance.activeEventEndTime

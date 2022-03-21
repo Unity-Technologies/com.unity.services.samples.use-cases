@@ -2,7 +2,7 @@ using System.Text;
 using Unity.Services.Economy.Model;
 using UnityEngine;
 
-namespace GameOperationsSamples
+namespace UnityGamingServicesUseCases
 {
     public class CurrencyHudView : MonoBehaviour
     {

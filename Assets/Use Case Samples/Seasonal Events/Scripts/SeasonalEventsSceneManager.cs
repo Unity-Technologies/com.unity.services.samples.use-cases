@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
-namespace GameOperationsSamples
+namespace UnityGamingServicesUseCases
 {
     namespace SeasonalEvents
     {
@@ -232,9 +232,9 @@ namespace GameOperationsSamples
             {
                 // Because our events are time-based and change so rapidly (every 2 - 3 minutes), we will check each
                 // update if it's time to refresh Remote Config's local data, and refresh it if the current
-                // last digit of the minutes equals the start of the next campaign time (See more info in the comments
-                // in GetUserAttributes). More typically you would probably fetch new configs at app launch and under
-                // other less frequent circumstances.
+                // last digit of the minutes equals the start of the next game override's time (See more info in the
+                // comments in GetUserAttributes). More typically you would probably fetch new configs at app launch
+                // and under other less frequent circumstances.
                 var currentMinuteLastDigit = DateTime.Now.Minute % 10;
 
                 if (currentMinuteLastDigit > RemoteConfigManager.instance.activeEventEndTime ||

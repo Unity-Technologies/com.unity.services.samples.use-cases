@@ -244,7 +244,7 @@ MonoBehaviour:
       - body: 'Type: json'
         bodyFormat: 0
         bulletList: []
-      - body: 'Default value: See markdown README for details'
+      - body: 'Value: See markdown README for details'
         bodyFormat: 0
         bulletList: []
     - body: COMMANDBATCH_DEFEAT_BLUE_ENEMY
@@ -256,7 +256,7 @@ MonoBehaviour:
       - body: 'Type: json'
         bodyFormat: 0
         bulletList: []
-      - body: 'Default value: See markdown README for details'
+      - body: 'Value: See markdown README for details'
         bodyFormat: 0
         bulletList: []
     - body: COMMANDBATCH_DEFEAT_RED_ENEMY
@@ -268,7 +268,7 @@ MonoBehaviour:
       - body: 'Type: json'
         bodyFormat: 0
         bulletList: []
-      - body: 'Default value: See markdown README for details'
+      - body: 'Value: See markdown README for details'
         bodyFormat: 0
         bulletList: []
     - body: COMMANDBATCH_OPEN_CHEST
@@ -280,7 +280,7 @@ MonoBehaviour:
       - body: 'Type: json'
         bodyFormat: 0
         bulletList: []
-      - body: 'Default value: See markdown README for details'
+      - body: 'Value: See markdown README for details'
         bodyFormat: 0
         bulletList: []
     - body: COMMANDBATCH_GAME_OVER
@@ -292,7 +292,7 @@ MonoBehaviour:
       - body: 'Type: json'
         bodyFormat: 0
         bulletList: []
-      - body: 'Default value: See markdown README for details'
+      - body: 'Value: See markdown README for details'
         bodyFormat: 0
         bulletList: []
     linkList: []

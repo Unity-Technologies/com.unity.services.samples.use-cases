@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Unity.Services.Authentication;
 using Unity.Services.CloudCode;
@@ -6,7 +7,7 @@ using Unity.Services.CloudSave;
 using Unity.Services.Core;
 using UnityEngine;
 
-namespace GameOperationsSamples
+namespace UnityGamingServicesUseCases
 {
     namespace CloudAIMiniGame
     {
@@ -36,7 +37,9 @@ namespace GameOperationsSamples
 
                     Debug.Log($"Player id:{AuthenticationService.Instance.PlayerId}");
 
-                    await GetState();
+                    // Get current state. If this fails because of a Cloud Code error, the Cloud Code Manager will
+                    // handle it, then throw a Result-Unavailable exception which prevents furth processing here.
+                    m_UpdatedState = await CloudCodeManager.instance.CallGetStateEndpoint();
                     if (this == null) return;
 
                     await EconomyManager.instance.RefreshCurrencyBalances();
@@ -48,19 +51,14 @@ namespace GameOperationsSamples
 
                     Debug.Log("Initialization and signin complete.");
                 }
+                catch (CloudCodeResultUnavailableException)
+                {
+                    // Exception already handled by CloudCodeManager
+                }
                 catch (Exception e)
                 {
                     Debug.LogException(e);
                 }
-            }
-
-            async Task GetState()
-            {
-                m_UpdatedState = await CloudCode.CallEndpointAsync<UpdatedState>(
-                    "CloudAi_GetState", new object());
-                if (this == null) return;
-
-                Debug.Log($"Starting State: {m_UpdatedState}");
             }
 
             public async Task PlayfieldButtonPressed(Coord coord)
@@ -75,13 +73,22 @@ namespace GameOperationsSamples
 
                     sceneView.ShowAiTurn();
 
-                    await PlacePlayerPiece(coord);
+                    m_UpdatedState = await CloudCodeManager.instance.CallValidatePlayerMoveAndRespondEndpoint(coord);
                     if (this == null) return;
+
+                    if (m_UpdatedState.isGameOver)
+                    {
+                        sceneView.ShowGameOverPopup(m_UpdatedState.status);
+                    }
 
                     await EconomyManager.instance.RefreshCurrencyBalances();
                     if (this == null) return;
 
                     sceneView.ShowState(m_UpdatedState);
+                }
+                catch (CloudCodeResultUnavailableException)
+                {
+                    // Exception already handled by CloudCodeManager
                 }
                 catch (Exception e)
                 {
@@ -97,17 +104,6 @@ namespace GameOperationsSamples
                 }
             }
 
-            async Task PlacePlayerPiece(Coord coord)
-            {
-                m_UpdatedState = await CloudCode.CallEndpointAsync<UpdatedState>(
-                    "CloudAi_ValidatePlayerMoveAndRespond", new CoordParam(coord));
-                if (this == null) return;
-
-                sceneView.ShowStatusPopupIfNecessary(m_UpdatedState.status);
-
-                Debug.Log($"New state: {m_UpdatedState}");
-            }
-
             public async void OnNewGameButton()
             {
                 try
@@ -116,8 +112,7 @@ namespace GameOperationsSamples
 
                     sceneView.EnableButtons(false);
 
-                    m_UpdatedState = await CloudCode.CallEndpointAsync<UpdatedState>(
-                        "CloudAi_StartNewGame", new object());
+                    m_UpdatedState = await CloudCodeManager.instance.CallStartNewGameEndpoint();
                     if (this == null) return;
 
                     Debug.Log($"Starting State: {m_UpdatedState}");
@@ -130,6 +125,10 @@ namespace GameOperationsSamples
                     sceneView.EnableButtons();
 
                     Debug.Log("New game started.");
+                }
+                catch (CloudCodeResultUnavailableException)
+                {
+                    // Exception already handled by CloudCodeManager
                 }
                 catch (Exception e)
                 {
@@ -155,7 +154,7 @@ namespace GameOperationsSamples
                     await SaveData.ForceDeleteAsync("CLOUD_AI_GAME_STATE");
                     if (this == null) return;
 
-                    await GetState();
+                    m_UpdatedState = await CloudCodeManager.instance.CallGetStateEndpoint();
                     if (this == null) return;
 
                     await EconomyManager.instance.RefreshCurrencyBalances();
@@ -164,6 +163,10 @@ namespace GameOperationsSamples
                     sceneView.ShowState(m_UpdatedState);
 
                     sceneView.EnableButtons();
+                }
+                catch (CloudCodeResultUnavailableException)
+                {
+                    // Exception already handled by CloudCodeManager
                 }
                 catch (Exception e)
                 {

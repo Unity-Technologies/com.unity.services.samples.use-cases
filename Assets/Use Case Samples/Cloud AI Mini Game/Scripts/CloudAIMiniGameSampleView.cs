@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace GameOperationsSamples
+namespace UnityGamingServicesUseCases
 {
     namespace CloudAIMiniGame
     {
@@ -34,7 +34,7 @@ namespace GameOperationsSamples
 
                 foreach (var gridEntityView in m_GridEntityView)
                 {
-                    gridEntityView.button.interactable = flag;
+                    gridEntityView.UpdateButton(flag);
                 }
             }
 
@@ -69,18 +69,24 @@ namespace GameOperationsSamples
                     "A new game was started.\nCloud AI played first.\n\nNow it's your turn.");
             }
 
-            public void ShowStatusPopupIfNecessary(string status)
+            public void ShowSpaceOccupiedErrorPopup()
+            {
+                messagePopup.Show("Unable to place piece",
+                    "Space is occupied.\n\nPlease ensure target space is empty.");
+            }
+
+            public void ShowGameOverErrorPopup()
+            {
+                messagePopup.Show("Game Over",
+                    "Please select\n[New Game]\nto begin a new game.");
+            }
+
+            public void ShowGameOverPopup(string status)
             {
                 switch (status)
                 {
-                    case "spaceOccupied":
-                        messagePopup.Show("Unable to place piece", "Space is occupied.\n\n" +
-                            "Please ensure target space is empty.");
-                        break;
-
                     case "playerWon":
                         ShowRewardPopup("Congratulations!", "You received 100 Coins for winning!", 100);
-
                         break;
 
                     case "aiWon":
@@ -89,10 +95,6 @@ namespace GameOperationsSamples
 
                     case "draw":
                         ShowRewardPopup("Congratulations!", "You received 25 Coins for tying!", 25);
-                        break;
-
-                    case "gameOver":
-                        messagePopup.Show("Game Over", "Please select\n[New Game]\nto begin a new game.");
                         break;
                 }
             }

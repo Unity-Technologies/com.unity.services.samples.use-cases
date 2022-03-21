@@ -5,7 +5,7 @@ using Unity.Services.Authentication;
 using Unity.Services.Core;
 using UnityEngine;
 
-namespace GameOperationsSamples
+namespace UnityGamingServicesUseCases
 {
     namespace ABTestLevelDifficulty
     {
@@ -97,10 +97,21 @@ namespace GameOperationsSamples
                 sceneView.EnableAndUpdate();
             }
 
-            public async void OnSignInAsNewUserButtonPressed()
+            public void OnSignInAsNewUserButtonPressed()
+            {
+                sceneView.ShowSignOutConfirmationPopup();
+            }
+
+            public void OnCancelButtonPressed()
+            {
+                sceneView.CloseSignOutConfirmationPopup();
+            }
+
+            public async void OnProceedButtonPressed()
             {
                 try
                 {
+                    sceneView.CloseSignOutConfirmationPopup();
                     AnalyticsManager.instance.SendActionButtonPressedEvent("SignInAsNewUser");
 
                     SignOut();
@@ -127,7 +138,7 @@ namespace GameOperationsSamples
                     AuthenticationService.Instance.SignOut();
 
                     // Because this use case wants to immediately sign back in as a new anonymous user, instead of
-                    // the same one that had been previously signed in we will clear the session token.tct
+                    // the same one that had been previously signed in we will clear the session token.
                     AuthenticationService.Instance.ClearSessionToken();
                     UpdateSceneViewAfterSignOut();
                 }

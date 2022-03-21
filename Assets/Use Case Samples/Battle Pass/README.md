@@ -25,12 +25,12 @@ When this scene first loads, it will initialize Unity Services and sign the play
 This can be seen in the BattlePassSceneManager script.
 
 Once Unity Services completes initialization, Remote Config is queried to get the current values for the event-related keys, such as Battle Pass content.
-Each reward tier is represented by a JSON value in Remote Config. The downloaded tier values depend on which campaign is currently active.
+Each reward tier is represented by a JSON value in Remote Config. The downloaded tier values depend on which Game Override is currently active.
 When the event is scheduled to end, we call Remote Config again to get the new values and refresh the UI.
 
-Note: This sample determines which Remote Config campaign data should be returned based on the user’s timestamp, to demonstrate how events can change and update local variables.
+Note: This sample determines which Game Override data should be returned based on the user’s timestamp, to demonstrate how events can change and update local variables.
 This is a simplification.
-In a real app, developers likely set up a campaign to have specific start and end dates, then Remote Config determines when the campaign is shown based on the server’s date/time.
+In a real app, developers likely set up a Game Override to have specific start and end dates, then Remote Config determines when the Game Override is shown based on the server’s date/time.
 
 Everything about the reward system and Battle Pass is powered by Cloud Code scripts, from getting the progress to claiming tiers to purchasing a Battle Pass.
 At first, it looks like some of these actions could be simpler calls directly to each service.
@@ -59,8 +59,8 @@ In this sample it is used for four main purposes:
   - Purchase a Battle Pass, which unlocks more rewards and possibly grants rewards for tiers already claimed.
 
 - **Remote Config:**
-Provides key-value pairs where the value that is mapped to a given key can be changed on the server-side, either manually or based on specific campaigns.
-In this sample, we use the campaigns feature to create the four seasonal events and return different values for certain keys based on the campaign.
+Provides key-value pairs where the value that is mapped to a given key can be changed on the server-side, either manually or based on specific Game Overrides.
+In this sample, we use the Game Overrides feature to create the four seasonal events and return different values for certain keys based on the Game Override.
 
 - **Addressables:**
 Allows developers to ask for an asset via its address.
@@ -84,7 +84,7 @@ The setup here has a lot in common with the setup in the Seasonal Event sample.
 We won't be using the Challenge Reward or seasonal images in this sample, but we'll be using everything else, with some additions.
 
 To use Economy, Remote Config, and Cloud Code services in your game, activate each service for your organization and project in the Unity Dashboard.
-To duplicate this sample scene's setup on your own dashboard, you'll need a few currencies in the Economy setup, some Config Values and Campaigns set up in Remote Config, and a number of scripts published in Cloud Code:
+To duplicate this sample scene's setup on your own dashboard, you'll need a few currencies in the Economy setup, some Config Values and Game Overrides set up in Remote Config, and a number of scripts published in Cloud Code:
 
 #### Economy Items
 
@@ -111,31 +111,35 @@ To duplicate this sample scene's setup on your own dashboard, you'll need a few 
 
 * EVENT_NAME - The name of the event to display in the scene.
   * Type: `string`
-  * Default value: `""`
+  * Value: `""`
 
 * EVENT_KEY - The key used to look up event-specific values, such as the addresses for the specific images.
   * Type: `string`
-  * Default value: `""`
+  * Value: `""`
 
-* EVENT_END_TIME - The last digit that matches in the Audience JEXL statement, i.e. the last digit of the latest timestamp that would return this campaign.
+* EVENT_END_TIME - The last digit of the last minute during which the Game Override is active. Used when determining how much time is left in the current event.
   * Type: `int`
-  * Default value: `0`
+  * Value: `0`
 
-* BATTLE_PASS_TIER_COUNT - The total number of tiers each season. Not overridden by campaigns in this example.
+* EVENT_TOTAL_DURATION_MINUTES - The total number of minutes that a given season's Game Override is active for.
   * Type: `int`
-  * Default value: `10`
+  * Value: `0`
 
-* BATTLE_PASS_SEASON_XP_PER_TIER - The amount of Season XP needed to unlock each tier. Not overridden by campaigns in this example.
+* BATTLE_PASS_TIER_COUNT - The total number of tiers each season. Not overridden by Game Overrides in this example.
   * Type: `int`
-  * Default value: `100`
+  * Value: `10`
 
-* BATTLE_PASS_TIER_1 - The JSON that specifies what rewards are distributed when Tier 1 is claimed. Overridden by seasonal campaigns.
+* BATTLE_PASS_SEASON_XP_PER_TIER - The amount of Season XP needed to unlock each tier. Not overridden by Game Overrides in this example.
+  * Type: `int`
+  * Value: `100`
+
+* BATTLE_PASS_TIER_1 - The JSON that specifies what rewards are distributed when Tier 1 is claimed. Overridden by seasonal Game Overrides.
   * Type: `json`
-  * Default value: `json {}` (reward tiers aren't valid outside of seasonal events)
+  * Value: `json {}` (reward tiers aren't valid outside of seasonal events)
 
 * _Repeat BATTLE_PASS_TIER_1 for tiers 2 through 10_
 
-##### Campaigns
+##### Game Overrides
 
 * Fall Event
   * Status: Active
@@ -147,6 +151,7 @@ To duplicate this sample scene's setup on your own dashboard, you'll need a few 
     * EVENT_NAME: `Fall Event`
     * EVENT_KEY: `Fall`
     * EVENT_END_TIME: `2`
+    * EVENT_TOTAL_DURATION_MINUTES: `3`
     * BATTLE_PASS_TIER_1:
       ```json
       {
@@ -171,6 +176,7 @@ To duplicate this sample scene's setup on your own dashboard, you'll need a few 
   * EVENT_NAME: `Winter Event`
   * EVENT_KEY: `Winter`
   * EVENT_END_TIME: `4`
+  * EVENT_TOTAL_DURATION_MINUTES: `2`
   * _For everything else, just like the Fall Event, but with different rewards._
 
 
@@ -180,6 +186,7 @@ To duplicate this sample scene's setup on your own dashboard, you'll need a few 
   * EVENT_NAME: `Spring Event`
   * EVENT_KEY: `Spring`
   * EVENT_END_TIME: `7`
+  * EVENT_TOTAL_DURATION_MINUTES: `3`
   * _For everything else, just like the Fall Event, but with different rewards._
 
 
@@ -189,6 +196,7 @@ To duplicate this sample scene's setup on your own dashboard, you'll need a few 
   * EVENT_NAME: `Summer Event`
   * EVENT_KEY: `Summer`
   * EVENT_END_TIME: `9`
+  * EVENT_TOTAL_DURATION_MINUTES: `2`
   * _For everything else, just like the Fall Event, but with different rewards._
 
 
@@ -196,25 +204,25 @@ To duplicate this sample scene's setup on your own dashboard, you'll need a few 
 
 * BattlePass_GetProgress:
   * Parameters: `none`
-  * Script: `Assets/Use Case Samples/Battle Pass/Cloud Code/GetProgress.js`
+  * Script: `Assets/Use Case Samples/Battle Pass/Cloud Code/BattlePass_GetProgress.js`
 
 * BattlePass_GainSeasonXP:
   * Parameters:
     * amount
       * Type: Numeric
       * The amount of season XP to gain.
-  * Script: `Assets/Use Case Samples/Battle Pass/Cloud Code/GainSeasonXP.js`
+  * Script: `Assets/Use Case Samples/Battle Pass/Cloud Code/BattlePass_GainSeasonXP.js`
 
 * BattlePass_ClaimTier:
   * Parameters:
     * tierIndex
       * Type: Numeric
       * The 0-based index of the tier to claim.
-  * Script: `Assets/Use Case Samples/Battle Pass/Cloud Code/ClaimTier.js`
+  * Script: `Assets/Use Case Samples/Battle Pass/Cloud Code/BattlePass_ClaimTier.js`
 
 * BattlePass_PurchaseBattlePass:
   * Parameters: `none`
-  * Script: `Assets/Use Case Samples/Battle Pass/Cloud Code/PurchaseBattlePass.js`
+  * Script: `Assets/Use Case Samples/Battle Pass/Cloud Code/BattlePass_PurchaseBattlePass.js`
 
 _**Note**:
 The Cloud Code scripts included in the `Cloud Code` folder are just local copies, since you can't see the sample's dashboard. Changes to these scripts will not affect the behavior of this sample since they will not be automatically uploaded to Cloud Code service._

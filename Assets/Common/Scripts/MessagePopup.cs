@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace GameOperationsSamples
+namespace UnityGamingServicesUseCases
 {
     public class MessagePopup : MonoBehaviour
     {

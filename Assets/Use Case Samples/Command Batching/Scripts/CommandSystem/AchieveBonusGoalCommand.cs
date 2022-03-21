@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace GameOperationsSamples
+namespace UnityGamingServicesUseCases
 {
     namespace CommandBatching
     {

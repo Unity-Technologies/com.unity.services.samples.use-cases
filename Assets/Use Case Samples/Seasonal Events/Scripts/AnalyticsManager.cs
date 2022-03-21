@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Unity.Services.Analytics;
 using UnityEngine;
 
-namespace GameOperationsSamples
+namespace UnityGamingServicesUseCases
 {
     namespace SeasonalEvents
     {

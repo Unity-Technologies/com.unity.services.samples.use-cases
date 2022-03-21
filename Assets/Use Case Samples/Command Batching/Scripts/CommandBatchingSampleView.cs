@@ -1,69 +1,73 @@
-using GameOperationsSamples.CommandBatching;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CommandBatchingSampleView : MonoBehaviour
+namespace UnityGamingServicesUseCases
 {
-    public GameObject gameOverPopupView;
-
-    [Space]
-    public TextMeshProUGUI xpValueText;
-    public TextMeshProUGUI remainingTurnsCountText;
-    public TextMeshProUGUI goalsAchievedValueText;
-
-    [Space]
-    public Button defeatRedEnemyButton;
-    public Button defeatBlueEnemyButton;
-    public Button openChestButton;
-    public Button achieveBonusGoalButton;
-    public Button gameOverPlayAgainButton;
-    public GameObject gameOverButtonLoadingOverlay;
-
-    public void InitializeScene()
+    namespace CommandBatching
     {
-        SetInteractable(false);
-    }
+        public class CommandBatchingSampleView : MonoBehaviour
+        {
+            public GameObject gameOverPopupView;
 
-    public void SetInteractable(bool interactable)
-    {
-        defeatRedEnemyButton.interactable = interactable;
-        defeatBlueEnemyButton.interactable = interactable;
-        openChestButton.interactable = interactable && GameStateManager.instance.isOpenChestValidMove;
-        achieveBonusGoalButton.interactable = interactable && GameStateManager.instance.isAchieveBonusGoalValidMove;
-    }
+            [Space] public TextMeshProUGUI xpValueText;
+            public TextMeshProUGUI remainingTurnsCountText;
+            public TextMeshProUGUI goalsAchievedValueText;
 
-    public void BeginGame()
-    {
-        SetInteractable(true);
-    }
+            [Space] public Button defeatRedEnemyButton;
+            public Button defeatBlueEnemyButton;
+            public Button openChestButton;
+            public Button achieveBonusGoalButton;
+            public Button gameOverPlayAgainButton;
+            public GameObject gameOverButtonLoadingOverlay;
 
-    public void GameOver()
-    {
-        SetInteractable(false);
-        gameOverPopupView.SetActive(true);
-    }
+            public void InitializeScene()
+            {
+                SetInteractable(false);
+            }
 
-    public void ShowGameOverPlayAgainButton()
-    {
-        gameOverPlayAgainButton.gameObject.SetActive(true);
-        gameOverButtonLoadingOverlay.SetActive(false);
-    }
+            public void SetInteractable(bool interactable)
+            {
+                defeatRedEnemyButton.interactable = interactable;
+                defeatBlueEnemyButton.interactable = interactable;
+                openChestButton.interactable = interactable && GameStateManager.instance.isOpenChestValidMove;
+                achieveBonusGoalButton.interactable =
+                    interactable && GameStateManager.instance.isAchieveBonusGoalValidMove;
+            }
 
-    public void CloseGameOverPopup()
-    {
-        gameOverPopupView.SetActive(false);
-        gameOverButtonLoadingOverlay.SetActive(true);
-        gameOverPlayAgainButton.gameObject.SetActive(false);
-    }
+            public void BeginGame()
+            {
+                SetInteractable(true);
+            }
 
-    public void UpdateGameView()
-    {
-        remainingTurnsCountText.text = GameStateManager.instance.turnsRemaining.ToString();
-        xpValueText.text = GameStateManager.instance.xp.ToString();
-        goalsAchievedValueText.text = GameStateManager.instance.goalsAchieved.ToString();
+            public void GameOver()
+            {
+                SetInteractable(false);
+                gameOverPopupView.SetActive(true);
+            }
 
-        openChestButton.interactable = GameStateManager.instance.isOpenChestValidMove;
-        achieveBonusGoalButton.interactable = GameStateManager.instance.isAchieveBonusGoalValidMove;
+            public void ShowGameOverPlayAgainButton()
+            {
+                gameOverPlayAgainButton.gameObject.SetActive(true);
+                gameOverButtonLoadingOverlay.SetActive(false);
+            }
+
+            public void CloseGameOverPopup()
+            {
+                gameOverPopupView.SetActive(false);
+                gameOverButtonLoadingOverlay.SetActive(true);
+                gameOverPlayAgainButton.gameObject.SetActive(false);
+            }
+
+            public void UpdateGameView()
+            {
+                remainingTurnsCountText.text = GameStateManager.instance.turnsRemaining.ToString();
+                xpValueText.text = GameStateManager.instance.xp.ToString();
+                goalsAchievedValueText.text = GameStateManager.instance.goalsAchieved.ToString();
+
+                openChestButton.interactable = GameStateManager.instance.isOpenChestValidMove;
+                achieveBonusGoalButton.interactable = GameStateManager.instance.isAchieveBonusGoalValidMove;
+            }
+        }
     }
 }

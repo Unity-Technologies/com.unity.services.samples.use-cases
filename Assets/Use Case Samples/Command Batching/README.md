@@ -69,7 +69,7 @@ To use Cloud Code, Remote Config, Economy, and Cloud Save services in your game,
 ##### Config Values
 * COMMANDBATCH_ACHIEVE_BONUS_GOAL - Maps the Command Achieve Bonus Goal to its rewards.
   * Type: json
-  * Default value:
+  * Value:
   ```json
     {
         "rewards": [{
@@ -85,7 +85,7 @@ To use Cloud Code, Remote Config, Economy, and Cloud Save services in your game,
     ```
 * COMMANDBATCH_DEFEAT_BLUE_ENEMY - Maps the Command Defeat Blue Enemy to its rewards.
   * Type: json
-  * Default value:
+  * Value:
   ```json
     {
         "rewards": [{
@@ -101,7 +101,7 @@ To use Cloud Code, Remote Config, Economy, and Cloud Save services in your game,
     ```
 * COMMANDBATCH_DEFEAT_RED_ENEMY - Maps the Command Defeat Red Enemy to its rewards.
   * Type: json
-  * Default value:
+  * Value:
   ```json
     {
         "rewards": [{
@@ -117,7 +117,7 @@ To use Cloud Code, Remote Config, Economy, and Cloud Save services in your game,
     ```
 * COMMANDBATCH_OPEN_CHEST - Maps the Command Open Chest to its rewards.
   * Type: json
-  * Default value:
+  * Value:
   ```json
     {
         "rewards": [{
@@ -137,7 +137,7 @@ To use Cloud Code, Remote Config, Economy, and Cloud Save services in your game,
     ```
 * COMMANDBATCH_GAME_OVER - Maps the Command Game Over to its rewards.
   * Type: json
-  * Default value:
+  * Value:
   ```json
     {
         "rewards": [{

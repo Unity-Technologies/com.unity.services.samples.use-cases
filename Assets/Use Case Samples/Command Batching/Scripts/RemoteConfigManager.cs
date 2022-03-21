@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Unity.RemoteConfig;
 using UnityEngine;
 
-namespace GameOperationsSamples
+namespace UnityGamingServicesUseCases
 {
     namespace CommandBatching
     {
