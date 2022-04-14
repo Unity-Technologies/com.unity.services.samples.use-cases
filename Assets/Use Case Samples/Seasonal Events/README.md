@@ -8,15 +8,19 @@ Clicking the "Collect Rewards" button in the popup will add the rewards to a pla
 Once the countdown on the main screen hits 0, the scene will automatically change to the next event.
 
 ### Implementation Overview
-When this scene first loads, it will initialize Unity Services and sign the player in anonymously using Authentication. This can be seen in the SeasonalEventsSceneManager script.
-Once Unity Services completes initialization, Remote Config is queried to get the current values for the event-related keys. These values allow for displaying the active event name, the potential rewards for completing the event challenge, and the themed background image and play buttons.
+When this scene first loads, it will initialize Unity Services and sign the player in anonymously using Authentication.
+This can be seen in the SeasonalEventsSceneManager script.
+Once Unity Services completes initialization, we call the GetServerTime function via Cloud Code so we can base Game Override and Remote Config data off the server time.
+Then, Remote Config is queried to get the current values for the event-related keys.
+These values allow for displaying the active event name, the potential rewards for completing the event challenge, and the themed background image and play buttons.
 
 Remote Config also tells us when the event ends, which is used in the CountdownManager for determining and displaying how much time is left in the current event.
 When that time runs out, it triggers a new call to remote config, to get the updated values for the next event.
 
-Note: This sample determines which Game Override data should be returned based on the user’s timestamp, to demonstrate how events can change and update local variables.
-This is a simplification.
+_**Note**: This sample determines which Game Override data should be returned based on the last digit of the number of minutes in the current server time.
+This is a simplification to be able to frequently observe the season change.
 In a real app, developers likely set up a Game Override to have specific start and end dates, then Remote Config determines when the Game Override is shown based on the server’s date/time.
+In that case, the client and server implementations can be a bit different._
 
 When a player clicks "Play Challenge", followed by "Collect Rewards" it initiates a call to the Cloud Code script "Grant Event Reward".
 This script calls Remote Config to determine which rewards should be distributed (this has the potential to differ from what the player expects, if they're altering their device clock or if they clicked claim right at the very end of an event), and then calls Economy to add those rewards to their currency balances.
@@ -183,6 +187,9 @@ To duplicate this sample scene's setup on your own dashboard, you'll need a few 
       ```
 
 #### Cloud Code Scripts
+* SeasonalEvents_GetServerTime:
+  * Parameters: `none`
+  * Script: `Assets/Use Case Samples/Seasonal Events/Cloud Code/SeasonalEvents_GetServerTime.js`
 * SeasonalEvents_GrantEventReward:
   * Parameters: `none`
   * Script: `Assets/Use Case Samples/Seasonal Events/Cloud Code/SeasonalEvents_GrantEventReward.js`

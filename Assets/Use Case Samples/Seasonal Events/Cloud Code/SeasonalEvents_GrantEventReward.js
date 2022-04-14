@@ -7,40 +7,38 @@ const { CurrenciesApi } = require("@unity-services/economy-2.0");
 const { SettingsApi } = require("@unity-services/remote-config-1.0");
 const { DataApi } = require("@unity-services/cloud-save-1.0");
 
+const badRequestError = 400;
+const tooManyRequestsError = 429;
+
 module.exports = async ({ context }) => {
-    const { projectId, playerId, accessToken} = context;
-    const economy = new CurrenciesApi({ accessToken });
-    const remoteConfig = new SettingsApi();
-    const cloudSave = new DataApi({ accessToken });
+    try {
+        const { projectId, playerId, accessToken} = context;
+        const economy = new CurrenciesApi({ accessToken });
+        const remoteConfig = new SettingsApi();
+        const cloudSave = new DataApi({ accessToken });
 
-    let grantedRewards = [];
-
-    try
-    {
         const timestamp = _.now();
 
         const timestampMinutes = getTimestampMinutes(timestamp);
         const { remoteConfigData, cloudSaveData } = await GetData(remoteConfig, cloudSave, projectId, playerId, timestampMinutes);
 
-        grantedRewards = await grantRewardsOrThrow(economy, projectId, playerId, remoteConfigData, cloudSaveData, timestamp);
+        const grantedRewards = await grantRewardsOrThrow(economy, projectId, playerId, remoteConfigData, cloudSaveData, timestamp);
         await saveEventCompleted(cloudSave, projectId, playerId, timestamp, remoteConfigData);
-    }
-    catch (error)
-    {
+        
+        const eventKey = remoteConfigData["EVENT_KEY"];
+
+        return { grantedRewards, eventKey, timestamp, timestampMinutes: parseInt(timestampMinutes) };
+    } catch (error) {
         transformAndThrowCaughtError(error);
     }
-
-    return { grantedRewards };
 };
 
-function getTimestampMinutes(timestamp)
-{
+function getTimestampMinutes(timestamp) {
     let date = new Date(timestamp);
     return ("0" + date.getMinutes()).slice(-2);
 }
 
-async function GetData(remoteConfig, cloudSave, projectId, playerId, timestampMinutes)
-{
+async function GetData(remoteConfig, cloudSave, projectId, playerId, timestampMinutes) {
     return await Promise.all([
         getRemoteConfigData(remoteConfig, projectId, playerId, timestampMinutes),
         getCloudSaveData(cloudSave, projectId, playerId)
@@ -52,8 +50,7 @@ async function GetData(remoteConfig, cloudSave, projectId, playerId, timestampMi
     });
 }
 
-async function getRemoteConfigData(remoteConfig, projectId, playerId, timestampMinutes)
-{
+async function getRemoteConfigData(remoteConfig, projectId, playerId, timestampMinutes) {
     const result = await remoteConfig.assignSettings({
         projectId,
         "userId": playerId,
@@ -69,8 +66,7 @@ async function getRemoteConfigData(remoteConfig, projectId, playerId, timestampM
     return result.data.configs.settings;
 }
 
-async function getCloudSaveData(cloudSave, projectId, playerId)
-{
+async function getCloudSaveData(cloudSave, projectId, playerId) {
     const getItemsResponse = await cloudSave.getItems(
         projectId,
         playerId,
@@ -80,8 +76,7 @@ async function getCloudSaveData(cloudSave, projectId, playerId)
     if (getItemsResponse.data.results &&
         getItemsResponse.data.results.length > 0 &&
         getItemsResponse.data.results[0] &&
-        getItemsResponse.data.results[1])
-    {
+        getItemsResponse.data.results[1]) {
         return {
             lastCompletedEvent: getItemsResponse.data.results[0].value,
             lastCompletedEventTimestamp: getItemsResponse.data.results[1].value
@@ -94,20 +89,17 @@ async function getCloudSaveData(cloudSave, projectId, playerId)
     }
 }
 
-async function grantRewardsOrThrow(economy, projectId, playerId, remoteConfigData, cloudSaveData, timestamp)
-{
+async function grantRewardsOrThrow(economy, projectId, playerId, remoteConfigData, cloudSaveData, timestamp) {
     throwIfRewardDistributionNotAllowed(remoteConfigData, cloudSaveData, timestamp);
 
     const rewards = getRewardsFromRemoteConfig(remoteConfigData);
 
     const incrementedRewards = [];
 
-    for (let i = 0; i < rewards.length; i++)
-    {
+    for (let i = 0; i < rewards.length; i++) {
         let currencyId = rewards[i]["id"];
         let amount = rewards[i]["quantity"];
-        if (currencyId != null && amount != null)
-        {
+        if (currencyId != null && amount != null) {
             let currencyBalance = await economy.incrementPlayerCurrencyBalance(projectId, playerId, currencyId, { currencyId, amount });
             let rewardBalance = {
                 "id": currencyBalance.data.currencyId,
@@ -120,8 +112,7 @@ async function grantRewardsOrThrow(economy, projectId, playerId, remoteConfigDat
     return incrementedRewards;
 }
 
-function throwIfRewardDistributionNotAllowed(remoteConfigData, cloudSaveData, timestamp)
-{
+function throwIfRewardDistributionNotAllowed(remoteConfigData, cloudSaveData, timestamp) {
     const activeEventKey = remoteConfigData["EVENT_KEY"];
     const activeEventDurationMinutes = remoteConfigData["EVENT_TOTAL_DURATION_MINUTES"];
     const lastCompletedEvent = cloudSaveData.lastCompletedEvent;
@@ -129,8 +120,7 @@ function throwIfRewardDistributionNotAllowed(remoteConfigData, cloudSaveData, ti
 
     // Because the seasonal events repeat and do not have unique keys for each iteration, we first check whether the
     // current season's key is the same as the key of the season that was active the last time the event was completed.
-    if (activeEventKey === lastCompletedEvent)
-    {
+    if (activeEventKey === lastCompletedEvent) {
         // Because the key of the season that was active the last time the event was completed is the same as the 
         // current season's key, we now need to check whether the timestamp of the last time the event was completed 
         // is so old that it couldn't possibly be from the current iteration of this season.
@@ -142,35 +132,30 @@ function throwIfRewardDistributionNotAllowed(remoteConfigData, cloudSaveData, ti
     }
 }
 
-function throwIfLastCompletedEventTimestampIsFromCurrentEvent(currentTime, activeEventDurationMinutes, lastCompletedEventTimestamp)
-{
+function throwIfLastCompletedEventTimestampIsFromCurrentEvent(currentTime, activeEventDurationMinutes, lastCompletedEventTimestamp) {
     const millisecondsInAMinute = 60000;
     const eventDurationMilliseconds = activeEventDurationMinutes * millisecondsInAMinute;
     const earliestPotentialStartForActiveEvent = currentTime - eventDurationMilliseconds;
 
     // Greater than ( > ) when talking about timestamps means more recent
-    if (lastCompletedEventTimestamp >= earliestPotentialStartForActiveEvent)
-    {
+    if (lastCompletedEventTimestamp >= earliestPotentialStartForActiveEvent) {
         throw new InvalidRewardDistributionAttemptError("The rewards for this season have already been claimed.")
     }
 }
 
-function getRewardsFromRemoteConfig(remoteConfigData)
-{
+function getRewardsFromRemoteConfig(remoteConfigData) {
     let eventRewards = [];
 
     const rewardResults = remoteConfigData["CHALLENGE_REWARD"];
 
-    if (rewardResults != null && rewardResults["rewards"] != null)
-    {
+    if (rewardResults != null && rewardResults["rewards"] != null) {
         eventRewards = rewardResults["rewards"];
     }
 
     return eventRewards;
 }
 
-async function saveEventCompleted(cloudSave, projectId, playerId, timestamp, remoteConfigData)
-{
+async function saveEventCompleted(cloudSave, projectId, playerId, timestamp, remoteConfigData) {
     await cloudSave.setItemBatch(
         projectId,
         playerId,
@@ -188,37 +173,34 @@ async function saveEventCompleted(cloudSave, projectId, playerId, timestamp, rem
 function transformAndThrowCaughtError(error) {
     let result = {
         status: 0,
-        title: "",
+        name: "",
         message: "",
         retryAfter: null,
-        additionalDetails: ""
+        details: ""
     };
 
-    if (error.response)
-    {
+    if (error.response) {
         result.status = error.response.data.status ? error.response.data.status : 0;
-        result.title = error.response.data.title ? error.response.data.title : "Unknown Error";
+        result.name = error.response.data.title ? error.response.data.title : "Unknown Error";
         result.message = error.response.data.detail ? error.response.data.detail : error.response.data;
-        if (error.response.status === rateLimitError)
-        {
+
+        if (error.response.status === tooManyRequestsError) {
             result.retryAfter = error.response.headers['retry-after'];
-        }
-        else if (error.response.status === validationError)
-        {
+        } else if (error.response.status === badRequestError) {
             let arr = [];
+
             _.forEach(error.response.data.errors, error => {
                 arr = _.concat(arr, error.messages);
             });
-            result.additionalDetails = arr;
+
+            result.details = arr;
         }
-    }
-    else
-    {
-        if (error instanceof CloudCodeCustomError)
-        {
+    } else {
+        if (error instanceof CloudCodeCustomError) {
             result.status = error.status;
         }
-        result.title = error.name;
+
+        result.name = error.name;
         result.message = error.message;
     }
 

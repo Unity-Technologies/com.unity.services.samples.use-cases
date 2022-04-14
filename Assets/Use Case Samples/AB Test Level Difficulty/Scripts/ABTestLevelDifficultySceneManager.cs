@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
+using Unity.Services.Core.Environments;
 using UnityEngine;
 
 namespace UnityGamingServicesUseCases

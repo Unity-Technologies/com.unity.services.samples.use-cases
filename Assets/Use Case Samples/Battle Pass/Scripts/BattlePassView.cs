@@ -35,41 +35,41 @@ namespace UnityGamingServicesUseCases
                 ClearList();
             }
 
-            public void SetInteractable(bool interactable)
+            public void SetInteractable(bool isInteractable = true)
             {
-                playGameButton.interactable = interactable;
-                buyBattlePassButton.interactable = interactable;
+                playGameButton.interactable = isInteractable;
+                buyBattlePassButton.interactable = isInteractable;
 
                 foreach (var tierView in m_TierViews)
                 {
-                    tierView.SetInteractable(interactable);
+                    tierView.SetInteractable(isInteractable);
                 }
             }
 
-            public void Refresh(BattlePassProgress battlePassProgress)
+            public void Refresh(BattlePassState battlePassState)
             {
                 ClearList();
 
-                for (var i = 0; i < battlePassProgress.tierStates.Length; i++)
+                for (var i = 0; i < battlePassState.tierStates.Length; i++)
                 {
-                    var tierState = battlePassProgress.tierStates[i];
+                    var tierState = battlePassState.tierStates[i];
                     var newTierGameObject = Instantiate(tierPrefab, tierListTransform);
                     var newTierView = newTierGameObject.GetComponent<TierView>();
                     m_TierViews.Add(newTierView);
-                    newTierView.Refresh(battlePassSceneManager, i, tierState, battlePassProgress.ownsBattlePass);
+                    newTierView.Refresh(battlePassSceneManager, i, tierState, battlePassState.ownsBattlePass);
                 }
 
-                battlePassNotOwnedPanel.SetActive(!battlePassProgress.ownsBattlePass);
-                battlePassOwnedPanel.SetActive(battlePassProgress.ownsBattlePass);
+                battlePassNotOwnedPanel.SetActive(!battlePassState.ownsBattlePass);
+                battlePassOwnedPanel.SetActive(battlePassState.ownsBattlePass);
 
-                RefreshProgressBar(battlePassProgress);
+                RefreshProgressBar(battlePassState);
             }
 
-            void RefreshProgressBar(BattlePassProgress battlePassProgress)
+            void RefreshProgressBar(BattlePassState battlePassState)
             {
                 seasonXpProgressBarPanel.SetActive(true);
 
-                if (battlePassProgress.seasonXP >= BattlePassHelper.MaxEffectiveSeasonXp())
+                if (battlePassState.seasonXP >= BattlePassHelper.MaxEffectiveSeasonXp(battlePassSceneManager.battlePassConfig))
                 {
                     seasonXpProgressCurrentTierText.text = "MAX";
                     seasonXpProgressNextTierText.text = "MAX";
@@ -77,17 +77,17 @@ namespace UnityGamingServicesUseCases
                 else
                 {
                     seasonXpProgressCurrentTierText.text
-                        = $"TIER {BattlePassHelper.GetCurrentTierIndex(battlePassProgress.seasonXP) + 1}";
+                        = $"TIER {BattlePassHelper.GetCurrentTierIndex(battlePassState.seasonXP, battlePassSceneManager.battlePassConfig) + 1}";
                     seasonXpProgressNextTierText.text
-                        = $"TIER {BattlePassHelper.GetNextTierIndex(battlePassProgress.seasonXP) + 1}";
+                        = $"TIER {BattlePassHelper.GetNextTierIndex(battlePassState.seasonXP, battlePassSceneManager.battlePassConfig) + 1}";
                 }
 
                 seasonXpProgressBarTransform.anchorMax
-                    = new Vector2(BattlePassHelper.CurrentSeasonProgressFloat(battlePassProgress.seasonXP), 1f);
+                    = new Vector2(BattlePassHelper.CurrentSeasonProgressFloat(battlePassState.seasonXP, battlePassSceneManager.battlePassConfig), 1f);
 
                 seasonXpProgressBarStatusText.text
-                    = $"{battlePassSceneManager.battlePassProgress.seasonXP}" +
-                      $"/{BattlePassHelper.TotalSeasonXpNeededForNextTier(battlePassProgress.seasonXP)}";
+                    = $"{battlePassSceneManager.battlePassState.seasonXP}" +
+                      $"/{BattlePassHelper.TotalSeasonXpNeededForNextTier(battlePassState.seasonXP, battlePassSceneManager.battlePassConfig)}";
             }
 
             void ClearList()

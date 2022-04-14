@@ -15,11 +15,19 @@ namespace UnityGamingServicesUseCases
             public int playerLevel => m_CachedCloudData[k_PlayerLevelKey];
             public int playerXP => m_CachedCloudData[k_PlayerXPKey];
 
-            Dictionary<string, int> m_CachedCloudData = new Dictionary<string, int>();
             const int k_NewPlayerLevel = 1;
             const int k_NewPlayerXP = 0;
-            const string k_PlayerLevelKey = "PLAYER_LEVEL";
-            const string k_PlayerXPKey = "PLAYER_XP";
+            const string k_PlayerLevelKey = "AB_TEST_PLAYER_LEVEL";
+            const string k_PlayerXPKey = "AB_TEST_PLAYER_XP";
+
+            // The scene view needs to be able to display some value for level and xp even when no player
+            // is signed in. For this reason we always keep playerLevel and playerXP keys in the
+            // m_CachedCloudData dictionary.
+            Dictionary<string, int> m_CachedCloudData = new Dictionary<string, int>
+            {
+                { k_PlayerLevelKey, 0 },
+                { k_PlayerXPKey, 0 }
+            };
 
             void Awake()
             {
@@ -31,14 +39,6 @@ namespace UnityGamingServicesUseCases
                 {
                     instance = this;
                 }
-
-                InitializeDefaultCachedData();
-            }
-
-            void InitializeDefaultCachedData()
-            {
-                m_CachedCloudData.Add(k_PlayerLevelKey, 0);
-                m_CachedCloudData.Add(k_PlayerXPKey, 0);
             }
 
             public async Task LoadAndCacheData()
@@ -50,19 +50,15 @@ namespace UnityGamingServicesUseCases
                     // Check that scene has not been unloaded while processing async wait to prevent throw.
                     if (this == null) return;
 
-                    if (savedData.Keys.Count == 0)
-                    {
-                        await InitializeNewPlayerData();
-                        return;
-                    }
-
+                    var missingData = new Dictionary<string, object>();
                     if (savedData.ContainsKey(k_PlayerLevelKey))
                     {
                         m_CachedCloudData[k_PlayerLevelKey] = int.Parse(savedData[k_PlayerLevelKey]);
                     }
                     else
                     {
-                        Debug.Log($"Cloud Code was expected to have {k_PlayerLevelKey} data, but did not.");
+                        missingData.Add(k_PlayerLevelKey, k_NewPlayerLevel);
+                        m_CachedCloudData[k_PlayerLevelKey] = k_NewPlayerLevel;
                     }
 
                     if (savedData.ContainsKey(k_PlayerXPKey))
@@ -71,7 +67,13 @@ namespace UnityGamingServicesUseCases
                     }
                     else
                     {
-                        Debug.Log($"Cloud Code was expected to have {k_PlayerXPKey} data, but did not.");
+                        missingData.Add(k_PlayerXPKey, k_NewPlayerXP);
+                        m_CachedCloudData[k_PlayerXPKey] = k_NewPlayerXP;
+                    }
+
+                    if (missingData.Count > 0)
+                    {
+                        await SaveUpdatedData(missingData);
                     }
                 }
                 catch (Exception e)
@@ -80,36 +82,11 @@ namespace UnityGamingServicesUseCases
                 }
             }
 
-            async Task InitializeNewPlayerData()
+            async Task SaveUpdatedData(Dictionary<string, object> data)
             {
                 try
                 {
-                    var newPlayerData = new Dictionary<string, object>
-                    {
-                        { k_PlayerLevelKey, k_NewPlayerLevel },
-                        { k_PlayerXPKey, k_NewPlayerXP }
-                    };
-
-                    await SaveData.ForceSaveAsync(newPlayerData);
-                    if (this == null) return;
-
-                    if (m_CachedCloudData.ContainsKey(k_PlayerLevelKey))
-                    {
-                        m_CachedCloudData[k_PlayerLevelKey] = k_NewPlayerLevel;
-                    }
-                    else
-                    {
-                        m_CachedCloudData.Add(k_PlayerLevelKey, k_NewPlayerLevel);
-                    }
-                    
-                    if (m_CachedCloudData.ContainsKey(k_PlayerXPKey))
-                    {
-                        m_CachedCloudData[k_PlayerXPKey] = k_NewPlayerXP;
-                    }
-                    else
-                    {
-                        m_CachedCloudData.Add(k_PlayerXPKey, k_NewPlayerXP);
-                    }
+                    await SaveData.ForceSaveAsync(data);
                 }
                 catch (Exception e)
                 {
@@ -129,8 +106,11 @@ namespace UnityGamingServicesUseCases
 
             public void ClearCachedData()
             {
-                m_CachedCloudData.Clear();
-                InitializeDefaultCachedData();
+                // The scene view needs to be able to display some value for level and xp even when no player
+                // is signed in. For this reason we always keep playerLevel and playerXP keys in the
+                // m_CachedCloudData dictionary.
+                m_CachedCloudData[k_PlayerLevelKey] = 0;
+                m_CachedCloudData[k_PlayerXPKey] = 0;
             }
 
             void OnDestroy()

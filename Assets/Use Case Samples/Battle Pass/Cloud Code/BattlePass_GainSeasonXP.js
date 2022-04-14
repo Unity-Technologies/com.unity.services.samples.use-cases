@@ -6,6 +6,9 @@ const _ = require("lodash-4.17");
 const { DataApi } = require("@unity-services/cloud-save-1.0");
 const { SettingsApi } = require("@unity-services/remote-config-1.0");
 
+const badRequestError = 400;
+const tooManyRequestsError = 429;
+
 const tierState = { Locked: 0, Unlocked: 1, Claimed: 2 };
 const seasonTierStatesDefault = [ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 ];
 const seasonXpNeededToUnlockTier = 100;
@@ -19,19 +22,18 @@ const playerStateDefault = {
 }
 
 module.exports = async ({ params, context, logger }) => {
-
-    const { projectId, playerId, accessToken } = context;
-    const cloudSaveApi = new DataApi({ accessToken });
-    const remoteConfigApi = new SettingsApi();
-
-    const timestamp = _.now();
-    const timestampMinutes = getTimestampMinutes(timestamp);
-
-    let returnObject = {
-        unlockedNewTier: -1
-    };
-
     try {
+        const { projectId, playerId, accessToken } = context;
+        const cloudSaveApi = new DataApi({ accessToken });
+        const remoteConfigApi = new SettingsApi();
+
+        const timestamp = _.now();
+        const timestampMinutes = getTimestampMinutes(timestamp);
+
+        let returnObject = {
+            unlockedNewTier: -1
+        };
+
         const remoteConfigData = await getRemoteConfigData(remoteConfigApi, projectId, playerId, timestampMinutes);
         let playerState = await getCloudSaveData(cloudSaveApi, projectId, playerId);
 
@@ -49,22 +51,19 @@ module.exports = async ({ params, context, logger }) => {
         returnObject.seasonTierStates = playerState.seasonTierStates;
         
         await setCloudSaveData(cloudSaveApi, projectId, playerId, remoteConfigData, playerState, timestamp);
-    }
-    catch (error) {
+
+        return returnObject;
+    } catch (error) {
         transformAndThrowCaughtException(error);
     }
-
-    return returnObject;
 };
 
-function getTimestampMinutes(timestamp)
-{
+function getTimestampMinutes(timestamp) {
     let date = new Date(timestamp);
     return ("0" + date.getMinutes()).slice(-2);
 }
 
-async function getRemoteConfigData(remoteConfigApi, projectId, playerId, timestampMinutes)
-{
+async function getRemoteConfigData(remoteConfigApi, projectId, playerId, timestampMinutes) {
     // get the current season configuration
     const result = await remoteConfigApi.assignSettings({
         projectId,
@@ -83,8 +82,7 @@ async function getRemoteConfigData(remoteConfigApi, projectId, playerId, timesta
     return result.data.configs.settings;
 }
 
-async function getCloudSaveData(cloudSaveApi, projectId, playerId)
-{
+async function getCloudSaveData(cloudSaveApi, projectId, playerId) {
     const getItemsResponse = await cloudSaveApi.getItems(
         projectId,
         playerId,
@@ -107,8 +105,7 @@ async function getCloudSaveData(cloudSaveApi, projectId, playerId)
     return returnObject;
 }
 
-function cloudSaveResponseToObject(getItemsResponse)
-{
+function cloudSaveResponseToObject(getItemsResponse) {
     let returnObject = {};
 
     getItemsResponse.data.results.forEach(item => {
@@ -119,19 +116,16 @@ function cloudSaveResponseToObject(getItemsResponse)
     return returnObject;
 }
 
-function shouldResetBattlePassProgress(remoteConfigData, playerState, timestamp)
-{
+function shouldResetBattlePassProgress(remoteConfigData, playerState, timestamp) {
     // If the progress object is empty, then it might be the first time this player has ever used this function.
     // Resetting will create a fresh object.
-    if (!playerState.seasonTierStates)
-    {
+    if (!playerState.seasonTierStates) {
         return true;
     }
 
     // Because the seasonal events repeat and do not have unique keys for each iteration, we first check whether the
     // current season's key is the same as the key of the season that was active the last time the event was completed.
-    if (remoteConfigData.EVENT_KEY !== playerState.latestSeasonActivityEventKey)
-    {
+    if (remoteConfigData.EVENT_KEY !== playerState.latestSeasonActivityEventKey) {
         return true;
     }
 
@@ -147,35 +141,28 @@ function shouldResetBattlePassProgress(remoteConfigData, playerState, timestamp)
     const eventDurationMilliseconds = currentEventDurationMinutes * millisecondsPerMinute;
     const currentSeasonEarliestPotentialStartTimestamp = timestamp - eventDurationMilliseconds;
 
-    if (playerState.latestSeasonActivityTimestamp < currentSeasonEarliestPotentialStartTimestamp)
-    {
+    if (playerState.latestSeasonActivityTimestamp < currentSeasonEarliestPotentialStartTimestamp) {
         return true;
     }
 
     return false;
 }
 
-function validate(xpIncreaseAmount)
-{
-    if (xpIncreaseAmount < 1)
-    {
+function validate(xpIncreaseAmount) {
+    if (xpIncreaseAmount < 1) {
         throw new Error("XP increase amount cannot be less than 1.");
     }
 }
 
-function unlockNewTiersIfEligible(remoteConfigData, playerState)
-{
+function unlockNewTiersIfEligible(remoteConfigData, playerState) {
     const oldHighestUnlockedTierIndex = getHighestNonLockedTier(playerState);
     const newHighestUnlockedTierIndex = Math.floor(playerState.seasonXp / seasonXpNeededToUnlockTier);
 
-    if (newHighestUnlockedTierIndex > oldHighestUnlockedTierIndex)
-    {
+    if (newHighestUnlockedTierIndex > oldHighestUnlockedTierIndex) {
         // The current operation unlocked at least one new tier.
         // Loop to make sure we don't skip any tiers, in case the XP increase was huge.
-        for (let i = newHighestUnlockedTierIndex; i >= 0; i--)
-        {
-            if (playerState.seasonTierStates[i] === tierState.Locked)
-            {
+        for (let i = newHighestUnlockedTierIndex; i >= 0; i--) {
+            if (playerState.seasonTierStates[i] === tierState.Locked) {
                 playerState.seasonTierStates[i] = tierState.Unlocked;
             }
         }
@@ -187,14 +174,11 @@ function unlockNewTiersIfEligible(remoteConfigData, playerState)
     return -1;
 }
 
-function getHighestNonLockedTier(playerState)
-{
+function getHighestNonLockedTier(playerState) {
     // Loop backwards through the tier states to find the highest one that's not locked.
 
-    for (let i = playerState.seasonTierStates.length - 1; i >= 0; i--)
-    {
-        if (playerState.seasonTierStates[i] != tierState.Locked)
-        {
+    for (let i = playerState.seasonTierStates.length - 1; i >= 0; i--) {
+        if (playerState.seasonTierStates[i] != tierState.Locked) {
             return i;
         }
     }
@@ -204,8 +188,7 @@ function getHighestNonLockedTier(playerState)
     return -1;
 }
 
-async function setCloudSaveData(cloudSaveApi, projectId, playerId, remoteConfigData, playerState, timestamp)
-{
+async function setCloudSaveData(cloudSaveApi, projectId, playerId, remoteConfigData, playerState, timestamp) {
     await cloudSaveApi.setItemBatch(
         projectId,
         playerId,
@@ -223,35 +206,33 @@ async function setCloudSaveData(cloudSaveApi, projectId, playerId, remoteConfigD
 }
 
 // this standardizes our outgoing errors to make them easier to parse in the client
-function transformAndThrowCaughtException(error)
-{
+function transformAndThrowCaughtException(error) {
     let result = {
         status: 0,
-        title: "",
+        name: "",
         message: "",
         retryAfter: null,
-        additionalDetails: ""
+        details: ""
     };
 
-    if (error.response)
-    {
+    if (error.response) {
         result.status = error.response.data.status ? error.response.data.status : 0;
-        result.title = error.response.data.title ? error.response.data.title : "Unknown Error";
+        result.name = error.response.data.title ? error.response.data.title : "Unknown Error";
         result.message = error.response.data.detail ? error.response.data.detail : error.response.data;
-        if (error.response.status === 429) {
+
+        if (error.response.status === tooManyRequestsError) {
             result.retryAfter = error.response.headers['retry-after'];
-        }
-        if (error.response.status === 400) {
+        } else if (error.response.status === badRequestError) {
             let arr = [];
+
             _.forEach(error.response.data.errors, error => {
                 arr = _.concat(arr, error.messages);
             });
-            result.additionalDetails = arr;
+
+            result.details = arr;
         }
-    }
-    else
-    {
-        result.title = error.name;
+    } else {
+        result.name = error.name;
         result.message = error.message;
     }
 

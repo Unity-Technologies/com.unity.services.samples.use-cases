@@ -24,13 +24,16 @@ When a season ends, the player's Season XP progress and Battle Pass ownership ar
 When this scene first loads, it will initialize Unity Services and sign the player in anonymously using Authentication.
 This can be seen in the BattlePassSceneManager script.
 
-Once Unity Services completes initialization, Remote Config is queried to get the current values for the event-related keys, such as Battle Pass content.
-Each reward tier is represented by a JSON value in Remote Config. The downloaded tier values depend on which Game Override is currently active.
-When the event is scheduled to end, we call Remote Config again to get the new values and refresh the UI.
+Once Unity Services completes initialization, we use a Cloud Code function to retrieve the configuration and state of the Battle Pass.
+The configuration that's returned to us is based on the server's timestamp and the Game Override that's currently active.
+Reward tiers are stored as two JSON values in Remote Config: one array for the free tiers, and one array for the premium tiers.
+From our Cloud Code call, we also get a number of seconds until the season is over.
+With that we can control our countdown view, and eventually determine that it's time to query the server again for the next season's configs.
 
-Note: This sample determines which Game Override data should be returned based on the user’s timestamp, to demonstrate how events can change and update local variables.
-This is a simplification.
+_**Note**: This sample determines which Game Override data should be returned based on the last digit of the number of minutes in the current server time.
+This is a simplification to be able to frequently observe the season change.
 In a real app, developers likely set up a Game Override to have specific start and end dates, then Remote Config determines when the Game Override is shown based on the server’s date/time.
+In that case, the client and server implementations can be a bit different._
 
 Everything about the reward system and Battle Pass is powered by Cloud Code scripts, from getting the progress to claiming tiers to purchasing a Battle Pass.
 At first, it looks like some of these actions could be simpler calls directly to each service.
@@ -133,11 +136,13 @@ To duplicate this sample scene's setup on your own dashboard, you'll need a few 
   * Type: `int`
   * Value: `100`
 
-* BATTLE_PASS_TIER_1 - The JSON that specifies what rewards are distributed when Tier 1 is claimed. Overridden by seasonal Game Overrides.
+* BATTLE_PASS_REWARDS_FREE - The JSON that specifies what rewards are distributed when each tier is claimed. This design accounts for just one reward per tier. Overridden by seasonal Game Overrides.
   * Type: `json`
-  * Value: `json {}` (reward tiers aren't valid outside of seasonal events)
+  * Value: `[]` (reward tiers aren't available outside of seasonal events)
 
-* _Repeat BATTLE_PASS_TIER_1 for tiers 2 through 10_
+* BATTLE_PASS_REWARDS_PREMIUM - Just like BATTLE_PASS_REWARDS_FREE, but only granted when the player owns that season's Battle Pass. Overridden by seasonal Game Overrides.
+  * Type: `json`
+  * Value: `[]` (reward tiers aren't available outside of seasonal events)
 
 ##### Game Overrides
 
@@ -152,22 +157,32 @@ To duplicate this sample scene's setup on your own dashboard, you'll need a few 
     * EVENT_KEY: `Fall`
     * EVENT_END_TIME: `2`
     * EVENT_TOTAL_DURATION_MINUTES: `3`
-    * BATTLE_PASS_TIER_1:
+    * BATTLE_PASS_REWARDS_FREE:
       ```json
-      {
-          "reward": {
+      [
+          {
               "id": "SWORD",
               "quantity": 1,
               "spriteAddress": "Sprites/Inventory/Sword"
           },
-          "battlePassReward": {
+          {
+               etc...
+          }
+      ]
+      ```
+    * BATTLE_PASS_REWARDS_PREMIUM:
+      ```json
+      [
+          {
               "id": "PEARL",
               "quantity": 50,
               "spriteAddress": "Sprites/Currency/Pearl"
+          },
+          {
+               etc...
           }
-      }
+      ]
       ```
-    * (repeat for other BATTLE_PASS_TIERs with various rewards) 
 
 
 * Winter Event
@@ -202,9 +217,9 @@ To duplicate this sample scene's setup on your own dashboard, you'll need a few 
 
 #### Cloud Code Scripts
 
-* BattlePass_GetProgress:
+* BattlePass_GetState:
   * Parameters: `none`
-  * Script: `Assets/Use Case Samples/Battle Pass/Cloud Code/BattlePass_GetProgress.js`
+  * Script: `Assets/Use Case Samples/Battle Pass/Cloud Code/BattlePass_GetState.js`
 
 * BattlePass_GainSeasonXP:
   * Parameters:

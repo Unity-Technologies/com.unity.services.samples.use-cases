@@ -2,45 +2,37 @@
 // this file will not have any effect locally. Changes to Cloud Code scripts are normally done directly in the 
 // Unity Dashboard.
 
-const playfieldSize = 3;
-const rateLimitError = 429;
-const validationError = 400;
-
 const _ = require("lodash-4.17");
 const { CurrenciesApi } = require("@unity-services/economy-2.0");
 const { DataApi } = require("@unity-services/cloud-save-1.0");
 
+const badRequestError = 400;
+const tooManyRequestsError = 429;
+
+const playfieldSize = 3;
 
 // Entry point for the Cloud Code script 
 module.exports = async ({ params, context, logger }) => {
-  
-  const { projectId, playerId, accessToken} = context;
-  const cloudSaveApi = new DataApi({ accessToken });
-  const economyCurrencyApi = new CurrenciesApi({ accessToken });
-  
-  logger.info("Authenticated within the following context: " + JSON.stringify(context));
+  try {
+    const { projectId, playerId, accessToken} = context;
+    const cloudSaveApi = new DataApi({ accessToken });
+    const economyCurrencyApi = new CurrenciesApi({ accessToken });
 
-  const services = { projectId, playerId, cloudSaveApi, economyCurrencyApi, logger };
+    logger.info("Authenticated within the following context: " + JSON.stringify(context));
 
-  let gameState;
+    const services = { projectId, playerId, cloudSaveApi, economyCurrencyApi, logger };
 
-  try
-  {
-    gameState = await readState(services);
+    let gameState = await readState(services);
   
     // If save state is found (normal condition) then remember this isn't a new game/move to avoid duplicate popups.
-    if (gameState)
-    {
+    if (gameState) {
       logger.info("read start state: " + JSON.stringify(gameState));
 
-      if (!gameState.isGameOver)
-      {
+      if (!gameState.isGameOver) {
         gameState.lossCount += 1;
         logger.info("player forfeited; updated state: " + JSON.stringify(gameState));
       }
-    }
-    else
-    {
+    } else {
       // DASHBOARD TESTING CODE: If the starting state is not found (only occurs in dashboard) then setup dummy state. 
       gameState = { winCount:0, lossCount:0, tieCount:0};
       logger.info("created starting state: " + JSON.stringify(gameState));
@@ -49,13 +41,11 @@ module.exports = async ({ params, context, logger }) => {
     startRandomGame(services, gameState);
 
     await saveState(services, gameState);
-  }
-  catch (error)
-  {
-    TransformAndThrowCaughtError(error);
-  }
 
-  return gameState;
+    return gameState;
+  } catch (error) {
+    transformAndThrowCaughtError(error);
+  }
 }
 
 async function readState(services) {
@@ -64,8 +54,7 @@ async function readState(services) {
   if (response.data.results &&
       response.data.results.length > 0 &&
       response.data.results[0] &&
-      response.data.results[0].value)
-  {
+      response.data.results[0].value) {
     return JSON.parse(response.data.results[0].value);
   }
 
@@ -81,8 +70,7 @@ function startRandomGame(services, gameState) {
   gameState.isGameOver = false;
   gameState.status = "playing";
 
-  if (_.random(1))
-  {
+  if (_.random(1)) {
     const x = _.random(playfieldSize - 1);
     const y = _.random(playfieldSize - 1);
     gameState.aiPieces = [{x,y}];
@@ -95,36 +83,33 @@ async function saveState(services, gameState) {
 
 // Some form of this function appears in all Cloud Code scripts.
 // Its purpose is to parse the errors thrown from the script into a standard exception object which can be stringified.
-function TransformAndThrowCaughtError(error) {
+function transformAndThrowCaughtError(error) {
   let result = {
     status: 0,
-    title: "",
+    name: "",
     message: "",
     retryAfter: null,
-    additionalDetails: ""
+    details: ""
   };
 
-  if (error.response)
-  {
+  if (error.response) {
     result.status = error.response.data.status ? error.response.data.status : 0;
-    result.title = error.response.data.title ? error.response.data.title : "Unknown Error";
+    result.name = error.response.data.title ? error.response.data.title : "Unknown Error";
     result.message = error.response.data.detail ? error.response.data.detail : error.response.data;
-    if (error.response.status === rateLimitError)
-    {
+    
+    if (error.response.status === tooManyRequestsError) {
       result.retryAfter = error.response.headers['retry-after'];
-    }
-    else if (error.response.status === validationError)
-    {
+    } else if (error.response.status === badRequestError) {
       let arr = [];
+
       _.forEach(error.response.data.errors, error => {
         arr = _.concat(arr, error.messages);
       });
-      result.additionalDetails = arr;
+
+      result.details = arr;
     }
-  }
-  else
-  {
-    result.title = error.name;
+  } else {
+    result.name = error.name;
     result.message = error.message;
   }
 

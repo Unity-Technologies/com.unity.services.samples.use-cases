@@ -27,14 +27,14 @@ namespace UnityGamingServicesUseCases
             GridEntityView[,] m_GridEntityView = new GridEntityView[k_PlayfieldSize, k_PlayfieldSize];
 
 
-            public void EnableButtons(bool flag = true)
+            public void SetInteractable(bool isInteractable = true)
             {
-                newGameButton.interactable = flag;
-                resetGameButton.interactable = flag;
+                newGameButton.interactable = isInteractable;
+                resetGameButton.interactable = isInteractable;
 
                 foreach (var gridEntityView in m_GridEntityView)
                 {
-                    gridEntityView.UpdateButton(flag);
+                    gridEntityView.SetInteractable(isInteractable);
                 }
             }
 

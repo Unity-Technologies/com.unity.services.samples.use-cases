@@ -31,8 +31,12 @@ namespace UnityGamingServicesUseCases
                     return;
                 }
 
-                var newMinutes = DateTime.Now.Minute;
-                var newSeconds = DateTime.Now.Second;
+                // Determine the approximate time on the server.
+                // Note: We need to use the server time to ensure we are showing/claiming the correct season
+                //       in case the client's clock is off for any reason.
+                var serverTime = ServerTimeHelper.UtcNow;
+                var newMinutes = serverTime.Minute;
+                var newSeconds = serverTime.Second;
 
                 if (IsUpdateNeeded(newMinutes, newSeconds))
                 {
@@ -88,7 +92,8 @@ namespace UnityGamingServicesUseCases
 
             public void StartCountdownFromNow()
             {
-                UpdateCountdown(DateTime.Now.Minute, DateTime.Now.Second);
+                var serverTime = ServerTimeHelper.UtcNow;
+                UpdateCountdown(serverTime.Minute, serverTime.Second);
             }
         }
     }

@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Unity.Services.CloudCode;
@@ -12,17 +13,19 @@ namespace UnityGamingServicesUseCases
         {
             public static CloudCodeManager instance { get; private set; }
 
-            // Cloud Code SDK exceptions.
-            const int k_CloudCodeUnprocessableEntityExceptionErrorCode = 9009;
-            const int k_CloudCodeRateLimitExceptionErrorCode = 50;
-            const int k_CloudCodeMissingScriptExceptionErrorCode = 9002;
+            // Cloud Code SDK status codes from Client
+            const int k_CloudCodeRateLimitExceptionStatusCode = 50;
+            const int k_CloudCodeMissingScriptExceptionStatusCode = 9002;
+            const int k_CloudCodeUnprocessableEntityExceptionStatusCode = 9009;
 
-            // Cloud Code script errors.
-            const int k_UntypedCustomScriptError = 0;
-            const int k_GenericCloudCodeScriptError = 1;
-            const int k_InvalidRewardDistributionAttemptScriptError = 2;
-            const int k_ValidationScriptError = 400;
-            const int k_RateLimitScriptError = 429;
+            // HTTP REST API status codes
+            const int k_HttpBadRequestStatusCode = 400;
+            const int k_HttpTooManyRequestsStatusCode = 429;
+
+            // Custom status codes
+            const int k_UnexpectedFormatCustomStatusCode = int.MinValue;
+            const int k_GenericCloudCodeScriptStatusCode = 1;
+            const int k_InvalidRewardDistributionAttemptScriptStatusCode = 2;
 
             void Awake()
             {
@@ -52,6 +55,8 @@ namespace UnityGamingServicesUseCases
                     // Check that scene has not been unloaded while processing async wait to prevent throw.
                     if (this == null) return;
 
+                    Debug.Log($"Collect reward result: {updatedRewardBalances}");
+
                     // The GrantEventReward script returns the total balance for each of the currencies that are
                     // distributed as part of the event reward. These total balances ultimately come from the
                     // Economy API which returns them to the Cloud Code script as part of the reward distribution,
@@ -72,20 +77,40 @@ namespace UnityGamingServicesUseCases
                 }
             }
 
+            public async Task<long> CallGetServerEpochTimeEndpoint()
+            {
+                try
+                {
+                    return await CloudCode.CallEndpointAsync<long>("SeasonalEvents_GetServerTime", 
+                        new object());
+                }
+                catch (CloudCodeException e)
+                {
+                    HandleCloudCodeException(e);
+                }
+                catch (Exception e)
+                {
+                    Debug.Log("Problem calling cloud code endpoint: " + e.Message);
+                    Debug.LogException(e);
+                }
+
+                return default;
+            }
+
             void HandleCloudCodeException(CloudCodeException e)
             {
                 switch (e.ErrorCode)
                 {
-                    case k_CloudCodeUnprocessableEntityExceptionErrorCode:
+                    case k_CloudCodeUnprocessableEntityExceptionStatusCode:
                         var cloudCodeCustomError = ConvertToActionableError(e);
                         HandleCloudCodeScriptError(cloudCodeCustomError);
                         break;
 
-                    case k_CloudCodeRateLimitExceptionErrorCode:
+                    case k_CloudCodeRateLimitExceptionStatusCode:
                         Debug.Log("Rate Limit Exceeded. Try Again.");
                         break;
 
-                    case k_CloudCodeMissingScriptExceptionErrorCode:
+                    case k_CloudCodeMissingScriptExceptionStatusCode:
                         Debug.Log("Couldn't find requested Cloud Code Script");
                         break;
 
@@ -95,22 +120,25 @@ namespace UnityGamingServicesUseCases
                 }
             }
 
-            CloudCodeCustomError ConvertToActionableError(CloudCodeException e)
+            static CloudCodeCustomError ConvertToActionableError(CloudCodeException e)
             {
-                // trim the text that's in front of the valid JSON
-                var trimmedExceptionMessage = Regex.Replace(
-                    e.Message, @"^[^\{]*", "", RegexOptions.IgnorePatternWhitespace);
-
-                if (string.IsNullOrEmpty(trimmedExceptionMessage))
+                try
                 {
-                    return new CloudCodeCustomError("Cloud Code Unprocessable Entity exception is in an " +
-                                                    "unexpected format and couldn't be parsed.");
-                }
+                    // trim the text that's in front of the valid JSON
+                    var trimmedExceptionMessage = Regex.Replace(
+                        e.Message, @"^[^\{]*", "", RegexOptions.IgnorePatternWhitespace);
 
-                // Convert the message string ultimately into the Cloud Code Custom Error object which has a
-                // standard structure for all errors.
-                var parsedMessage = JsonUtility.FromJson<CloudCodeExceptionParsedMessage>(trimmedExceptionMessage);
-                return JsonUtility.FromJson<CloudCodeCustomError>(parsedMessage.message);
+                    // Convert the message string ultimately into the Cloud Code Custom Error object which has a
+                    // standard structure for all errors.
+                    var parsedMessage = JsonUtility.FromJson<CloudCodeExceptionParsedMessage>(trimmedExceptionMessage);
+                    return JsonUtility.FromJson<CloudCodeCustomError>(parsedMessage.message);
+                }
+                catch (Exception exception)
+                {
+                    return new CloudCodeCustomError("Failed to Parse Error", k_UnexpectedFormatCustomStatusCode,
+                        "Cloud Code Unprocessable Entity exception is in an unexpected format and " +
+                        $"couldn't be parsed: {exception.Message}", e);
+                }
             }
 
             // This method does whatever handling is appropriate given the specific errors this use case may trigger.
@@ -118,35 +146,36 @@ namespace UnityGamingServicesUseCases
             {
                 switch (cloudCodeCustomError.status)
                 {
-                    case k_InvalidRewardDistributionAttemptScriptError:
+                    case k_InvalidRewardDistributionAttemptScriptStatusCode:
                         Debug.Log("No rewards were granted for completing the challenge: " +
                                   $"{cloudCodeCustomError.message}");
                         break;
 
-                    case k_ValidationScriptError:
-                        Debug.Log("Validation error during Cloud Code script execution:");
-                        Debug.Log($"{cloudCodeCustomError.title}: {cloudCodeCustomError.message} : " +
-                                  $"{cloudCodeCustomError.additionalDetails[0]}");
+                    case k_HttpBadRequestStatusCode:
+                        Debug.Log("A bad server request occurred during Cloud Code script execution: " + 
+                                  $"{cloudCodeCustomError.name}: {cloudCodeCustomError.message} : " +
+                                  $"{cloudCodeCustomError.details[0]}");
                         break;
 
-                    case k_RateLimitScriptError:
+                    case k_HttpTooManyRequestsStatusCode:
                         Debug.Log($"Rate Limit has been exceeded. Wait {cloudCodeCustomError.retryAfter} " +
                                   $"seconds and try again.");
                         break;
 
-                    case k_GenericCloudCodeScriptError:
+                    case k_GenericCloudCodeScriptStatusCode:
                         Debug.Log("A problem occured while trying to grant seasonal rewards: "
                                   + cloudCodeCustomError.message);
                         break;
 
-                    case k_UntypedCustomScriptError:
-                        Debug.Log($"Cloud code returned error: {cloudCodeCustomError.status}: " +
-                                  $"{cloudCodeCustomError.title}: {cloudCodeCustomError.message}");
+                    case k_UnexpectedFormatCustomStatusCode:
+                        Debug.Log($"Cloud Code returned an Unprocessable Entity exception, " +
+                                  $"but it could not be parsed: { cloudCodeCustomError.message }. " +
+                                  $"Original error: { cloudCodeCustomError.InnerException?.Message }");
                         break;
 
                     default:
                         Debug.Log($"Cloud code returned error: {cloudCodeCustomError.status}: " +
-                                  $"{cloudCodeCustomError.title}: {cloudCodeCustomError.message}");
+                                  $"{cloudCodeCustomError.name}: {cloudCodeCustomError.message}");
                         break;
                 }
             }
@@ -166,28 +195,38 @@ namespace UnityGamingServicesUseCases
             public struct GrantEventRewardResult
             {
                 public RewardDetail[] grantedRewards;
+                public string eventKey;
+                public long timestamp;
+                public int timestampMinutes;
+
+                public override string ToString()
+                {
+                    return $"Updated Balances:{string.Join(",", grantedRewards.Select(x => x.ToString()).ToArray())}, " +
+                        $"Season:{eventKey}, Timestamp:{timestamp} (minutes:{timestampMinutes})";
+                }
             }
 
-            public struct CloudCodeExceptionParsedMessage
+            struct CloudCodeExceptionParsedMessage
             {
                 public string message;
             }
 
-            public struct CloudCodeCustomError
+            class CloudCodeCustomError : Exception
             {
                 public int status;
-                public string title;
+                public string name;
                 public string message;
                 public string retryAfter;
-                public string[] additionalDetails;
+                public string[] details;
 
-                public CloudCodeCustomError(string title)
+                public CloudCodeCustomError(string name, int status, string message = null, 
+                    Exception innerException = null) : base(message, innerException)
                 {
-                    this.title = title;
-                    status = 0;
-                    message = null;
+                    this.name = name;
+                    this.status = status;
+                    this.message = message;
                     retryAfter = null;
-                    additionalDetails = new string[] { };
+                    details = new string[] { };
                 }
             }
         }

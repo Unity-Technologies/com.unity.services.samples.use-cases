@@ -39,9 +39,9 @@ namespace UnityGamingServicesUseCases
                 SetInteractable(false);
             }
 
-            public void SetInteractable(bool interactable)
+            public void SetInteractable(bool isInteractable = true)
             {
-                m_IsSceneInteractable = interactable;
+                m_IsSceneInteractable = isInteractable;
 
                 rewardedAdBoosterWatchAdButton.interactable = m_IsSceneInteractable && MediationManager.instance.isAdReady;
                 watchRewardedAdButton.interactable = m_IsSceneInteractable && MediationManager.instance.isAdReady;

@@ -6,6 +6,9 @@ const _ = require("lodash-4.17");
 const { CurrenciesApi } = require("@unity-services/economy-2.0");
 const { DataApi } = require("@unity-services/cloud-save-1.0");
 
+const badRequestError = 400;
+const tooManyRequestsError = 429;
+
 // In this sample, for simplicity, the rewards are hardcoded.
 // Alternatively, you could use Remote Config to dynamically define these,
 // this would allow a single source of truth for the values used in both cloud and client code.
@@ -17,57 +20,45 @@ const cloudSaveKeyLastLevelEndBaseRewardTimestamp = "REWARDED_ADS_LAST_LEVEL_END
 const cloudSaveKeyLastLevelEndBoosterRewardTimestamp = "REWARDED_ADS_LAST_LEVEL_END_BOOSTER_REWARD_TIMESTAMP";
 const cloudSaveKeyLevelEndCount = "REWARDED_ADS_LEVEL_END_COUNT";
 const cloudSaveKeyLevelBoosterRewardsDistributed = "REWARDED_ADS_LEVEL_BOOSTER_REWARDS_DISTRIBUTED"
-const rateLimitError = 429;
-const validationError = 400;
 
 module.exports = async ({ params, context, logger }) => {
-    const { projectId, playerId, environmentId, accessToken} = context;
-    const economyCurrencyApi = new CurrenciesApi({ accessToken });
-    const cloudSaveApi = new DataApi({ accessToken });
-    const servicesData = { projectId, playerId, environmentId, cloudSaveApi, economyCurrencyApi, logger };
+    try {
+        const { projectId, playerId, environmentId, accessToken} = context;
+        const economyCurrencyApi = new CurrenciesApi({ accessToken });
+        const cloudSaveApi = new DataApi({ accessToken });
+        const servicesData = { projectId, playerId, environmentId, cloudSaveApi, economyCurrencyApi, logger };
 
-    const { isDistributingBoosterRewards, multiplier } = processMultiplierParam(params.multiplier);
-    const currentTimestamp = _.now();
-    let rewardCurrencyBalance = 0;
+        const { isDistributingBoosterRewards, multiplier } = processMultiplierParam(params.multiplier);
+        const currentTimestamp = _.now();
 
-    try
-    {
         const { levelEndCount, lastCalledTime, boosterRewardsDistributed } = await getCurrentCloudSaveData(servicesData, isDistributingBoosterRewards);
         validateScriptUsage(multiplier, currentTimestamp, levelEndCount, lastCalledTime, isDistributingBoosterRewards, boosterRewardsDistributed);
-        rewardCurrencyBalance = await processRewards(servicesData, multiplier, isDistributingBoosterRewards);
+        const rewardCurrencyBalance = await processRewards(servicesData, multiplier, isDistributingBoosterRewards);
         await updateCloudSaveData(servicesData, currentTimestamp, levelEndCount, isDistributingBoosterRewards);
-    }
-    catch (error)
-    {
+
+        return {
+            rewardCurrencyId,
+            rewardCurrencyBalance
+        };
+    } catch (error) {
         transformAndThrowCaughtException(error);
     }
-
-    return {
-        rewardCurrencyId,
-        rewardCurrencyBalance
-    };
 };
 
-function processMultiplierParam(multiplier)
-{
-    if (multiplier === undefined)
-    {
+function processMultiplierParam(multiplier) {
+    if (multiplier === undefined) {
         return { isDistributingBoosterRewards: false, multiplier: 1 };
     }
 
     return { isDistributingBoosterRewards: true, multiplier };
 }
 
-async function getCurrentCloudSaveData(servicesData, isDistributingBoosterRewards)
-{
+async function getCurrentCloudSaveData(servicesData, isDistributingBoosterRewards) {
     let cloudSaveKeys = [cloudSaveKeyLevelEndCount];
 
-    if (isDistributingBoosterRewards)
-    {
+    if (isDistributingBoosterRewards) {
         cloudSaveKeys.push(cloudSaveKeyLastLevelEndBoosterRewardTimestamp, cloudSaveKeyLevelBoosterRewardsDistributed);
-    }
-    else
-    {
+    } else {
         cloudSaveKeys.push(cloudSaveKeyLastLevelEndBaseRewardTimestamp);
     }
 
@@ -80,8 +71,7 @@ async function getCurrentCloudSaveData(servicesData, isDistributingBoosterReward
     return cloudSaveResponseToObject(getItemsResponse);
 }
 
-function cloudSaveResponseToObject(getItemsResponse)
-{
+function cloudSaveResponseToObject(getItemsResponse) {
     let returnObject = {
         levelEndCount: 0,
         lastCalledTime: 0,
@@ -90,16 +80,11 @@ function cloudSaveResponseToObject(getItemsResponse)
 
     getItemsResponse.data.results.forEach(item => {
         if (item.key === cloudSaveKeyLastLevelEndBoosterRewardTimestamp ||
-            item.key === cloudSaveKeyLastLevelEndBaseRewardTimestamp)
-        {
+            item.key === cloudSaveKeyLastLevelEndBaseRewardTimestamp) {
             returnObject.lastCalledTime = item.value;
-        }
-        else if (item.key === cloudSaveKeyLevelEndCount)
-        {
+        } else if (item.key === cloudSaveKeyLevelEndCount) {
             returnObject.levelEndCount = item.value;
-        }
-        else if (item.key === cloudSaveKeyLevelBoosterRewardsDistributed)
-        {
+        } else if (item.key === cloudSaveKeyLevelBoosterRewardsDistributed) {
             returnObject.boosterRewardsDistributed = item.value;
         }
     });
@@ -107,23 +92,18 @@ function cloudSaveResponseToObject(getItemsResponse)
     return returnObject;
 }
 
-function validateScriptUsage(multiplier, currentTimestamp, levelEndCount, lastCalledTime, isDistributingBoosterRewards, boosterRewardsDistributed)
-{
-    if (isDistributingBoosterRewards)
-    {
+function validateScriptUsage(multiplier, currentTimestamp, levelEndCount, lastCalledTime, isDistributingBoosterRewards, boosterRewardsDistributed) {
+    if (isDistributingBoosterRewards) {
         validateAcceptableMultiplier(multiplier, levelEndCount);
         validateAcceptableTimeBetweenScriptCalls(currentTimestamp, lastCalledTime, isDistributingBoosterRewards);
         validateLevelBoosterRewardsNotAlreadyDistributed(boosterRewardsDistributed);
-    }
-    else
-    {
+    } else {
         validateAcceptableTimeBetweenScriptCalls(currentTimestamp, lastCalledTime, isDistributingBoosterRewards);
     }
 
 }
 
-function validateAcceptableMultiplier(multiplier, levelEndCount)
-{
+function validateAcceptableMultiplier(multiplier, levelEndCount) {
     // Most of the time the only acceptable multiplier is 2.
     // During the first (0 index) level end, and every 3rd level end after that (3, 6, 9),
     // the acceptable multipliers are 2, 3 and 5
@@ -134,64 +114,51 @@ function validateAcceptableMultiplier(multiplier, levelEndCount)
     // levelEndCount is always incremented during the script execution that distributes
     // the level's base rewards, and that execution always finishes before the one that
     // distributes reward multipliers (the only time this validation occurs).
-    if ((levelEndCount - 1) % frequencyOfMiniGameOccurrence === 0)
-    {
+    if ((levelEndCount - 1) % frequencyOfMiniGameOccurrence === 0) {
         acceptableMultipliers.push(3, 5);
     }
 
-    if (!acceptableMultipliers.includes(multiplier))
-    {
+    if (!acceptableMultipliers.includes(multiplier)) {
         throw new InvalidRewardGrantError("Invalid reward multiplier supplied (" + multiplier + ") " +
             "for level count: " + (levelEndCount - 1));
     }
 }
 
-function validateAcceptableTimeBetweenScriptCalls(currentTimestamp, lastCalledTime, isDistributingBoosterRewards)
-{
+function validateAcceptableTimeBetweenScriptCalls(currentTimestamp, lastCalledTime, isDistributingBoosterRewards) {
     let necessaryTimePassMilliseconds;
 
-    if (isDistributingBoosterRewards)
-    {
+    if (isDistributingBoosterRewards) {
         // Distributing booster rewards requires watching a rewarded video ad.
         // We'll assume at least 5 seconds will pass between rewarded ad views
         // for our sample.
         necessaryTimePassMilliseconds = 5000;
-    }
-    else
-    {
+    } else {
         // In our sample use case, significantly less time will pass between calls
         // if the player chooses not to watch a rewarded ad.
         necessaryTimePassMilliseconds = 1000;
     }
 
-    if (currentTimestamp < lastCalledTime + necessaryTimePassMilliseconds)
-    {
+    if (currentTimestamp < lastCalledTime + necessaryTimePassMilliseconds) {
         throw new InvalidRewardGrantError("Not enough time has passed since last level end.");
     }
 }
 
-function validateLevelBoosterRewardsNotAlreadyDistributed(boosterRewardsDistributed)
-{
-    if (boosterRewardsDistributed)
-    {
+function validateLevelBoosterRewardsNotAlreadyDistributed(boosterRewardsDistributed) {
+    if (boosterRewardsDistributed) {
         throw new InvalidRewardGrantError("Booster rewards have already been distributed for this level.");
     }
 }
 
-async function processRewards(servicesData, multiplier, isDistributingBoosterRewards)
-{
+async function processRewards(servicesData, multiplier, isDistributingBoosterRewards) {
     let amount;
 
-    if (isDistributingBoosterRewards)
-    {
+    if (isDistributingBoosterRewards) {
         // We subtract baseRewardAmount in the equation because a separate call to this script
         // distributes the baseRewardAmount. When isDistributingBoosterRewards is true, that
         // indicates that the only rewards being distributed in this execution flow are the ones
         // over and above baseRewardAmount.
         amount = (baseRewardAmount * multiplier) - baseRewardAmount;
-    }
-    else
-    {
+    } else {
         amount = baseRewardAmount;
     }
 
@@ -205,19 +172,15 @@ async function processRewards(servicesData, multiplier, isDistributingBoosterRew
     return balanceResponse.data.balance;
 }
 
-async function updateCloudSaveData(servicesData, currentTimestamp, levelEndCount, isDistributingBoosterRewards)
-{
+async function updateCloudSaveData(servicesData, currentTimestamp, levelEndCount, isDistributingBoosterRewards) {
     let updatedCloudSaveData = [];
 
-    if (isDistributingBoosterRewards)
-    {
+    if (isDistributingBoosterRewards) {
         updatedCloudSaveData.push(
             { key: cloudSaveKeyLastLevelEndBoosterRewardTimestamp, value: currentTimestamp },
             { key: cloudSaveKeyLevelBoosterRewardsDistributed, value: true }
         );
-    }
-    else
-    {
+    } else {
         updatedCloudSaveData.push(
             { key: cloudSaveKeyLastLevelEndBaseRewardTimestamp, value: currentTimestamp },
             { key: cloudSaveKeyLevelEndCount, value: levelEndCount + 1 },
@@ -234,39 +197,37 @@ async function updateCloudSaveData(servicesData, currentTimestamp, levelEndCount
 
 // Some form of this function appears in all Cloud Code scripts.
 // Its purpose is to parse the errors thrown from the script into a standard exception object which can be stringified.
-function transformAndThrowCaughtException(error)
-{
+function transformAndThrowCaughtException(error) {
     let result = {
         status: 0,
-        title: "",
+        name: "",
         message: "",
         retryAfter: null,
-        additionalDetails: ""
+        details: ""
     };
 
-    if (error.response)
-    {
+    if (error.response) {
         result.status = error.response.data.status ? error.response.data.status : 0;
-        result.title = error.response.data.title ? error.response.data.title : "Unknown Error";
+        result.name = error.response.data.title ? error.response.data.title : "Unknown Error";
         result.detail = error.response.data.detail ? error.response.data.detail : error.response.data;
-        if (error.response.status === rateLimitError) {
+        
+        if (error.response.status === tooManyRequestsError) {
             result.retryAfter = error.response.headers['retry-after'];
-        }
-        if (error.response.status === validationError) {
+        } else if (error.response.status === badRequestError) {
             let arr = [];
+
             _.forEach(error.response.data.errors, error => {
                 arr = _.concat(arr, error.messages);
             });
-            result.additionalDetails = arr;
+
+            result.details = arr;
         }
-    }
-    else
-    {
-        if (error instanceof CloudCodeCustomError)
-        {
+    } else {
+        if (error instanceof CloudCodeCustomError) {
             result.status = error.status;
         }
-        result.title = error.name;
+
+        result.name = error.name;
         result.message = error.message;
     }
 

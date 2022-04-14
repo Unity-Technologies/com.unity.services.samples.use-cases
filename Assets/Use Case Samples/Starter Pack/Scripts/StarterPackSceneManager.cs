@@ -47,7 +47,7 @@ namespace UnityGamingServicesUseCases
                 {
                     if (this != null)
                     {
-                        StarterPackSampleView.instance.Enable();
+                        StarterPackSampleView.instance.SetInteractable();
                     }
                 }
             }
@@ -56,7 +56,7 @@ namespace UnityGamingServicesUseCases
             {
                 try
                 { 
-                    StarterPackSampleView.instance.Disable();
+                    StarterPackSampleView.instance.SetInteractable(false);
 
                     await CloudCodeManager.instance.CallPurchaseStarterPackEndpoint();
                     if (this == null) return;
@@ -73,7 +73,7 @@ namespace UnityGamingServicesUseCases
                 {
                     if (this != null)
                     {
-                        StarterPackSampleView.instance.Enable();
+                        StarterPackSampleView.instance.SetInteractable();
                     }
                 }
             }
@@ -82,7 +82,7 @@ namespace UnityGamingServicesUseCases
             {
                 try
                 { 
-                    StarterPackSampleView.instance.Disable();
+                    StarterPackSampleView.instance.SetInteractable(false);
 
                     var balanceResponse = await Economy.PlayerBalances.IncrementBalanceAsync("GEM", 10);
                     if (this == null) return;
@@ -97,7 +97,7 @@ namespace UnityGamingServicesUseCases
                 {
                     if (this != null)
                     {
-                        StarterPackSampleView.instance.Enable();
+                        StarterPackSampleView.instance.SetInteractable();
                     }
                 }
             }
@@ -106,7 +106,7 @@ namespace UnityGamingServicesUseCases
             {
                 try
                 {
-                    StarterPackSampleView.instance.Disable();
+                    StarterPackSampleView.instance.SetInteractable(false);
 
                     // Delete the Starter-Pack-purchased key ("STARTER_PACK_STATUS") from Cloud Save so
                     // Starter Pack can be purchased again. This is used for testing to permit repurchasing
@@ -124,7 +124,7 @@ namespace UnityGamingServicesUseCases
                 {
                     if (this != null)
                     {
-                        StarterPackSampleView.instance.Enable();
+                        StarterPackSampleView.instance.SetInteractable();
                     }
                 }
             }

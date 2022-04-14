@@ -2,25 +2,24 @@
 // this file will not have any effect locally. Changes to Cloud Code scripts are normally done directly in the 
 // Unity Dashboard.
 
-const rateLimitError = 429;
-const validationError = 400;
-
 const _ = require("lodash-4.17");
 const { SettingsApi } = require("@unity-services/remote-config-1.0");
 const { DataApi } = require("@unity-services/cloud-save-1.0");
 
+const badRequestError = 400;
+const tooManyRequestsError = 429;
+
 module.exports = async ({ context, logger }) => {
-    const { projectId, playerId, environmentId, accessToken} = context;
-    const remoteConfig = new SettingsApi({ accessToken });
-    const cloudSave = new DataApi({ accessToken });
+    try {
+        const { projectId, playerId, environmentId, accessToken} = context;
+        const remoteConfig = new SettingsApi({ accessToken });
+        const cloudSave = new DataApi({ accessToken });
 
-    const services = { projectId, playerId, environmentId, remoteConfig, cloudSave, logger };
+        const services = { projectId, playerId, environmentId, remoteConfig, cloudSave, logger };
 
-    const epochTime = _.now();
-    logger.info("Current epochTime: " + epochTime);
+        const epochTime = _.now();
+        logger.info("Current epochTime: " + epochTime);
 
-    try
-    {
         let eventState = { 
             epochTime,
             result: { 
@@ -29,7 +28,8 @@ module.exports = async ({ context, logger }) => {
                 daysRemaining: 0,
                 secondsTillClaimable: 0,
                 secondsTillNextDay: 0
-        } };
+            }
+        };
 
         await readInitialState(services, eventState);
 
@@ -40,15 +40,12 @@ module.exports = async ({ context, logger }) => {
         logger.info("Result: " + JSON.stringify(eventState.result));
     
         return eventState.result;
-    }
-    catch (error)
-    {
+    } catch (error) {
         transformAndThrowCaughtError(error);
     }
 };
 
-async function readInitialState(services, eventState)
-{
+async function readInitialState(services, eventState) {
     const promiseResponses = await Promise.all([
         getRemoteConfigData(services),
         getEventStartEpochTime(services),
@@ -66,14 +63,12 @@ async function readInitialState(services, eventState)
 
     // Setup start epoch time. This is ONLY needed to demonstrate this use case sample. 
     // Normally this value would be set on Remote Config for all players to the start of the month.
-    if (eventState.startEpochTime === undefined)
-    {
+    if (eventState.startEpochTime === undefined) {
         eventState.startEpochTime = await setEventStartEpochTimeForDemonstrating(services, eventState);
     }
 
     // Detect that this player has NOT visited the Daily Rewards feature yet OR that the event has started a new month
-    if (eventState.playerStatus === undefined || eventState.playerStatus.startEpochTime !== eventState.startEpochTime)
-    {
+    if (eventState.playerStatus === undefined || eventState.playerStatus.startEpochTime !== eventState.startEpochTime) {
         eventState.playerStatus = await startEventForPlayer(services, eventState);
         eventState.result.firstVisit = true;
     }
@@ -81,8 +76,7 @@ async function readInitialState(services, eventState)
     Object.assign(eventState.result, eventState.configData);
 }
 
-function updateState(services, eventState)
-{
+function updateState(services, eventState) {
     // Calculate the total time of the event in seconds so we can easily check if the current duration in seconds is past the end of the event.
     eventState.eventTotalSeconds = eventState.configData.totalDays * eventState.configData.secondsPerDay;
 
@@ -91,28 +85,23 @@ function updateState(services, eventState)
     eventState.result.isStarted = eventState.eventSecondsPassed >= 0;
     eventState.result.isEnded = eventState.eventSecondsPassed >= eventState.eventTotalSeconds;
 
-    if (eventState.result.isStarted && !eventState.result.isEnded)
-    {
+    if (eventState.result.isStarted && !eventState.result.isEnded) {
         eventState.eventDay = Math.floor((eventState.epochTime - eventState.startEpochTime) / eventState.configData.secondsPerDay / 1000);
         eventState.lastDayClaimed = Math.floor((eventState.playerStatus.lastClaimTime - eventState.startEpochTime) / eventState.configData.secondsPerDay / 1000);
 
         // Calculate seconds remaining in the current day by calculating the seconds offset for the next day and subracting the seconds passed in event so far
         eventState.result.secondsTillNextDay = (eventState.eventDay + 1) * eventState.configData.secondsPerDay - eventState.eventSecondsPassed;
 
-        if (eventState.eventDay > eventState.lastDayClaimed)
-        {
+        if (eventState.eventDay > eventState.lastDayClaimed) {
             eventState.result.secondsTillClaimable = 0;
             eventState.result.daysRemaining = eventState.configData.totalDays - eventState.eventDay;
-        }
-        else
-        {
+        } else {
             eventState.result.secondsTillClaimable = eventState.result.secondsTillNextDay;
             eventState.result.daysRemaining = eventState.configData.totalDays - eventState.eventDay - 1;
         }
 
         // If the player has claimed the last day of the month, end the event now to signal that further claims are not possible.
-        if (eventState.result.daysRemaining <= 0)
-        {
+        if (eventState.result.daysRemaining <= 0) {
             eventState.result.isEnded = true;
         }
     }
@@ -120,8 +109,7 @@ function updateState(services, eventState)
     eventState.result.daysClaimed = eventState.playerStatus.daysClaimed;
 }
 
-async function getRemoteConfigData(services)
-{
+async function getRemoteConfigData(services) {
     const response = await services.remoteConfig.assignSettingsGet(
         services.projectId,
         services.environmentId,
@@ -131,8 +119,7 @@ async function getRemoteConfigData(services)
 
     if (response.data.configs &&
         response.data.configs.settings &&
-        response.data.configs.settings.DAILY_REWARDS_CONFIG)
-    {
+        response.data.configs.settings.DAILY_REWARDS_CONFIG) {
         return response.data.configs.settings.DAILY_REWARDS_CONFIG;
     }
     
@@ -142,30 +129,25 @@ async function getRemoteConfigData(services)
 // Retrieve the epoch time for the start of the event.
 // Important: this value would NORMALLY be stored in Remote Config, but, to facilitate testing, we are using
 //            Cloud Save so each user can start the event correctly when they first enter this Use Case Sample.
-async function getEventStartEpochTime(services)
-{
+async function getEventStartEpochTime(services) {
     return await getCloudSaveResult(services, "DAILY_REWARDS_START_EPOCH_TIME");
 }
 
-async function getPlayerStatus(services)
-{
+async function getPlayerStatus(services) {
     const results = await getCloudSaveResult(services, "DAILY_REWARDS_STATUS");
-    if (results)
-    {
+    if (results) {
         return JSON.parse(results);
     }
 
     return undefined;
 }
 
-async function getCloudSaveResult(services, key)
-{
+async function getCloudSaveResult(services, key) {
     const response = await services.cloudSave.getItems(services.projectId, services.playerId, [ key ] );
 
     if (response.data.results &&
         response.data.results.length > 0 &&
-        response.data.results[0])
-    {
+        response.data.results[0]) {
         return response.data.results[0].value;
     }
 
@@ -175,8 +157,7 @@ async function getCloudSaveResult(services, key)
 // Setup start epoch time. This is ONLY needed to demonstrate this Use Case Sample. 
 // Normally this value would be set to the first day of the month and stored in Remote Config to control the event for all
 // players, but here it's set in Cloud Save for this Use Case Sample to facilitate testing.
-async function setEventStartEpochTimeForDemonstrating(services, eventState)
-{
+async function setEventStartEpochTimeForDemonstrating(services, eventState) {
     services.logger.info("Setting start event time in Cloud Save. This would normally set in Remote Config to the first day of the month.");
 
     await services.cloudSave.setItem(services.projectId, services.playerId, { key: "DAILY_REWARDS_START_EPOCH_TIME", value: eventState.epochTime } );
@@ -185,8 +166,7 @@ async function setEventStartEpochTimeForDemonstrating(services, eventState)
 }
 
 // Setup event for this player for the first time player visits the Daily Rewards event for the current month
-async function startEventForPlayer(services, eventState)
-{
+async function startEventForPlayer(services, eventState) {
     const playerStatus = {
         startEpochTime: eventState.startEpochTime,
         daysClaimed: 0,
@@ -205,37 +185,33 @@ async function startEventForPlayer(services, eventState)
 function transformAndThrowCaughtError(error) {
   let result = {
     status: 0,
-    title: "",
+    name: "",
     message: "",
     retryAfter: null,
-    additionalDetails: ""
+    details: ""
   };
 
-  if (error.response)
-  {
+  if (error.response) {
     result.status = error.response.data.status ? error.response.data.status : 0;
-    result.title = error.response.data.title ? error.response.data.title : "Unknown Error";
+    result.name = error.response.data.title ? error.response.data.title : "Unknown Error";
     result.message = error.response.data.detail ? error.response.data.detail : error.response.data;
-    if (error.response.status === rateLimitError)
-    {
+
+    if (error.response.status === tooManyRequestsError) {
       result.retryAfter = error.response.headers['retry-after'];
-    }
-    else if (error.response.status === validationError)
-    {
+    } else if (error.response.status === badRequestError) {
       let arr = [];
+
       _.forEach(error.response.data.errors, error => {
         arr = _.concat(arr, error.messages);
       });
-      result.additionalDetails = arr;
+
+      result.details = arr;
     }
-  }
-  else
-  {
-    if (error instanceof CloudCodeCustomError)
-    {
+  } else {
+    if (error instanceof CloudCodeCustomError) {
       result.status = error.status;
     }
-    result.title = error.name;
+    result.name = error.name;
     result.message = error.message;
   }
 

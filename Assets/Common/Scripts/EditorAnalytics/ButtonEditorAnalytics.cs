@@ -1,4 +1,3 @@
-#if UNITY_EDITOR
 
 // NOTE:
 // You can disable all editor analytics in Unity > Preferences.
@@ -16,6 +15,7 @@ namespace UnityGamingServicesUseCases
     [RequireComponent(typeof(Button))]
     public class ButtonEditorAnalytics : MonoBehaviour
     {
+#if UNITY_EDITOR
         public string buttonName;
 
         private void Awake()
@@ -28,7 +28,6 @@ namespace UnityGamingServicesUseCases
         {
             SamplesEditorAnalytics.SendButtonPressedInPlayModeEvent(buttonName);
         }
+#endif
     }
 }
-
-#endif

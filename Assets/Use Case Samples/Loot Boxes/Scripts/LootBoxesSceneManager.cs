@@ -33,7 +33,7 @@ namespace UnityGamingServicesUseCases
                     await EconomyManager.instance.RefreshCurrencyBalances();
                     if (this == null) return;
 
-                    sceneView.Enable();
+                    sceneView.SetInteractable();
 
                     Debug.Log("Initialization and signin complete.");
                 }
@@ -47,7 +47,7 @@ namespace UnityGamingServicesUseCases
             {
                 try
                 {
-                    sceneView.Disable();
+                    sceneView.SetInteractable(false);
 
                     // Call Cloud Code js script and wait for grant to complete.
                     await CloudCodeManager.instance.CallGrantRandomCurrencyEndpoint();
@@ -67,7 +67,7 @@ namespace UnityGamingServicesUseCases
                 {
                     if (this != null)
                     {
-                        sceneView.Enable();
+                        sceneView.SetInteractable();
                     }
                 }
             }

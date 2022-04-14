@@ -8,6 +8,9 @@ const { SettingsApi } = require("@unity-services/remote-config-1.0");
 const { CurrenciesApi } = require("@unity-services/economy-2.0");
 const { InventoryApi } = require("@unity-services/economy-2.0");
 
+const badRequestError = 400;
+const tooManyRequestsError = 429;
+
 const tierState = { Locked: 0, Unlocked: 1, Claimed: 2 };
 const seasonTierStatesDefault = [ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 ];
 const playerStateDefault = {
@@ -20,21 +23,20 @@ const playerStateDefault = {
 }
 
 module.exports = async ({ params, context, logger }) => {
-
-    const claimTierKey = "BATTLE_PASS_TIER_" + (params.tierIndex + 1);
-
-    const { projectId, playerId, accessToken } = context;
-    const cloudSaveApi = new DataApi({ accessToken });
-    const remoteConfigApi = new SettingsApi();
-    const economyCurrencyApi = new CurrenciesApi({ accessToken });
-    const economyInventoryApi = new InventoryApi({ accessToken });
-
-    const timestamp = _.now();
-    const timestampMinutes = getTimestampMinutes(timestamp);
-
-    let returnObject = {};
-
     try {
+        const claimTierKey = "BATTLE_PASS_TIER_" + (params.tierIndex + 1);
+
+        const { projectId, playerId, accessToken } = context;
+        const cloudSaveApi = new DataApi({ accessToken });
+        const remoteConfigApi = new SettingsApi();
+        const economyCurrencyApi = new CurrenciesApi({ accessToken });
+        const economyInventoryApi = new InventoryApi({ accessToken });
+
+        const timestamp = _.now();
+        const timestampMinutes = getTimestampMinutes(timestamp);
+
+        let returnObject = {};
+
         const remoteConfigData = await getRemoteConfigData(remoteConfigApi, projectId, playerId, timestampMinutes, claimTierKey);
 
         let playerState = await getCloudSaveData(cloudSaveApi, projectId, playerId);
@@ -55,22 +57,19 @@ module.exports = async ({ params, context, logger }) => {
         returnObject.seasonTierStates = playerState.seasonTierStates;
 
         await setCloudSaveData(cloudSaveApi, projectId, playerId, remoteConfigData, playerState, timestamp);
-    }
-    catch (error) {
+
+        return returnObject;
+    } catch (error) {
         transformAndThrowCaughtException(error);
     }
-
-    return returnObject;
 };
 
-function getTimestampMinutes(timestamp)
-{
+function getTimestampMinutes(timestamp) {
     let date = new Date(timestamp);
     return ("0" + date.getMinutes()).slice(-2);
 }
 
-async function getRemoteConfigData(remoteConfigApi, projectId, playerId, timestampMinutes, claimTierKey)
-{
+async function getRemoteConfigData(remoteConfigApi, projectId, playerId, timestampMinutes, claimTierKey) {
     // get the current season configuration
     const result = await remoteConfigApi.assignSettings({
         projectId,
@@ -90,8 +89,7 @@ async function getRemoteConfigData(remoteConfigApi, projectId, playerId, timesta
     return result.data.configs.settings;
 }
 
-async function getCloudSaveData(cloudSaveApi, projectId, playerId)
-{
+async function getCloudSaveData(cloudSaveApi, projectId, playerId) {
     const getItemsResponse = await cloudSaveApi.getItems(
         projectId,
         playerId,
@@ -114,8 +112,7 @@ async function getCloudSaveData(cloudSaveApi, projectId, playerId)
     return returnObject;
 }
 
-function cloudSaveResponseToObject(getItemsResponse)
-{
+function cloudSaveResponseToObject(getItemsResponse) {
     let returnObject = {};
 
     getItemsResponse.data.results.forEach(item => {
@@ -126,19 +123,16 @@ function cloudSaveResponseToObject(getItemsResponse)
     return returnObject;
 }
 
-function shouldResetBattlePassProgress(remoteConfigData, playerState, timestamp)
-{
+function shouldResetBattlePassProgress(remoteConfigData, playerState, timestamp) {
     // If the progress object is empty, then it might be the first time this player has ever used this function.
     // Resetting will create a fresh object.
-    if (!playerState.seasonTierStates)
-    {
+    if (!playerState.seasonTierStates) {
         return true;
     }
 
     // Because the seasonal events repeat and do not have unique keys for each iteration, we first check whether the
     // current season's key is the same as the key of the season that was active the last time the event was completed.
-    if (remoteConfigData.EVENT_KEY !== playerState.latestSeasonActivityEventKey)
-    {
+    if (remoteConfigData.EVENT_KEY !== playerState.latestSeasonActivityEventKey) {
         return true;
     }
 
@@ -154,43 +148,35 @@ function shouldResetBattlePassProgress(remoteConfigData, playerState, timestamp)
     const eventDurationMilliseconds = currentEventDurationMinutes * millisecondsPerMinute;
     const currentSeasonEarliestPotentialStartTimestamp = timestamp - eventDurationMilliseconds;
 
-    if (playerState.latestSeasonActivityTimestamp < currentSeasonEarliestPotentialStartTimestamp)
-    {
+    if (playerState.latestSeasonActivityTimestamp < currentSeasonEarliestPotentialStartTimestamp) {
         return true;
     }
 
     return false;
 }
 
-function validateClaim(playerState, tierToClaimArrayIndex)
-{
+function validateClaim(playerState, tierToClaimArrayIndex) {
     if (tierToClaimArrayIndex < 0 ||
-        tierToClaimArrayIndex >= seasonTierStatesDefault.length)
-    {
+        tierToClaimArrayIndex >= seasonTierStatesDefault.length) {
         throw new Error("The given index doesn't fall within the tier list's bounds.");
     }
 
-    if (playerState.seasonTierStates[tierToClaimArrayIndex] === tierState.Claimed)
-    {
+    if (playerState.seasonTierStates[tierToClaimArrayIndex] === tierState.Claimed) {
         throw new Error("Player has already claimed this tier.");
     }
 
-    if (playerState.seasonTierStates[tierToClaimArrayIndex] === tierState.Locked)
-    {
+    if (playerState.seasonTierStates[tierToClaimArrayIndex] === tierState.Locked) {
         throw new Error("The requested tier cannot be claimed because it's locked.");
     }
 }
 
-function getRewardsFromRemoteConfig(remoteConfigData, playerState, claimTierKey)
-{
+function getRewardsFromRemoteConfig(remoteConfigData, playerState, claimTierKey) {
     let returnRewards = [];
 
     const tierRewards = remoteConfigData[claimTierKey];
 
-    if (tierRewards != null)
-    {
-        if (tierRewards.reward != null)
-        {
+    if (tierRewards != null) {
+        if (tierRewards.reward != null) {
             returnRewards.push(tierRewards.reward);
         }
 
@@ -198,8 +184,7 @@ function getRewardsFromRemoteConfig(remoteConfigData, playerState, claimTierKey)
         // By this point in the code, the BattlePass would have been reset if it was too old.
         const ownsBattlePass = playerState.battlePassPurchasedEventKey === remoteConfigData.EVENT_KEY;
 
-        if (ownsBattlePass && tierRewards.battlePassReward != null)
-        {
+        if (ownsBattlePass && tierRewards.battlePassReward != null) {
             returnRewards.push(tierRewards.battlePassReward);
         }
     }
@@ -207,12 +192,9 @@ function getRewardsFromRemoteConfig(remoteConfigData, playerState, claimTierKey)
     return returnRewards;
 }
 
-async function grantRewards(currencyApi, inventoryApi, projectId, playerId, rewardsToGrant)
-{
-    for (const reward of rewardsToGrant)
-    {
-        switch (reward.service)
-        {
+async function grantRewards(currencyApi, inventoryApi, projectId, playerId, rewardsToGrant) {
+    for (const reward of rewardsToGrant) {
+        switch (reward.service) {
             case "currency":
                 await grantCurrency(currencyApi, projectId, playerId, reward.id, reward.quantity);
                 break;
@@ -224,21 +206,17 @@ async function grantRewards(currencyApi, inventoryApi, projectId, playerId, rewa
     }
 }
 
-async function grantCurrency(currencyApi, projectId, playerId, currencyId, amount)
-{
+async function grantCurrency(currencyApi, projectId, playerId, currencyId, amount) {
     await currencyApi.incrementPlayerCurrencyBalance(projectId, playerId, currencyId, { currencyId, amount });
 }
 
-async function grantInventoryItem(inventoryApi, projectId, playerId, inventoryItemId, amount)
-{
-    for (let i = 0; i < amount; i++)
-    {
+async function grantInventoryItem(inventoryApi, projectId, playerId, inventoryItemId, amount) {
+    for (let i = 0; i < amount; i++) {
         await inventoryApi.addInventoryItem(projectId, playerId, { inventoryItemId: inventoryItemId });
     }
 }
 
-async function setCloudSaveData(cloudSaveApi, projectId, playerId, remoteConfigData, playerState, timestamp)
-{
+async function setCloudSaveData(cloudSaveApi, projectId, playerId, remoteConfigData, playerState, timestamp) {
     await cloudSaveApi.setItemBatch(
         projectId,
         playerId,
@@ -256,35 +234,33 @@ async function setCloudSaveData(cloudSaveApi, projectId, playerId, remoteConfigD
 }
 
 // this standardizes our outgoing errors to make them easier to parse in the client
-function transformAndThrowCaughtException(error)
-{
+function transformAndThrowCaughtException(error) {
     let result = {
         status: 0,
-        title: "",
+        name: "",
         message: "",
         retryAfter: null,
-        additionalDetails: ""
+        details: ""
     };
 
-    if (error.response)
-    {
+    if (error.response) {
         result.status = error.response.data.status ? error.response.data.status : 0;
-        result.title = error.response.data.title ? error.response.data.title : "Unknown Error";
+        result.name = error.response.data.title ? error.response.data.title : "Unknown Error";
         result.message = error.response.data.detail ? error.response.data.detail : error.response.data;
-        if (error.response.status === 429) {
+
+        if (error.response.status === tooManyRequestsError) {
             result.retryAfter = error.response.headers['retry-after'];
-        }
-        if (error.response.status === 400) {
+        } else if (error.response.status === badRequestError) {
             let arr = [];
+
             _.forEach(error.response.data.errors, error => {
                 arr = _.concat(arr, error.messages);
             });
-            result.additionalDetails = arr;
+
+            result.details = arr;
         }
-    }
-    else
-    {
-        result.title = error.name;
+    } else {
+        result.name = error.name;
         result.message = error.message;
     }
 

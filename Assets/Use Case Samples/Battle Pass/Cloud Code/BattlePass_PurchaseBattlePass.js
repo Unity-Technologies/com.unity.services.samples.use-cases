@@ -2,16 +2,16 @@
 // this file will not have any effect locally. Changes to Cloud Code scripts are normally done directly in the 
 // Unity Dashboard.
 
-const badRequestError = 400;
-const unprocessableEntityError = 422;
-const tooManyRequestsError = 429;
-
 const _ = require("lodash-4.17");
 const { DataApi } = require("@unity-services/cloud-save-1.0");
 const { SettingsApi } = require("@unity-services/remote-config-1.0");
 const { PurchasesApi } = require("@unity-services/economy-2.0");
 const { CurrenciesApi } = require("@unity-services/economy-2.0");
 const { InventoryApi } = require("@unity-services/economy-2.0");
+
+const badRequestError = 400;
+const unprocessableEntityError = 422;
+const tooManyRequestsError = 429;
 
 const tierState = { Locked: 0, Unlocked: 1, Claimed: 2 };
 const seasonTierStatesDefault = [ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 ];
@@ -25,20 +25,19 @@ const playerStateDefault = {
 }
 
 module.exports = async ({ params, context, logger }) => {
-
-    const { projectId, playerId, accessToken } = context;
-    const cloudSaveApi = new DataApi({ accessToken });
-    const remoteConfigApi = new SettingsApi();
-    const purchasesApi = new PurchasesApi({ accessToken });
-    const economyCurrencyApi = new CurrenciesApi({ accessToken });
-    const economyInventoryApi = new InventoryApi({ accessToken });
-
-    const timestamp = _.now();
-    const timestampMinutes = getTimestampMinutes(timestamp);
-
-    let returnObject = {};
-
     try {
+        const { projectId, playerId, accessToken } = context;
+        const cloudSaveApi = new DataApi({ accessToken });
+        const remoteConfigApi = new SettingsApi();
+        const purchasesApi = new PurchasesApi({ accessToken });
+        const economyCurrencyApi = new CurrenciesApi({ accessToken });
+        const economyInventoryApi = new InventoryApi({ accessToken });
+
+        const timestamp = _.now();
+        const timestampMinutes = getTimestampMinutes(timestamp);
+
+        let returnObject = {};
+
         const remoteConfigData = await getRemoteConfigData(remoteConfigApi, projectId, playerId, timestampMinutes);
         let playerState = await getCloudSaveData(cloudSaveApi, projectId, playerId);
 
@@ -54,22 +53,20 @@ module.exports = async ({ params, context, logger }) => {
         returnObject.seasonTierStates = playerState.seasonTierStates;
 
         await setCloudSaveData(cloudSaveApi, projectId, playerId, remoteConfigData, playerState, timestamp);
+
+        return returnObject;
     }
     catch (error) {
         transformAndThrowCaughtException(error);
     }
-
-    return returnObject;
 };
 
-function getTimestampMinutes(timestamp)
-{
+function getTimestampMinutes(timestamp) {
     let date = new Date(timestamp);
     return ("0" + date.getMinutes()).slice(-2);
 }
 
-async function getRemoteConfigData(remoteConfigApi, projectId, playerId, timestampMinutes)
-{
+async function getRemoteConfigData(remoteConfigApi, projectId, playerId, timestampMinutes) {
     // get the current season configuration
     const result = await remoteConfigApi.assignSettings({
         projectId,
@@ -89,8 +86,7 @@ async function getRemoteConfigData(remoteConfigApi, projectId, playerId, timesta
     return result.data.configs.settings;
 }
 
-async function getCloudSaveData(cloudSaveApi, projectId, playerId)
-{
+async function getCloudSaveData(cloudSaveApi, projectId, playerId) {
     const getItemsResponse = await cloudSaveApi.getItems(
         projectId,
         playerId,
@@ -113,8 +109,7 @@ async function getCloudSaveData(cloudSaveApi, projectId, playerId)
     return returnObject;
 }
 
-function cloudSaveResponseToObject(getItemsResponse)
-{
+function cloudSaveResponseToObject(getItemsResponse) {
     let returnObject = {};
 
     getItemsResponse.data.results.forEach(item => {
@@ -125,19 +120,16 @@ function cloudSaveResponseToObject(getItemsResponse)
     return returnObject;
 }
 
-function shouldResetBattlePassProgress(remoteConfigData, playerState, timestamp)
-{
+function shouldResetBattlePassProgress(remoteConfigData, playerState, timestamp) {
     // If the progress object is empty, then it might be the first time this player has ever used this function.
     // Resetting will create a fresh object.
-    if (!playerState.seasonTierStates)
-    {
+    if (!playerState.seasonTierStates) {
         return true;
     }
 
     // Because the seasonal events repeat and do not have unique keys for each iteration, we first check whether the
     // current season's key is the same as the key of the season that was active the last time the event was completed.
-    if (remoteConfigData.EVENT_KEY !== playerState.latestSeasonActivityEventKey)
-    {
+    if (remoteConfigData.EVENT_KEY !== playerState.latestSeasonActivityEventKey) {
         return true;
     }
 
@@ -153,45 +145,62 @@ function shouldResetBattlePassProgress(remoteConfigData, playerState, timestamp)
     const eventDurationMilliseconds = currentEventDurationMinutes * millisecondsPerMinute;
     const currentSeasonEarliestPotentialStartTimestamp = timestamp - eventDurationMilliseconds;
 
-    if (playerState.latestSeasonActivityTimestamp < currentSeasonEarliestPotentialStartTimestamp)
-    {
+    if (playerState.latestSeasonActivityTimestamp < currentSeasonEarliestPotentialStartTimestamp) {
         return true;
     }
 
     return false;
 }
 
-async function purchaseBattlePass(purchasesApi, projectId, playerId, remoteConfigData, playerState, timestamp)
-{
-    if (playerState.battlePassPurchasedEventKey === remoteConfigData.EVENT_KEY)
-    {
+async function purchaseBattlePass(purchasesApi, projectId, playerId, remoteConfigData, playerState, timestamp) {
+    if (playerState.battlePassPurchasedEventKey === remoteConfigData.EVENT_KEY) {
         throw new Error("Cannot purchase Battle Pass because you already own it for the current season.");
     }
 
-    try
-    {
+    try {
         await purchasesApi.makeVirtualPurchase(projectId, playerId, { id: "BATTLE_PASS" });
-    }
-    catch (e)
-    {
-        throw new VirtualPurchaseFailedError("Virtual Purchase failed.");
-    }
 
-    playerState.battlePassPurchasedTimestamp = timestamp;
-    playerState.battlePassPurchasedEventKey = remoteConfigData.EVENT_KEY;
+        playerState.battlePassPurchasedTimestamp = timestamp;
+        playerState.battlePassPurchasedEventKey = remoteConfigData.EVENT_KEY;
+    } catch (e) {
+        const message = "Virtual purchase failed";
+
+        if (e.response !== undefined && e.response !== null) {
+            var exceptionData = e.response.data;
+            var exceptionHeaders = e.response.headers;
+            const statusCode = exceptionData.code ? exceptionData.code : exceptionData.status;
+
+            if (e.response.status === tooManyRequestsError) {
+                const retryAfter = exceptionHeaders['retry-after'] ? exceptionHeaders['retry-after'] : null;
+
+                throw new EconomyRateLimitError(message, exceptionData.detail,
+                    exceptionData.title, statusCode, retryAfter);
+            } else if (e.response.status === badRequestError) {
+                let details = [];
+                _.forEach(exceptionData.errors, error => {
+                    details = _.concat(details, error.messages);
+                });
+
+                throw new EconomyValidationError(message, exceptionData.detail,
+                    exceptionData.title, statusCode, details);
+            } else {
+                throw new EconomyProcessingError(message, exceptionData.detail,
+                    exceptionData.title, statusCode)
+            }
+        } else {
+            throw new EconomyError(message);
+        }
+    }
 }
 
 async function grantPastClaimedBattlePassRewards(
-    projectId, playerId, economyCurrencyApi, economyInventoryApi, remoteConfigData, playerState)
-{
+    projectId, playerId, economyCurrencyApi, economyInventoryApi, remoteConfigData, playerState) {
     let returnRewards = [];
 
-    for (let i = 0; i < playerState.seasonTierStates.length; i++)
-    {
+    for (let i = 0; i < playerState.seasonTierStates.length; i++) {
         const tierStateToTest = playerState.seasonTierStates[i];
 
-        if (tierStateToTest !== tierState.Claimed)
-        {
+        if (tierStateToTest !== tierState.Claimed) {
             continue;
         }
 
@@ -207,14 +216,12 @@ async function grantPastClaimedBattlePassRewards(
     return returnRewards;
 }
 
-function getBattlePassRewardsFromRemoteConfig(remoteConfigData, playerState, claimTierKey)
-{
+function getBattlePassRewardsFromRemoteConfig(remoteConfigData, playerState, claimTierKey) {
     let returnRewards = [];
 
     const tierRewards = remoteConfigData[claimTierKey];
 
-    if (tierRewards != null)
-    {
+    if (tierRewards != null) {
         // this method trusts that the Battle Pass is owned
         returnRewards.push(tierRewards.battlePassReward);
     }
@@ -222,12 +229,9 @@ function getBattlePassRewardsFromRemoteConfig(remoteConfigData, playerState, cla
     return returnRewards;
 }
 
-async function grantRewards(economyCurrencyApi, economyInventoryApi, projectId, playerId, rewardsToGrant)
-{
-    for (const reward of rewardsToGrant)
-    {
-        switch (reward.service)
-        {
+async function grantRewards(economyCurrencyApi, economyInventoryApi, projectId, playerId, rewardsToGrant) {
+    for (const reward of rewardsToGrant) {
+        switch (reward.service) {
             case "currency":
                 await grantCurrency(economyCurrencyApi, projectId, playerId, reward.id, reward.quantity);
                 break;
@@ -239,22 +243,18 @@ async function grantRewards(economyCurrencyApi, economyInventoryApi, projectId, 
     }
 }
 
-async function grantCurrency(economyCurrencyApi, projectId, playerId, currencyId, amount)
-{
+async function grantCurrency(economyCurrencyApi, projectId, playerId, currencyId, amount) {
     await economyCurrencyApi.incrementPlayerCurrencyBalance(projectId, playerId, currencyId, { currencyId, amount });
 }
 
-async function grantInventoryItem(economyInventoryApi, projectId, playerId, inventoryItemId, amount)
-{
-    for (let i = 0; i < amount; i++)
-    {
+async function grantInventoryItem(economyInventoryApi, projectId, playerId, inventoryItemId, amount) {
+    for (let i = 0; i < amount; i++) {
         await economyInventoryApi.addInventoryItem(projectId, playerId, { inventoryItemId: inventoryItemId });
     }
 }
 
 // this should only be executed if the purchase was a success
-async function setCloudSaveData(cloudSaveApi, projectId, playerId, remoteConfigData, playerState, timestamp)
-{
+async function setCloudSaveData(cloudSaveApi, projectId, playerId, remoteConfigData, playerState, timestamp) {
     await cloudSaveApi.setItemBatch(
         projectId,
         playerId,
@@ -272,43 +272,39 @@ async function setCloudSaveData(cloudSaveApi, projectId, playerId, remoteConfigD
 }
 
 // this standardizes our outgoing errors to make them easier to parse in the client
-function transformAndThrowCaughtException(error)
-{
+function transformAndThrowCaughtException(error) {
     let result = {
         status: 0,
-        title: "",
+        name: "",
         message: "",
         retryAfter: null,
-        additionalDetails: ""
+        details: ""
     };
 
-    if (error.response)
-    {
+    if (error.response) {
         result.status = error.response.data.status ? error.response.data.status : 0;
-        result.title = error.response.data.title ? error.response.data.title : "Unknown Error";
+        result.name = error.response.data.title ? error.response.data.title : "Unknown Error";
         result.message = error.response.data.detail ? error.response.data.detail : error.response.data;
 
-        if (error.response.status === tooManyRequestsError)
-        {
+        if (error.response.status === tooManyRequestsError) {
             result.retryAfter = error.response.headers['retry-after'];
-        }
-
-        if (error.response.status === badRequestError)
-        {
+        } else if (error.response.status === badRequestError) {
             let arr = [];
             _.forEach(error.response.data.errors, error => {
                 arr = _.concat(arr, error.messages);
             });
-            result.additionalDetails = arr;
+            result.details = arr;
         }
     }
-    else
-    {
-        if (error instanceof CloudCodeCustomError)
-        {
+    else {
+        if (error instanceof EconomyError) {
+            result.status = error.status;
+            result.retryAfter = error.retryAfter;
+            result.details = error.details;
+        } else if (error instanceof CloudCodeCustomError) {
             result.status = error.status;
         }
-        result.title = error.name;
+        result.name = error.name;
         result.message = error.message;
     }
 
@@ -323,10 +319,34 @@ class CloudCodeCustomError extends Error {
     }
 }
 
-class VirtualPurchaseFailedError extends CloudCodeCustomError {
+class EconomyError extends CloudCodeCustomError {
     constructor(message) {
         super(message);
-        this.name = "VirtualPurchaseFailedError";
-        this.status = 3;
+        this.name = "EconomyError";
+        this.status = 2;
+        this.retryAfter = null;
+        this.details = "";
+    }
+}
+
+class EconomyProcessingError extends EconomyError {
+    constructor(message, innerExceptionMessage, innerExceptionName, innerExceptionStatus) {
+        super(message + ": " + innerExceptionMessage);
+        this.name = "EconomyError: " + innerExceptionName;
+        this.status = innerExceptionStatus;
+    }
+}
+
+class EconomyRateLimitError extends EconomyProcessingError {
+    constructor(message, innerExceptionMessage, innerExceptionName, innerExceptionStatus, retryAfter) {
+        super(message, innerExceptionMessage, innerExceptionName, innerExceptionStatus);
+        this.retryAfter = retryAfter
+    }
+}
+
+class EconomyValidationError extends EconomyProcessingError {
+    constructor(message, innerExceptionMessage, innerExceptionName, innerExceptionStatus, details) {
+        super(message, innerExceptionMessage, innerExceptionName, innerExceptionStatus);
+        this.details = details;
     }
 }

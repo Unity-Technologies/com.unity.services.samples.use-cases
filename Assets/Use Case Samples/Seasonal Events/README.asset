@@ -52,12 +52,14 @@ MonoBehaviour:
   - subHeader1: Implementation Overview
     subHeader2: 
     subHeader3: 
-    body: 'When this scene first loads, it will initialize Unity Services and sign
+    body: When this scene first loads, it will initialize Unity Services and sign
       the player in anonymously using Authentication. This can be seen in the SeasonalEventsSceneManager
-      script. Once Unity Services completes initialization, Remote Config is queried
-      to get the current values for the event-related keys. These values allow for
-      displaying the active event name, the potential rewards for completing the
-      event challenge, and the themed background image and play buttons. '
+      script. Once Unity Services completes initialization, we call the GetServerTime
+      function via Cloud Code so we can base Game Override and Remote Config data
+      off the server time. Then, Remote Config is queried to get the current values
+      for the event-related keys. These values allow for displaying the active event
+      name, the potential rewards for completing the event challenge, and the themed
+      background image and play buttons.
     bodyFormat: 0
     boxCallout: 
     bulletList: []
@@ -79,11 +81,12 @@ MonoBehaviour:
     body: 
     bodyFormat: 0
     boxCallout: "Note: This sample determines which Game Override data should be
-      returned based on the user\u2019s timestamp, to demonstrate how events can
-      change and update local variables. This is a simplification. In a real app,
-      developers likely set up a Game Override to have specific start and end dates,
-      then Remote Config determines when the Game Override is shown based on the
-      server\u2019s date/time. "
+      returned based on the last digit of the number of minutes in the current server
+      time. This is a simplification to be able to frequently observe the season
+      change. In a real app, developers likely set up a Game Override to have specific
+      start and end dates, then Remote Config determines when the Game Override is
+      shown based on the server\u2019s date/time. In that case, the client and server
+      implementations can be a bit different."
     bulletList: []
     linkList: []
   - subHeader1: 
@@ -115,9 +118,11 @@ MonoBehaviour:
         track of their data on the server side. '
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: 'Economy: Keeps track of the player''s currencies. '
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: 'Cloud Code: Keeps important validation logic on the server side. In
         this sample it is used to distribute the rewards for the event challenge
         when the player clicks the "Collect Rewards" button. It independently verifies
@@ -125,6 +130,7 @@ MonoBehaviour:
         which event''s rewards should be distributed. '
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: 'Remote Config: Provides key-value pairs where the value that is mapped
         to a given key can be changed on the server-side, either manually or based
         on specific Game Overrides. In this sample, we use the Game Overrides feature
@@ -132,22 +138,26 @@ MonoBehaviour:
         keys based on the Game Override.'
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: 'Addressables: Allows developers to ask for an asset via its address.
         Wherever the asset resides (local or remote), the system will locate it and
         its dependencies, then return it. Here we use it to look up event specific
         images and prefabs based on the information we receive from Remote Config. '
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: 'Analytics: Sends events that allow the tracking of a player''s in-game
         interactions, retention, and other information which can be used for analyzing
         and improving game experience.'
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: 'Cloud Save: Stores if the current season''s challenge has already been
         played to prevent the user from playing the same season''s challenge multiple
         times.'
       bodyFormat: 0
       bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: 
@@ -200,6 +210,7 @@ MonoBehaviour:
       - body: 'ID: "COIN"'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: Gem
       bodyFormat: 1
       bulletList:
@@ -209,6 +220,7 @@ MonoBehaviour:
       - body: 'ID: "GEM"'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: Pearl
       bodyFormat: 1
       bulletList:
@@ -218,6 +230,7 @@ MonoBehaviour:
       - body: 'ID: "PEARL"'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: Star
       bodyFormat: 1
       bulletList:
@@ -227,6 +240,7 @@ MonoBehaviour:
       - body: 'ID: "STAR"'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: Remote Config
@@ -247,6 +261,7 @@ MonoBehaviour:
       - body: 'Value: ""'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: EVENT_KEY
       bodyFormat: 1
       bulletList:
@@ -260,6 +275,7 @@ MonoBehaviour:
       - body: 'Value: ""'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: EVENT_END_TIME
       bodyFormat: 1
       bulletList:
@@ -273,6 +289,7 @@ MonoBehaviour:
       - body: 'Value: 0'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: EVENT_TOTAL_DURATION_MINUTES
       bodyFormat: 1
       bulletList:
@@ -286,6 +303,7 @@ MonoBehaviour:
       - body: 'Value: 0'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: CHALLENGE_REWARD
       bodyFormat: 1
       bulletList:
@@ -299,6 +317,7 @@ MonoBehaviour:
       - body: 'Value: See markdown README for details'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: 
@@ -344,6 +363,7 @@ MonoBehaviour:
         - body: 'CHALLENGE_REWARD: See markdown README for details'
           bodyFormat: 0
           bulletList: []
+      linkList: []
     - body: Winter Event
       bodyFormat: 1
       bulletList:
@@ -381,6 +401,7 @@ MonoBehaviour:
         - body: 'CHALLENGE_REWARD: See markdown README for details'
           bodyFormat: 0
           bulletList: []
+      linkList: []
     - body: Spring Event
       bodyFormat: 1
       bulletList:
@@ -418,6 +439,7 @@ MonoBehaviour:
         - body: 'CHALLENGE_REWARD: See markdown README for details'
           bodyFormat: 0
           bulletList: []
+      linkList: []
     - body: Summer Event
       bodyFormat: 1
       bulletList:
@@ -455,9 +477,28 @@ MonoBehaviour:
         - body: 'CHALLENGE_REWARD: See markdown README for details'
           bodyFormat: 0
           bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: Cloud Code Scripts
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: 'SeasonalEvents_GetServerTime:'
+      bodyFormat: 1
+      bulletList:
+      - body: 'Parameters: `none`'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Script: "Assets/Use Case Samples/Seasonal Events/Cloud Code/SeasonalEvents_GetServerTime.js"'
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
     subHeader3: 
     body: 
     bodyFormat: 0
@@ -472,6 +513,7 @@ MonoBehaviour:
       - body: 'Script: "Assets/Use Case Samples/Seasonal Events/Cloud Code/SeasonalEvents_GrantEventReward.js"'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: 
@@ -531,6 +573,7 @@ MonoBehaviour:
         - body: sceneName
           bodyFormat: 2
           bulletList: []
+      linkList: []
     - body: ActionButtonPressed
       bodyFormat: 2
       bulletList:
@@ -561,6 +604,7 @@ MonoBehaviour:
         - body: buttonNameBySceneNameAndRemoteConfigEvent
           bodyFormat: 2
           bulletList: []
+      linkList: []
     - body: SceneSessionLength
       bodyFormat: 2
       bulletList:
@@ -593,6 +637,7 @@ MonoBehaviour:
         - body: timeRangeBySceneNameAndABGroup
           bodyFormat: 2
           bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: 
@@ -610,6 +655,7 @@ MonoBehaviour:
       - body: 'Type: `STRING`'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: buttonName
       bodyFormat: 2
       bulletList:
@@ -619,6 +665,7 @@ MonoBehaviour:
       - body: 'Type: `STRING`'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: remoteConfigActiveEvent
       bodyFormat: 2
       bulletList:
@@ -629,6 +676,7 @@ MonoBehaviour:
       - body: 'Type: `STRING`'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: timeRange
       bodyFormat: 2
       bulletList:
@@ -639,6 +687,7 @@ MonoBehaviour:
       - body: 'Type: `STRING`'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: buttonNameBySceneName
       bodyFormat: 2
       bulletList:
@@ -649,6 +698,7 @@ MonoBehaviour:
       - body: 'Type: `STRING`'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: buttonNameByRemoteConfigEvent
       bodyFormat: 2
       bulletList:
@@ -659,6 +709,7 @@ MonoBehaviour:
       - body: 'Type: `STRING`'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: buttonNameBySceneNameAndRemoteConfigEvent
       bodyFormat: 2
       bulletList:
@@ -670,6 +721,7 @@ MonoBehaviour:
       - body: 'Type: `STRING`'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: timeRangeBySceneName
       bodyFormat: 2
       bulletList:
@@ -681,6 +733,7 @@ MonoBehaviour:
       - body: 'Type: `STRING`'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: timeRangeByRemoteConfigEvent
       bodyFormat: 2
       bulletList:
@@ -692,6 +745,7 @@ MonoBehaviour:
       - body: 'Type: `STRING`'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: timeRangeBySceneNameAndRemoteConfigEvent
       bodyFormat: 2
       bulletList:
@@ -703,4 +757,5 @@ MonoBehaviour:
       - body: 'Type: `STRING`'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     linkList: []

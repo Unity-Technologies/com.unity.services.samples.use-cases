@@ -3,45 +3,39 @@
 // Unity Dashboard.
 
 const { CurrenciesApi } = require("@unity-services/economy-2.0");
-const rateLimitError = 429;
-const validationError = 400;
+
+const badRequestError = 400;
+const tooManyRequestsError = 429;
 
 module.exports = async ({ params, context, logger }) => {
+  try {
+    const { projectId, playerId, accessToken} = context;
+    const economyCurrencyAPI = new CurrenciesApi({ accessToken });
 
-  const { projectId, playerId, accessToken} = context;
-  const economyCurrencyAPI = new CurrenciesApi({ accessToken });
-  
-  let currencyIds = ["COIN", "GEM", "PEARL", "STAR"];
+    let currencyIds = ["COIN", "GEM", "PEARL", "STAR"];
 
-  try
-  {
-    let currencyId = pickRandomCurrencyId(currencyIds);
+    const currencyId = pickRandomCurrencyId(currencyIds);
 
-    let amount = pickRandomCurrencyQuantity(currencyId);
+    const amount = pickRandomCurrencyQuantity(currencyId);
 
     await grantCurrency(economyCurrencyAPI, projectId, playerId, currencyId, amount);
     
     // return the granted currency and amount to calling (Unity) script
     return { currencyId: currencyId, amount: amount };
-  }
-  catch (error)
-  {
+  } catch (error) {
     transformAndThrowCaughtError(error);
   }
 };
 
-async function grantCurrency(economyCurrencyAPI, projectId, playerId, currencyId, amount)
-{
+async function grantCurrency(economyCurrencyAPI, projectId, playerId, currencyId, amount) {
   await economyCurrencyAPI.incrementPlayerCurrencyBalance(projectId, playerId, currencyId, { currencyId, amount });
 }
 
-function pickRandomCurrencyId(currencyIds)
-{
+function pickRandomCurrencyId(currencyIds) {
   return currencyIds[Math.floor(Math.random() * (currencyIds.length))];
 }
 
-function pickRandomCurrencyQuantity(currencyId)
-{
+function pickRandomCurrencyQuantity(currencyId) {
   return Math.floor(Math.random() * 5) + 1;
 }
 
@@ -50,33 +44,30 @@ function pickRandomCurrencyQuantity(currencyId)
 function transformAndThrowCaughtError(error) {
   let result = {
     status: 0,
-    title: "",
+    name: "",
     message: "",
     retryAfter: null,
-    additionalDetails: ""
+    details: ""
   };
 
-  if (error.response)
-  {
+  if (error.response) {
     result.status = error.response.data.status ? error.response.data.status : 0;
-    result.title = error.response.data.title ? error.response.data.title : "Unknown Error";
+    result.name = error.response.data.title ? error.response.data.title : "Unknown Error";
     result.message = error.response.data.detail ? error.response.data.detail : error.response.data;
-    if (error.response.status === rateLimitError)
-    {
+
+    if (error.response.status === tooManyRequestsError) {
       result.retryAfter = error.response.headers['retry-after'];
-    }
-    else if (error.response.status === validationError)
-    {
+    } else if (error.response.status === badRequestError) {
       let arr = [];
+
       _.forEach(error.response.data.errors, error => {
         arr = _.concat(arr, error.messages);
       });
-      result.additionalDetails = arr;
+
+      result.details = arr;
     }
-  }
-  else
-  {
-    result.title = error.name;
+  } else {
+    result.name = error.name;
     result.message = error.message;
   }
 

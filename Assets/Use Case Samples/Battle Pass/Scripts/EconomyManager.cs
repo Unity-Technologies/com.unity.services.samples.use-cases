@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
 using Unity.Services.Economy;
-using Unity.Services.Economy.Model;
 using UnityEngine;
 
 namespace UnityGamingServicesUseCases

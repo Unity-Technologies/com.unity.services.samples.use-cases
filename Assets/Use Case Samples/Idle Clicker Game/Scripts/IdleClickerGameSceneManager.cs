@@ -23,7 +23,7 @@ namespace UnityGamingServicesUseCases
             async void Start()
             {
                 try
-                { 
+                {
                     await UnityServices.InitializeAsync();
 
                     // Check that scene has not been unloaded while processing async wait to prevent throw.
@@ -45,7 +45,7 @@ namespace UnityGamingServicesUseCases
 
                     ShowStateAndStartSimulating();
 
-                    sceneView.EnableButtons();
+                    sceneView.SetInteractable();
 
                     Debug.Log("Initialization and signin complete.");
                 }
@@ -86,7 +86,7 @@ namespace UnityGamingServicesUseCases
 
                 try
                 {
-                    sceneView.EnableButtons(false);
+                    sceneView.SetInteractable(false);
                     SimulatedCurrencyManager.instance.StopRefreshingCurrencyBalances();
 
                     sceneView.ShowInProgress(coord, true);
@@ -108,7 +108,7 @@ namespace UnityGamingServicesUseCases
 
                         sceneView.ShowInProgress(coord, false);
 
-                        sceneView.EnableButtons();
+                        sceneView.SetInteractable();
                     }
                 }
             }
@@ -145,7 +145,7 @@ namespace UnityGamingServicesUseCases
                 {
                     Debug.Log("Reset game button pressed.");
 
-                    sceneView.EnableButtons(false);
+                    sceneView.SetInteractable(false);
                     SimulatedCurrencyManager.instance.StopRefreshingCurrencyBalances();
 
                     await SaveData.ForceDeleteAsync("IDLE_CLICKER_GAME_STATE");
@@ -159,7 +159,7 @@ namespace UnityGamingServicesUseCases
 
                     ShowStateAndStartSimulating();
 
-                    sceneView.EnableButtons();
+                    sceneView.SetInteractable();
                 }
                 catch (Exception e)
                 {

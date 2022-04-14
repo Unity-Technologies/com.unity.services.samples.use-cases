@@ -10,14 +10,9 @@ namespace UnityGamingServicesUseCases
             public Button grantRandomRewardButton;
 
 
-            public void Enable()
+            public void SetInteractable(bool isInteractable = true)
             {
-                grantRandomRewardButton.interactable = true;
-            }
-
-            public void Disable()
-            {
-                grantRandomRewardButton.interactable = false;
+                grantRandomRewardButton.interactable = isInteractable;
             }
         }
     }

@@ -13,7 +13,9 @@ namespace UnityGamingServicesUseCases
     public class LoadSceneButton : MonoBehaviour
     {
         public string sceneName;
+#if UNITY_EDITOR
         public Object readmeFile;
+#endif
 
         void Awake()
         {

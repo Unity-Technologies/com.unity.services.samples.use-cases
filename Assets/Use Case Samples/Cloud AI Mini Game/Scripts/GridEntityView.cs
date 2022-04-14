@@ -55,7 +55,7 @@ namespace UnityGamingServicesUseCases
                 m_IsPointerHovering = false;
             }
 
-            public void UpdateButton(bool isInteractable)
+            public void SetInteractable(bool isInteractable = true)
             {
                 m_Button.interactable = isInteractable;
                 m_UiHighlightImage.SetActive(m_IsPointerHovering && isInteractable);

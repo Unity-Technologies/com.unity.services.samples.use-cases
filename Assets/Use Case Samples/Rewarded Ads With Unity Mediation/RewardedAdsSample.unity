@@ -3151,6 +3151,7 @@ GameObject:
   - component: {fileID: 1179866650}
   - component: {fileID: 1179866649}
   - component: {fileID: 1179866652}
+  - component: {fileID: 1179866653}
   m_Layer: 0
   m_Name: RewardedAdsSample
   m_TagString: Untagged
@@ -3234,6 +3235,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7d712980865f4813b63b83e5a76a2c61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1179866653
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1179866646}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1a5c9cb1ff0f40e8b9de9abcfb1ad92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1192864466 stripped

@@ -32,7 +32,7 @@ namespace UnityGamingServicesUseCases
                 claimedOverlay.SetActive(false);
                 lockedOverlay.SetActive(false);
 
-                seasonNameText.text = RemoteConfigManager.instance.activeEventName;
+                seasonNameText.text = battlePassSceneManager.battlePassConfig.eventName;
                 tierNameText.text = $"Tier {tierIndex + 1}";
 
                 RefreshClaimButtonState();
@@ -43,17 +43,14 @@ namespace UnityGamingServicesUseCases
 
             void RefreshClaimButtonState()
             {
-                var normalRewardDetail = RemoteConfigManager.instance.normalRewards[m_TierIndex];
-                var battlePassRewardDetail = RemoteConfigManager.instance.normalRewards[m_TierIndex];
-
-                if (m_TierIndex >= battlePassSceneManager.battlePassProgress.tierStates.Length)
+                if (m_TierIndex >= battlePassSceneManager.battlePassState.tierStates.Length)
                 {
                     throw new IndexOutOfRangeException(
                         $"The given index ({m_TierIndex}) is out of range of the current tier state array length " +
-                        $"({battlePassSceneManager.battlePassProgress.tierStates.Length}).");
+                        $"({battlePassSceneManager.battlePassState.tierStates.Length}).");
                 }
 
-                switch (battlePassSceneManager.battlePassProgress.tierStates[m_TierIndex])
+                switch (battlePassSceneManager.battlePassState.tierStates[m_TierIndex])
                 {
                     case TierState.Locked:
                         lockedOverlay.SetActive(true);
@@ -63,13 +60,13 @@ namespace UnityGamingServicesUseCases
 
                         // don't make it claimable if there's no rewards to claim
 
-                        if (!string.IsNullOrEmpty(normalRewardDetail.id))
+                        if (!string.IsNullOrEmpty(battlePassSceneManager.battlePassConfig.rewardsFree[m_TierIndex].id))
                         {
                             claimButton.gameObject.SetActive(true);
                         }
-                        else if (string.IsNullOrEmpty(battlePassRewardDetail.id))
+                        else if (string.IsNullOrEmpty(battlePassSceneManager.battlePassConfig.rewardsPremium[m_TierIndex].id))
                         {
-                            if (battlePassSceneManager.battlePassProgress.ownsBattlePass)
+                            if (battlePassSceneManager.battlePassState.ownsBattlePass)
                             {
                                 claimButton.gameObject.SetActive(true);
                             }
@@ -87,28 +84,30 @@ namespace UnityGamingServicesUseCases
 
                     default:
                         throw new InvalidOperationException(
-                            $"Unknown tier state value ({battlePassSceneManager.battlePassProgress.tierStates[m_TierIndex]}).");
+                            $"Unknown tier state value ({battlePassSceneManager.battlePassState.tierStates[m_TierIndex]}).");
                 }
             }
 
             void RefreshRewardViews()
             {
-                if (!string.IsNullOrEmpty(RemoteConfigManager.instance.normalRewards[m_TierIndex].id))
+                var normalRewardDetail = battlePassSceneManager.battlePassConfig.rewardsFree[m_TierIndex];
+
+                if (!string.IsNullOrEmpty(normalRewardDetail.id))
                 {
                     normalRewardDisplayView.gameObject.SetActive(true);
 
-                    normalRewardDisplayView.PopulateView(
-                        new List<RewardDetail> { RemoteConfigManager.instance.normalRewards[m_TierIndex] });
+                    normalRewardDisplayView.PopulateView(new List<RewardDetail> { normalRewardDetail });
                 }
 
-                if (!string.IsNullOrEmpty(RemoteConfigManager.instance.battlePassRewards[m_TierIndex].id))
+                var battlePassRewardDetail = battlePassSceneManager.battlePassConfig.rewardsPremium[m_TierIndex];
+
+                if (!string.IsNullOrEmpty(battlePassRewardDetail.id))
                 {
                     battlePassRewardDisplayView.gameObject.SetActive(true);
 
-                    battlePassRewardDisplayView.PopulateView(
-                        new List<RewardDetail> { RemoteConfigManager.instance.battlePassRewards[m_TierIndex] });
+                    battlePassRewardDisplayView.PopulateView(new List<RewardDetail> { battlePassRewardDetail });
 
-                    battlePassNotOwnedOverlay.SetActive(!battlePassSceneManager.battlePassProgress.ownsBattlePass);
+                    battlePassNotOwnedOverlay.SetActive(!battlePassSceneManager.battlePassState.ownsBattlePass);
                 }
             }
 

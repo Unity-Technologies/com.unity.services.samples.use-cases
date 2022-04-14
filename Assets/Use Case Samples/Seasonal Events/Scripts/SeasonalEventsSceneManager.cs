@@ -59,6 +59,11 @@ namespace UnityGamingServicesUseCases
                     }
                     Debug.Log($"Player id: {AuthenticationService.Instance.PlayerId}");
 
+                    // Set server time offset. Needed throughout initialization and while event is running to
+                    // determine what time it is on the server so we can time seasons locally to match.
+                    await UpdateServerEpochTime();
+                    if (this == null) return;
+
                     await Task.WhenAll(
                         EconomyManager.instance.RefreshCurrencyBalances(),
                         GetRemoteConfigUpdates(),
@@ -80,10 +85,18 @@ namespace UnityGamingServicesUseCases
                 }
             }
 
+            async Task UpdateServerEpochTime()
+            {
+                // Call simple server script to determine the current server epoch time.
+                double serverEpochTime = await CloudCodeManager.instance.CallGetServerEpochTimeEndpoint();
+
+                ServerTimeHelper.SetServerEpochTime(serverEpochTime);
+            }
+
             void UpdateStarted()
             {
                 m_Updating = true;
-                sceneView.Disable();
+                sceneView.SetInteractable(false);
             }
 
             void UpdateFinished()
@@ -98,7 +111,7 @@ namespace UnityGamingServicesUseCases
                 // So that players don't click the PlayChallenge button thinking they'll get rewards when they won't, we
                 // set playChallengeAllowed to false, which disables the button.
                 sceneView.playChallengeAllowed = IsPlayingChallengeAllowed();
-                sceneView.Enable();
+                sceneView.SetInteractable();
             }
 
             private bool IsPlayingChallengeAllowed()
@@ -127,7 +140,10 @@ namespace UnityGamingServicesUseCases
 
             private bool IsLastCompletedEventTimestampOld()
             {
-                var currentTime = DateTime.UtcNow;
+                // Determine the approximate utc time on the server.
+                // Note: We need to use the server time to ensure we are showing/claiming the correct season in case the 
+                //       client's clock is off for any reason.
+                var currentTime = ServerTimeHelper.UtcNow;
                 var eventDuration = new TimeSpan(0, RemoteConfigManager.instance.activeEventDurationMinutes, 0);
                 var earliestPotentialStartForActiveEvent = currentTime - eventDuration;
 
@@ -235,7 +251,9 @@ namespace UnityGamingServicesUseCases
                 // last digit of the minutes equals the start of the next game override's time (See more info in the
                 // comments in GetUserAttributes). More typically you would probably fetch new configs at app launch
                 // and under other less frequent circumstances.
-                var currentMinuteLastDigit = DateTime.Now.Minute % 10;
+                // Note: We use the approximate server time here to ensure we are showing/claiming the correct season
+                //       in case the client's clock is off for any reason.
+                var currentMinuteLastDigit = ServerTimeHelper.UtcNow.Minute % 10;
 
                 if (currentMinuteLastDigit > RemoteConfigManager.instance.activeEventEndTime ||
                     (currentMinuteLastDigit == 0 && RemoteConfigManager.instance.activeEventEndTime == 9))
@@ -272,7 +290,7 @@ namespace UnityGamingServicesUseCases
                 AnalyticsManager.instance.SendActionButtonPressedEvent("PlayChallenge");
 
                 sceneView.ShowRewardPopup(RemoteConfigManager.instance.challengeRewards);
-                sceneView.Disable();
+                sceneView.SetInteractable(false);
             }
 
             public async void OnCloseRewardPopupPressed()

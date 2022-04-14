@@ -7,6 +7,9 @@ const { CurrenciesApi } = require("@unity-services/economy-2.0");
 const { SettingsApi } = require("@unity-services/remote-config-1.0");
 const { DataApi } = require("@unity-services/cloud-save-1.0");
 
+const badRequestError = 400;
+const tooManyRequestsError = 429;
+
 const commandKeys = {
     DefeatRedEnemy: "COMMANDBATCH_DEFEAT_RED_ENEMY",
     DefeatBlueEnemy: "COMMANDBATCH_DEFEAT_BLUE_ENEMY",
@@ -15,81 +18,61 @@ const commandKeys = {
     GameOver: "COMMANDBATCH_GAME_OVER"
 };
 
-const rateLimitError = 429;
-const validationError = 400;
-
 module.exports = async ({ params, context, logger }) => {
-    const { projectId, playerId, environmentId, accessToken} = context;
-    const economyCurrency = new CurrenciesApi({ accessToken });
-    const cloudSave = new DataApi({ accessToken });
-    const remoteConfig = new SettingsApi({ accessToken });
+    try {
+        const { projectId, playerId, environmentId, accessToken} = context;
+        const economyCurrency = new CurrenciesApi({ accessToken });
+        const cloudSave = new DataApi({ accessToken });
+        const remoteConfig = new SettingsApi({ accessToken });
 
-    try
-    {
         const commands = parseCommandsFromJson(params.batch);
         validateCommands(commands);
         await processRewards(remoteConfig, economyCurrency, cloudSave, projectId, environmentId, playerId, commands);
-    }
-    catch (error)
-    {
+    } catch (error) {
         transformAndThrowCaughtError(error);
     }
 };
 
-function parseCommandsFromJson(batch)
-{
+function parseCommandsFromJson(batch) {
     let commandsList = [];
 
-    if (batch !== null)
-    {
-        if (batch.hasOwnProperty("commands"))
-        {
+    if (batch !== null) {
+        if (batch.hasOwnProperty("commands")) {
             commandsList = batch["commands"];
-        }
-        else
-        {
+        } else {
             throw new InvalidArgumentError('Batch misconfigured: Missing commands list.');
         }
-    }
-    else
-    {
+    } else {
         throw new InvalidArgumentError('Batch not provided.');
     }
 
     return commandsList;
 }
 
-function validateCommands(commands)
-{
+function validateCommands(commands) {
     validateBatchHasCorrectNumberOfCommands(commands);
     validateGameOverIsLastCommand(commands);
     validateCommandsAreInLegalOrder(commands);
 }
 
-function validateBatchHasCorrectNumberOfCommands(commands)
-{
+function validateBatchHasCorrectNumberOfCommands(commands) {
     // The correct number of commands is 7 exactly (6 turns + 1 game over)
-    if (commands.length > 7)
-    {
+    if (commands.length > 7) {
         throw new InvalidArgumentError('Too many commands in batch.');
     }
 
-    if (commands.length < 7)
-    {
+    if (commands.length < 7) {
         throw new InvalidArgumentError('Not enough commands in batch.');
     }
 }
 
-function validateGameOverIsLastCommand(commands)
-{
-    if (commands[commands.length - 1] !== commandKeys.GameOver)
-    {
+function validateGameOverIsLastCommand(commands) {
+    if (commands[commands.length - 1] !== commandKeys.GameOver) {
         throw new InvalidArgumentError('Last command must be Game Over.');
     }
 }
 
-function validateCommandsAreInLegalOrder(commands)
-{
+function validateCommandsAreInLegalOrder(commands) {
     // any open chest command always follows defeat enemy command
     // achieveBonusGoal only appears in the list after openChest has appeared
     // no commands occur after gameOver
@@ -98,38 +81,29 @@ function validateCommandsAreInLegalOrder(commands)
     let openChestValidMove = false;
     let gameOverSeen = false;
 
-    for (let i = 0; i < commands.length; i++)
-    {
-        if (gameOverSeen)
-        {
+    for (let i = 0; i < commands.length; i++) {
+        if (gameOverSeen) {
             throw new InvalidArgumentError('There can be no commands after Game Over.');
         }
 
-        switch (commands[i])
-        {
+        switch (commands[i]) {
             case commandKeys.DefeatRedEnemy:
             case commandKeys.DefeatBlueEnemy:
                 openChestValidMove = true;
                 break;
 
             case commandKeys.OpenChest:
-                if (openChestValidMove)
-                {
+                if (openChestValidMove) {
                     achieveBonusGoalValidMove = true;
-                }
-                else
-                {
+                } else {
                     throw new InvalidGameplayError('Chests can only be opened immediately after a red or blue enemy has been defeated.');
                 }
                 break;
 
             case commandKeys.AchieveBonusGoal:
-                if (achieveBonusGoalValidMove)
-                {
+                if (achieveBonusGoalValidMove) {
                     openChestValidMove = false;
-                }
-                else
-                {
+                } else {
                     throw new InvalidGameplayError('Bonus goals can only be achieved once a chest has been opened.');
                 }
                 break;
@@ -141,15 +115,13 @@ function validateCommandsAreInLegalOrder(commands)
     }
 }
 
-async function processRewards(remoteConfig, economyCurrency, cloudSave, projectId, environmentId, playerId, commands)
-{
+async function processRewards(remoteConfig, economyCurrency, cloudSave, projectId, environmentId, playerId, commands) {
     const commandRewardOptions = await getCommandRewardOptions(remoteConfig, projectId, environmentId);
     const rewardsByService = groupCommandRewardsByService(commands, commandRewardOptions);
     await distributeRewards(economyCurrency, cloudSave, projectId, playerId, rewardsByService);
 }
 
-async function getCommandRewardOptions(remoteConfig, projectId, environmentId)
-{
+async function getCommandRewardOptions(remoteConfig, projectId, environmentId) {
     const remoteConfigResponse = await remoteConfig.assignSettingsGet(
         projectId,
         environmentId,
@@ -164,16 +136,14 @@ async function getCommandRewardOptions(remoteConfig, projectId, environmentId)
     );
 
     if (remoteConfigResponse.data.configs == null ||
-        remoteConfigResponse.data.configs.settings == null)
-    {
+        remoteConfigResponse.data.configs.settings == null) {
         throw new CloudCodeCustomError('There was a problem getting command reward data from Remote Config.');
     }
 
     return getRewardsInDesiredStructure(remoteConfigResponse.data.configs.settings);
 }
 
-function getRewardsInDesiredStructure(settings)
-{
+function getRewardsInDesiredStructure(settings) {
     // Ensures that every expected command exists and has at least an empty array for rewards.
     _.defaultsDeep(settings, {
         [commandKeys.DefeatRedEnemy] : { rewards: [] },
@@ -189,8 +159,7 @@ function getRewardsInDesiredStructure(settings)
     });
 }
 
-function groupCommandRewardsByService(commands, commandRewards)
-{
+function groupCommandRewardsByService(commands, commandRewards) {
     const rewardsGroupedByService = {
         'currency': [],
         'cloudSave': []
@@ -200,12 +169,9 @@ function groupCommandRewardsByService(commands, commandRewards)
         commandRewards[command].forEach(reward => {
             const existingReward = rewardsGroupedByService[reward.service].find(x => x.id === reward.id);
 
-            if (existingReward === undefined)
-            {
+            if (existingReward === undefined) {
                 rewardsGroupedByService[reward.service].push({ id: reward.id, amount: reward.amount });
-            }
-            else
-            {
+            } else {
                 existingReward.amount += reward.amount;
             }
         });
@@ -214,19 +180,16 @@ function groupCommandRewardsByService(commands, commandRewards)
     return rewardsGroupedByService;
 }
 
-async function distributeRewards(economyCurrency, cloudSave, projectId, playerId, rewardsByService)
-{
+async function distributeRewards(economyCurrency, cloudSave, projectId, playerId, rewardsByService) {
     await Promise.all([
         distributeCurrencyRewards(economyCurrency, projectId, playerId, rewardsByService['currency']),
         distributeCloudSaveRewards(cloudSave, projectId, playerId, rewardsByService['cloudSave'])
     ]);
 }
 
-async function distributeCurrencyRewards(economyCurrency, projectId, playerId, currencyRewards)
-{
+async function distributeCurrencyRewards(economyCurrency, projectId, playerId, currencyRewards) {
     let currencyRewardTasks = [];
-    for (let i = 0; i < currencyRewards.length; i++)
-    {
+    for (let i = 0; i < currencyRewards.length; i++) {
         const currencyId = currencyRewards[i].id;
         const amount = currencyRewards[i].amount;
         currencyRewardTasks.push(economyCurrency.incrementPlayerCurrencyBalance(projectId, playerId, currencyId, { currencyId, amount }));
@@ -235,15 +198,13 @@ async function distributeCurrencyRewards(economyCurrency, projectId, playerId, c
     await Promise.all(currencyRewardTasks);
 }
 
-async function distributeCloudSaveRewards(cloudSave, projectId, playerId, cloudSaveRewards)
-{
+async function distributeCloudSaveRewards(cloudSave, projectId, playerId, cloudSaveRewards) {
     const currentCloudSaveData = await getCurrentCloudSaveData(cloudSave, projectId, playerId, cloudSaveRewards);
     const updatedCloudSaveData = updateCloudSaveData(currentCloudSaveData, cloudSaveRewards);
     await saveUpdatedCloudSaveData(cloudSave, projectId, playerId, updatedCloudSaveData);
 }
 
-async function getCurrentCloudSaveData(cloudSave, projectId, playerId, cloudSaveRewards)
-{
+async function getCurrentCloudSaveData(cloudSave, projectId, playerId, cloudSaveRewards) {
     const cloudSaveKeys = cloudSaveRewards.map(function(reward) {
         return reward.id;
     });
@@ -257,8 +218,7 @@ async function getCurrentCloudSaveData(cloudSave, projectId, playerId, cloudSave
     return cloudSaveResponseToObject(getItemsResponse);
 }
 
-function cloudSaveResponseToObject(getItemsResponse)
-{
+function cloudSaveResponseToObject(getItemsResponse) {
     let returnObject = {};
 
     getItemsResponse.data.results.forEach(item => {
@@ -268,8 +228,7 @@ function cloudSaveResponseToObject(getItemsResponse)
     return returnObject;
 }
 
-function updateCloudSaveData(currentCloudSaveData, cloudSaveRewards)
-{
+function updateCloudSaveData(currentCloudSaveData, cloudSaveRewards) {
     let updatedCloudSaveData = [];
 
     cloudSaveRewards.forEach(reward => {
@@ -288,8 +247,7 @@ function updateCloudSaveData(currentCloudSaveData, cloudSaveRewards)
     return updatedCloudSaveData;
 }
 
-async function saveUpdatedCloudSaveData(cloudSave, projectId, playerId, updatedCloudSaveData)
-{
+async function saveUpdatedCloudSaveData(cloudSave, projectId, playerId, updatedCloudSaveData) {
     await cloudSave.setItemBatch(
         projectId,
         playerId,
@@ -302,37 +260,34 @@ async function saveUpdatedCloudSaveData(cloudSave, projectId, playerId, updatedC
 function transformAndThrowCaughtError(error) {
     let result = {
         status: 0,
-        title: "",
+        name: "",
         message: "",
         retryAfter: null,
-        additionalDetails: ""
+        details: ""
     };
 
-    if (error.response)
-    {
+    if (error.response) {
         result.status = error.response.data.status ? error.response.data.status : 0;
-        result.title = error.response.data.title ? error.response.data.title : "Unknown Error";
+        result.name = error.response.data.title ? error.response.data.title : "Unknown Error";
         result.message = error.response.data.detail ? error.response.data.detail : error.response.data;
-        if (error.response.status === rateLimitError)
-        {
+
+        if (error.response.status === tooManyRequestsError) {
             result.retryAfter = error.response.headers['retry-after'];
-        }
-        else if (error.response.status === validationError)
-        {
+        } else if (error.response.status === badRequestError) {
             let arr = [];
+
             _.forEach(error.response.data.errors, error => {
                 arr = _.concat(arr, error.messages);
             });
-            result.additionalDetails = arr;
+
+            result.details = arr;
         }
-    }
-    else
-    {
-        if (error instanceof CloudCodeCustomError)
-        {
+    } else {
+        if (error instanceof CloudCodeCustomError) {
             result.status = error.status;
         }
-        result.title = error.name;
+
+        result.name = error.name;
         result.message = error.message;
     }
 

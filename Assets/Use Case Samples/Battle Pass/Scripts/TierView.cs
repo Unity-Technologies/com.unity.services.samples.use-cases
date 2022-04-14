@@ -1,7 +1,6 @@
 using System;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace UnityGamingServicesUseCases
@@ -61,9 +60,9 @@ namespace UnityGamingServicesUseCases
                 battlePassNotOwnedOverlay.gameObject.SetActive(true);
             }
 
-            public void SetInteractable(bool interactable)
+            public void SetInteractable(bool isInteractable = true)
             {
-                m_TierButton.interactable = interactable;
+                m_TierButton.interactable = isInteractable;
             }
 
             public void Refresh(
@@ -81,7 +80,7 @@ namespace UnityGamingServicesUseCases
 
             void RefreshTierRewards(bool battlePassIsOwned)
             {
-                var normalRewardDetail = RemoteConfigManager.instance.normalRewards[m_TierIndex];
+                var normalRewardDetail = m_BattlePassSceneManager.battlePassConfig.rewardsFree[m_TierIndex];
 
                 if (!string.IsNullOrEmpty(normalRewardDetail.id))
                 {
@@ -93,7 +92,7 @@ namespace UnityGamingServicesUseCases
                     normalRewardPanel.SetActive(false);
                 }
 
-                var battlePassRewardDetail = RemoteConfigManager.instance.battlePassRewards[m_TierIndex];
+                var battlePassRewardDetail = m_BattlePassSceneManager.battlePassConfig.rewardsPremium[m_TierIndex];
 
                 if (!string.IsNullOrEmpty(battlePassRewardDetail.id))
                 {

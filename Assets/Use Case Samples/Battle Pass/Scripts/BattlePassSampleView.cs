@@ -14,23 +14,16 @@ namespace UnityGamingServicesUseCases
             public InventoryPopupView inventoryPopupView;
             public TextMeshProUGUI eventWelcomeText;
 
-            public void SetInteractable(bool interactable)
+            public void SetInteractable(bool isInteractable = true)
             {
-                inventoryButton.interactable = interactable;
+                inventoryButton.interactable = isInteractable;
 
-                battlePassView.SetInteractable(interactable);
+                battlePassView.SetInteractable(isInteractable);
             }
 
-            public void UpdateWelcomeText()
+            public void UpdateWelcomeText(string newWelcomeText)
             {
-                var welcomeText = "";
-            
-                if (!string.IsNullOrEmpty(RemoteConfigManager.instance.activeEventName))
-                {
-                    welcomeText = RemoteConfigManager.instance.activeEventName;
-                }
-            
-                eventWelcomeText.text = welcomeText;
+                eventWelcomeText.text = newWelcomeText;
             }
 
             public async void OnInventoryButtonPressed()

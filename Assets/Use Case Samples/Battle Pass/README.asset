@@ -80,12 +80,14 @@ MonoBehaviour:
   - subHeader1: 
     subHeader2: 
     subHeader3: 
-    body: Once Unity Services completes initialization, Remote Config is queried
-      to get the current values for the event-related keys, such as Battle Pass content.
-      Each reward tier is represented by a JSON value in Remote Config. The downloaded
-      tier values depend on which Game Override is currently active. When the event
-      is scheduled to end, we call Remote Config again to get the new values and
-      refresh the UI.
+    body: 'Once Unity Services completes initialization, we use a Cloud Code function
+      to retrieve the configuration and state of the Battle Pass. The configuration
+      that''s returned to us is based on the server''s timestamp and the Game Override
+      that''s currently active. Reward tiers are stored as two JSON values in Remote
+      Config: one array for the free tiers, and one array for the premium tiers.
+      From our Cloud Code call, we also get a number of seconds until the season
+      is over. With that we can control our countdown view, and eventually determine
+      that it''s time to query the server again for the next season''s configs.'
     bodyFormat: 0
     boxCallout: 
     bulletList: []
@@ -95,12 +97,13 @@ MonoBehaviour:
     subHeader3: 
     body: 
     bodyFormat: 0
-    boxCallout: "Note: This sample determines which Remote Config Game Override data
-      should be returned based on the user\u2019s timestamp, to demonstrate how events
-      can change and update local variables. This is a simplification. In a real
-      app, developers likely set up a Game Override to have specific start and end
-      dates, then Remote Config determines when the Game Override is shown based
-      on the server\u2019s date/time."
+    boxCallout: "Note: This sample determines which Game Override data should be
+      returned based on the last digit of the number of minutes in the current server
+      time. This is a simplification to be able to frequently observe the season
+      change. In a real app, developers likely set up a Game Override to have specific
+      start and end dates, then Remote Config determines when the Game Override is
+      shown based on the server\u2019s date/time. In that case, the client and server
+      implementations can be a bit different."
     bulletList: []
     linkList: []
   - subHeader1: 
@@ -120,10 +123,12 @@ MonoBehaviour:
         progress if the season has changed.
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: By purchasing a Battle Pass, you might also be granted some premium rewards
         for tiers you already claimed.
       bodyFormat: 0
       bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: Packages Required
     subHeader2: 
@@ -136,9 +141,11 @@ MonoBehaviour:
         track of their data on the server side.'
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: 'Economy: Keeps track of the player''s currencies and inventory items.'
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: 'Cloud Code: Keeps important validation logic on the server side. In
         this sample it is used for four main purposes:'
       bodyFormat: 0
@@ -157,6 +164,7 @@ MonoBehaviour:
           rewards for tiers already claimed.
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: 'Remote Config: Provides key-value pairs where the value that is mapped
         to a given key can be changed on the server-side, either manually or based
         on specific Game Overrides. In this sample, we use the Game Overrides feature
@@ -164,17 +172,20 @@ MonoBehaviour:
         keys based on the Game Override.'
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: 'Addressables: Allows developers to ask for an asset via its address.
         Wherever the asset resides (local or remote), the system will locate it and
         its dependencies, then return it. Here, we use it to look up event specific
         images and prefabs based on the information we receive from Remote Config.'
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: 'Cloud Save: Stores the player''s Season XP progress and Battle Pass
         ownership token. This sample doesn''t actually use the Cloud Save methods
         in C#, as all of the Cloud Save work is done via Cloud Code.'
       bodyFormat: 0
       bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: 
@@ -266,6 +277,7 @@ MonoBehaviour:
         - body: 'ID: STAR'
           bodyFormat: 0
           bulletList: []
+      linkList: []
     - body: Inventory
       bodyFormat: 1
       bulletList:
@@ -287,6 +299,7 @@ MonoBehaviour:
         - body: 'ID: SHIELD'
           bodyFormat: 0
           bulletList: []
+      linkList: []
     - body: Virtual Purchase
       bodyFormat: 1
       bulletList:
@@ -303,6 +316,7 @@ MonoBehaviour:
           Save)'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: Remote Config
@@ -323,6 +337,7 @@ MonoBehaviour:
       - body: 'Value: ""'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: EVENT_KEY
       bodyFormat: 1
       bulletList:
@@ -336,6 +351,7 @@ MonoBehaviour:
       - body: 'Value: ""'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: EVENT_END_TIME
       bodyFormat: 1
       bulletList:
@@ -349,6 +365,7 @@ MonoBehaviour:
       - body: 'Value: 0'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: EVENT_TOTAL_DURATION_MINUTES
       bodyFormat: 1
       bulletList:
@@ -362,6 +379,7 @@ MonoBehaviour:
       - body: 'Value: 0'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: BATTLE_PASS_TIER_COUNT
       bodyFormat: 1
       bulletList:
@@ -375,6 +393,7 @@ MonoBehaviour:
       - body: 'Value: 10'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: BATTLE_PASS_SEASON_XP_PER_TIER
       bodyFormat: 1
       bulletList:
@@ -388,22 +407,36 @@ MonoBehaviour:
       - body: 'Value: 100'
         bodyFormat: 0
         bulletList: []
-    - body: BATTLE_PASS_TIER_1
+      linkList: []
+    - body: BATTLE_PASS_REWARDS_FREE
       bodyFormat: 1
       bulletList:
-      - body: The JSON that specifies what rewards are distributed when Tier 1 is
-          claimed. Overridden by seasonal Game Overrides.
+      - body: The JSON that specifies what rewards are distributed when each tier
+          is claimed. This design accounts for just one reward per tier. Overridden
+          by seasonal Game Overrides.
         bodyFormat: 0
         bulletList: []
       - body: 'Type: json'
         bodyFormat: 0
         bulletList: []
-      - body: 'Value: {}'
+      - body: 'Value: []'
         bodyFormat: 0
         bulletList: []
-    - body: Repeat BATTLE_PASS_TIER_1 for tiers 2 through 10
-      bodyFormat: 2
-      bulletList: []
+      linkList: []
+    - body: BATTLE_PASS_REWARDS_PREMIUM
+      bodyFormat: 1
+      bulletList:
+      - body: Just like BATTLE_PASS_REWARDS_FREE, but only granted when the player
+          owns that season's Battle Pass. Overridden by seasonal Game Overrides.
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Type: json'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Value: []'
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: 
@@ -446,12 +479,13 @@ MonoBehaviour:
         - body: 'EVENT_TOTAL_DURATION_MINUTES: 3'
           bodyFormat: 0
           bulletList: []
-        - body: 'BATTLE_PASS_TIER_1: See markdown README for details'
+        - body: 'BATTLE_PASS_REWARDS_FREE: See markdown README for details'
           bodyFormat: 0
           bulletList: []
-        - body: (repeat for other BATTLE_PASS_TIERs with various rewards)
-          bodyFormat: 2
+        - body: 'BATTLE_PASS_REWARDS_PREMIUM: See markdown README for details'
+          bodyFormat: 0
           bulletList: []
+      linkList: []
     - body: Winter Event
       bodyFormat: 1
       bulletList:
@@ -477,6 +511,7 @@ MonoBehaviour:
       - body: For everything else, just like the Fall Event, but with different rewards.
         bodyFormat: 2
         bulletList: []
+      linkList: []
     - body: Spring Event
       bodyFormat: 1
       bulletList:
@@ -502,6 +537,7 @@ MonoBehaviour:
       - body: For everything else, just like the Fall Event, but with different rewards.
         bodyFormat: 2
         bulletList: []
+      linkList: []
     - body: Summer Event
       bodyFormat: 1
       bulletList:
@@ -527,6 +563,7 @@ MonoBehaviour:
       - body: For everything else, just like the Fall Event, but with different rewards.
         bodyFormat: 2
         bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: Cloud Code Scripts
@@ -535,15 +572,16 @@ MonoBehaviour:
     bodyFormat: 0
     boxCallout: 
     bulletList:
-    - body: BattlePass_GetProgress
+    - body: BattlePass_GetState
       bodyFormat: 1
       bulletList:
       - body: 'Parameters: none'
         bodyFormat: 0
         bulletList: []
-      - body: 'Script: "Assets/Use Case Samples/Battle Pass/Cloud Code/BattlePass_GetProgress.js"'
+      - body: 'Script: "Assets/Use Case Samples/Battle Pass/Cloud Code/BattlePass_GetState.js"'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: BattlePass_GainSeasonXP
       bodyFormat: 1
       bulletList:
@@ -558,6 +596,7 @@ MonoBehaviour:
       - body: 'Script: "Assets/Use Case Samples/Battle Pass/Cloud Code/BattlePass_GainSeasonXP.js"'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: BattlePass_ClaimTier
       bodyFormat: 1
       bulletList:
@@ -572,6 +611,7 @@ MonoBehaviour:
       - body: 'Script: "Assets/Use Case Samples/Battle Pass/Cloud Code/BattlePass_ClaimTier.js"'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: BattlePass_PurchaseBattlePass
       bodyFormat: 1
       bulletList:
@@ -581,6 +621,7 @@ MonoBehaviour:
       - body: 'Script: "Assets/Use Case Samples/Battle Pass/Cloud Code/BattlePass_PurchaseBattlePass.js"'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: 

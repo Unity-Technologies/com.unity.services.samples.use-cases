@@ -19,15 +19,15 @@ namespace UnityGamingServicesUseCases
             GridEntity[,] m_GridEntity = new GridEntity[k_PlayfieldSize, k_PlayfieldSize];
 
 
-            public void EnableButtons(bool flag = true)
+            public void SetInteractable(bool isInteractable = true)
             {
-                m_EnabledFlag = flag;
+                m_EnabledFlag = isInteractable;
 
-                resetGameButton.interactable = flag;
+                resetGameButton.interactable = isInteractable;
 
                 foreach (var gridEntity in m_GridEntity)
                 {
-                    gridEntity.button.interactable = flag;
+                    gridEntity.button.interactable = isInteractable;
                 }
             }
 

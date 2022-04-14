@@ -26,13 +26,13 @@ namespace UnityGamingServicesUseCases
                 SetInteractable(false);
             }
 
-            public void SetInteractable(bool interactable)
+            public void SetInteractable(bool isInteractable = true)
             {
-                defeatRedEnemyButton.interactable = interactable;
-                defeatBlueEnemyButton.interactable = interactable;
-                openChestButton.interactable = interactable && GameStateManager.instance.isOpenChestValidMove;
+                defeatRedEnemyButton.interactable = isInteractable;
+                defeatBlueEnemyButton.interactable = isInteractable;
+                openChestButton.interactable = isInteractable && GameStateManager.instance.isOpenChestValidMove;
                 achieveBonusGoalButton.interactable =
-                    interactable && GameStateManager.instance.isAchieveBonusGoalValidMove;
+                    isInteractable && GameStateManager.instance.isAchieveBonusGoalValidMove;
             }
 
             public void BeginGame()

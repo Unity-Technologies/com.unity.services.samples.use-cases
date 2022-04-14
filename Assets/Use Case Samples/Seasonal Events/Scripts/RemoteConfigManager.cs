@@ -71,7 +71,10 @@ namespace UnityGamingServicesUseCases
                 // Winter Event: Data is returned for minutes ending in 3 or 4.
                 // Spring Event: Data is returned for minutes ending in 5, 6, or 7.
                 // Summer Event: Data is returned for minutes ending in 8 or 9.
-                return new UserAttributes { timestampMinutes = DateTime.Now.Minute };
+                //
+                // Note: We use the approximate server time here to ensure we are showing/claiming the correct season
+                //       in case the client's clock is off for any reason.
+                return new UserAttributes { timestampMinutes = ServerTimeHelper.UtcNow.Minute };
             }
 
             void OnDestroy()

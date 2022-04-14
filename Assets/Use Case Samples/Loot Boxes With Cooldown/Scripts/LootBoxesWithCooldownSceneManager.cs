@@ -20,7 +20,7 @@ namespace UnityGamingServicesUseCases
             async void Start()
             {
                 try
-                { 
+                {
                     await UnityServices.InitializeAsync();
 
                     // Check that scene has not been unloaded while processing async wait to prevent throw.

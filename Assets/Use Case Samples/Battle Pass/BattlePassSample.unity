@@ -3860,7 +3860,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 833788700}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e6d5cc4e7f6874485933870012263716, type: 3}
+  m_Script: {fileID: 11500000, guid: 570823f3e37c3443baee5c0900db0688, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   countdownText: {fileID: 472404660}
@@ -7709,7 +7709,6 @@ GameObject:
   - component: {fileID: 1685906475}
   - component: {fileID: 1685906476}
   - component: {fileID: 1685906473}
-  - component: {fileID: 1685906469}
   - component: {fileID: 1685906470}
   m_Layer: 0
   m_Name: BattlePassSample
@@ -7718,18 +7717,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1685906469
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1685906468}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b47cc0d0099c4f8cb86e5b5b3c07138, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1685906470
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7798,7 +7785,7 @@ MonoBehaviour:
   sceneView: {fileID: 2110686669}
   battlePassView: {fileID: 98420452}
   tierPopupView: {fileID: 1942523005809497618}
-  countdownManager: {fileID: 833788702}
+  countdownView: {fileID: 833788702}
 --- !u!224 &1788830631 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6545411340689792965, guid: 8e15fdd3faa4b48d2ba59d855bd89ec3, type: 3}

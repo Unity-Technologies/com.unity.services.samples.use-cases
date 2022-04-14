@@ -16,11 +16,13 @@ namespace UnityGamingServicesUseCases
             public BattlePassSampleView sceneView;
             public BattlePassView battlePassView;
             public TierPopupView tierPopupView;
-            public CountdownManager countdownManager;
+            public CountdownView countdownView;
 
             bool m_Updating = false;
+            float m_EventSecondsRemaining;
 
-            public BattlePassProgress battlePassProgress { get; private set; }
+            public BattlePassConfig battlePassConfig { get; private set; }
+            public BattlePassState battlePassState { get; private set; }
 
             async void Start()
             {
@@ -34,18 +36,20 @@ namespace UnityGamingServicesUseCases
                 }
             }
 
-            async void LateUpdate()
+            void Update()
             {
-                try
+                if (!m_Updating)
                 {
-                    if (!m_Updating)
+                    m_EventSecondsRemaining -= Time.deltaTime;
+
+                    if (m_EventSecondsRemaining <= 0)
                     {
-                        await UpdateSeason();
+                        m_EventSecondsRemaining = 0;
+
+                        OnCountdownEnded();
                     }
-                }
-                catch (Exception e)
-                {
-                    Debug.LogException(e);
+
+                    countdownView.SetTotalSeconds(m_EventSecondsRemaining);
                 }
             }
 
@@ -70,10 +74,7 @@ namespace UnityGamingServicesUseCases
                     }
                     Debug.Log($"Player id: {AuthenticationService.Instance.PlayerId}");
 
-                    await Task.WhenAll(
-                        EconomyManager.instance.RefreshCurrencyBalances(),
-                        GetRemoteConfigUpdates(),
-                        GetBattlePassProgress());
+                    await UpdateEconomyAndBattlePassProgress();
                 }
                 finally
                 {
@@ -100,17 +101,22 @@ namespace UnityGamingServicesUseCases
                 sceneView.SetInteractable(true);
             }
 
-            async Task GetRemoteConfigUpdates()
+            async Task UpdateEconomyAndBattlePassProgress()
             {
-                await RemoteConfigManager.instance.FetchConfigs();
-                if (this == null) return;
-                UpdateSeasonView();
-            }
+                try
+                {
+                    Debug.Log("Getting updated Battle Pass configs and progress...");
 
-            void UpdateSeasonView()
-            {
-                sceneView.UpdateWelcomeText();
-                countdownManager.StartCountdownFromNow();
+                    await Task.WhenAll(EconomyManager.instance.RefreshCurrencyBalances(), GetBattlePassProgress());
+
+                    if (this == null) return;
+
+                    sceneView.UpdateWelcomeText(battlePassConfig.eventName);
+                }
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
+                }
             }
 
             async Task GetBattlePassProgress()
@@ -121,9 +127,12 @@ namespace UnityGamingServicesUseCases
 
                 if (result.seasonTierStates == null) return;
 
+                m_EventSecondsRemaining = result.eventSecondsRemaining;
+
+                UpdateCachedBattlePassConfig(result.remoteConfigs);
                 UpdateCachedBattlePassProgress(result.seasonXp, result.ownsBattlePass, result.seasonTierStates);
 
-                battlePassView.Refresh(battlePassProgress);
+                battlePassView.Refresh(battlePassState);
             }
 
             public void OnTierButtonClicked(int tierIndex)
@@ -141,9 +150,9 @@ namespace UnityGamingServicesUseCases
 
                     if (this == null) return;
 
-                    UpdateCachedBattlePassProgress(battlePassProgress.seasonXP, battlePassProgress.ownsBattlePass, result.seasonTierStates);
+                    UpdateCachedBattlePassProgress(battlePassState.seasonXP, battlePassState.ownsBattlePass, result.seasonTierStates);
 
-                    battlePassView.Refresh(battlePassProgress);
+                    battlePassView.Refresh(battlePassState);
 
                     await EconomyManager.instance.RefreshCurrencyBalances();
 
@@ -191,10 +200,10 @@ namespace UnityGamingServicesUseCases
 
                     if (this == null) return;
 
-                    UpdateCachedBattlePassProgress(result.seasonXp, battlePassProgress.ownsBattlePass,
+                    UpdateCachedBattlePassProgress(result.seasonXp, battlePassState.ownsBattlePass,
                         result.seasonTierStates);
 
-                    battlePassView.Refresh(battlePassProgress);
+                    battlePassView.Refresh(battlePassState);
                 }
                 catch (CloudCodeResultUnavailableException)
                 {
@@ -218,9 +227,9 @@ namespace UnityGamingServicesUseCases
 
                     if (this == null) return;
 
-                    UpdateCachedBattlePassProgress(battlePassProgress.seasonXP, true, result.seasonTierStates);
+                    UpdateCachedBattlePassProgress(battlePassState.seasonXP, true, result.seasonTierStates);
 
-                    battlePassView.Refresh(battlePassProgress);
+                    battlePassView.Refresh(battlePassState);
 
                     await EconomyManager.instance.RefreshCurrencyBalances();
 
@@ -238,62 +247,77 @@ namespace UnityGamingServicesUseCases
                 sceneView.SetInteractable(true);
             }
 
+            async void OnCountdownEnded()
+            {
+                try
+                {
+                    UpdateStarted();
+
+                    tierPopupView.Close();
+
+                    await UpdateEconomyAndBattlePassProgress();
+                }
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
+                }
+                finally
+                {
+                    UpdateFinished();
+                }
+            }
+
+            void UpdateCachedBattlePassConfig(CloudCodeManager.GetStateRemoteConfigs remoteConfigs)
+            {
+                var freeTiersCount = remoteConfigs.battlePassRewardsFree.Length;
+                var premiumTiersCount = remoteConfigs.battlePassRewardsPremium.Length;
+
+                battlePassConfig = new BattlePassConfig
+                {
+                    eventName = remoteConfigs.eventName,
+                    seasonXpPerTier = remoteConfigs.battlePassSeasonXpPerTier,
+                    tierCount = freeTiersCount,
+                    rewardsFree = new RewardDetail[freeTiersCount],
+                    rewardsPremium = new RewardDetail[premiumTiersCount]
+                };
+
+                for (var i = 0; i < freeTiersCount; i++)
+                {
+                    battlePassConfig.rewardsFree[i] = new RewardDetail
+                    {
+                        id = remoteConfigs.battlePassRewardsFree[i].id,
+                        quantity = remoteConfigs.battlePassRewardsFree[i].quantity,
+                        spriteAddress = remoteConfigs.battlePassRewardsFree[i].spriteAddress
+                    };
+                }
+
+                for (var i = 0; i < premiumTiersCount; i++)
+                {
+                    battlePassConfig.rewardsPremium[i] = new RewardDetail
+                    {
+                        id = remoteConfigs.battlePassRewardsPremium[i].id,
+                        quantity = remoteConfigs.battlePassRewardsPremium[i].quantity,
+                        spriteAddress = remoteConfigs.battlePassRewardsPremium[i].spriteAddress
+                    };
+                }
+            }
+
             void UpdateCachedBattlePassProgress(int seasonXp, bool ownsBattlePass, int[] seasonTierStates)
             {
-                if (battlePassProgress?.tierStates == null)
+                if (battlePassState?.tierStates == null)
                 {
-                    battlePassProgress = new BattlePassProgress
+                    battlePassState = new BattlePassState
                     {
                         tierStates = new TierState[seasonTierStates.Length]
                     };
                 }
 
-                battlePassProgress.seasonXP = seasonXp;
-                battlePassProgress.ownsBattlePass = ownsBattlePass;
+                battlePassState.seasonXP = seasonXp;
+                battlePassState.ownsBattlePass = ownsBattlePass;
 
                 for (var i = 0; i < seasonTierStates?.Length; i++)
                 {
-                    battlePassProgress.tierStates[i] = (TierState)seasonTierStates[i];
-                }
-            }
-
-            async Task UpdateSeason()
-            {
-                // Because our events are time-based and change so rapidly (every 2 - 3 minutes), we will check each
-                // update if it's time to refresh Remote Config's local data, and refresh it if the current
-                // last digit of the minutes equals the start of the next game override's time (See more info in the
-                // comments in GetUserAttributes). More typically you would probably fetch new configs at app launch
-                // and under other less frequent circumstances.
-                var currentMinuteLastDigit = DateTime.Now.Minute % 10;
-
-                if (currentMinuteLastDigit > RemoteConfigManager.instance.activeEventEndTime
-                    || currentMinuteLastDigit == 0 && RemoteConfigManager.instance.activeEventEndTime == 9)
-                {
-                    tierPopupView.Close();
-
-                    try
-                    {
-                        UpdateStarted();
-
-                        Debug.Log(
-                            "Getting next season from Remote Config and refreshing progress data...");
-
-                        await Task.WhenAll(
-                            EconomyManager.instance.RefreshCurrencyBalances(),
-                            GetRemoteConfigUpdates(),
-                            GetBattlePassProgress());
-                    }
-                    catch (Exception e)
-                    {
-                        Debug.LogException(e);
-                    }
-                    finally
-                    {
-                        if (this != null)
-                        {
-                            UpdateFinished();
-                        }
-                    }
+                    battlePassState.tierStates[i] = (TierState)seasonTierStates[i];
                 }
             }
         }

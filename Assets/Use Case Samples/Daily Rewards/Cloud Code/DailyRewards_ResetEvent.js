@@ -2,32 +2,29 @@
 // this file will not have any effect locally. Changes to Cloud Code scripts are normally done directly in the 
 // Unity Dashboard.
 
-const rateLimitError = 429;
-const validationError = 400;
-
 const _ = require("lodash-4.17");
 const { DataApi } = require("@unity-services/cloud-save-1.0");
 
+const badRequestError = 400;
+const tooManyRequestsError = 429;
+
 module.exports = async ({ context, logger }) => {
-    const { projectId, playerId, environmentId, accessToken} = context;
-    const cloudSave = new DataApi({ accessToken });
+    try {
+        const { projectId, playerId, environmentId, accessToken} = context;
+        const cloudSave = new DataApi({ accessToken });
 
-    const services = { projectId, playerId, environmentId, cloudSave, logger };
+        const services = { projectId, playerId, environmentId, cloudSave, logger };
 
-    const epochTime = _.now();
-    logger.info("Current epochTime: " + epochTime);
+        const epochTime = _.now();
+        logger.info("Current epochTime: " + epochTime);
 
-    try
-    {
         const promiseResponses = await Promise.all([
             setEventStartEpochTimeForDemonstrating(services, epochTime),
             clearPlayerStatus(services)
         ]);
 
         logger.info("Successfully reset Daily Rewards event.");
-    }
-    catch (error)
-    {
+    } catch (error) {
         transformAndThrowCaughtError(error);
     }
 };
@@ -35,20 +32,15 @@ module.exports = async ({ context, logger }) => {
 // Setup start epoch time. This is ONLY needed to demonstrate this Use Case Sample. 
 // Normally this value would be set to the first day of the month and stored in Remote Config to control the event for all
 // players, but here it's set in Cloud Save for this Use Case Sample to facilitate testing.
-async function setEventStartEpochTimeForDemonstrating(services, epochTime)
-{
+async function setEventStartEpochTimeForDemonstrating(services, epochTime) {
     await services.cloudSave.setItem(services.projectId, services.playerId, { key: "DAILY_REWARDS_START_EPOCH_TIME", value: epochTime } );
 }
 
 // Clear the players event data to simulate the first time a player visits the Daily Rewards event.
-async function clearPlayerStatus(services)
-{
-    try 
-    {
+async function clearPlayerStatus(services) {
+    try {
         await services.cloudSave.deleteItem("DAILY_REWARDS_STATUS", services.projectId, services.playerId);
-    }
-    catch (error)
-    {
+    } catch (error) {
         // Cloud Save throws when the key does not exist. Check if it's the 'not found' error 404.
         if (error.response.status === 404)
         {
@@ -66,33 +58,30 @@ async function clearPlayerStatus(services)
 function transformAndThrowCaughtError(error) {
     let result = {
         status: 0,
-        title: "",
+        name: "",
         message: "",
         retryAfter: null,
-        additionalDetails: ""
+        details: ""
     };
 
-    if (error.response)
-    {
+    if (error.response) {
         result.status = error.response.data.status ? error.response.data.status : 0;
-        result.title = error.response.data.title ? error.response.data.title : "Unknown Error";
+        result.name = error.response.data.title ? error.response.data.title : "Unknown Error";
         result.message = error.response.data.detail ? error.response.data.detail : error.response.data;
-        if (error.response.status === rateLimitError)
-        {
+
+        if (error.response.status === tooManyRequestsError) {
             result.retryAfter = error.response.headers['retry-after'];
-        }
-        else if (error.response.status === validationError)
-        {
+        } else if (error.response.status === badRequestError) {
             let arr = [];
+
             _.forEach(error.response.data.errors, error => {
                 arr = _.concat(arr, error.messages);
             });
-            result.additionalDetails = arr;
+
+            result.details = arr;
         }
-    }
-    else
-    {
-        result.title = error.name;
+    } else {
+        result.name = error.name;
         result.message = error.message;
     }
 

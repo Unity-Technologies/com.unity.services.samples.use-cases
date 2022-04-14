@@ -28,16 +28,10 @@ namespace UnityGamingServicesUseCases
             internal bool playChallengeAllowed;
             internal bool sceneInitialized;
 
-            public void Disable()
+            public void SetInteractable(bool isInteractable = true)
             {
                 UpdateButtonTexts();
-                playChallengeButton.interactable = false;
-            }
-
-            public void Enable()
-            {
-                UpdateButtonTexts();
-                playChallengeButton.interactable = playChallengeAllowed && sceneInitialized;
+                playChallengeButton.interactable = isInteractable && playChallengeAllowed && sceneInitialized;
             }
 
             void UpdateButtonTexts()

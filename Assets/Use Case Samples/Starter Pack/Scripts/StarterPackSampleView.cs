@@ -91,15 +91,9 @@ namespace UnityGamingServicesUseCases
                 }
             }
 
-            public void Disable()
+            public void SetInteractable(bool isInteractable = true)
             {
-                m_Enabled = false;
-                Refresh();
-            }
-
-            public void Enable()
-            {
-                m_Enabled = true;
+                m_Enabled = isInteractable;
                 Refresh();
             }
             void OnDestroy()

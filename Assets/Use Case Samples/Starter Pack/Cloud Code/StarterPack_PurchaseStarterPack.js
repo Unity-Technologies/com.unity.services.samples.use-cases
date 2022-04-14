@@ -2,23 +2,18 @@
 // this file will not have any effect locally. Changes to Cloud Code scripts are normally done directly in the 
 // Unity Dashboard.
 
-const badRequestError = 400;
-const unprocessableEntityError = 422;
-const tooManyRequestsError = 429;
-
 const { PurchasesApi } = require("@unity-services/economy-2.0");
 const { DataApi } = require("@unity-services/cloud-save-1.0");
 
-module.exports = async ({ params, context, logger }) =>
-{
-    const { projectId, playerId, accessToken } = context;
-    const purchasesApi = new PurchasesApi({ accessToken });
-    const cloudSaveApi = new DataApi({ accessToken });
+const badRequestError = 400;
+const tooManyRequestsError = 429;
 
-    let returnObject;
+module.exports = async ({ params, context, logger }) => {
+    try {
+        const { projectId, playerId, accessToken } = context;
+        const purchasesApi = new PurchasesApi({ accessToken });
+        const cloudSaveApi = new DataApi({ accessToken });
 
-    try
-    {
         const getItemsResponse = await cloudSaveApi.getItems(projectId, playerId, [ "STARTER_PACK_STATUS" ]);
 
         // Prevent the purchase if Cloud Save confirms the player already claimed a Starter Pack.
@@ -26,11 +21,9 @@ module.exports = async ({ params, context, logger }) =>
         if (getItemsResponse.data.results &&
             getItemsResponse.data.results.length > 0 &&
             getItemsResponse.data.results[0] &&
-            getItemsResponse.data.results[0].value)
-        {
+            getItemsResponse.data.results[0].value) {
             if (getItemsResponse.data.results[0].value.claimed &&
-                getItemsResponse.data.results[0].value.claimed === true)
-            {
+                getItemsResponse.data.results[0].value.claimed === true) {
                 logger.error("The Starter Pack has already been claimed by this player.");
                 throw Error("The Starter Pack has already been claimed by this player.");
             }
@@ -40,70 +33,88 @@ module.exports = async ({ params, context, logger }) =>
 
         const purchaseResult = await purchaseStarterPack(purchasesApi, projectId, playerId);
 
-        returnObject = purchaseResult.data;
+        const returnObject = purchaseResult.data;
 
         // Let Cloud Save know that the Starter Pack has been claimed by this player.
 
         await cloudSaveApi.setItem(projectId, playerId, { key: "STARTER_PACK_STATUS", value: { claimed: true } });
-    }
-    catch (error)
-    {
+
+        return returnObject;
+    } catch (error) {
         transformAndThrowCaughtException(error);
     }
-
-    return returnObject;
 };
 
-async function purchaseStarterPack(purchasesApi, projectId, playerId)
-{
-    try
-    {
+async function purchaseStarterPack(purchasesApi, projectId, playerId) {
+    try {
         return await purchasesApi.makeVirtualPurchase(projectId, playerId, { id: "STARTER_PACK" });
-    }
-    catch
-    {
-        throw new CantAffordStarterPackError("Not enough gems to purchase Starter Pack.");
+    } catch (e) {
+        const message = "Virtual purchase failed";
+
+        if (e.response !== undefined && e.response !== null) {
+            var exceptionData = e.response.data;
+            var exceptionHeaders = e.response.headers;
+            const statusCode = exceptionData.code ? exceptionData.code : exceptionData.status;
+
+            if (e.response.status === tooManyRequestsError) {
+                const retryAfter = exceptionHeaders['retry-after'] ? exceptionHeaders['retry-after'] : null;
+
+                throw new EconomyRateLimitError(message, exceptionData.detail,
+                    exceptionData.title, statusCode, retryAfter);
+            } else if (e.response.status === badRequestError) {
+                let details = [];
+                _.forEach(exceptionData.errors, error => {
+                    details = _.concat(details, error.messages);
+                });
+
+                throw new EconomyValidationError(message, exceptionData.detail,
+                    exceptionData.title, statusCode, details);
+            } else {
+                throw new EconomyProcessingError(message, exceptionData.detail,
+                    exceptionData.title, statusCode)
+            }
+        } else {
+            throw new EconomyError(message);
+        }
     }
 }
 
 // this standardizes our outgoing errors to make them easier to parse in the client
-function transformAndThrowCaughtException(error)
-{
+function transformAndThrowCaughtException(error) {
     let result = {
         status: 0,
-        title: "",
+        name: "",
         message: "",
         retryAfter: null,
-        additionalDetails: ""
+        details: ""
     };
 
-    if (error.response)
-    {
+    if (error.response) {
         result.status = error.response.data.status ? error.response.data.status : 0;
-        result.title = error.response.data.title ? error.response.data.title : "Unknown Error";
+        result.name = error.response.data.title ? error.response.data.title : "Unknown Error";
         result.message = error.response.data.detail ? error.response.data.detail : error.response.data;
 
-        if (error.response.status === tooManyRequestsError)
-        {
+        if (error.response.status === tooManyRequestsError) {
             result.retryAfter = error.response.headers['retry-after'];
-        }
-
-        if (error.response.status === badRequestError)
-        {
+        } else if (error.response.status === badRequestError) {
             let arr = [];
+
             _.forEach(error.response.data.errors, error => {
                 arr = _.concat(arr, error.messages);
             });
-            result.additionalDetails = arr;
+
+            result.details = arr;
         }
-    }
-    else
-    {
-        if (error instanceof CloudCodeCustomError)
-        {
+    } else {
+        if (error instanceof EconomyError) {
+            result.status = error.status;
+            result.retryAfter = error.retryAfter;
+            result.details = error.details;
+        } else if (error instanceof CloudCodeCustomError) {
             result.status = error.status;
         }
-        result.title = error.name;
+
+        result.name = error.name;
         result.message = error.message;
     }
 
@@ -118,10 +129,34 @@ class CloudCodeCustomError extends Error {
     }
 }
 
-class CantAffordStarterPackError extends CloudCodeCustomError {
+class EconomyError extends CloudCodeCustomError {
     constructor(message) {
         super(message);
-        this.name = "CantAffordStarterPackError";
-        this.status = 3;
+        this.name = "EconomyError";
+        this.status = 2;
+        this.retryAfter = null;
+        this.details = "";
+    }
+}
+
+class EconomyProcessingError extends EconomyError {
+    constructor(message, innerExceptionMessage, innerExceptionName, innerExceptionStatus) {
+        super(message + ": " + innerExceptionMessage);
+        this.name = "EconomyError: " + innerExceptionName;
+        this.status = innerExceptionStatus;
+    }
+}
+
+class EconomyRateLimitError extends EconomyProcessingError {
+    constructor(message, innerExceptionMessage, innerExceptionName, innerExceptionStatus, retryAfter) {
+        super(message, innerExceptionMessage, innerExceptionName, innerExceptionStatus);
+        this.retryAfter = retryAfter
+    }
+}
+
+class EconomyValidationError extends EconomyProcessingError {
+    constructor(message, innerExceptionMessage, innerExceptionName, innerExceptionStatus, details) {
+        super(message, innerExceptionMessage, innerExceptionName, innerExceptionStatus);
+        this.details = details;
     }
 }

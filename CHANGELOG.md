@@ -1,8 +1,21 @@
 # Changelog
 
+## [1.3.1] - 2022-04-13
+
+### Changed
+
+* Fixed a bug in Seasonal Events which caused the incorrect season to appear when the client's clock was incorrect.
+  This could cause the client to appear to claim the wrong season or be unable to claim subsequent seasons when server already claimed it.
+* Fixed a bug which caused the Battle Pass to occasionally throw a null ref exception during initialization.
+* Fixed a bug which caused the Battle Pass to sometimes fail to start the new season because of a clock mismatch between the client and the server.
+The use case has been made more server-authoritative by always using the server timestamp when deciding which is the current season.
+* Fixed a bug in AB Test where under certain circumstances Cloud Save keys weren't getting created as expected.
+* Fixed Addressables build issue on mobile by adding call to Addressables BuildPlayerContent call when building.
+
 ## [1.3.0] - 2022-03-21
 
 ### Added
+
 * Rewarded Ad use case which demonstrates how to offer rewarded ads via Unity Mediation to give bonus rewards at the end of a level.
 * Daily Rewards use case sample demonstrates an escalating series of daily rewards incentivizing players to keep logging in to claim better and better prizes.
 * Enabled the Unity Cloud Diagnostics service for this project.
@@ -13,10 +26,10 @@
 
 ### Changed
 
+* Updated Unity Services packages to the group of packages released as of 2022-03-21.
 * Fixed minor UI bug where Cloud AI Use Case Sample cursor does not appear correctly at startup or when moved between plays.
 * Improved throw handling to permit Cloud Code to throw standard and custom exceptions which are caught and handled correctly in Unity client scripts.
 * Changed the name of the project from "Game Operations Samples" to "Unity Gaming Services Use Cases".
-* Updated Unity Services packages to the group of packages released as of 2022-02-23.
 * Removed unused networking and multiplayer-related packages.
 * Renamed existing "Daily Rewards" use case to "Loot Boxes With Cooldown" to better describe its behavior and avoid confusion with existing live games that use a monthly calendar to grant rewards on a daily basis.
 

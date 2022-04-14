@@ -23,7 +23,7 @@ namespace UnityGamingServicesUseCases
             async void Start()
             {
                 try
-                { 
+                {
                     await UnityServices.InitializeAsync();
 
                     // Check that scene has not been unloaded while processing async wait to prevent throw.
@@ -47,7 +47,7 @@ namespace UnityGamingServicesUseCases
 
                     sceneView.ShowState(m_UpdatedState);
 
-                    sceneView.EnableButtons();
+                    sceneView.SetInteractable();
 
                     Debug.Log("Initialization and signin complete.");
                 }
@@ -67,7 +67,7 @@ namespace UnityGamingServicesUseCases
                 {
                     Debug.Log($"Placing Piece at {coord}");
 
-                    sceneView.EnableButtons(false);
+                    sceneView.SetInteractable(false);
 
                     sceneView.ShowInProgress(coord, true);
 
@@ -99,7 +99,7 @@ namespace UnityGamingServicesUseCases
                     if (this != null)
                     { 
                         sceneView.ShowInProgress(coord, false);
-                        sceneView.EnableButtons();
+                        sceneView.SetInteractable();
                     }
                 }
             }
@@ -110,7 +110,7 @@ namespace UnityGamingServicesUseCases
                 {
                     Debug.Log("Starting new game.");
 
-                    sceneView.EnableButtons(false);
+                    sceneView.SetInteractable(false);
 
                     m_UpdatedState = await CloudCodeManager.instance.CallStartNewGameEndpoint();
                     if (this == null) return;
@@ -122,7 +122,7 @@ namespace UnityGamingServicesUseCases
 
                     sceneView.ShowState(m_UpdatedState);
 
-                    sceneView.EnableButtons();
+                    sceneView.SetInteractable();
 
                     Debug.Log("New game started.");
                 }
@@ -138,7 +138,7 @@ namespace UnityGamingServicesUseCases
                 {
                     if (this != null)
                     {
-                        sceneView.EnableButtons();
+                        sceneView.SetInteractable();
                     }
                 }
             }
@@ -149,7 +149,7 @@ namespace UnityGamingServicesUseCases
                 {
                     Debug.Log("Reset game button pressed.");
 
-                    sceneView.EnableButtons(false);
+                    sceneView.SetInteractable(false);
 
                     await SaveData.ForceDeleteAsync("CLOUD_AI_GAME_STATE");
                     if (this == null) return;
@@ -162,7 +162,7 @@ namespace UnityGamingServicesUseCases
 
                     sceneView.ShowState(m_UpdatedState);
 
-                    sceneView.EnableButtons();
+                    sceneView.SetInteractable();
                 }
                 catch (CloudCodeResultUnavailableException)
                 {
