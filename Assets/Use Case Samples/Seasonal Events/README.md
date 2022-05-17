@@ -15,7 +15,7 @@ Then, Remote Config is queried to get the current values for the event-related k
 These values allow for displaying the active event name, the potential rewards for completing the event challenge, and the themed background image and play buttons.
 
 Remote Config also tells us when the event ends, which is used in the CountdownManager for determining and displaying how much time is left in the current event.
-When that time runs out, it triggers a new call to remote config, to get the updated values for the next event.
+When that time runs out, it triggers a new call to Remote Config, to get the updated values for the next event.
 
 _**Note**: This sample determines which Game Override data should be returned based on the last digit of the number of minutes in the current server time.
 This is a simplification to be able to frequently observe the season change.
@@ -27,15 +27,12 @@ This script calls Remote Config to determine which rewards should be distributed
 The challenge can only be played once per active season, so once the Cloud Code script distributes the rewards, it saves the current season name and timestamp to Cloud Save.
 This info is used by the client to determine whether the current season's challenge has already been played, and if it has, to disable the "Play Challenge" button.
 
-Additionally, Analytics custom events are sent each time the scene loads (`SceneOpened`), whenever a button is pressed (`ActionButtonPressed`), and when the back button in the scene is pressed, returning the player to the "Start Here" scene (`SceneSessionLength`).
-
 ### Packages Required
 - **Authentication:** Automatically signs in the user anonymously to keep track of their data on the server side.
 - **Economy:** Keeps track of the player's currencies.
 - **Cloud Code:** Keeps important validation logic on the server side. In this sample it is used to distribute the rewards for the event challenge when the player clicks the "Collect Rewards" button. It independently verifies the timestamp at the time of reward distribution on the server-side to confirm which event's rewards should be distributed.
 - **Remote Config:** Provides key-value pairs where the value that is mapped to a given key can be changed on the server-side, either manually or based on specific Game Overrides. In this sample, we use the Game Overrides feature to create the four seasonal events and return different values for certain keys based on the Game Override. 
 - **Addressables:** Allows developers to ask for an asset via its address. Wherever the asset resides (local or remote), the system will locate it and its dependencies, then return it. Here we use it to look up event specific images and prefabs based on the information we receive from Remote Config.
-- **Analytics:** Sends events that allow the tracking of a player's in-game interactions, retention, and other information which can be used for analyzing and improving game experience.
 - **Cloud Save:** Stores if the current season's challenge has already been played to prevent the user from playing the same season's challenge multiple times.
 
 See the [Authentication](https://docs.unity.com/authentication/Content/InstallAndConfigureSDK.htm),
@@ -43,7 +40,6 @@ See the [Authentication](https://docs.unity.com/authentication/Content/InstallAn
 [Cloud Code](https://docs.unity.com//cloud-code/Content/implementation.htm?tocpath=Implementation%7C_____0#SDK_installation),
 [Remote Config](https://docs.unity3d.com/Packages/com.unity.remote-config@2.0/manual/ConfiguringYourProject.html),
 [Addressables](https://docs.unity3d.com/Packages/com.unity.addressables@latest),
-[Analytics](https://docs.unity.com/analytics/SDKInstallation.htm),
 and [Cloud Save](https://docs.unity.com/cloud-save/implementation.htm) docs to learn how to install and configure these SDKs in your project.
 
 ### Dashboard Setup
@@ -196,72 +192,3 @@ To duplicate this sample scene's setup on your own dashboard, you'll need a few 
 
 _**Note**:
 The Cloud Code scripts included in the `Cloud Code` folder are just local copies, since you can't see the sample's dashboard. Changes to these scripts will not affect the behavior of this sample since they will not be automatically uploaded to Cloud Code service._
-
-#### Analytics
-In the configuration of the Analytics custom events and parameters, you can see a fairly long list of potential parameters that are sent with some of the events.
-This extended list allows for a more flexible analysis of different parameter groupings in the Data Explorer on the Analytics tab of the Unity dashboard.
-Alternatively, one could send just the ungrouped parameters (buttonName, sceneName, etc), and do any kind of grouped analysis desired using the Data Export feature within the Data Explorer on the dashboard.
-
-_**Note**:
-This sample demonstrates the code needed to trigger analytics events, however additional code may be necessary to meet legal requirements such as GDPR, CCPA, and PIPL.
-See more info about managing data privacy [here](https://docs.unity.com/analytics/ManagingDataPrivacy.html)._
-
-##### Custom Events
-* `SceneOpened`
-  * Description: Event sent each time the scene is loaded.
-  * Enabled: true
-  * Custom Parameters:
-    * `sceneName`
-* `ActionButtonPressed`
-  * Description: Event sent for each button press in the scene.
-  * Enabled: true
-  * Custom Parameters:
-    * `buttonName`
-    * `sceneName`
-    * `remoteConfigActiveEvent`
-    * `buttonNameBySceneName`
-    * `buttonNameByRemoteConfigEvent`
-    * `buttonNameBySceneNameAndRemoteConfigEvent`
-* `SceneSessionLength`
-  * Description: Event sent to indicate the length of time between when `Start()` is triggered on the AnalyticsManager script and the back button in the scene is pressed (effectively the time spent in the scene).
-  * Enabled: true
-  * Custom Parameters:
-    * `timeRange`
-    * `sceneName`
-    * `remoteConfigActiveEvent`
-    * `timeRangeBySceneName`
-    * `timeRangeByRemoteConfigEvent`
-    * `timeRangeBySceneNameAndABGroup`
-
-##### Custom Parameters
-* `sceneName`
-  * Description: The name of the scene where the event was triggered.
-  * Type: `STRING`
-* `buttonName`
-  * Description: The name of the button that has been pressed.
-  * Type: `STRING`
-* `remoteConfigActiveEvent`
-  * Description: The active event as defined in and determined by Remote Config.
-  * Type: `STRING`
-* `timeRange`
-  * Description: A range of time spent in the scene where the event was triggered.
-  * Type: `STRING`
-* `buttonNameBySceneName`
-  * Description: Formatted string grouping button name with scene name. Formatted like "Button Name - Scene Name".
-  * Type: `STRING`
-* `buttonNameByRemoteConfigEvent`
-  * Description: Formatted string grouping button name with Remote Config active event. Formatted like "Button Name - Event Key".
-  * Type: `STRING`
-* `buttonNameBySceneNameAndRemoteConfigEvent`
-  * Description: Formatted string grouping button name with scene name and Remote Config active event. Formatted like "Button Name - Scene Name - Event Key".
-  * Type: `STRING`
-* `timeRangeBySceneName`
-  * Description: Formatted string grouping time range with the name of the scene where the time was spent. Formatted like "Time Range - Scene Name".
-  * Type: `STRING`
-* `timeRangeByRemoteConfigEvent`
-  * Description: Formatted string grouping time range with the active Remote Config Event at the time the event was sent. Formatted like "Time Range - Event Key".
-  * Type: `STRING`
-* `timeRangeBySceneNameAndRemoteConfigEvent`
-  * Description: Formatted string grouping time range with the scene name and the Remote Config event that was active at the time the analytics event was sent. Formatted like "Time Range - Scene Name - Event Key".
-  * Type: `STRING`
-  

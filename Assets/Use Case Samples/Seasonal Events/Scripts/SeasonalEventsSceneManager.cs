@@ -48,9 +48,6 @@ namespace UnityGamingServicesUseCases
                     
                     Debug.Log("Services Initialized.");
 
-                    // Analytics events must be sent after UnityServices.Initialize() is finished.
-                    AnalyticsManager.instance.SendSceneOpenedEvent();
-
                     if (!AuthenticationService.Instance.IsSignedIn)
                     {
                         Debug.Log("Signing in...");
@@ -287,8 +284,6 @@ namespace UnityGamingServicesUseCases
 
             public void OnPlayChallengeButtonPressed()
             {
-                AnalyticsManager.instance.SendActionButtonPressedEvent("PlayChallenge");
-
                 sceneView.ShowRewardPopup(RemoteConfigManager.instance.challengeRewards);
                 sceneView.SetInteractable(false);
             }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -49,8 +50,9 @@ namespace UnityGamingServicesUseCases
                     // called, and a struct for any arguments that need to be passed to the script. In this sample,
                     // we didn't need to pass any additional arguments, so we're passing an empty struct. Alternatively,
                     // you could pass an empty string.
-                    var updatedRewardBalances = await CloudCode.CallEndpointAsync<GrantEventRewardResult>
-                        ("SeasonalEvents_GrantEventReward", new GrantEventRewardRequest());
+                    var updatedRewardBalances = await CloudCodeService.Instance.CallEndpointAsync<GrantEventRewardResult>(
+                        "SeasonalEvents_GrantEventReward",
+                        new Dictionary<string, object>());
 
                     // Check that scene has not been unloaded while processing async wait to prevent throw.
                     if (this == null) return;
@@ -81,8 +83,9 @@ namespace UnityGamingServicesUseCases
             {
                 try
                 {
-                    return await CloudCode.CallEndpointAsync<long>("SeasonalEvents_GetServerTime", 
-                        new object());
+                    return await CloudCodeService.Instance.CallEndpointAsync<long>(
+                        "SeasonalEvents_GetServerTime", 
+                        new Dictionary<string, object>());
                 }
                 catch (CloudCodeException e)
                 {
@@ -124,14 +127,14 @@ namespace UnityGamingServicesUseCases
             {
                 try
                 {
-                    // trim the text that's in front of the valid JSON
-                    var trimmedExceptionMessage = Regex.Replace(
-                        e.Message, @"^[^\{]*", "", RegexOptions.IgnorePatternWhitespace);
+                    // extract the JSON part of the exception message
+                    var trimmedMessage = e.Message;
+                    trimmedMessage = trimmedMessage.Substring(trimmedMessage.IndexOf('{'));
+                    trimmedMessage = trimmedMessage.Substring(0, trimmedMessage.LastIndexOf('}') + 1);
 
                     // Convert the message string ultimately into the Cloud Code Custom Error object which has a
                     // standard structure for all errors.
-                    var parsedMessage = JsonUtility.FromJson<CloudCodeExceptionParsedMessage>(trimmedExceptionMessage);
-                    return JsonUtility.FromJson<CloudCodeCustomError>(parsedMessage.message);
+                    return JsonUtility.FromJson<CloudCodeCustomError>(trimmedMessage);
                 }
                 catch (Exception exception)
                 {
@@ -188,10 +191,6 @@ namespace UnityGamingServicesUseCases
                 }
             }
 
-            public struct GrantEventRewardRequest
-            {
-            }
-
             public struct GrantEventRewardResult
             {
                 public RewardDetail[] grantedRewards;
@@ -201,7 +200,7 @@ namespace UnityGamingServicesUseCases
 
                 public override string ToString()
                 {
-                    return $"Updated Balances:{string.Join(",", grantedRewards.Select(x => x.ToString()).ToArray())}, " +
+                    return $"Updated Balances:{string.Join(",", grantedRewards.Select(reward => reward.ToString()).ToArray())}, " +
                         $"Season:{eventKey}, Timestamp:{timestamp} (minutes:{timestampMinutes})";
                 }
             }

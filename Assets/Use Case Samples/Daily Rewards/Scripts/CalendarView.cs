@@ -13,7 +13,7 @@ namespace UnityGamingServicesUseCases
             {
                 calendarDays = GetComponentsInChildren<CalendarDayView>();
 
-                for (int dayOn = 0; dayOn < calendarDays.Length; dayOn++)
+                for (var dayOn = 0; dayOn < calendarDays.Length; dayOn++)
                 { 
                     calendarDays[dayOn].SetDayIndex(dayOn + 1);
                 }
@@ -23,7 +23,7 @@ namespace UnityGamingServicesUseCases
             {
                 var daysClaimed = eventManager.daysClaimed;
 
-                for (int dayOn = 0; dayOn < calendarDays.Length; dayOn++)
+                for (var dayOn = 0; dayOn < calendarDays.Length; dayOn++)
                 {
                     var dayView = calendarDays[dayOn];
 
@@ -33,7 +33,7 @@ namespace UnityGamingServicesUseCases
 
             public void SetUnclaimable()
             {
-                for (int dayOn = 0; dayOn < calendarDays.Length; dayOn++)
+                for (var dayOn = 0; dayOn < calendarDays.Length; dayOn++)
                 {
                     calendarDays[dayOn].SetUnclaimable();
                 }

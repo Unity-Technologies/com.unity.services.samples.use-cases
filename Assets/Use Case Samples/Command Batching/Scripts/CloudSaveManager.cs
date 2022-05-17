@@ -33,7 +33,7 @@ namespace UnityGamingServicesUseCases
             {
                 try
                 {
-                    m_CachedCloudData = await SaveData.LoadAllAsync();
+                    m_CachedCloudData = await CloudSaveService.Instance.Data.LoadAllAsync();
                 }
                 catch (Exception e)
                 {

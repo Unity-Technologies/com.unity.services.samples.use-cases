@@ -162,7 +162,7 @@ namespace UnityGamingServicesUseCases
                     if (claimResult.rewardsGranted != null)
                     {
                         Debug.Log("CloudCode script rewarded: " +
-                            $"{string.Join(",", claimResult.rewardsGranted.Select(x => x.ToString()).ToArray())}.");
+                            $"{string.Join(",", claimResult.rewardsGranted.Select(rewardGranted => rewardGranted.ToString()).ToArray())}.");
                     }
 
                     Debug.Log($"Claim Result: {claimResult}");
@@ -248,7 +248,7 @@ namespace UnityGamingServicesUseCases
                     return $"success:{success} days:{daysClaimed}/{totalDays} started:{isStarted} " +
                         $"ended:{isEnded} seconds:{secondsTillClaimable:0.#}/{secondsTillNextDay:0.#} " +
                         $"dailyRewardsCount:{dailyRewards.Count} " +
-                        $"bonusRewards:{string.Join(",", bonusReward.Select(x => x.ToString()).ToArray())}";
+                        $"bonusRewards:{string.Join(",", bonusReward.Select(reward => reward.ToString()).ToArray())}";
                 }
             }
 
@@ -276,14 +276,14 @@ namespace UnityGamingServicesUseCases
                     var outputString = $"success:{success} days:{daysClaimed}/{totalDays} started:{isStarted} " +
                         $"ended:{isEnded} seconds:{secondsTillClaimable:0.#}/{secondsTillNextDay:0.#} " +
                         $"dailyRewardsCount:{dailyRewards.Count} " +
-                        $"bonusRewards:{string.Join(",", bonusReward.Select(x => x.ToString()).ToArray())}";
+                        $"bonusRewards:{string.Join(",", bonusReward.Select(reward => reward.ToString()).ToArray())}";
 
                     if (rewardsGranted == null)
                     {
                         return outputString;
                     }
 
-                    return outputString + $" rewardsGranted:{string.Join(",", rewardsGranted.Select(x => x.ToString()).ToArray())}";
+                    return outputString + $" rewardsGranted:{string.Join(",", rewardsGranted.Select(reward => reward.ToString()).ToArray())}";
                 }
             }
 

@@ -11,6 +11,8 @@ namespace UnityGamingServicesUseCases
         {
             public static MediationManager instance { get; private set; }
 
+            public RewardedAdsSceneManager sceneManager;
+
             public bool isAdReady { get; private set; }
 
             const int k_MaxAdLoadAttempts = 5;
@@ -129,7 +131,7 @@ namespace UnityGamingServicesUseCases
             {
                 try
                 {
-                    await CloudCodeManager.instance.CallGrantLevelEndRewardsEndpoint(m_BonusRewardMultiplier);
+                    await CloudCodeManager.instance.CallGrantLevelEndRewardsEndpoint(false, m_BonusRewardMultiplier);
                 }
                 catch (Exception e)
                 {
@@ -167,6 +169,7 @@ namespace UnityGamingServicesUseCases
 
             void OnAdClosed(object sender, EventArgs e)
             {
+                sceneManager.m_IsAdClosed = true;
                 Debug.Log("Ad is closed.");
             }
 

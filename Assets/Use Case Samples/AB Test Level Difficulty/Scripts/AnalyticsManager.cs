@@ -40,7 +40,7 @@ namespace UnityGamingServicesUseCases
                 {
                     { "sceneName", k_SceneName }
                 };
-                Events.CustomData("SceneOpened", sceneOpenedParameters);
+                AnalyticsService.Instance.CustomData("SceneOpened", sceneOpenedParameters);
                 Debug.Log("Sending Scene opened event.");
             }
 
@@ -62,7 +62,7 @@ namespace UnityGamingServicesUseCases
                     { "buttonNameBySceneNameAndABGroup", $"{buttonName} - {k_SceneName} - {RemoteConfigManager.instance.abGroupName} ({RemoteConfigManager.instance.abTestID})" }
                 };
                 
-                Events.CustomData("ActionButtonPressed", actionButtonPressedParameters);
+                AnalyticsService.Instance.CustomData("ActionButtonPressed", actionButtonPressedParameters);
             }
 
             // The session length is sent when the Back button in the scene is clicked.
@@ -80,7 +80,7 @@ namespace UnityGamingServicesUseCases
                     { "timeRangeBySceneNameAndABGroup", $"{timeRange} - {k_SceneName} - {RemoteConfigManager.instance.abGroupName} ({RemoteConfigManager.instance.abTestID})" }
                 };
                 
-                Events.CustomData("SceneSessionLength", sceneSessionLengthParameters);
+                AnalyticsService.Instance.CustomData("SceneSessionLength", sceneSessionLengthParameters);
                 Debug.Log("Sending SceneSessionLength event: " + timeRange);
             }
 

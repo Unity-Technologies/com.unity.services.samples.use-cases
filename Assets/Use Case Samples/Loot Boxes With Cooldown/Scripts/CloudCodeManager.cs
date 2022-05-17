@@ -56,8 +56,9 @@ namespace UnityGamingServicesUseCases
                 {
                     Debug.Log("Calling Cloud Code 'LootBoxesWithCooldown_GetStatus' to determine cooldown status.");
 
-                    return await CloudCode.CallEndpointAsync<GrantCooldownResult>(
-                        "LootBoxesWithCooldown_GetStatus", new object());
+                    return await CloudCodeService.Instance.CallEndpointAsync<GrantCooldownResult>(
+                        "LootBoxesWithCooldown_GetStatus",
+                        new Dictionary<string, object>());
                 }
                 catch (CloudCodeException e)
                 {
@@ -76,8 +77,9 @@ namespace UnityGamingServicesUseCases
                 {
                     Debug.Log("Calling Cloud Code 'LootBoxesWithCooldown_Claim' to claim the loot box.");
 
-                    return await CloudCode.CallEndpointAsync<GrantResult>(
-                        "LootBoxesWithCooldown_Claim", new object());
+                    return await CloudCodeService.Instance.CallEndpointAsync<GrantResult>(
+                        "LootBoxesWithCooldown_Claim",
+                        new Dictionary<string, object>());
                 }
                 catch (CloudCodeException e)
                 {
@@ -126,14 +128,14 @@ namespace UnityGamingServicesUseCases
             {
                 try
                 {
-                    // trim the text that's in front of the valid JSON
-                    var trimmedExceptionMessage = Regex.Replace(
-                        e.Message, @"^[^\{]*", "", RegexOptions.IgnorePatternWhitespace);
+                    // extract the JSON part of the exception message
+                    var trimmedMessage = e.Message;
+                    trimmedMessage = trimmedMessage.Substring(trimmedMessage.IndexOf('{'));
+                    trimmedMessage = trimmedMessage.Substring(0, trimmedMessage.LastIndexOf('}') + 1);
 
                     // Convert the message string ultimately into the Cloud Code Custom Error object which has a
                     // standard structure for all errors.
-                    var parsedMessage = JsonUtility.FromJson<CloudCodeExceptionParsedMessage>(trimmedExceptionMessage);
-                    return JsonUtility.FromJson<CloudCodeCustomError>(parsedMessage.message);
+                    return JsonUtility.FromJson<CloudCodeCustomError>(trimmedMessage);
                 }
                 catch (Exception exception)
                 {
@@ -196,7 +198,7 @@ namespace UnityGamingServicesUseCases
 
                     int currencyCount = currencyId.Count;
                     int inventoryCount = inventoryItemId.Count;
-                    for (int i = 0; i < currencyCount; i++)
+                    for (var i = 0; i < currencyCount; i++)
                     {
                         if (i == 0)
                         {
@@ -208,7 +210,7 @@ namespace UnityGamingServicesUseCases
                         }
                     }
 
-                    for (int i = 0; i < inventoryCount; i++)
+                    for (var i = 0; i < inventoryCount; i++)
                     {
                         if (i < inventoryCount - 1)
                         {

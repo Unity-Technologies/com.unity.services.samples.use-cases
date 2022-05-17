@@ -35,7 +35,7 @@ namespace UnityGamingServicesUseCases
             };
         }
 
-        void SetIcon(Sprite sprite)
+        public void SetIcon(Sprite sprite)
         {
             if (icon != null)
             {

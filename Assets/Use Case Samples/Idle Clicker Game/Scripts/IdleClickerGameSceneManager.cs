@@ -148,7 +148,7 @@ namespace UnityGamingServicesUseCases
                     sceneView.SetInteractable(false);
                     SimulatedCurrencyManager.instance.StopRefreshingCurrencyBalances();
 
-                    await SaveData.ForceDeleteAsync("IDLE_CLICKER_GAME_STATE");
+                    await CloudSaveService.Instance.Data.ForceDeleteAsync("IDLE_CLICKER_GAME_STATE");
                     if (this == null) return;
 
                     await GetUpdatedState();

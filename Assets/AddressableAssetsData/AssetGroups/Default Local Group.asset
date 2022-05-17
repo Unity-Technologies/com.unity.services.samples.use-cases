@@ -45,6 +45,10 @@ MonoBehaviour:
     m_Address: Sprites/Currency/Water
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: d6d3101fca83247abb58186e46256e99
+    m_Address: Sprites/Badges/Banner
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: d098d9082bf4e4f6b94dbf2997c0917c, type: 2}
   m_SchemaSet:

@@ -3213,6 +3213,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sceneView: {fileID: 2014552150}
+  sceneManager: {fileID: 1179866648}
 --- !u!114 &1179866651
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3225,6 +3226,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d34f4fd830f47a7aaa70285a2552853, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sceneManager: {fileID: 1179866648}
 --- !u!114 &1179866652
 MonoBehaviour:
   m_ObjectHideFlags: 0

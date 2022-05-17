@@ -78,7 +78,7 @@ namespace UnityGamingServicesUseCases
             {
                 long currencyProduced = 0;
 
-                for (int i = 0; i < m_Factories.Count; i++)
+                for (var i = 0; i < m_Factories.Count; i++)
                 {
                     var factory = m_Factories[i];
 

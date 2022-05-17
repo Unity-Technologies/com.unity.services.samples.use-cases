@@ -111,7 +111,7 @@ namespace UnityGamingServicesUseCases
                     // Delete the Starter-Pack-purchased key ("STARTER_PACK_STATUS") from Cloud Save so
                     // Starter Pack can be purchased again. This is used for testing to permit repurchasing
                     // this one-time-only product.
-                    await SaveData.ForceDeleteAsync(k_StarterPackCloudSaveKey);
+                    await CloudSaveService.Instance.Data.ForceDeleteAsync(k_StarterPackCloudSaveKey);
                     if (this == null) return;
 
                     await RefreshStarterPackStatus();
@@ -136,7 +136,7 @@ namespace UnityGamingServicesUseCases
                 try
                 {
                     // Read the "STARTER_PACK_STATUS" key from Cloud Save
-                    var starterPackStatusCloudSaveResult = await SaveData.LoadAsync(
+                    var starterPackStatusCloudSaveResult = await CloudSaveService.Instance.Data.LoadAsync(
                         new HashSet<string> { k_StarterPackCloudSaveKey });
 
                     // If key is found, mark it as purchased if it it contains:  "claimed":true

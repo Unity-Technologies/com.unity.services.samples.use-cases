@@ -632,7 +632,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8655527328128398354, guid: 024b420a64ec64e87a2c32ab21d9685a, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0
+      value: 125
       objectReference: {fileID: 0}
     - target: {fileID: 8655527328128398354, guid: 024b420a64ec64e87a2c32ab21d9685a, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -794,18 +794,6 @@ PrefabInstance:
     - target: {fileID: 9006117154508843494, guid: fa1d64be50bfd4b319ccd8c5176f81e0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9006117154508843495, guid: fa1d64be50bfd4b319ccd8c5176f81e0, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1685906474}
-    - target: {fileID: 9006117154508843495, guid: fa1d64be50bfd4b319ccd8c5176f81e0, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SendSessionLengthEvent
-      objectReference: {fileID: 0}
-    - target: {fileID: 9006117154508843495, guid: fa1d64be50bfd4b319ccd8c5176f81e0, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: GameOperationsSamples.SeasonalEvents.AnalyticsManager, Assembly-CSharp
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fa1d64be50bfd4b319ccd8c5176f81e0, type: 3}
@@ -2398,7 +2386,6 @@ GameObject:
   - component: {fileID: 1685906472}
   - component: {fileID: 1685906473}
   - component: {fileID: 1685906470}
-  - component: {fileID: 1685906474}
   - component: {fileID: 1685906475}
   - component: {fileID: 1685906476}
   m_Layer: 0
@@ -2471,18 +2458,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2d4fae8e3607435e80a6d5138bd5605d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1685906474
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1685906468}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddf24f1f63b94c3ab913ce17efc2ce6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1685906475

@@ -41,5 +41,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Use Case Samples/Daily Rewards/DailyRewardsSample.unity
     guid: 6f18edb8d6a94c046be10e296ef3a19f
+  - enabled: 1
+    path: Assets/Use Case Samples/Virtual Shop/VirtualShopSample.unity
+    guid: c9e7248306bed8e439bdc5ef66ca4940
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: c6ca533da370b4f2794f0c63c45e0e6f, type: 2}

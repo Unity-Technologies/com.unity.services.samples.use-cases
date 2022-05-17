@@ -1,0 +1,674 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfbabd22c62c640a6ba459d46825055b, type: 3}
+  m_Name: README
+  m_EditorClassIdentifier: 
+  header:
+    title: Virtual Shop README
+    icon: {fileID: 2800000, guid: 83f0684dab5534e2492f651aaaf4a151, type: 3}
+  sections:
+  - subHeader1: Intro
+    subHeader2: 
+    subHeader3: 
+    body: The Virtual Shop is a key feature in most free-to-play games. They allow
+      players to purchase items and exchange resources within the game environment
+      to facilitate the in-game economy. When properly implemented as part of your
+      core game loop, they can drive engagement and provide opportunities for players
+      to express their unique playstyles.
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: Overview
+    subHeader2: 
+    subHeader3: 
+    body: 'To see this use case in action:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: In the Unity Editor Project window, select Assets > Use Case Samples
+        > Virtual Shop, and then double-click VirtualShopSample.unity to open the
+        sample scene.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: Enter Play mode to interact with the use case.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: At startup, this scene reads the Remote Config for the Virtual Shop use
+      case sample as well as all required Virtual Purchases. It sets up sprites for
+      all Currency and Inventory Items for use in the Virtual Shop display, initializes
+      the Currency HUD with correct values and presents the first Category's Virtual
+      Purchases to the player for purchase.
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: Initialization
+    subHeader3: 
+    body: 'When the scene loads, the VirtualShopSceneManager.cs script performs the
+      following initialization tasks:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: Initializes Unity Gaming Services.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: Sends a SceneOpened custom event to the Analytics service. This, along
+        with the SceneSessionLength custom event (sent when you click the back button),
+        tracks the player's session length in the scene as an example of how you
+        can implement analytics to evaluate the results of your test.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: "Signs in the player anonymously using the Authentication service. If
+        you\u2019ve previously initialized any of the other sample scenes, Authentication
+        will use your cached Player ID instead of creating a new one."
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: Retrieves and updates the player's currency balances from the Economy
+        service.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: 'Queries the Remote Config service to fetch the Virtual Shop configuration
+        data. This includes:'
+      bodyFormat: 0
+      bulletList:
+      - body: Currency and inventory item sprites from the Addressables service so
+          they can be displayed in the shop UI.
+        bodyFormat: 0
+        bulletList: []
+      - body: Virtual Purchase Transactions for use in the store. The Remote Config
+          data determines which categories to put each transaction in, and which
+          icons to use.
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: The client updates the shop UI based on the Remote Config data.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: Functionality
+    subHeader3: Inventory button
+    body: The inventory button in the top-right corner opens a pop-up showing all
+      currently-owned inventory items. Use it to confirm that purchased items were
+      added to your inventory appropriately. Note that inventory items appear in
+      random order, so new purchases may appear in the middle of the list.
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: Gain currency debug button
+    body: The +30 Gems button in the bottom-right corner adds currency for testing
+      purposes.
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: Virtual Purchases
+    body: The shop interface shows the items for sale, along with their respective
+      costs. Click any item to attempt a Virtual Purchase through the Economy service.
+      A pop-up appears to confirm if the purchase succeeded or failed.
+    bodyFormat: 0
+    boxCallout: Most games will disable buttons for purchases the user cannot afford.
+      However, this sample allows you to attempt all purchases regardless, to facilitate
+      testing how the Economy service verifies Virtual Purchases.
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: Category buttons
+    body: You can change purchase categories by clicking the tabs to the left of
+      the purchase grid. Choose between Currencies, Items, and IAP to display the
+      corresponding list of purchases as specified by the Remote Config JSON.
+    bodyFormat: 0
+    boxCallout: The IAP category is currently unavailable for this sample.
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: Back button
+    body: Pressing the back button in the top-left corner returns you to the "Start
+      Here" scene and triggers a SceneSessionLength custom Analytics event, which
+      captures the amount of time spent in this scene.
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: Setup
+    subHeader2: Requirements
+    subHeader3: 
+    body: 'To replicate this use case, you need the following Unity packages in your
+      project:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList:
+    - linkText: Addressables
+      url: https://docs.unity3d.com/Packages/com.unity.addressables@latest
+    - linkText: Analytics
+      url: https://docs.unity.com/analytics/UnityAnalytics.html
+    - linkText: Authentication
+      url: https://docs.unity.com/authentication/Content/InstallAndConfigureSDK.htm
+    - linkText: Economy
+      url: https://docs.unity.com/economy/Content/implementation.htm?tocpath=Implementation%7C_____0
+    - linkText: Remote Config
+      url: https://docs.unity3d.com/Packages/com.unity.remote-config@2.0/manual/ConfiguringYourProject.html
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: To use these services in your game, activate each service for your Organization
+      and project in the Unity Dashboard.
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: Dashboard setup
+    subHeader3: 
+    body: 'To replicate this sample scene''s setup on your own dashboard, you need
+      to:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: Create custom events for the Analytics service.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: Create Currencies, Inventory Items, and Virtual Purchases for the Economy
+        service.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: Configure values in the Remote Config service.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: The Analytics custom events configuration contains a long list of potential
+      parameters that are sent with some of the events. This extended list allows
+      for a more flexible analysis of different parameter groupings in the Data Explorer
+      on the Analytics dashboard. Alternatively, you could send only the ungrouped
+      parameters (for example, buttonName or sceneName), and perform any kind of
+      grouped analysis by using the Data Export feature within the Data Explorer
+      on the dashboard.
+    bodyFormat: 0
+    boxCallout: 'Important: This sample demonstrates the code that is needed to trigger
+      Analytics events. However, additional code might be necessary to meet legal
+      requirements such as GDPR, CCPA, and PIPL. For more information, see the documentation
+      on managing data privacy.'
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'Configure and enable the following custom Analytics events:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: 'Event name: SceneOpened'
+      bodyFormat: 0
+      bulletList:
+      - body: 'Description: Sent each time you load the scene.'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Custom parameters:'
+        bodyFormat: 0
+        bulletList:
+        - body: sceneName
+          bodyFormat: 0
+          bulletList: []
+      linkList: []
+    - body: 'Event name: SceneSessionLength'
+      bodyFormat: 0
+      bulletList:
+      - body: 'Description: Sent to indicate the time spent in the scene (measured
+          as the length of time between when AnalyticsManager.Start() triggers and
+          the player presses the back button in the scene).'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Custom parameters:'
+        bodyFormat: 0
+        bulletList:
+        - body: remoteConfigActiveEvent
+          bodyFormat: 0
+          bulletList: []
+        - body: sceneName
+          bodyFormat: 0
+          bulletList: []
+        - body: timeRange
+          bodyFormat: 0
+          bulletList: []
+        - body: timeRangeByRemoteConfigActiveEvent
+          bodyFormat: 0
+          bulletList: []
+        - body: timeRangeBySceneName
+          bodyFormat: 0
+          bulletList: []
+        - body: timeRangeBySceneNameAndRemoteConfigActiveEvent
+          bodyFormat: 0
+          bulletList: []
+      linkList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'Configure the following custom parameters to support your custom events:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: 'Parameter name: remoteConfigEvent'
+      bodyFormat: 0
+      bulletList:
+      - body: 'Type: string'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Description: The active event as defined in and determined by Remote
+          Config.'
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: 'Parameter name: sceneName'
+      bodyFormat: 0
+      bulletList:
+      - body: 'Type: string'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Description: The name of the scene where the event is triggered.'
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: 'Parameter name: timeRange'
+      bodyFormat: 0
+      bulletList:
+      - body: 'Type: string'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Description: The amount of time spent in the scene when the event
+          is triggered.'
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: 'Parameter name: timeRangeByRemoteConfigEvent'
+      bodyFormat: 0
+      bulletList:
+      - body: 'Type: string'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Description: Groups the time spent in the scene when the event is
+          triggered with the active Remote Config event. The string format is "Time
+          range - Event key".'
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: 'Parameter name: timeRangeBySceneName'
+      bodyFormat: 0
+      bulletList:
+      - body: 'Type: string'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Description: Groups the time spent in the scene when the event is
+          triggered with the scene''s name. The string format is "Time range - Scene
+          name".'
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: 'Parameter name: timeRangeBySceneNameAndRemoteConfigEvent'
+      bodyFormat: 0
+      bulletList:
+      - body: 'Type: string'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Description: Groups the time spent in the scene when the event is
+          triggered with the scene''s name and the active Remote Config event. The
+          string format is "Time range - Scene name - Event key".'
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: Economy
+    body: 'Configure the following resource in the LiveOps dashboard:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: Coin
+      bodyFormat: 1
+      bulletList:
+      - body: 'ID: "COIN"'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Resource type: Currency'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Description: A currency you can spend and purchase in the virtual
+          shop.'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Custom data: {"spriteAddress": "Sprites/Currency/Coin"}'
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: Gem
+      bodyFormat: 1
+      bulletList:
+      - body: 'ID: "GEM"'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Resource type: Currency'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Description: A currency you can spend in the virtual shop.'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Custom data: {"spriteAddress": "Sprites/Currency/Gem"}'
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: Pearl
+      bodyFormat: 1
+      bulletList:
+      - body: 'ID: "PEARL"'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Resource type: Currency'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Description: A currency you can purchase in the virtual shop.'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Custom data: {"spriteAddress": "Sprites/Currency/Pearl"}'
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: Star
+      bodyFormat: 1
+      bulletList:
+      - body: 'ID: "STAR"'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Resource type: Currency'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Description: A currency you can purchase in the virtual shop.'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Custom data: {"spriteAddress": "Sprites/Currency/Star"}'
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: Sword
+      bodyFormat: 1
+      bulletList:
+      - body: 'ID: "SWORD"'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Resource type: Inventory Item'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Description: An item you can purchase in the virtual shop.'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Custom data: {"spriteAddress": "Sprites/Currency/Sword"}'
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: Shield
+      bodyFormat: 1
+      bulletList:
+      - body: 'ID: "SHIELD"'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Resource type: Inventory Item'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Description: An item you can purchase in the virtual shop.'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Custom data: {"spriteAddress": "Sprites/Currency/Shield"}'
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'This sample uses Addressable Assets to implement the sprite icons for
+      all Economy resources. As the developer, you can add the Addressables address
+      of the icon for each currency directly in the Economy dashboard, and then retrieve
+      it at runtime without needing to change your code. This is helpful if for example,
+      you want to update currency icons by changing the address in your dashboard
+      instead of updating your app. To do this for each resource:'
+    bodyFormat: 2
+    boxCallout: 
+    bulletList:
+    - body: Select the currency you want to edit.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: Under Custom data, click the plus (+) icon to add a custom JSON script.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: Add the spriteAddress value, along with the corresponding Addressable
+        address string listed in the table.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: "When the client needs to initialize sprites (for example, to display the
+      costs and rewards for each virtual purchase for sale in the shop), the resource\u2019s
+      ID acts as a dictionary key to quickly find the associated spirit. The client
+      calls the AddressablesManager.cs script\u2019s PreloadAllEconomySprites() method
+      at startup to initialize the dictionary with all icon sprites, and the preloadedSpritesByEconomyId
+      dictionary is used to look up Economy IDs to find the associated sprite to
+      use in the shop display."
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'In addition, configure the following virtual purchases for the virtual
+      shop:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: 1 Sword for Coins
+      bodyFormat: 1
+      bulletList:
+      - body: 'ID: "1_SWORD_FOR_COINS"'
+        bodyFormat: 0
+        bulletList: []
+      - body: This purchase buys 1 Sword.
+        bodyFormat: 0
+        bulletList: []
+      - body: This purchase costs 15 Coins.
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: 2 Sword for Coins
+      bodyFormat: 1
+      bulletList:
+      - body: 'ID: "2_SWORD_FOR_COINS"'
+        bodyFormat: 0
+        bulletList: []
+      - body: This purchase buys 2 Swords.
+        bodyFormat: 0
+        bulletList: []
+      - body: This purchase costs 25 Coins.
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: 3 Sword for Coins
+      bodyFormat: 1
+      bulletList:
+      - body: 'ID: "3_SWORD_FOR_COINS"'
+        bodyFormat: 0
+        bulletList: []
+      - body: This purchase buys 3 Swords.
+        bodyFormat: 0
+        bulletList: []
+      - body: This purchase costs 30 Coins.
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: 1 Shield for Coins
+      bodyFormat: 1
+      bulletList:
+      - body: 'ID: "1_SHIELD_FOR_COINS"'
+        bodyFormat: 0
+        bulletList: []
+      - body: This purchase buys 1 Shield.
+        bodyFormat: 0
+        bulletList: []
+      - body: This purchase costs 10 Coins.
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: 2 Shield for Coins
+      bodyFormat: 1
+      bulletList:
+      - body: 'ID: "2_SHIELD_FOR_COINS"'
+        bodyFormat: 0
+        bulletList: []
+      - body: This purchase buys 2 Shields.
+        bodyFormat: 0
+        bulletList: []
+      - body: This purchase costs 15 Coins.
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: 3 Shield for Coins
+      bodyFormat: 1
+      bulletList:
+      - body: 'ID: "3_SHIELD_FOR_COINS"'
+        bodyFormat: 0
+        bulletList: []
+      - body: This purchase buys 3 Shields.
+        bodyFormat: 0
+        bulletList: []
+      - body: This purchase costs 20 Coins.
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: 100 Coin for Gems
+      bodyFormat: 1
+      bulletList:
+      - body: 'ID: "100_COIN_FOR_GEMS"'
+        bodyFormat: 0
+        bulletList: []
+      - body: This purchase buys 100 Coins.
+        bodyFormat: 0
+        bulletList: []
+      - body: This purchase costs 7 Gems.
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: 250 Coin for Gems
+      bodyFormat: 1
+      bulletList:
+      - body: 'ID: "250_COIN_FOR_GEMS"'
+        bodyFormat: 0
+        bulletList: []
+      - body: This purchase buys 250 Coins.
+        bodyFormat: 0
+        bulletList: []
+      - body: This purchase costs 15 Gems.
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: 1000 Coin for Gems
+      bodyFormat: 1
+      bulletList:
+      - body: 'ID: "1000_COIN_FOR_GEMS"'
+        bodyFormat: 0
+        bulletList: []
+      - body: This purchase buys 1000 Coins.
+        bodyFormat: 0
+        bulletList: []
+      - body: This purchase costs 25 Gems.
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: 1 Star for Coins
+      bodyFormat: 1
+      bulletList:
+      - body: 'ID: "1_STAR_FOR_COINS"'
+        bodyFormat: 0
+        bulletList: []
+      - body: This purchase buys 1 Star.
+        bodyFormat: 0
+        bulletList: []
+      - body: This purchase costs 25 Coins.
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: 3 Pearl for Coins
+      bodyFormat: 1
+      bulletList:
+      - body: 'ID: "3_PEARL_FOR_COINS"'
+        bodyFormat: 0
+        bulletList: []
+      - body: This purchase buys 3 Pearls.
+        bodyFormat: 0
+        bulletList: []
+      - body: This purchase costs 50 Coins.
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: Remote Config
+    body: 'Set up the following config values in the LiveOps dashboard:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: 'Key: "VIRTUAL_SHOP_CONFIG"'
+      bodyFormat: 0
+      bulletList:
+      - body: 'Type: JSON'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Description: Contains information about Virtual Purchases and where
+          they should appear in the virtual shop.'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'file: "Assets/Use Case Samples/Virtual Shop/Remote Config/VIRTUAL_SHOP_CONFIG.md"'
+        bodyFormat: 2
+        bulletList: []
+      linkList: []
+    linkList: []

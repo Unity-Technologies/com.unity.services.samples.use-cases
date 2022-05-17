@@ -1,5 +1,28 @@
 # Changelog
 
+## [1.4.0] - 2022-05-17
+
+### Changed
+
+* Updated Unity Gaming Services packages to the latest stable group of packages released as of 2022-05-11.
+  * Some UGS SDK classes were deprecated and moved. We've updated the sample code to use the new classes.
+  * The Cloud Code 422 error message format has changed.
+    We've updated our error handling for all sample code to account for the updated message format.
+  * Cloud Code method signatures have changed from accepting a single parameter object to accepting a Dictionary of parameters instead.
+    We've updated the sample code to use the new method signatures.
+* HUD updates in the Rewarded Ad With Unity Mediation use case have been delayed until the rewarded ad is completely watched,
+  this way the HUD shows an update to the new balance only once, after all possible reward distributions are complete.
+* Added Editor popup dialog when, based on minimum client version number, the UGS samples project is too old to run.
+* Fixed issue with Idle Clicker Use Case Sample where placing wells at invalid locations caused additional water to be dispensed for subsequent well placements.
+
+### Removed
+
+* Analytics has been removed from the Seasonal Events use case, see the A/B Test use case for an example of working with Unity Analytics.
+
+### Added
+
+* Virtual Shop use case which demonstrates a key feature in many games: allowing players to use in-game currency to purchase items and resources to facilitate a server-authoritative in-game economy with multiple store pages and server-managed badges.
+
 ## [1.3.1] - 2022-04-13
 
 ### Changed

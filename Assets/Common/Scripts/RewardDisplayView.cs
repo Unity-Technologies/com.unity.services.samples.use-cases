@@ -16,7 +16,11 @@ namespace UnityGamingServicesUseCases
                 var rewardItemView = InstantiateRewardItem();
                 rewardItemView.SetQuantity(reward.quantity);
 
-                if (!string.IsNullOrEmpty(reward.spriteAddress))
+                if (reward.sprite != null)
+                {
+                    rewardItemView.SetIcon(reward.sprite);
+                }
+                else if (!string.IsNullOrEmpty(reward.spriteAddress))
                 {
                     rewardItemView.LoadIconFromAddress(reward.spriteAddress);
                 }

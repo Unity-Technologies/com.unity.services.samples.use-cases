@@ -35,6 +35,7 @@ _Note: This project is tied to a Unity Services Account that allows read-only te
 - [Battle Pass](Assets/Use%20Case%20Samples/Battle%20Pass/README.md) - A seasonal reward tier system with a free track and a premium track.
 - [Rewarded Ads With Unity Mediation](Assets/Use%20Case%20Samples/Rewarded%20Ads%20With%20Unity%20Mediation/README.md) - Offer players opportunity to boost level end rewards by interacting with a reward booster meter and watching a rewarded ad.
 - [Daily Rewards](Assets/Use%20Case%20Samples/Daily%20Rewards/README.md) - A prevalent engagement feature that can boost retention by showing players an escalating series of rewards incentivizes them to keep logging in to claim better and better prizes.
+- [Virtual Shop](Assets/Use%20Case%20Samples/Virtual%20Shop/README.md) - Demonstrates a key feature in many games: allowing players to use in-game currency to purchase items and resources to facilitate a server-authoritative in-game economy with multiple store pages and server-managed badges.
 
 _Tested with Unity 2020.3 for PC and Mac._
 

@@ -120,11 +120,19 @@ MonoBehaviour:
         a rewarded ad.
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: Daily Rewards - A prevalent engagement feature that can boost retention
         by showing players an escalating series of rewards incentivizes them to keep
         logging in to claim better and better prizes.
       bodyFormat: 0
       bulletList: []
+      linkList: []
+    - body: 'Virtual Shop - Demonstrates a key feature in many games: allowing players
+        to use in-game currency to purchase items and resources to facilitate a server-authoritative
+        in-game economy.'
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: 

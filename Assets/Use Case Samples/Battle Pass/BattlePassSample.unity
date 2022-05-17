@@ -717,18 +717,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 9006117154508843495, guid: fa1d64be50bfd4b319ccd8c5176f81e0, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 9006117154508843495, guid: fa1d64be50bfd4b319ccd8c5176f81e0, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: SendSessionLengthEvent
-      objectReference: {fileID: 0}
-    - target: {fileID: 9006117154508843495, guid: fa1d64be50bfd4b319ccd8c5176f81e0, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: GameOperationsSamples.SeasonalEvents.AnalyticsManager, Assembly-CSharp
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fa1d64be50bfd4b319ccd8c5176f81e0, type: 3}
 --- !u!224 &271277405 stripped

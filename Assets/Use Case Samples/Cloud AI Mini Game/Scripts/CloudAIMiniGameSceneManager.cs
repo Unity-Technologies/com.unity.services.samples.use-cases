@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Unity.Services.Authentication;
-using Unity.Services.CloudCode;
 using Unity.Services.CloudSave;
 using Unity.Services.Core;
 using UnityEngine;
@@ -151,7 +149,7 @@ namespace UnityGamingServicesUseCases
 
                     sceneView.SetInteractable(false);
 
-                    await SaveData.ForceDeleteAsync("CLOUD_AI_GAME_STATE");
+                    await CloudSaveService.Instance.Data.ForceDeleteAsync("CLOUD_AI_GAME_STATE");
                     if (this == null) return;
 
                     m_UpdatedState = await CloudCodeManager.instance.CallGetStateEndpoint();

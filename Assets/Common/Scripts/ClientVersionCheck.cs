@@ -11,6 +11,8 @@ namespace UnityGamingServicesUseCases
     {
         static bool s_VersionWasChecked;
 
+        const string k_NewerMinimumVersionTitle = "Newer Version Required";
+
         const string k_NewerMinimumVersionMessage =
             "This working copy of the Unity Gaming Services Use Cases project is older than the " +
             "minimum version required by the backend. Please download a new version from " +
@@ -60,6 +62,8 @@ namespace UnityGamingServicesUseCases
 
 #if UNITY_EDITOR
                 UnityEditor.EditorApplication.isPlaying = false;
+                UnityEditor.EditorUtility.DisplayDialog(k_NewerMinimumVersionTitle,
+                    k_NewerMinimumVersionMessage, "Okay");
 #else
                 Application.Quit();
 #endif

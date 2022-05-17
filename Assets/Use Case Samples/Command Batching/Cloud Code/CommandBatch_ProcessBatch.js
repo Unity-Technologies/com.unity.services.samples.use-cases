@@ -25,29 +25,12 @@ module.exports = async ({ params, context, logger }) => {
         const cloudSave = new DataApi({ accessToken });
         const remoteConfig = new SettingsApi({ accessToken });
 
-        const commands = parseCommandsFromJson(params.batch);
-        validateCommands(commands);
-        await processRewards(remoteConfig, economyCurrency, cloudSave, projectId, environmentId, playerId, commands);
+        validateCommands(params.commands);
+        await processRewards(remoteConfig, economyCurrency, cloudSave, projectId, environmentId, playerId, params.commands);
     } catch (error) {
         transformAndThrowCaughtError(error);
     }
 };
-
-function parseCommandsFromJson(batch) {
-    let commandsList = [];
-
-    if (batch !== null) {
-        if (batch.hasOwnProperty("commands")) {
-            commandsList = batch["commands"];
-        } else {
-            throw new InvalidArgumentError('Batch misconfigured: Missing commands list.');
-        }
-    } else {
-        throw new InvalidArgumentError('Batch not provided.');
-    }
-
-    return commandsList;
-}
 
 function validateCommands(commands) {
     validateBatchHasCorrectNumberOfCommands(commands);

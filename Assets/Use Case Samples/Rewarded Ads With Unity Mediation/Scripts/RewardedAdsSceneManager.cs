@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Unity.Services.Authentication;
@@ -23,6 +24,8 @@ namespace UnityGamingServicesUseCases
                 Right
             }
 
+            internal bool m_IsAdClosed;
+
             // In this sample, for simplicity, the rewards, multipliers, and frequency of rewarded ad booster
             // are hardcoded. Alternatively, you could use Remote Config to dynamically define these,
             // this would allow a single source of truth for the values used in both cloud and client code.
@@ -33,6 +36,8 @@ namespace UnityGamingServicesUseCases
 
             int m_LevelEndCount;
             int m_RewardedAdBoosterActiveMultiplier;
+            bool m_EconomyHudUpdatedWhileWaiting;
+            bool m_IsWaitingForRewardDistribution;
 
             Dictionary<RewardedAdBoosterWedge, int> m_RewardedAdBoosterWedgeMultipliers = 
                 new Dictionary<RewardedAdBoosterWedge, int> 
@@ -116,7 +121,7 @@ namespace UnityGamingServicesUseCases
                 try
                 {
                     sceneView.SetInteractable(false);
-                    await DistributeBaseRewards();
+                    await DistributeBaseRewards(false);
                     if (this == null) return;
 
                     sceneView.CloseCompleteLevelPopup();
@@ -131,9 +136,9 @@ namespace UnityGamingServicesUseCases
                 }
             }
 
-            async Task DistributeBaseRewards()
+            async Task DistributeBaseRewards(bool waitForSecondRewardDistribution)
             {
-                await CloudCodeManager.instance.CallGrantLevelEndRewardsEndpoint();
+                await CloudCodeManager.instance.CallGrantLevelEndRewardsEndpoint(waitForSecondRewardDistribution);
             }
 
             public async void OnWatchRewardedAdButtonPressed()
@@ -144,7 +149,7 @@ namespace UnityGamingServicesUseCases
 
                     // We'll distribute the base rewards now with no multiplier, then if players successfully complete
                     // watching the rewarded ad, MediationManager will tell Cloud Code to distribute the multiplier rewards.
-                    await DistributeBaseRewards();
+                    await DistributeBaseRewards(true);
                     if (this == null) return;
 
                     MediationManager.instance.ShowAd(k_StandardRewardedAdMultiplier);
@@ -173,7 +178,7 @@ namespace UnityGamingServicesUseCases
 
                     // We'll distribute the base rewards now with no multiplier, then if players successfully complete
                     // watching the rewarded ad, MediationManager will tell Cloud Code to distribute the multiplier rewards.
-                    await DistributeBaseRewards();
+                    await DistributeBaseRewards(true);
                     if (this == null) return;
 
                     MediationManager.instance.ShowAd(m_RewardedAdBoosterActiveMultiplier);
@@ -187,6 +192,65 @@ namespace UnityGamingServicesUseCases
                 {
                     sceneView.SetInteractable(true);
                 }
+            }
+
+            public void UpdateEconomyHudWhenAppropriate(bool waitForSecondRewardDistribution, string rewardId, 
+                int rewardBalance)
+            {
+                if (waitForSecondRewardDistribution)
+                {
+                    // waitForSecondRewardDistribution is true when base rewards have been distributed before showing
+                    // a rewarded ad. In that case we don't want to update the HUD until we know whether or not the
+                    // rewarded ad has been successfully watched and the second distribution of rewards completed.
+
+                    StartCoroutine(WaitForSecondDistributionAndUpdateHudIfNone(rewardId, rewardBalance));
+                }
+                else
+                {
+                    // waitForSecondRewardDistribution will be false if no second reward distribution is expected or
+                    // this is the second reward distribution. In this case we update the HUD and, if a path is waiting
+                    // for this reward distribution, we change m_EconomyHudUpdatedWhileWaiting to indicate completion.
+
+                    UpdateEconomyHud(rewardId, rewardBalance);
+
+                    if (m_IsWaitingForRewardDistribution)
+                    {
+                        m_EconomyHudUpdatedWhileWaiting = true;
+                    }
+                }
+            }
+
+            IEnumerator WaitForSecondDistributionAndUpdateHudIfNone(string rewardId, int rewardBalance)
+            {
+                m_EconomyHudUpdatedWhileWaiting = false;
+                yield return WaitForAdCompletion();
+
+                if (!m_EconomyHudUpdatedWhileWaiting)
+                {
+                    // the Rewarded Ad we were waiting for was not successfully completed so we will update the
+                    // HUD with the reward balance that Cloud Code returned when we distributed the base rewards.
+                    UpdateEconomyHud(rewardId, rewardBalance);
+                }
+            }
+
+            IEnumerator WaitForAdCompletion()
+            {
+                m_IsAdClosed = false;
+                yield return new WaitUntil(() => m_IsAdClosed);
+                m_IsWaitingForRewardDistribution = true;
+
+                // Wait one additional second to give time for MediationManager.OnUserRewarded to call
+                // CloudCode.GrantLevelEndRewardsEndpoint, and for the Cloud Code script to complete it's work. This is
+                // risky because it relies on Cloud Code not experiencing delays in execution for it to finish on time.
+                // To reduce the risk one could increase the number of seconds it waits for, but this will also increase
+                // how long players wait to see their rewards updated.
+                yield return new WaitForSeconds(1);
+                m_IsWaitingForRewardDistribution = false;
+            }
+
+            void UpdateEconomyHud(string rewardId, int rewardBalance)
+            {
+                EconomyManager.instance.SetCurrencyBalance(rewardId, rewardBalance);
             }
 
             public void ChangeRewardedAdBoosterMultiplier(RewardedAdBoosterWedge newActiveSection)

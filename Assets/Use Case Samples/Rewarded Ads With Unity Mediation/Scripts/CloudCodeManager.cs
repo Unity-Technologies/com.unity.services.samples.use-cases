@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Unity.Services.CloudCode;
@@ -13,6 +14,7 @@ namespace UnityGamingServicesUseCases
             public static CloudCodeManager instance { get; private set; }
 
             public RewardedAdsSampleView sceneView;
+            public RewardedAdsSceneManager sceneManager;
 
             // Cloud Code SDK status codes from Client
             const int k_CloudCodeRateLimitExceptionStatusCode = 50;
@@ -39,7 +41,7 @@ namespace UnityGamingServicesUseCases
                 }
             }
 
-            public async Task CallGrantLevelEndRewardsEndpoint(int? multiplier = null)
+            public async Task CallGrantLevelEndRewardsEndpoint(bool waitForSecondRewardDistribution, int? multiplier = null)
             {
                 try
                 {
@@ -53,21 +55,24 @@ namespace UnityGamingServicesUseCases
                     {
                         Debug.Log("Distributing Level End Base Rewards via Cloud Code...");
 
-                        result = await CloudCode.CallEndpointAsync<GrantLevelEndRewardsResult>
-                            ("RewardedAds_GrantLevelEndRewards", "");
+                        result = await CloudCodeService.Instance.CallEndpointAsync<GrantLevelEndRewardsResult>(
+                            "RewardedAds_GrantLevelEndRewards",
+                            new Dictionary<string, object>());
                     }
                     else
                     {
                         Debug.Log("Distributing Level End Booster Rewards via Cloud Code...");
 
-                        result = await CloudCode.CallEndpointAsync<GrantLevelEndRewardsResult>
-                            ("RewardedAds_GrantLevelEndRewards", new GrantLevelEndRewardsRequest((int) multiplier));
+                        result = await CloudCodeService.Instance.CallEndpointAsync<GrantLevelEndRewardsResult>(
+                            "RewardedAds_GrantLevelEndRewards",
+                            new Dictionary<string, object>{{ "multiplier", (int) multiplier }});
                     }
 
                     // Check that scene has not been unloaded while processing async wait to prevent throw.
                     if (this == null) return;
 
-                    EconomyManager.instance.SetCurrencyBalance(result.rewardCurrencyId, result.rewardCurrencyBalance);
+                    sceneManager.UpdateEconomyHudWhenAppropriate(waitForSecondRewardDistribution, result.rewardCurrencyId,
+                        result.rewardCurrencyBalance);
                 }
                 catch (CloudCodeException e)
                 {
@@ -112,14 +117,14 @@ namespace UnityGamingServicesUseCases
             {
                 try
                 {
-                    // trim the text that's in front of the valid JSON
-                    var trimmedExceptionMessage = Regex.Replace(
-                        e.Message, @"^[^\{]*", "", RegexOptions.IgnorePatternWhitespace);
+                    // extract the JSON part of the exception message
+                    var trimmedMessage = e.Message;
+                    trimmedMessage = trimmedMessage.Substring(trimmedMessage.IndexOf('{'));
+                    trimmedMessage = trimmedMessage.Substring(0, trimmedMessage.LastIndexOf('}') + 1);
 
                     // Convert the message string ultimately into the Cloud Code Custom Error object which has a
                     // standard structure for all errors.
-                    var parsedMessage = JsonUtility.FromJson<CloudCodeExceptionParsedMessage>(trimmedExceptionMessage);
-                    return JsonUtility.FromJson<CloudCodeCustomError>(parsedMessage.message);
+                    return JsonUtility.FromJson<CloudCodeCustomError>(trimmedMessage);
                 }
                 catch (Exception exception)
                 {
@@ -167,16 +172,6 @@ namespace UnityGamingServicesUseCases
                 if (instance == this)
                 {
                     instance = null;
-                }
-            }
-
-            struct GrantLevelEndRewardsRequest
-            {
-                public int multiplier;
-
-                public GrantLevelEndRewardsRequest(int multiplier)
-                {
-                    this.multiplier = multiplier;
                 }
             }
 

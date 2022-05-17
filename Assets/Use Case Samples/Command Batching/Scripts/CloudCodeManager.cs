@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Unity.Services.CloudCode;
@@ -50,10 +51,9 @@ namespace UnityGamingServicesUseCases
                 {
                     Debug.Log("Processing command batch via Cloud Code...");
 
-                    // Cloud Code API will convert ProcessBatchRequest into a JSON structure like
-                    // { batch: { "commands": ["COMMANDBATCH_DEFEAT_RED_ENEMY", "COMMANDBATCH_OPEN_CHEST", etc] }}
-                    await CloudCode.CallEndpointAsync("CommandBatch_ProcessBatch",
-                        new ProcessBatchRequest(commands));
+                    await CloudCodeService.Instance.CallEndpointAsync(
+                        "CommandBatch_ProcessBatch",
+                        new Dictionary<string, object>{{ "commands", commands }});
 
                     Debug.Log("Cloud Code successfully processed batch.");
                 }
@@ -95,14 +95,14 @@ namespace UnityGamingServicesUseCases
             {
                 try
                 {
-                    // trim the text that's in front of the valid JSON
-                    var trimmedExceptionMessage = Regex.Replace(
-                        e.Message, @"^[^\{]*", "", RegexOptions.IgnorePatternWhitespace);
+                    // extract the JSON part of the exception message
+                    var trimmedMessage = e.Message;
+                    trimmedMessage = trimmedMessage.Substring(trimmedMessage.IndexOf('{'));
+                    trimmedMessage = trimmedMessage.Substring(0, trimmedMessage.LastIndexOf('}') + 1);
 
                     // Convert the message string ultimately into the Cloud Code Custom Error object which has a
                     // standard structure for all errors.
-                    var parsedMessage = JsonUtility.FromJson<CloudCodeExceptionParsedMessage>(trimmedExceptionMessage);
-                    return JsonUtility.FromJson<CloudCodeCustomError>(parsedMessage.message);
+                    return JsonUtility.FromJson<CloudCodeCustomError>(trimmedMessage);
                 }
                 catch (Exception exception)
                 {
@@ -161,26 +161,6 @@ namespace UnityGamingServicesUseCases
                 if (instance == this)
                 {
                     instance = null;
-                }
-            }
-
-            struct Batch
-            {
-                public string[] commands;
-
-                public Batch(string[] commands)
-                {
-                    this.commands = commands;
-                }
-            }
-
-            struct ProcessBatchRequest
-            {
-                public Batch batch;
-
-                public ProcessBatchRequest(string[] commands)
-                {
-                    batch = new Batch(commands);
                 }
             }
 

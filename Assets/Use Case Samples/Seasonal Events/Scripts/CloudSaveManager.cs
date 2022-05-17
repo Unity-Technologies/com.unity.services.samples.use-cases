@@ -36,7 +36,7 @@ namespace UnityGamingServicesUseCases
             {
                 try
                 {
-                    m_CachedCloudData = await SaveData.LoadAllAsync();
+                    m_CachedCloudData = await CloudSaveService.Instance.Data.LoadAllAsync();
 
                     // Check that scene has not been unloaded while processing async wait to prevent throw.
                     if (this == null) return;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Unity.Services.CloudCode;
@@ -55,8 +56,9 @@ namespace UnityGamingServicesUseCases
             {
                 try
                 {
-                    var updatedState = await CloudCode.CallEndpointAsync<UpdatedState>(
-                        "CloudAi_GetState", new object());
+                    var updatedState = await CloudCodeService.Instance.CallEndpointAsync<UpdatedState>(
+                        "CloudAi_GetState",
+                        new Dictionary<string, object>());
 
                     return updatedState;
                 }
@@ -73,8 +75,9 @@ namespace UnityGamingServicesUseCases
             {
                 try
                 {
-                    var updatedState = await CloudCode.CallEndpointAsync<UpdatedState>(
-                        "CloudAi_ValidatePlayerMoveAndRespond", new CoordParam(coord));
+                    var updatedState = await CloudCodeService.Instance.CallEndpointAsync<UpdatedState>(
+                        "CloudAi_ValidatePlayerMoveAndRespond",
+                        new Dictionary<string, object>{{ "coord", coord }});
 
                     return updatedState;
                 }
@@ -91,8 +94,9 @@ namespace UnityGamingServicesUseCases
             {
                 try
                 {
-                    var updatedState = await CloudCode.CallEndpointAsync<UpdatedState>(
-                        "CloudAi_StartNewGame", new object());
+                    var updatedState = await CloudCodeService.Instance.CallEndpointAsync<UpdatedState>(
+                        "CloudAi_StartNewGame",
+                        new Dictionary<string, object>());
 
                     return updatedState;
                 }
@@ -132,14 +136,14 @@ namespace UnityGamingServicesUseCases
             {
                 try
                 {
-                    // trim the text that's in front of the valid JSON
-                    var trimmedExceptionMessage = Regex.Replace(
-                        e.Message, @"^[^\{]*", "", RegexOptions.IgnorePatternWhitespace);
+                    // extract the JSON part of the exception message
+                    var trimmedMessage = e.Message;
+                    trimmedMessage = trimmedMessage.Substring(trimmedMessage.IndexOf('{'));
+                    trimmedMessage = trimmedMessage.Substring(0, trimmedMessage.LastIndexOf('}') + 1);
 
                     // Convert the message string ultimately into the Cloud Code Custom Error object which has a
                     // standard structure for all errors.
-                    var parsedMessage = JsonUtility.FromJson<CloudCodeExceptionParsedMessage>(trimmedExceptionMessage);
-                    return JsonUtility.FromJson<CloudCodeCustomError>(parsedMessage.message);
+                    return JsonUtility.FromJson<CloudCodeCustomError>(trimmedMessage);
                 }
                 catch (Exception exception)
                 {

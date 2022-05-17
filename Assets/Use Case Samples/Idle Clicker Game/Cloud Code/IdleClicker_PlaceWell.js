@@ -18,6 +18,8 @@ const factoryGrantPerCycle = 1;
 
 // Entry point for the Cloud Code script 
 module.exports = async ({ params, context, logger }) => {
+  let instance;
+
   try {
     logger.info("Script parameters: " + JSON.stringify(params));
     logger.info("Authenticated within the following context: " + JSON.stringify(context));
@@ -29,7 +31,7 @@ module.exports = async ({ params, context, logger }) => {
 
     let coord = params.coord;
 
-    let instance = { projectId, playerId, cloudSaveApi, economyCurrencyApi, purchasesApi, logger };
+    instance = { projectId, playerId, cloudSaveApi, economyCurrencyApi, purchasesApi, logger };
 
     instance.state = await readState(instance);
 
@@ -64,6 +66,25 @@ module.exports = async ({ params, context, logger }) => {
 
     return instance.state;
   } catch (error) {
+
+    // This use case is unique in that it updates in real time. Since we've already distributed currency based on the passage of time
+    // before an exception occurred, we must save the updated state so we do not redistribute more currency based on the original time.
+    // This will save the correct time that currency was last distributed for each Well so correct currency will be granted for next call.
+    try {
+      if (instance.hasOwnProperty('state')) {
+        logger.info("Saving state in exception handler catch statement to ensure water is not distributed multiple times in response to an exception.");
+        await saveState(instance);
+      }
+    } catch (ignoreError) {
+
+      // If a second exception occurs when trying to save the state, there's nothing we can do to prevent granting additional currency.
+      // Note: The only known scenario that could cause this is due to rate limiting on Cloud Save. If it does occur, game play will
+      //       need to be adjusted to prevent players 'spamming' the feature too quickly.
+      logger.error("Exception thrown when saving state. Save FAILED so updated state lost.");
+      logger.error(ignoreError);
+    }
+
+    // Throw the original exception so Unity client can display an appropriate popup. This will usually be insufficient funds or space occupied.
     transformAndThrowCaughtError(error);
   }
 }

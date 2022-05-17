@@ -45,7 +45,7 @@ namespace UnityGamingServicesUseCases
             {
                 try
                 {
-                    var savedData = await SaveData.LoadAllAsync();
+                    var savedData = await CloudSaveService.Instance.Data.LoadAllAsync();
 
                     // Check that scene has not been unloaded while processing async wait to prevent throw.
                     if (this == null) return;
@@ -86,7 +86,7 @@ namespace UnityGamingServicesUseCases
             {
                 try
                 {
-                    await SaveData.ForceSaveAsync(data);
+                    await CloudSaveService.Instance.Data.ForceSaveAsync(data);
                 }
                 catch (Exception e)
                 {
