@@ -1,102 +1,143 @@
 # Rewarded Ads with Unity Mediation
-Offering players the opportunity to receive rewards in exchange for viewing an ad can be a great way to increase your game's revenue.
 
-In this sample we demonstrate offering players the opportunity to increase the rewards they can receive at the end of a level by watching a rewarded ad.
-We've also added an additional feature to encourage interaction with the rewarded ad: a periodically-appearing booster challenge where players can get up to a 5x multiplier (instead of the standard 2x) by clicking at just the right time. 
-In this way we gamify the rewarded ad opportunity making it more fun and tempting for players to interact with.
+Incentivizing players to watch an ad can be a great way to increase your game's revenue.
 
-**Note:** Unity Mediation only supports iOS and Android, so if the project's build target is any platform other than these two you will see warnings in the console at playmode initialization and at Unity Services initialization indicating the platform is unsupported.
-The use case will still function in the editor despite the warnings, however if you were to create a build for one of the unsupported platforms the ad would not show.
-If you would like to see the use case without the warnings, you can change the project's build target to either the iOS or Android platforms.
-This can be done by navigating to File -> Build Settings.
+This sample demonstrates how to offer players double rewards for completing a level if they choose to watch an ad. The sample further gamifies this feature by implementing a random chance for additional rewards. Every so often the player sees a meter with 2x, 3x, and 5x reward multipliers. Stopping the meter at the right time results in even greater incentives for viewing the ad. This makes rewarded ads more fun and tempting for players to interact with.
 
-### Implementation Overview
+![Rewarded Ads with Unity Mediation scene](Documentation~/Rewarded_Ads_With_Unity_Mediation_scene.png)
 
-#### Scene Initialization
-When the scene first loads it will make calls to the Unity Services APIs in order to set up the scene:
-- Initialize Unity Services
-- Get currency balances from Economy
-- Get turn count data from Cloud Save
-- Load the first ad from Unity Mediation
 
-#### Level Ended Popup
-Players will see a `Complete Level` button on the screen (this is to shortcut the real-life experience of actually playing and completing a level).
-When clicked, a popup will appear.
-This popup could display one of three scenarios:
-1. Gamified Rewarded Ad option
-2. Standard Rewarded Ad option
-3. Collect Level End Rewards only (no rewarded ad option)
+## Overview
 
-For the first scenario, our gamified rewarded ad challenge is a metronome-type arrow bouncing back and forth and highlighting different multiplier options (2x, 3x, 5x) with a button indicating an ad watch to claim the rewards.
-Below the rewarded ad challenge is a second button for players who opt to collect their level rewards without any multipliers and without watching an ad.
-This scenario will appear the first time a player sees this popup, and every third time after that (i.e. first, fourth, seventh, etc).
-The periodicity of seeing the gamified challenge is intended to make its appearance more exciting and increase the desire to interact with it due to its rareness.
+To see this use case in action:
+1. In the Unity Editor **Project** window, select **Assets**.
+2. Double-click `Start Here.unity` to open the samples menu scene.
+3. Enter **Play Mode**.
+4. Click **Rewarded Ads with Unity Mediation** to interact with this use case.
 
-The second, non-gamified, scenario includes a standard rewarded ad button indicating they can claim double the amount of their level rewards by watching an ad.
-As with the first scenario, this button is followed by a second button for players who do not want to watch an ad and want only their base amount of level rewards.
-This scenario occurs any time the gamified scenario doesn't appear (i.e. the second, third, fifth, sixth, etc).
+**Note**: Unity Mediation only supports iOS and Android. If the project's build targets any other platform, the console will log warnings in Play mode when you attempt to initialize services. You can still interact with the sample, however, if you create a build for one of the unsupported platforms, ads will not show. To see the use case without warnings, [change the project's build target](https://docs.unity.com/ads/CreatingUnityProjects.html#Setting_build_targets_in_Unity) to iOS or Android.
 
-The third and final scenario only has a basic level end reward collection button, and no watch rewarded ads options.
-In our case this scenario only occurs when no ads have been successfully loaded.
-This can occur for various reasons, such as lack of internet connectivity, or the sample having been built on an unsupported platform, etc.
 
-#### Claiming Base Rewards
-When any of the buttons are clicked (either the rewarded ad options or the basic collect rewards option), a Cloud Code script is executed to distribute the base rewards via the Economy service.
-This ensures that if the player stops the rewarded ad partially through (thereby losing their boosted rewards) that they still receive the standard amount of level end rewards.
+### Initialization
 
-#### Watching a Rewarded Ad and Receiving Rewards
-After the base reward distribution call to Cloud Code finishes, if they have clicked one of the rewarded ad buttons, Mediation is asked to show the ad that was previously loaded.
-As soon as the ad has successfully started to be shown, we tell Mediation to load the next ad.
-This gives the ad time to load and be ready for the next time we want to offer that interaction.
+The `RewardedAdsSceneManager.cs` script performs the following initialization tasks in its `Start` function:
 
-Once the ad has fully completed, we call the Cloud Code script again, this time indicating a multiplier.
-The Cloud Code script verifies that this multiplier is a legitimate value based on the current level count (from Cloud Save) and the appropriate multiplier for that level (i.e. 2, 3, and 5 are valid on turn 1, but only 2 is valid on turn 2).
-Once verified, the script distributes the appropriate amount of rewards via the Economy service.
-At this point, the Cloud Code script has executed twice and the player has received the base reward * the multiplier amount of currency rewards.
+1. Initializes Unity Gaming Services.
+2. Signs in the player [anonymously](https://docs.unity.com/authentication/UsingAnonSignIn.html) using the Authentication service. If you’ve previously initialized any of the other sample scenes, Authentication will use your cached Player ID instead of creating a new one.
+3. Retrieves and updates the player's currency balances from the Economy service.
+4. Loads (pre-caches) the first ad from the Unity Mediation service.
 
-Depending on the rewarded ad placement settings (as setup on the Mediation Dashboard), the player may be able to skip the ad before its finished.
-This is how the fake ad in the editor works as well.
-In that case, our sample simply does not call the Cloud Code script the second time, so that no boosted rewards are distributed.
 
-### Packages Required
-- **Mediation:** Shows the Rewarded Ad.
-- **Cloud Code:** Validates and distributes the level end and rewarded ad watched rewards.
-- **Economy:** Maintains the balance for the currency being rewarded for level end.
-- **Cloud Save:** Tracks information needed for validating appropriate level end reward distribution, including how many times a level has been completed, and the time the last time the rewards were distributed.
+### Functionality
 
-See the [Mediation](https://docs.unity.com/mediation/MediationSetupChecklist.html),
-[Cloud Code](https://docs.unity.com//cloud-code/Content/implementation.htm?tocpath=Implementation%7C_____0#SDK_installation),
-[Economy](https://docs.unity.com/economy/Content/implementation.htm?tocpath=Implementation%7C_____0),
-and [Cloud Save](https://docs.unity.com/cloud-save/Content/index.htm#Implementation) 
-docs to learn how to install and configure these SDKs in your project.
+The sample simulates completing a level by clicking a button. When you click the **Complete Level** button, the following occurs:
 
-### Dashboard Setup
-To use Mediation, Cloud Code, Economy, and Cloud Save services in your game, activate each service for your organization and project in the Unity Dashboard.
+1. The button's `OnClick` method executes the `RewardedAdsSceneManager.cs` script's `OnCompleteLevelButtonPressed` function.
+2. The `OnCompleteLevelButtonPressed` function determines whether to display the LEVEL COMPLETE! popup with or without the rewarded ad mini-game, and then increments the level count and disables the button's interactivity.
+
+**Note**: The level count is stored in Cloud Save. In this sample, the mini-game is hardcoded to appear after the first level, and then every three levels thereafter. Depending on the level increment, the following scenarios can occur.
+
+
+#### Double rewards incentive
+
+In this scenario, the LEVEL COMPLETE! pop-up prompts you to either collect the standard 25 Gem reward or watch an ad to double the reward. If you click the **Get 25** button, you will receive 25 Gems, and then the popup will close and you can continue simulating levels. The following occurs:
+
+1. The button's `OnClick` method executes the `RewardedAdsSceneManager.cs` script's `OnClaimLevelEndRewardsButtonPressed` function.
+2. The `OnClaimLevelEndRewardsButtonPressed` function distributes the `baseRewardAmount` of the `rewardCurrencyId` configured in the `RewardedAds_GrantLevelEndRewards.js` Cloud Code script by using the Economy service.
+
+If you click the **Claim 50** button, you will receive the standard amount of Gems (25), and then receive another 25 upon finishing the ad. When you dismiss the ad, the popup will close and you can continue simulating levels. The following occurs on the backend:
+
+1. The button's `OnClick` method executes the `RewardedAdsSceneManager.cs` script's `OnWatchRewardedAdButtonPressed` function, which calls the `RewardedAds_GrantLevelEndRewards.js` Cloud Code script to distribute the specified `baseRewardAmount` of the `rewardCurrencyId` through the Economy service. This ensures that the player receives the standard level completion rewards, even if they close the ad prematurely.
+2. The `OnWatchRewardedAdButtonPressed` function calls the `MediationManager.cs` script's `ShowAd` function, which uses the Unity Mediation service to show the pre-cached ad. As soon as the ad successfully begins to play, the script requests another ad to cache. This gives the ad time to load and be ready for the next interaction.
+3. The `ShowAd` function takes an integer argument for the additional currency to grant (in this case, the `standardRewardedAdMultiplier`). If the result callback indicates that the player finished viewing the ad, the bonus currency is allocated by using the Economy service.
+
+**Note**: You can close the test ad before it's finished to simulate skipping the ad and therefore the reward. In this case, the client does not call the Cloud Code script a second time to distribute bonus rewards.
+
+**Important**: You will only see placeholder ad creatives in the Unity Editor. If you build this project to a device, you must [enable test mode](https://docs.unity.com/ads/TestingAdsIntegration.html) to prevent the Unity Ads SDK from serving live ads, which could lead to your account being flagged or suspended for fraud.
+
+
+#### Rewards multiplier mini-game
+
+In this scenario, the **LEVEL COMPLETE!** pop-up prompts you to collect the standard 25 Gem reward, or click a special **Claim** button that stops an arrow oscillating between 2x, 3x, or 5x panels on a meter. The multiplier you land on applies to the rewards you receive for watching an ad. What you stop the meter, the following occurs:
+
+1. The button's `OnClick` method executes the `RewardedAdsSceneManager.cs` script's `OnMiniGameWatchRewardedAdButtonPressed` function.
+2. The `OnMiniGameWatchRewardedAdButtonPressed` function distributes the `baseRewardAmount` of the `rewardCurrencyId` configured in the `RewardedAds_GrantLevelEndRewards.js` Cloud Code script by using the Economy service. This ensures that the player receives the standard level completion rewards, even if they close the ad prematurely.
+3. The `OnWatchRewardedAdButtonPressed` function calls the `MediationManager.cs` script's `ShowAd` function, which uses the Unity Mediation service to show the pre-cached ad. As soon as the ad successfully begins to play, the script requests another ad to cache. This gives the ad time to load and be ready for the next interaction.
+4. The `ShowAd` function takes an integer argument for the multiplier to grant (rewardedAdBoosterActiveMultiplier). Cloud Code determines how many rewards to distribute by taking that multiplier minus one (to account for the initial base reward distribution prior to watching the ad), and multiplying it by the `baseRewardAmount`. If the result callback indicates that the player finished viewing the ad, Cloud Code allocates the bonus currency using the Economy service.
+
+**Note**: The `MiniGameArrowManager.cs` script animates the arrow and updates the multiplier value in the Scene Manager by using a callback triggered by keyframes when the arrow moves from one section of the meter to the next. The Cloud Code script verifies that this multiplier is a legitimate value for the current level (for example, multipliers of 2, 3, and 5 are valid after the first level increment, but the second level increment can only have a 2x multiplier).
+
+
+#### Standard level complete rewards
+
+In this scenario, the LEVEL COMPLETE! popup prompts you to collect the standard rewards for completing the level (25 Gems). This scenario only occurs if an ad fails to load from the Unity Mediation service, which can occur for various reasons, such as lack of internet connectivity or the sample being built on an unsupported platform.
+
+
+## Setup
+
+
+### Requirements
+
+To replicate this use case, you need the following [Unity packages](https://docs.unity3d.com/Manual/Packages.html) in your project:
+
+| **Package**                                                                 | **Role**                                                                                                                                                                               |
+| --------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Cloud Code](https://docs.unity.com//cloud-code/Content/implementation.htm) | Validates and distributes the level-end and bonus rewards.                                                                                                                             |
+| [Cloud Save](https://docs.unity.com/cloud-save/implementation.htm)          | Tracks the information needed for validating appropriate level-end reward distribution, including how many levels have been completed and the last time that rewards were distributed. |
+| [Economy](https://docs.unity.com/economy/Content/implementation.htm)        | Retrieves the player's starting and updated currency balances at runtime.                                                                                                              |
+| [Unity Mediation](https://docs.unity.com/mediation/)                        | Loads and shows the ad, and provides callbacks to indicate if bonus rewards should be distributed.                                                                                     |
+
+To use these services in your game, activate each service for your Organization and project in the [Unity Dashboard](https://dashboard.unity3d.com/).
+
+
+### Dashboard setup
+
+To replicate this sample scene's setup on your own dashboard, you will need to:
+
+- Publish a script in Cloud Code.
+- Create a Currency for the Economy service.
+- Create two Ad Units for the Unity Mediation service.
+
+
+#### Cloud Code
+
+[Publish the following script](https://docs.unity.com/cloud-code/implementation.html#Writing_your_first_script) in the **LiveOps** dashboard:
+
+| **Script**                         | **Parameters**                                                                                               | **Description**                                    | **Location in project**                                                                                    |
+|------------------------------------| ------------------------------------------------------------------------------------------------------------ | -------------------------------------------------- |------------------------------------------------------------------------------------------------------------|
+| `RewardedAds_GrantLevelEndRewards` | `multiplier` (this optional integer indicates the base rewards multiplier, if any, to apply for bonus rewards) | Handles reward distribution for various scenarios. | `Assets/Use Case Samples/Rewarded Ads With Unity Mediation/Cloud Code/RewardedAds_GrantLevelEndRewards.js` |
+
+**Note**: The Cloud Code scripts included in the Cloud Code folder are local copies because you cannot view the sample project's dashboard. Changes to these scripts do not affect the behavior of this sample because they are not automatically uploaded to the Cloud Code service.
+
+
+#### Economy
+
+[Configure the following resource](https://docs.unity.com/economy/) in the **LiveOps** dashboard:
+
+| **Resource type** | **Resource name** | **ID**  | **Description**                                                    |
+| ----------------- | ----------------- |---------| ------------------------------------------------------------------ |
+| Currency          | Gem               | `GEM`   | In this example, Gems are the reward incentive for watching an ad. |
+
 
 #### Unity Mediation
-##### Ad Units
-* ID: `RewardedAds_Android`
-  * Platform: Android
-  * Ad Format: Rewarded
-  * Waterfall: `Android_Rewarded` (this is a default waterfall provided by Mediation, but it needs to be attached to this Ad Unit)
-  * Custom Settings:
-    * Allow Skip: After 5 seconds
-* ID: `RewardedAds_iOS`
-  * Platform: iOS
-  * Ad Format: Rewarded
-  * Waterfall: `iOS_Rewarded` (this is a default waterfall provided by Mediation, but it needs to be attached to this Ad Unit)
-  * Custom Settings:
-      * Allow Skip: After 5 seconds
 
-#### Economy Items
-* Gem - `ID: "GEM"` - The currency being rewarded for completing the level and watching a rewarded ad.
+Ad Units represent surfacing areas in your game for players to see ad content. [Create the following Ad Units](https://docs.unity.com/monetization-dashboard/AdUnits.html#CreatingAdUnits) for each mobile platform in the **Monetization** dashboard:
 
-#### Cloud Code Scripts
-* RewardedAds_GrantLevelEndRewards:
-  * Parameters: `multiplier` - Optional.
-      An int representing the amount the base rewards should be multiplied with, if any.
-      Not included if just distributing base rewards.
-  * Script: `Assets/Use Case Samples/Rewarded Ads With Unity Mediation/Cloud Code/RewardedAds_GrantLevelEndRewards.js`
+| **Ad Unit name**    | **Platform** | **Ad format** | **Allow skip**\* |
+| ------------------- | ------------ | ------------- | ---------------- |
+| RewardedAds_Android | Android      | Rewarded      | After 5 seconds  |
+| RewardedAds_iOS     | iOS          | Rewarded      | After 5 seconds  |
 
-_**Note**:
-The Cloud Code scripts included in the `Cloud Code` folder are just local copies, since you can't see the sample's dashboard. Changes to these scripts will not affect the behavior of this sample since they will not be automatically uploaded to Cloud Code service._
+\*You can access **Allow skip** in advanced settings after you create the Ad Unit.
+
+Next, you need to attach each Ad Unit to a [mediation waterfall](https://docs.unity.com/mediation/IntroToWaterfalls.html). To do this from the Monetization dashboard:
+
+1. In the secondary navigation menu, select **Waterfalls**.
+2. Select the waterfall you want to assign Ad Units to.
+3. Select the settings icon > **Edit** to configure the waterfall.
+4. Scroll to the **Ad Units** settings section and select **Edit**.
+5. Add the Ad Units that you want to attach, and then save your settings.
+
+Attach the `RewardedAds_Android` Ad Unit that you created to the `Android_Rewarded` default waterfall. Attach the `RewardedAds_iOS` Ad Unit that you created to the `iOS_Rewarded` default waterfall.
+
+  

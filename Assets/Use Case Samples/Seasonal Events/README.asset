@@ -19,9 +19,9 @@ MonoBehaviour:
   - subHeader1: Intro
     subHeader2: 
     subHeader3: 
-    body: 'Seasonal events can increase game sessions and overall interest in a game,
+    body: Seasonal events can increase game sessions and overall interest in a game,
       as they give existing players new and fun content throughout the year to look
-      forward to and can entice new players to begin playing. '
+      forward to and can entice new players to begin playing.
     bodyFormat: 0
     boxCallout: 
     bulletList: []
@@ -105,6 +105,18 @@ MonoBehaviour:
       "Play Challenge" button. '
     bodyFormat: 0
     boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: Note that the "Play" button on the left is not interactable, and
+      is just added to demonstrate how a game might have gameplay in one area of
+      the screen (on the left in this case) and permit playing the Seasonal Event
+      either through gameplay or directly using a UI button such as the "Play Challenge"
+      button on the bottom/right.
     bulletList: []
     linkList: []
   - subHeader1: Packages Required

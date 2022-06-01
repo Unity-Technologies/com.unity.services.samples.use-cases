@@ -419,7 +419,7 @@ MonoBehaviour:
       - body: 'Type: json'
         bodyFormat: 0
         bulletList: []
-      - body: 'Value: []'
+      - body: 'Value: [] (empty array because reward tiers aren’t valid outside of seasonal events)'
         bodyFormat: 0
         bulletList: []
       linkList: []
@@ -433,7 +433,7 @@ MonoBehaviour:
       - body: 'Type: json'
         bodyFormat: 0
         bulletList: []
-      - body: 'Value: []'
+      - body: 'Value: [] (empty array because reward tiers aren’t valid outside of seasonal events)'
         bodyFormat: 0
         bulletList: []
       linkList: []

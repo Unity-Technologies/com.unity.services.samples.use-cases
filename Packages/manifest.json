@@ -13,7 +13,7 @@
     "com.unity.ide.vscode": "1.2.4",
     "com.unity.remote-config": "3.0.0-pre.3",
     "com.unity.services.analytics": "4.0.0-pre.3",
-    "com.unity.services.authentication": "1.0.0-pre.37",
+    "com.unity.services.authentication": "2.0.0",
     "com.unity.services.ccd.management": "1.0.0-pre.2",
     "com.unity.services.cloudcode": "2.0.0-pre.4",
     "com.unity.services.cloudsave": "2.0.0-pre.2",

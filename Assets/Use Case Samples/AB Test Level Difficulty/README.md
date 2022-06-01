@@ -1,212 +1,161 @@
 # A/B Test for Level Difficulty
-An A/B Test is a useful mechanism for tweaking a single feature of game play or game design, and learning what variation of that feature is most engaging to your players.
+A/B testing is a powerful tool to test different variables on various user segments in parallel to see which variable has the most impact on your game.
+A/B tests can be very useful for fine-tuning retention, monetization, or balancing mechanics.
 
-In this sample, the feature we are testing is level difficulty, specifically how much XP is required to get to the next level.
-When a player is signed in, the screen displays their level, as well as an XP meter that indicates their current XP and the total amount of XP required to level up (either 100, 80, 60, 50, or 30).
-The amount of XP that a player needs to level up depends on which test group they were randomly placed into.
+This sample simulates an A/B test to evaluate how much experience (XP) it should take to gain a level.
 
+![A/B Test scene](Documentation~/AB_Testing_Scene.png)
+
+## Overview
+
+To see this use case in action:
+1. In the Unity Editor **Project** window, select **Assets > Use Case Samples > AB Test Level Difficulty**, and then double-click `ABTestLevelDifficultySample.unity` to open the sample scene. 
+2. Enter Play Mode to interact with the use case.
+
+When a player signs in, the screen displays their level and an XP meter that tracks their current XP and the total amount of XP required to level up.
+In this case, the amount of total XP to level up is either 100, 80, 60, 50, or 30, depending on which test group the player is randomly assigned.
 For diagnostic purposes, the player's test group is also displayed (A, B, C, D, or E).
-While in a real game setting the test group would rarely be publicly displayed, it could be used internally to capture analytics details about how the different groups respond to the A/B test.
 
-### Implementation Overview
-When the scene first loads, Unity Services is initialized and the player is signed in to an anonymous player ID (either one that has already been created from a previous sign-in or a new one) using the Authentication service.
-A `SceneOpened` Analytics event is also triggered at this time. 
-Once Authentication has completed sign-in, the client code gets the player's current data from Cloud Save.
-If it is a new user (i.e. not a cached anonymous player), the player's initial level (1) and xp (0) will be saved in Cloud Save instead of loading existing data.
-The client code will also download any existing currency data from the Economy service.
-Finally, Remote Config will be queried to fetch the appropriate A/B test group name and xp needed for leveling up for this player.
-All of this updated data will get displayed in the scene.
-At this point, the "Gain XP" button is enabled for interaction.
+### Initialization
 
-When a player clicks the "Gain XP" button, an `ActionButtonPressed` event is sent to Analytics, and a call is made to the Cloud Code endpoint "GainXPAndLevelIfReady".
-This server-authoritative call fetches the player's info from Cloud Code and Remote Config, increases the XP by the amount specified by Remote Config (10 points), and tests whether the new player XP total equals the amount of XP needed for leveling up.
-If it does not, the player's new XP is saved in Cloud Code and returned to the client code, which updates the values and shows text indicating how much XP was added.
-If it does, Economy is called to distribute the level-up rewards (100 COIN), and Cloud Code is called to save the increased player level and new player XP (XP gets reset to 0 upon level up) before returning the info to the client code.
+1. When the scene loads, the `ABTestLevelDifficultySceneManager` script initializes Unity Services.
+2. The same `InitializeServices` task sends a `SceneOpened` custom event to the Analytics service.
+   This, along with the `SceneSessionLength` custom event (sent when you click the back button), tracks the player's session length in the scene as an example of how you can implement analytics to evaluate the results of your test.
+3. The same `InitializeServices` task signs in the player using the Authentication service, which assigns the player an anonymous player ID and fetches their data from the Cloud Save service.
+   If it’s a new user (not a cached anonymous player), the player's initial level (1) and XP (0) are saved in Cloud Save instead of loading existing data.
+4. After authentication succeeds, the same script retrieves and updates currency balances from the Economy service for that user.
+5. The client queries the Remote Config service to fetch the appropriate test group name and corresponding XP threshold for leveling up.
+6. All of this updated data is displayed in the scene, and the **Gain XP** button becomes interactive.
 
-The client code then opens a dialog to indicate that the player has leveled up, what currency reward was granted, and updates the relevant data in the scene. Note: A cross reference dictionary located in the Remote Config and initialized at start-up is used to convert the rewarded currency ID (i.e. "COIN") to an Addressable address, which can be used to display the sprite (i.e. "Sprites/Currency/Coin"). This step allows players to experience different art based on their segmentation and provides a convenient way to retrieve additional data for a specific currency at runtime.
+### Functionality
 
-Please note that a simpler approach to display different art according to a player’s segmentation is to attach additional information to the Custom Data associated with Currencies in the Economy configuration data. However, for the purpose of this segmentation sample, the data was added to the Game Overrides themselves to demonstrate the flexibility permitted by the Remote Config service.
+#### Gain XP
 
-If a player instead clicks "Sign In As New Player", the current anonymous player ID is deleted, the cached values are reset to empty/default state, and then a new sign in is initiated with the Authentication service, following the same flow as when the scene first loads.
-Once again, an `ActionButtonPressed` event is also triggered when the "Sign In As New Player" button is pressed. 
-Each time this Sign In As New Player flow is followed, a new anonymous player ID is created, with the potential for being randomly placed into a different A/B test group.
-Because the group determination is random, you may need to follow this flow a few times before you see yourself in a new group.
+When you click the **Gain XP** button, the simulated player gains 10 XP.
+When the XP bar is full (according to the test group threshold), the simulated player levels up and receives currency.
+The following occurs:
 
-Finally, when a player presses the back button in the scene to return to the "Start Here" scene, a `SceneSessionLength` custom event is triggered, capturing the amount of time spent in this scene.
+1. The button’s `OnClick` method sends an `ActionButtonPressed` custom event to the Analytics service and makes a call to the Cloud Code `GainXPAndLevelIfReady` script.
+2. This server-authoritative call fetches the player's information from Cloud Save and Remote Config, increases the XP by the amount specified by Remote Config (in this case, 10), then tests whether the new player XP total equals or exceeds the level-up threshold. 
+   * If the player did not level up, their new XP is saved in Cloud Save and returned to the client, which updates the values and shows text that indicates how much XP increased.
+   * If the player did level up, it calls the Economy service to distribute the level-up rewards (in this case, 100 Coins), and calls Cloud Save to save the increased player level and new player XP before it returns that information to the client code. 
+3. The client code opens a level-up dialog and updates the relevant data in the scene UI.
+   Note that this step provides an opportunity to show players different art based on their segmentation, and a convenient way to retrieve additional data for a specific currency at runtime.
 
-**Note**: This use case is created with the assumption that the game style won't trigger frequent XP increases.
-While testing the use case, if "Gain XP" is clicked 15+ times in rapid succession, you will likely see either an "Unprocessable Entity" exception or a "CloudSaveException: Rate limit has been exceeded" exception.
-Both of these indicate that the Cloud Save rate limit for number of calls has been exceeded (the rate limit includes both calls from Cloud Code and client code, read more about why that is [here](https://docs.unity.com//cloud-code/Content/types-of-scripts.htm?tocpath=Types%20of%20scripts%7C_____0#Available_libraries)).
-To resolve either of these exceptions, wait a minute and try again, or sign out and back in with a new player ID (not recommended in a real game).
- 
- 
-### Packages Required
-- **Authentication:** Automatically signs in the user anonymously to keep track of their data on the server side.
-- **Cloud Save:** Server authoritative way to save player data and game state. In this sample, it stores the player's level and XP.
-- **Economy:** Keeps track of the player's currencies.
-- **Remote Config:** Provides key-value pairs where the value that is mapped to a given key can be changed on the server-side, either manually or based on specific Game Overrides. In this sample, a single Game Override with a built-in A/B test is used to return different values for the amount of XP required to level up. Remote Config also stores data associated with Currency icon Addressable addresses.
-- **Cloud Code:** Keeps important validation logic for increasing XP and leveling up the player on the server side.
-- **Analytics:** Sends events that allows tracking of a player's in-game interactions, retention, and other information which can be used for analyzing and improving game experience.
+**Note:** In this example, a cross-reference dictionary located in Remote Config and initialized at start-up converts the rewarded currency ID (in this case, `COIN`) to an [Addressables](https://docs.unity3d.com/Packages/com.unity.addressables@latest/index.html) address, which you can use to display the sprite (in this case, `Sprites/Currency/Coin`).
+A simpler approach to displaying different art according to a player’s segmentation is to attach additional information to the custom data associated with Currencies in the Economy configuration data.
+However, here the data was added to the Campaigns to demonstrate the flexibility of the Remote Config service.
 
-See the [Authentication](https://docs.unity.com/authentication/Content/InstallAndConfigureSDK.htm),
-[Cloud Save](https://docs.unity.com/cloud-save/Content/index.htm#Implementation),
-[Economy](https://docs.unity.com/economy/Content/implementation.htm?tocpath=Implementation%7C_____0),
-[Remote Config](https://docs.unity3d.com/Packages/com.unity.remote-config@2.0/manual/ConfiguringYourProject.html),
-[Cloud Code](https://docs.unity.com//cloud-code/Content/implementation.htm?tocpath=Implementation%7C_____0#SDK_installation),
-and [Analytics](https://docs.unity.com/analytics/SDKInstallation.htm) docs to learn how to install and configure these SDKs in your project.
+#### Sign In As New Player
 
+You can click **Sign In As New Player** at any time to simulate a new player with a new randomly assigned test group that starts with 0 XP.
+The following occurs:
 
-### Dashboard Setup
-To use Cloud Save, Economy, Remote Config, and Cloud Code services in your game, activate each service for your organization and project in the Unity Dashboard.
-To duplicate this sample scene's setup on your own dashboard, you'll need a a currency in the Economy setup, some Config Values and a Game Override set up in Remote Config, and a script published in Cloud Code:
+1. The button’s `OnClick` deletes the current anonymous player ID, resets all cached values to their empty or default states, and then initiates a new sign-in with the Authentication service that follows the same flow as when the scene first loads.
+2. As with the **Gain XP** button, it sends an `ActionButtonPressed` custom event to the Analytics service.
+3. Each time you click the **Sign In As New Player** button, the Authentication service creates a new anonymous player ID, to which the Remote Config service assigns a new A/B test group.
 
-#### Economy Items
-* Coin - `ID: "COIN"` - The currency distributed as a reward for the player leveling up.
+#### Back button
+If you press the back button (the arrow in the top-left corner of the scene) to return to the "Start Here" scene, it triggers a `SceneSessionLength` custom Analytics event, which captures the amount of time spent in this scene.
 
-#### Remote Config
-##### Config Values
-* A_B_TEST_GROUP - The identifier for which test user group the player is in.
-  * Type: `string`
-  * Value: `""`
-* A_B_TEST_ID - The identifier for which AB Test is actively being run for this user.
-  * Type: `string`
-  * Value: `""`
-* LEVEL_UP_XP_NEEDED - The amount of XP needed in order for the player to level up.
-  * Type: `int`
-  * Value: `100`
-* XP_INCREASE - The amount the player's XP will increase by each time they gain XP.
-  * Type: `int`
-  * Value: `10`
-* CURRENCIES - A cross reference from currencyId to spriteAddresses for all currency types
-  * Type: `json`
-  * Value:
-  ```json
-    {
-        "currencyData": [{
-            "currencyId": "COIN",
-            "currencySpec": {
-                "spriteAddress": "Sprites/Currency/Coin"
-            }
-        },{
-            "currencyId": "GEM",
-            "currencySpec": {
-                "spriteAddress": "Sprites/Currency/Gem"
-            }
-        },{
-            "currencyId": "PEARL",
-            "currencySpec": {
-                "spriteAddress": "Sprites/Currency/Pearl"
-            }
-        },{
-            "currencyId": "STAR",
-            "currencySpec": {
-                "spriteAddress": "Sprites/Currency/Star"
-            }
-        }]
-    }
-    ```
+## Setup
 
-##### Game Overrides
-* Level Difficulty A/B Test
-  * Status: Active
-  * Audience: true, 100%
-  * Start Date: Immediately
-  * End Date: Indefinitely
-  * Overrides:
-    * Variant 1 (control group):
-      * LEVEL_UP_XP_NEEDED: 100
-      * A_B_TEST_GROUP: A
-      * A_B_TEST_ID: LevelDifficultyTest1
-    * Variant 2:
-      * LEVEL_UP_XP_NEEDED: 80
-      * A_B_TEST_GROUP: B
-      * A_B_TEST_ID: LevelDifficultyTest1
-    * Variant 3:
-      * LEVEL_UP_XP_NEEDED: 60
-      * A_B_TEST_GROUP: C
-      * A_B_TEST_ID: LevelDifficultyTest1
-    * Variant 4:
-      * LEVEL_UP_XP_NEEDED: 50
-      * A_B_TEST_GROUP: D
-      * A_B_TEST_ID: LevelDifficultyTest1
-    * Variant 5:
-      * LEVEL_UP_XP_NEEDED: 30
-      * A_B_TEST_GROUP: E
-      * A_B_TEST_ID: LevelDifficultyTest1
+### Requirements
 
-#### Cloud Code Scripts
-* ABTest_GainXPAndLevelIfReady:
-  * Parameters: `none`
-  * Script: `Assets/Use Case Samples/AB Test Level Difficulty/Cloud Code/ABTest_GainXPAndLevelIfReady.js`
+To replicate this use case, you need the following [Unity packages](https://docs.unity3d.com/Manual/Packages.html) in your project:
 
-_**Note**:
-The Cloud Code scripts included in the `Cloud Code` folder are just local copies, since you can't see the sample's dashboard. Changes to these scripts will not affect the behavior of this sample since they will not be automatically uploaded to Cloud Code service._
+| **Package**                                                                                                   | **Role**                                                                                                                                                                                                                                                                                                                                           |
+|---------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [Analytics](https://docs.unity.com/analytics/SDKInstallation.htm)                                             | Sends events that track the player's in-game interactions, retention metrics, and other information that you can use to analyze and improve the game experience.                                                                                                                                                                                   |
+| [Authentication](https://docs.unity.com/authentication/Content/InstallAndConfigureSDK.htm)                    | Automatically signs in the player as an anonymous user to keep track of their data server-side.                                                                                                                                                                                                                                                    |
+| [Cloud Code](https://docs.unity.com//cloud-code/Content/implementation.htm)                                   | Stores validation logic for increasing XP and leveling up the player server-side.                                                                                                                                                                                                                                                                  |
+| [Cloud Save](https://docs.unity.com/cloud-save/Content/index.htm#Implementation)                              | Provides a server-authoritative way to save player data and the game state. In this example, the service stores the player's level and XP.                                                                                                                                                                                                         |
+| [Economy](https://docs.unity.com/economy/Content/implementation.htm)                                          | Retrieves the starting and updated currency balances at runtime.                                                                                                                                                                                                                                                                                   |
+| [Remote Config](https://docs.unity3d.com/Packages/com.unity.remote-config@latest/ConfiguringYourProject.html) | Provides key-value pairs that you can map and change server-side, either manually or based on specific Game Overrides. This example uses a single Game Override with a built-in A/B test to return different values for the amount of XP required to level up. Remote Config also stores data associated with currency icon Addressable addresses. |
+
+To use these services in your game, activate each service for your Organization and project in the [Unity Dashboard](https://dashboard.unity3d.com/).
+
+### Dashboard setup
+
+To replicate this sample scene's setup on your own dashboard, you need to:
+* Create custom events and parameters for the Analytics service.
+* Publish a script to Cloud Code.
+* Create a Currency for the Economy service.
+* Configure values and Game Overrides for the Remote Config service.
 
 #### Analytics
-In the configuration of the Analytics custom events and parameters, you can see a fairly long list of potential parameters that are sent with some of the events.
-This extended list allows for a more flexible analysis of different parameter groupings in the Data Explorer on the Analytics tab of the Unity dashboard.
-Alternatively, you could send just the ungrouped parameters (buttonName, sceneName, etc), and do any kind of grouped analysis desired using the Data Export feature within the Data Explorer on the dashboard.
 
-_**Note**:
-This sample demonstrates the code needed to trigger analytics events, however additional code may be necessary to meet legal requirements such as GDPR, CCPA, and PIPL.
-See more info about managing data privacy [here](https://docs.unity.com/analytics/ManagingDataPrivacy.html)._
+**Important:** This sample demonstrates the code that is needed to trigger Analytics events.
+However, additional code might be necessary to meet legal requirements such as GDPR, CCPA, and PIPL.
+For more information, see the documentation on [managing data privacy](https://docs.unity.com/analytics/ManagingDataPrivacy.html).
 
-##### Custom Events
-* `SceneOpened`
-  * Description: Event sent each time the scene is loaded.
-  * Enabled: true
-  * Custom Parameters:
-    * `sceneName`
-* `ActionButtonPressed`
-  * Description: Event sent for each button press in the scene.
-  * Enabled: true
-  * Custom Parameters:
-    * `buttonName`
-    * `sceneName`
-    * `abGroup`
-    * `buttonNameBySceneName`
-    * `buttonNameByABGroup`
-    * `buttonNameBySceneNameAndABGroup`
-* `SceneSessionLength`
-  * Description: Event sent to indicate the length of time between when `Start()` is triggered on the AnalyticsManager script and the back button in the scene is pressed (effectively the time spent in the scene).
-  * Enabled: true
-  * Custom Parameters:
-    * `timeRange`
-    * `sceneName`
-    * `abGroup`
-    * `timeRangeBySceneName`
-    * `timeRangeByABGroup`
-    * `timeRangeBySceneNameAndABGroup`
+[Configure the following custom Analytics events](https://docs.unity.com/analytics/EventManager.html#Custom_Events):
 
-##### Custom Parameters
-* `sceneName`
-  * Description: The name of the scene where the event was triggered.
-  * Type: `STRING`
-* `buttonName`
-  * Description: The name of the button that has been pressed.
-  * Type: `STRING`
-* `abGroup`
-  * Description: The AB group and AB Test ID the user sending the analytics event has been grouped into. Formatted: "AB Group Name (AB Test ID)".
-  * Type: `STRING`
-* `timeRange`
-  * Description: A range of time spent in the scene where the event was triggered.
-  * Type: `STRING`
-* `buttonNameBySceneName`
-  * Description: Formatted string grouping button name with scene name. Formatted like "Button Name - Scene Name".
-  * Type: `STRING`
-* `buttonNameByABGroup`
-  * Description: Formatted string grouping button name with the A/B Group the user is in as determined by Remote Config. Formatted like "Button Name - AB Group (AB Test ID)".
-  * Type: `STRING`
-* `buttonNameBySceneNameAndABGroup`
-  * Description: Formatted string grouping button name with the scene name and A/B Group the user is in as determined by Remote Config. Formatted like "Button Name - Scene Name - AB Group (AB Test ID)".
-  * Type: `STRING`
-* `timeRangeBySceneName`
-  * Description: Formatted string grouping time range with the name of the scene where the time was spent. Formatted like "Time Range - Scene Name".
-  * Type: `STRING`
-* `timeRangeByABGroup`
-  * Description: Formatted string grouping time range with the the A/B Group the user is in as determined by Remote Config. Formatted like "Time Range - AB Group (AB Test ID)".
-  * Type: `STRING`
-* `timeRangeBySceneNameAndABGroup`
-  * Description: Formatted string grouping time range with the the scene name and the A/B Group the user is in as determined by Remote Config. Formatted like "Time Range - Scene Name - AB Group (AB Test ID)".
-  * Type: `STRING`
-  
+| **Event name**        | **Description**                                                                                                                                                                                                                                                   | **Enabled**  | **Custom parameters**                                                                                                                                                             |
+|-----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `SceneOpened`         | Sent each time you load the scene.                                                                                                                                                                                                                                | `true`       | `sceneName`                                                                                                                                                                       |
+| `ActionButtonPressed` | Sent each time you click a button in the scene.                                                                                                                                                                                                                   | `true`       | <ul><li>`abGroup`</li> <li>`buttonName`</li> <li>`buttonNameByABGroup`</li> <li>`buttonNameBySceneName`</li> <li>`buttonNameBySceneNameAndABGroup`</li> <li>`sceneName`</li></ul> |
+| `SceneSessionLength`  | Sent to indicate the time between loading the scene and clicking the back button (effectively how much time the player spent in the scene). In this example, you could use this data to understand how much real-world time it takes each test group to level up. | `true`       | <ul><li>`abGroup`</li> <li>`sceneName`</li> <li>`timeRange`</li> <li>`timeRangeByABGroup`</li> <li>`timeRangeBySceneName`</li> <li>`timeRangeBySceneNameAndABGroup`</li></ul>     |
+
+Configure the following custom parameters to support your custom events:
+
+| **Parameter name**                | **Type** | **Description**                                                                                                                                                                                   |
+|-----------------------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `abGroup`                         | string   | The A/B group and A/B Test ID the player is assigned to. The string format is `"A/B group name (A/B test ID)"`.                                                                                   |
+| `buttonName`                      | string   | The name of the button that the player clicked.                                                                                                                                                   |
+| `buttonNameByABGroup`             | string   | Groups the name of the button clicked with the player's A/B group. The string format is `"Button name - A/B group name(A/B test ID)"`.                                                            |
+| `buttonNameBySceneName`           | string   | Groups the name of the button clicked with the current scene's name. The string format is `"Button name - Scene name"`.                                                                           |
+| `buttonNameBySceneNameAndABGroup` | string   | Groups the name of the button clicked with the scene's name and the player's A/B group. The string format is `"Button name - Scene name - A/B group name(A/B test ID)"`.                          |
+| `sceneName`                       | string   | The name of the scene where the event is triggered.                                                                                                                                               |
+| `timeRange`                       | string   | The amount of time spent in the scene when the event is triggered.                                                                                                                                |
+| `timeRangeByABGroup`              | string   | Groups the time spent in the scene when the event is triggered with the player's A/B group. The string format is `"Time range - A/B group name(A/B test ID)"`.                                    |
+| `timeRangeBySceneName`            | string   | Groups the time spent in the scene when the event is triggered with the scene's name. The string format is `"Time range - Scene name"`.                                                           |
+| `timeRangeBySceneNameAndABGroup`  | string   | Groups the time spent in the scene when the event is triggered with the scene's name and the player's A/B group. The string format is `"Time range - Scene name - A/B group name (A/B test ID)"`. |
+
+
+**Note:** This extended list of potential parameters allows for a more flexible analysis of different parameter groupings in the [Data Explorer](https://docs.unity.com/analytics/DataExplorer.html) on the Analytics dashboard.
+Alternatively, you can send only the ungrouped parameters (for example, buttonName or sceneName) and perform any kind of grouped analysis you want by using the Data Export feature within the Data Explorer.
+
+#### Cloud Code
+
+[Publish the following script](https://docs.unity.com/cloud-code/implementation.html#Writing_your_first_script) in the **LiveOps** dashboard:
+
+| **Script**              | **Parameters** | **Description**                                                                                                                   | Location in project                                                                    |
+|-------------------------|----------------|-----------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------|
+| `GainXPAndLevelIfReady` | None           | Increments the player's XP and checks to see if the cumulative XP exceeds the level-up threshold defined by their A/B test group. | `Assets/Use Case Samples/AB Test Level Difficulty/Cloud Code/GainXPAndLevelIfReady.js` |
+
+**Note:** The Cloud Code scripts included in the Cloud Code folder are local copies because you cannot view the sample project's dashboard.
+Changes to these scripts do not affect the behavior of this sample because they are not automatically uploaded to the Cloud Code service.
+
+#### Economy
+
+[Configure the following resources](https://docs.unity.com/economy/) in the **LiveOps** dashboard:
+
+| **Resource type** | **Resource item** | **ID** | **Description**                                                          |
+|-------------------|-------------------|--------|--------------------------------------------------------------------------|
+| Currency          | Coin              | `COIN` | The currency that is distributed as a reward for the player leveling up. |
+
+#### Remote Config
+
+[Set up the following config values](https://docs.unity.com/remote-config/HowDoesRemoteConfigWork.html) in the **LiveOps** dashboard:
+
+| **Key**              | **Type** | **Description**                                                              | **Value**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+|----------------------|----------|------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `A_B_TEST_GROUP`     | string   | The identifier for which test user group the player is in.                   | `""`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| `A_B_TEST_ID`        | string   | The identifier for which A/B Test is actively being run for this user.       | `""`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| `LEVEL_UP_XP_NEEDED` | int      | The amount of XP needed for the player to level up.                          | `100`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
+| `XP_INCREASE`        | int      | The amount the player's XP will increase by each time they gain XP.          | `10`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| `CURRENCIES`         | json     | A cross-reference from currencyId to spriteAddresses for all currency types. | {<br>&nbsp;&nbsp;&nbsp;&nbsp;"currencyData": [{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"currencyId": "COIN",<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"currencySpec": {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"spriteAddress": "Sprites/Currency/Coin"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;}, {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"currencyId": "GEM",<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"currencySpec": {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"spriteAddress": "Sprites/Currency/Gem"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;}, {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"currencyId": "PEARL",<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"currencySpec": {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"spriteAddress": "Sprites/Currency/Pearl"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;}, {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"currencyId": "STAR",<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"currencySpec": {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"spriteAddress": "Sprites/Currency/Star"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;}]<br>} |
+    
+ #### Game Overrides
+
+[Configure the following Overrides](https://docs.unity.com/gameoverrides/CreateAnOverride.html) in the **LiveOps** dashboard:
+
+
+| **Details**    | Name the Override “Level Difficulty A/B Test”.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+|----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Targeting**  | Select **Stateful (Audiences)** with 100% of audiences targeted.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| **Content**    | Select **Choose content type** > **Config Overrides**. <ol><li> Enter override values for the following keys for variant 1:<ul><li>A_B_TEST_GROUP: “A”</li> <li>A_B_TEST_ID: “LevelDifficultyTest1”</li> <li>LEVEL_UP_XP_NEEDED: 100</li></ul></li> <li>Enter override values for the following keys for variant 2: <ul><li>A_B_TEST_GROUP: “B”</li> <li>A_B_TEST_ID: “LevelDifficultyTest1”</li> <li>LEVEL_UP_XP_NEEDED: 80</li></ul> <li>Enter override values for the following keys for variant 3: <ul><li>A_B_TEST_GROUP: “C”</li> <li>A_B_TEST_ID: “LevelDifficultyTest1”</li> <li>LEVEL_UP_XP_NEEDED: 60</li></ul></li> <li>Enter override values for the following keys for variant 4: <ul><li>A_B_TEST_GROUP: “D”</li> <li>A_B_TEST_ID: “LevelDifficultyTest1”</li> <li>LEVEL_UP_XP_NEEDED: 50</li></ul></li> <li>Enter override values for the following keys for variant 5: <ul><li>A_B_TEST_GROUP: “E”</li> <li>A_B_TEST_ID: “LevelDifficultyTest1”</li> <li>LEVEL_UP_XP_NEEDED: 30</li></ul></li></ol> |
+| **Scheduling** | Set the following start and end dates:<ul><li>Set **Start Date** to **Update content immediately**.</li><li>Set **End Date** to **Run indefinitely**.</li></ul>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+
+**Important:** After configuring your Overrides, remember to enable them by selecting the Override from the list and clicking the Enable button.

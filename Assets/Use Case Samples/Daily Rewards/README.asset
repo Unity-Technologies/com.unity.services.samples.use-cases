@@ -22,7 +22,7 @@ MonoBehaviour:
     body: 'The Daily Reward (Monthly) Calendar is a prevalent feature in connected
       games. Whether it is presented in a weekly or monthly calendar, with or without
       completion streaks, Daily Rewards are present in games across all genre to
-      boost retention. '
+      boost retention.'
     bodyFormat: 0
     boxCallout: 
     bulletList: []
@@ -129,6 +129,7 @@ MonoBehaviour:
         - body: '{ "spriteAddress": "Sprites/Currency/Coin" }'
           bodyFormat: 0
           bulletList: []
+      linkList: []
     - body: GEM
       bodyFormat: 0
       bulletList:
@@ -138,6 +139,7 @@ MonoBehaviour:
         - body: '{ "spriteAddress": "Sprites/Currency/Gem" }'
           bodyFormat: 0
           bulletList: []
+      linkList: []
     - body: PEARL
       bodyFormat: 0
       bulletList:
@@ -147,6 +149,7 @@ MonoBehaviour:
         - body: '{ "spriteAddress": "Sprites/Currency/Pearl" }'
           bodyFormat: 0
           bulletList: []
+      linkList: []
     - body: STAR
       bodyFormat: 0
       bulletList:
@@ -156,6 +159,7 @@ MonoBehaviour:
         - body: '{ "spriteAddress": "Sprites/Currency/Star" }'
           bodyFormat: 0
           bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: Packages Required
     subHeader2: 
@@ -168,26 +172,32 @@ MonoBehaviour:
         track of their data on the server side.'
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: 'Economy: Retrieves the starting and updated currency balances at runtime.'
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: 'Cloud Code: Accesses the current event status, claims Daily Rewards
         and resets the feature at the end of the month for demonstration purposes.
         It also calls Remote Config to determine the parameters for the Daily Rewards
         (rewards to grant, number and duration of days, etc.) '
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: 'Remote Config: Defines parameters for the Daily Rewards event including
         rewards granted on each day, day duration, number of days, etc. '
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: 'Addressables: Allows asset retrieval by address. '
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: 'Cloud Save: Stores and retrieves the event status such as start epoch
         time, days claimed, etc. '
       bodyFormat: 0
       bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: 
@@ -237,6 +247,7 @@ MonoBehaviour:
       - body: 'ID: "COIN"'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: Gem
       bodyFormat: 1
       bulletList:
@@ -246,6 +257,7 @@ MonoBehaviour:
       - body: 'ID: "GEM"'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: Pearl
       bodyFormat: 1
       bulletList:
@@ -255,6 +267,7 @@ MonoBehaviour:
       - body: 'ID: "PEARL"'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: Star
       bodyFormat: 1
       bulletList:
@@ -264,6 +277,7 @@ MonoBehaviour:
       - body: 'ID: "STAR"'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: Cloud Code Scripts
@@ -285,6 +299,7 @@ MonoBehaviour:
       - body: 'Script: "Assets/Use Case Samples/Daily Rewards/Cloud Code/DailyRewards_GetStatus.js"'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: DailyRewards_Claim
       bodyFormat: 1
       bulletList:
@@ -299,6 +314,7 @@ MonoBehaviour:
       - body: 'Script: "Assets/Use Case Samples/Daily Rewards/Cloud Code/DailyRewards_Claim.js"'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: DailyRewards_ResetEvent
       bodyFormat: 1
       bulletList:
@@ -312,15 +328,46 @@ MonoBehaviour:
       - body: 'Script: "Assets/Use Case Samples/Daily Rewards/Cloud Code/DailyRewards_ResetEvent.js"'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: 
     subHeader3: 
     body: 
-    bodyFormat: 1
+    bodyFormat: 0
     boxCallout: 'Note: The Cloud Code scripts included in the `Cloud Code` folder
       are just local copies, since you can''t see the sample''s dashboard. Changes
       to these scripts will not affect the behavior of this sample since they will
       not be automatically uploaded to Cloud Code service.'
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: Remote Config
+    subHeader3: Config Value
+    body: 
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: DAILY_REWARDS_CONFIG
+      bodyFormat: 1
+      bulletList:
+      - body: Describes all configuration values required and rewards to be granted
+          for the Daily Reward feature.
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Type: json'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Value: see markdown README for details.'
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 
     bulletList: []
     linkList: []

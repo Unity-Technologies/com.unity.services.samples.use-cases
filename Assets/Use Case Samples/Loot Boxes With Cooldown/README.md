@@ -1,44 +1,76 @@
 # Loot Boxes With Cooldown
-Loot Boxes With Cooldown permits granting currencies and inventory items to players at timed intervals as a strategy to boost player retention and interest over time. Loot Boxes are a great way to make players feel engaged and motivated to keep playing and get rewarded for it.
 
-This sample shows how to set up a random Loot Box in your game, or, in other words, how to grant players timed rewards consisting of multiple, random currencies and inventory items. This sample covers the case where, after a player claims a Loot Box, they must wait a pre-set amount of time before claiming another.
+Whether they're receiving items, currencies, extra lives, or power-ups, players love free stuff! Awarding daily gifts to players that return to your game boosts engagement, intrinsic motivation to check in regularly, and overall interest in your game. Daily rewards can also act as a precursor to introducing monetized in-app purchases in the future.
 
-### Implementation Overview
-This sample demonstrates how to initialize Unity Services, retrieve and update current values from the Economy service, call Cloud Code to pick random Currencies and Inventory Items from internal lists, then call the Economy service directly to grant the reward, returning the final results to the calling Unity C# script.
+This sample demonstrates how to grant randomized rewards on a timed cooldown. After a player claims their reward, they must wait a preset amount of time before claiming another reward.
 
-Cloud Code is used to access Cloud Save to implement a cooldown between rewards and returns:
+![Loot Boxes With Cooldown scene](Documentation~/Loot_Boxes_With_Cooldown_Scene.png)
 
-* A flag if the claim button should be enabled
-* The current cooldown in seconds
-* The default cooldown needed to reset the timer locally when a reward is claimed
+## Overview
 
-Note: This sample also includes enhanced error handling to catch and resolve issues arising from calling the Economy service too frequently (more than 5x per second) which causes the _EconomyException_ with reason _RateLimited_. This sample catches the exception, pauses .1 seconds with exponential back-off, then retries until success.
+To see this use case in action:
+1. In the Unity Editor **Project** window, select **Assets**.
+2. Double-click `Start Here.unity` to open the samples menu scene.
+3. Enter **Play Mode**.
+4. Click **Loot Boxes with Cooldown** to interact with this use case.
 
-### Packages Required
-- **Economy:** Retrieves the starting and updated currency balances at runtime.
-- **Cloud Save:** Stores and retrieves the last grant time to allow cooldown values to persist between sessions.
-- **Cloud Code:** Accesses the cooldown status, picks and grants random currency and inventory items through the Economy server, and returns the result of the reward.
+### Initialization
 
-See the [Economy](https://docs.unity.com/Economy), [Cloud Save](https://docs.unity.com/Cloud-Save) and [Cloud Code](https://docs.unity.com/Cloud-Code) docs to learn how to install and configure these SDKs in your project.
+1. The `DailyRewardsSceneManager` script initializes Unity Gaming Services in its `Start` function.
+2. The game retrieves and updates values from the Economy service.
 
-### Dashboard Setup
-To use Economy, Cloud Save, and Cloud Code services in your game, activate each service for your organization and project in the Unity Dashboard. You’ll need a few currency and inventory items for your reward, as well as scripts in Cloud Code:
+### Functionality
 
-#### Economy Items
-* Coin - `ID: "COIN"` - a currency reward
-* Gem - `ID: "GEM"` - a currency reward
-* Pearl - `ID: "PEARL"` - a currency reward
-* Star - `ID:"STAR"` - a currency reward
-* Sword - `ID:"SWORD"` - an inventory item reward
-* Shield - `ID:"SHIELD"` - an inventory item reward
+When you click the **Claim Daily Reward** button, you receive a random amount of rewards from the available pool (indicated in the currency HUD). For demonstration purposes, the cooldown is set to 60 seconds. The following occurs on the backend:
+1. The button's `OnClick` method calls Cloud Code to execute the `GrantTimedRandomReward` function, which picks random currencies and inventory items from internal lists to award.
+2. The Economy service directly grants the reward and returns the final results to the calling Unity C# script.
 
-#### Cloud Code Scripts
-* LootBoxesWithCooldown_GetStatus:
-  * Parameters: `none`
-  * Script: `Assets/Use Case Samples/Loot Boxes With Cooldown/Cloud Code/LootBoxesWithCooldown_GetStatus.js`
-* LootBoxesWithCooldown_Claim:
-  * Parameters: `none`
-  * Script: `Assets/Use Case Samples/Loot Boxes With Cooldown/Cloud Code/LootBoxesWithCooldown_Claim.js`
+This example also uses Cloud Code to access Cloud Save to implement a cooldown between rewards and returns:
+- A flag if the **Claim Daily Rewards** button should be enabled.
+- The current cooldown in seconds.
+- The default cooldown needed to reset the timer locally when a reward is claimed.
 
-_**Note**:
-The Cloud Code scripts included in the `Cloud Code` folder are just local copies, since you can't see the sample's dashboard. Changes to these scripts will not affect the behavior of this sample since they will not be automatically uploaded to Cloud Code service._
+**Note**: This sample also includes enhanced error handling to catch and resolve issues that arise from calling the Economy service too frequently (more than five times per second), which triggers theEconomyException exception with the RateLimited reason. This sample catches the exception, pauses .1 seconds with exponential back-off, and then retries until it succeeds.
+
+## Setup
+
+### Requirements
+
+To replicate this use case, you need the following [Unity packages](https://docs.unity3d.com/Manual/Packages.html) in your project:
+
+| **Package**                                                                          | **Role**                                                                                                                                                  |
+| ------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Cloud Code](https://docs.unity.com/cloud-code/implementation.html#SDK_installation) | Accesses the cooldown status, picks and grants random currency and inventory items through the Economy server, and then returns the result of the reward. |
+| [Cloud Save](https://docs.unity.com/cloud-save/implementation.html#SDK-installation) | Stores and retrieves the last granted reward time to allow cooldown values to persist between sessions.                                                   |
+| [Economy](https://docs.unity.com/economy/SDK-installation.html)                      | Retrieves the starting and updated currency balances at runtime.                                                                                          |To use these services in your game, activate each service for your Organization and project in the[Unity Dashboard](https://dashboard.unity3d.com/).**
+
+
+### Dashboard setup
+
+To replicate this sample scene's setup on your own dashboard, you need to:
+- Publish two scripts in Cloud Code.
+- Create four Currencies and two Inventory Items for the Economy service.
+
+
+#### Cloud Code
+
+[Publish the following scripts](https://docs.unity.com/cloud-code/implementation.html#Writing_your_first_script) in the **LiveOps** dashboard:
+
+| **Script**                       | **Parameters** | **Description**                                                                                                                                                                 | **Location in project**                                                              |
+|----------------------------------| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |--------------------------------------------------------------------------------------|
+| `GrantTimedRandomReward`         | None           | Checks if the cooldown has expired (or was never set), then selects a random reward from the reward pool, grants the reward to the player, and then updates the cooldown timer. | `Assets/Use Case Samples/Daily Rewards/Cloud Code/GrantTimedRandomReward.js`         |
+| `GrantTimedRandomRewardCooldown` | None           | Checks for the last grant time and returns a flag indicating if the player is eligible for a reward.                                                                            | `Assets/Use Case Samples/Daily Rewards/Cloud Code/GrantTimedRandomRewardCooldown.js` |**Note**: The Cloud Code scripts included in theCloud Code folder are local copies because you cannot view the sample project's dashboard. Changes to these scripts do not affect the behavior of this sample because they are not automatically uploaded to the Cloud Code service.**
+
+
+#### Economy
+
+[Configure the following resources](https://docs.unity.com/economy/) in the **LiveOps** dashboard:
+
+| **Resource type** | **Resource name** | **ID**    | **Description**                                            |
+| ----------------- | ----------------- |-----------| ---------------------------------------------------------- |
+| Currency          | Coin              | `COIN`    | A currency for the randomized loot box reward pool.        |
+| Currency          | Gem               | `GEM`     | A currency for the randomized loot box reward pool.        |
+| Currency          | Pearl             | `PEARL`   | A currency for the randomized loot box reward pool.        |
+| Currency          | Star              | `STAR`    | A currency for the randomized loot box reward pool.        |
+| Inventory item    | Sword             | `SWORD`   | An inventory item for the randomized loot box reward pool. |
+| Inventory item    | Shield            | `SHIELD`  | An inventory item for the randomized loot box reward pool. |

@@ -30,7 +30,7 @@ MonoBehaviour:
     subHeader2: 
     subHeader3: 
     body: 'This sample shows how to create a one-time deal Starter Pack in your game
-      that a player can purchase with in-game currency. '
+      that a player can purchase with in-game currency.'
     bodyFormat: 0
     boxCallout: 
     bulletList: []
@@ -66,13 +66,16 @@ MonoBehaviour:
     - body: Verifies the player has not yet claimed this one-time deal.
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: Makes the purchase directly with the Economy service.
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: Sends an update to Cloud Save directly so we know in the future that
         this player has already claimed this one-time deal.
       bodyFormat: 0
       bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: 
@@ -95,16 +98,20 @@ MonoBehaviour:
         track of their data on the server side.'
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: 'Economy: Keeps track of the player''s currencies and inventory. '
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: 'Cloud Code: Keeps important validation logic on the server side. '
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: 'Cloud Save: We store small pieces of special information in Cloud Save,
         such as a flag that says this user did already claim their Starter Pack. '
       bodyFormat: 0
       bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: 
@@ -150,6 +157,7 @@ MonoBehaviour:
       - body: 'ID: "GEM"'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: Coin
       bodyFormat: 1
       bulletList:
@@ -159,6 +167,7 @@ MonoBehaviour:
       - body: 'ID: "COIN"'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: Pearl
       bodyFormat: 1
       bulletList:
@@ -168,6 +177,7 @@ MonoBehaviour:
       - body: 'ID: "PEARL"'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: Sword
       bodyFormat: 1
       bulletList:
@@ -177,6 +187,35 @@ MonoBehaviour:
       - body: 'ID: "SWORD"'
         bodyFormat: 0
         bulletList: []
+      linkList: []
+    - body: Starter Pack
+      bodyFormat: 1
+      bulletList:
+      - body: A Virtual Purchase required to process the Starter Pack purchase
+        bodyFormat: 0
+        bulletList: []
+      - body: 'ID: "STARTER_PACK"'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Cost:'
+        bodyFormat: 0
+        bulletList:
+        - body: 10 Gems
+          bodyFormat: 0
+          bulletList: []
+      - body: 'Rewards:'
+        bodyFormat: 0
+        bulletList:
+        - body: 100 Coins
+          bodyFormat: 0
+          bulletList: []
+        - body: 1 Sword
+          bodyFormat: 0
+          bulletList: []
+        - body: 10 Pearls
+          bodyFormat: 0
+          bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: Cloud Code Scripts
@@ -194,6 +233,7 @@ MonoBehaviour:
       - body: 'Script: "Assets/Use Case Samples/Starter Pack/Cloud Code/StarterPack_PurchaseStarterPack.js"'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: 

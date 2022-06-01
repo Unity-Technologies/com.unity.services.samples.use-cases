@@ -17,13 +17,12 @@ At startup, this scene reads the Remote Config for the Virtual Shop use case sam
 When the scene loads, the `VirtualShopSceneManager.cs` script performs the following initialization tasks:
 
 1. Initializes Unity Gaming Services.
-2. Sends a `SceneOpened` custom event to the Analytics service. This, along with the `SceneSessionLength` custom event (sent when you click the back button), tracks the player's session length in the scene as an example of how you can implement analytics to evaluate the results of your test.
-3. Signs in the player [anonymously](https://docs.unity.com/authentication/UsingAnonSignIn.html) using the Authentication service. If you’ve previously initialized any of the other sample scenes, Authentication will use your cached Player ID instead of creating a new one.
-4. Retrieves and updates the player's currency balances from the Economy service.
-5. Queries the Remote Config service to fetch the Virtual Shop configuration data. This includes:
+2. Signs in the player [anonymously](https://docs.unity.com/authentication/UsingAnonSignIn.html) using the Authentication service. If you’ve previously initialized any of the other sample scenes, Authentication will use your cached Player ID instead of creating a new one.
+3. Retrieves and updates the player's currency balances from the Economy service.
+4. Queries the Remote Config service to fetch the Virtual Shop configuration data. This includes:
     1. Currency and inventory item sprites from the Addressables service so they can be displayed in the shop UI.
     2. Virtual Purchase Transactions for use in the store. The Remote Config data determines which categories to put each transaction in, and which icons to use.
-6. The client updates the shop UI based on the Remote Config data.
+5. The client updates the shop UI based on the Remote Config data.
 
 ### Functionality
 
@@ -49,7 +48,7 @@ You can change purchase categories by clicking the tabs to the left of the purch
 
 #### Back button
 
-Pressing the back button in the top-left corner returns you to the "Start Here" scene and triggers a `SceneSessionLength` custom Analytics event, which captures the amount of time spent in this scene.
+Pressing the back button in the top-left corner returns you to the "Start Here" scene.
 
 ## Setup
 
@@ -60,7 +59,6 @@ To replicate this use case, you need the following [Unity packages](https://docs
 | **Package** | **Role** |
 | :---        | :-----   | 
 | [Addressables](https://docs.unity.com/authentication/Content/InstallAndConfigureSDK.htm) | Allows developers to ask for an asset via its address. Wherever the asset resides (local or remote), the system will locate it and its dependencies, then return it. |
-| [Analytics](https://docs.unity.com/analytics) | Sends events that allow you to track a player's in-game interactions, retention, and other information that you can use to analyze and improve the game experience. |
 | [Authentication](https://docs.unity.com/authentication) | Automatically signs in the user anonymously to keep track of their data on the server side. |
 | [Economy](https://docs.unity.com/economy/Content/implementation.htm) | Keeps track of the player's currencies and inventory items, as well as definitions for all currencies, inventory items and Virtual Purchase transactions. Currencies and inventory items all include Custom data to identify which icon sprites to use in the shop. |
 | [Remote Config](https://docs.unity.com/remote-config) | Provides key-value pairs where the value that is mapped to a given key can be changed on the server-side, either manually or based on specific Game Overrides. The `VIRTUAL_SHOPS_CONFIG` entry stores all details for Virtual Purchase transactions to be available in each Category. |
@@ -71,31 +69,9 @@ To use these services in your game, activate each service for your Organization 
 
 To replicate this sample scene's setup on your own dashboard, you need to:
 
-* Create custom events for the Analytics service.
 * Create Currencies, Inventory Items, and Virtual Purchases for the Economy service.
 * Configure values in the Remote Config service.
 
-The Analytics custom events configuration contains a long list of potential parameters that are sent with some of the events. This extended list allows for a more flexible analysis of different parameter groupings in the Data Explorer on the Analytics dashboard. Alternatively, you could send only the ungrouped parameters (for example, buttonName or sceneName), and perform any kind of grouped analysis by using the Data Export feature within the Data Explorer on the dashboard.
-
-***Important:*** This sample demonstrates the code that is needed to trigger Analytics events. However, additional code might be necessary to meet legal requirements such as GDPR, CCPA, and PIPL. For more information, see the documentation on [managing data privacy](https://docs.unity.com/analytics/ManagingDataPrivacy.html).
-
-[Configure](https://docs.unity.com/analytics/EventManager.html#Custom_Events) and enable the following custom Analytics events:
-
-| **Event name** | **Description** | **Custom parameters** |
-| :------------- | :-------------- | :-------------------- |
-| `SceneOpened` | Sent each time you load the scene. | <ul><li>`sceneName`</li></ul> |   
-| `SceneSessionLength` | Sent to indicate the time spent in the scene (measured as the length of time between when `AnalyticsManager.Start()` triggers and the player presses the back button in the scene). | <ul><li>`remoteConfigActiveEvent`</li><li>`sceneName`</li><li>`timeRange`</li><li>`timeRangeByRemoteConfigActiveEvent`</li><li>`timeRangeBySceneName`</li><li>`timeRangeBySceneNameAndRemoteConfigActiveEvent`</li></ul> |
-
-Configure the following custom parameters to support your custom events:
-
-| **Parameter name** | **Type** | **Description** |
-| :----------------- | :------- | :-------------- |
-| `remoteConfigEvent` | string | The active event as defined in and determined by Remote Config. |
-| `sceneName` | string | The name of the scene where the event is triggered. |
-| `timeRange` | string | The amount of time spent in the scene when the event is triggered. |
-| `timeRangeByRemoteConfigEvent` | string | Groups the time spent in the scene when the event is triggered with the active Remote Config event. The string format is "`Time range - Event key`". |
-| `timeRangeBySceneName` | string | Groups the time spent in the scene when the event is triggered with the scene's name. The string format is "`Time range - Scene name`". |
-| `timeRangeBySceneNameAndRemoteConfigEvent` | string | Groups the time spent in the scene when the event is triggered with the scene's name and the active Remote Config event. The string format is "`Time range - Scene name - Event key`". |
 
 #### Economy
 

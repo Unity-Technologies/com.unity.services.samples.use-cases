@@ -1,158 +1,117 @@
 # Command Batching
-Command batching is the concept where each game action is a Command which can be collected into a queue to be sent to the server in batches for processing.
-Using Command batching can optimize the bandwidth your game uses to be as energy efficient as possible or to prevent your game from running slowly because of frequent server calls or server bottlenecks (rate limiting).
-This optimization provides users with a more pleasant game experience with less wait times by reducing the number and/or frequency of server calls made by your game.
 
-This sample demonstrates a game where the player has a specified number of turns, and Commands are created and saved for each move the player makes on a turn.
-At the end of the game, all Commands that were created are then processed by the server as a group.
+Command batching is the concept where each game action is a Command which can be collected into a queue to be sent to the server in batches for processing. Command batching optimizes your game’s bandwidth to be as energy efficient as possible, and prevent poor performance due to frequent server calls or rate limiting. This provides a smoother game experience with less downtime.
 
-This strategy reduces how many server calls need to be made in a game.
-Imagine a game that distributes rewards on the server after every Command, in particular rewarding a player XP by calling Cloud Save and Coins by calling Economy.
-For example:
-- The first command increases XP by 100 and distributes 10 Coins.
-- The second command increases XP by 50 and distributes 5 Coins.
-- The third command increases XP by 100 and distributes 30 Coins.
+In this sample, the player has a fixed number of turns. Each simulated action generates a command that is cached, then executed by the server as part of a batch at the end of the game, thereby reducing the number of calls to the server.
 
-These three Commands would then result in a minimum of six calls to various Unity Services (in this case Cloud Save and Economy).
-You can see how in a full game this could end up with a lot of server calls being made while the game is being played, potentially slowing the game.
-However, if all three of these Commands are stored in a batch and processed at one time (described in greater detail in the [Implementation Overview](#implementation-overview) section below), it would result in just two Unity Services calls: one to Cloud Save to increase XP by 250, and one to Economy to add 45 Coins.
+For example, consider a game that distributes rewards after every action by calling Cloud Save to distribute player XP and Economy to distribute Coins. The player completes the following three actions:
+- The first action results in 100 XP and 10 Coins.
+- The second action results in 50 XP and 5 Coins.
+- The third action results in 200 XP and 30 Coins.
 
-### Implementation Overview
-This use case is structured such that a single "game" involves making a specified number of turns, where a single turn is completed by clicking on one of four buttons.
-Each button generates a different Command, with different corresponding rewards.
-The Command is processed by being added to a batch queue (for future server processing) as well as by distributing its rewards locally.
-This local reward distribution allows players to immediately see the results of the turn, but is not considered truly authoritative; you'll see momentarily that any local distributions will get overwritten by the server after it validates and processes the Commands.
-Once the player has completed all their turns, the game is over and the queue of Commands are sent to Cloud Code as a single json blob.
+These three actions would result in a minimum of six calls to various Unity Services (in this case, Cloud Save and Economy). However, if all three of these actions are stored as batch commands and processed a single time, the game would only make two Unity Services calls: one to Cloud Save to increase XP by 350, and one to Economy to add 45 Coins.
 
-The first step of the Cloud Code script is to unpack the json blob into a list of Commands again.
-The next step is to verify that the batch contains exactly the number of Commands expected (in this example the batch is always the same number of Commands, however that does not have to be a requirement), and that the Commands are in an order that is legal game play (for example the Achieve Bonus Goal Command cannot be triggered until the Open Chest Command has occurred).
-If anything about the batch of Commands is deemed invalid, the script will return a failure and the Commands' rewards will not be distributed on the server.
-However if the batch is valid, the Cloud Code script will proceed to the next step.
-This step is to determine what rewards should be distributed as a result of the Commands (for example, Command = “enemy defeated”; reward = “add 10 XP”).
-This information is received from Remote Config.
-Storing the Command and Reward mapping on Remote Config allows for rewards to be tuned remotely in a single place, while still changing the distributions done locally by the client, as well as remotely by the server.
-The rewards for all the Commands in the batch are grouped by type (for example, all Commands may increase XP, these XP increases would be added up so that a single server call updates the XP by the total amount).
-Finally, the Cloud Code script will make all the necessary calls to the Unity Services APIs (in this case, Economy and Cloud Save) to distribute the rewards.
-Once distribution is complete, the script returns, indicating the successful action to the client.
+![Command Batching scene](Documentation~/Command_Batching_scene.png)
 
-Whenever the Cloud Code script returns (either on success or failure) the client code calls the Unity Services to get their latest data.
-If the batch was processed successfully by the server, this should result in no visible change to the player's wallet or other stats (because from their perspective the rewards were distributed immediately during game play).
-However, if the batch was invalid and the Cloud Code script failed to process the batch, the client will update the player's wallet and other stats back to where they were at before the game was played, overwriting the local state.
 
-This creates a bit of a mixed-authoritative game.
-During certain periods of time the game relies on the local authority to know what the player's wallet and stats are.
-However, the server ultimately has the final authority on the player's state.
-While this mixed-authority is not appropriate for all game styles, it can be very useful for the game styles that can use it, such as turn-based, single-player, infinite runner, and puzzle games.
-Additionally, Command batching can be a good starting point when developing a solution for offline support or bad connection tolerance in games that choose to provide such features.
+## Overview
 
-### Packages Required
-- **Cloud Code:** Processes Commands at the end of a game.
-- **Remote Config:** Contains the mapping between Commands and their rewards used by both the client and Cloud Code when distributing rewards.
-- **Economy:** Manages the currencies that are distributed as rewards.
-- **Cloud Save:** Manages certain player stats (XP and Goals Achieved) that are increased as rewards.
 
-See the
-[Cloud Code](https://docs.unity.com//cloud-code/Content/implementation.htm?tocpath=Implementation%7C_____0#SDK_installation),
-[Remote Config](https://docs.unity3d.com/Packages/com.unity.remote-config@2.0/manual/ConfiguringYourProject.html),
-[Economy](https://docs.unity.com/economy/Content/implementation.htm?tocpath=Implementation%7C_____0),
-and [Cloud Save](https://docs.unity.com/cloud-save/Content/index.htm#Implementation) 
-docs to learn how to install and configure these SDKs in your project.
+To see this use case in action:
+1. In the Unity Editor **Project** window, select **Assets** > **Use Case Samples** > **Command Batching**, and then double-click `CommandBatchingSample.unity` to open the sample scene.
+2. Enter **Play Mode** to interact with the use case.
 
-### Dashboard Setup
-To use Cloud Code, Remote Config, Economy, and Cloud Save services in your game, activate each service for your organization and project in the Unity Dashboard.
 
-#### Economy Items
-* Coin - `ID: "COIN"` - A reward for certain Commands
-* Gem - `ID: "GEM"` - A reward for certain Commands
+### Initialization
+
+The `CommandBatchingSceneManager.cs` script performs the following initialization tasks in its `Start` function:
+1. Initializes Unity Gaming Services.
+2. Signs in the player by using the Authentication service.
+3. Retrieves and updates the player's currency balances from the Economy service.
+4. Initializes the game interface and buttons.
+
+
+### Functionality
+
+
+#### Player turns
+
+
+In this sample, a single "game" involves making a fixed number of turns, where a single turn is completed by clicking on one of four buttons. Each button represents a simulated action with corresponding rewards. When you click on one of the action buttons, the following occurs on the backend:
+1. The button’s `OnClick` method calls the `CommandBatchingSceneManager.cs` script, which consumes a turn.
+2. The script then generates a command associated with the action you clicked and sends it to the batch queue for future server processing. Each command uses Remote Config values to map rewards for the corresponding action.
+3. It also calls that action’s associated `CommandSystem` script to distribute rewards to the client.
+<br>**Note**: Local reward distribution allows players to immediately see the results of the turn, but is not server-authoritative. The server overwrites any local distributions after it validates and processes all commands at the end of the game.
+4. Finally, the calling script checks to see if the player is out of turns, in which case it triggers the game-over condition.
+
+
+#### Gave over
+
+When the player has zero turns remaining, the game is over. The following occurs on the backend:
+1. The client adds a final game over command to the batch queue.
+2. The client sends the entire command queue to Cloud Code as a single JSON.
+3. The `CommandBatch_ProcessBatch.js` Cloud Code script unpacks the JSON blob into a list of commands again, then verifies that the batch contains the exact number of expected commands in a valid order (for example, the player cannot trigger the **Achieve Bonus Goal** command until the **Open Chest** command occurs).
+4. If the batch is valid, the Cloud Code script retrieves the rewards to distribute from Remote Config values then issues them directly through the Economy (currencies) and Cloud Save (`XP` and `GoalsAchieved`) services. If the batch is invalid, the script returns an error and rewards will not be distributed on the server.
+
+Mapping the rewards in Remote Config allows you to tune them remotely in a single place, affecting both the client-side and server-side distributions simultaneously. The rewards for all commands in the batch are grouped by type, so if multiple commands increase XP, the total XP gains are added up and updated with a single server call to Cloud Save.
+
+Whether or not the Cloud Code script returns success or failure, the client code calls the Unity Services to retrieve their latest data. If the batch was processed successfully by the server, this should result in no visible change to the player's Currency, GoalsAchieved or XP HUDs, because from their perspective the rewards were distributed immediately during game play. However, if the Cloud Code script failed to process an invalid batch, the client updates the player's status back to what it was before the game was played, overwriting the local state.
+
+**Note**: This creates a mixed-authoritative game. At certain times, the game relies on the local (client) authority to know the player's stats and currency balances. However, the server ultimately has final authority on the player's state. While this mixed-authority setup is not appropriate for all game styles, it can be very useful for others, such as turn-based, single-player, infinite runner, and puzzle games. Command batching can also be a good starting point when developing a solution for offline support or bad connection tolerance in games that choose to provide such features.
+
+
+## Setup
+
+
+### Requirements
+
+To replicate this use case, you need the following [Unity packages](https://docs.unity3d.com/Manual/Packages.html) in your project:
+
+| **Package**                                                                 | **Role**                                                                                                                               |
+| --------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| [Cloud Code](https://docs.unity.com//cloud-code/Content/implementation.htm) | Processes queued commands at the end of a game.                                                                                        |
+| [Cloud Save](https://docs.unity.com/cloud-save/implementation.htm)          | Stores the mapping between commands and their corresponding rewards, which the client and Cloud Code references to distribute rewards. |
+| [Economy](https://docs.unity.com/economy/Content/implementation.htm)        | Retrieves the starting and updated currency balances at runtime.                                                                       |
+| [Remote Config](https://docs.unity.com/remote-config)                       | Maintains key-value stores for player stats, such as XP and Goals Achieved.                                                            |
+
+To use these services in your game, activate each service for your Organization and project in the [Unity Dashboard](https://dashboard.unity3d.com/).
+
+
+### Dashboard setup
+
+To replicate this sample scene's setup on your own dashboard, you need to:
+- Publish a script in Cloud Code.
+- Create two Currencies for the Economy service.
+- Configure Remote Config values.
+
+
+#### Cloud Code
+
+| **Script**                  | **Parameters**                                                                                                                                                                                                                                                                      | **Description**                                 | **Location**                                                                     |
+|-----------------------------| ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- | -------------------------------------------------------------------------------- |
+| `CommandBatch_ProcessBatch` | `batch`<br><br>An array of command keys. For example:<br><br>`{"commands": ["COMMANDBATCH_DEFEAT_RED_ENEMY", "COMMANDBATCH_OPEN_CHEST", "COMMANDBATCH_ACHIEVE_BONUS_GOAL", "COMMANDBATCH_DEFEAT_BLUE_ENEMY", "COMMANDBATCH_OPEN_CHEST", "COMMANDBATCH_ACHIEVE_BONUS_GOAL", "COMMANDBATCH_GAME_OVER"]}` | Processes queued commands at the end of a game. | `Assets/Use Case Samples/Command Batching/Cloud Code/CommandBatch_ProcessBatch.js` |
+
+**Note**: The Cloud Code scripts included in theCloud Code folder are local copies because you cannot see the sample's dashboard. Changes to these scripts do not affect the behavior of this sample because they are not automatically uploaded to the Cloud Code service.
+
+
+#### Economy
+
+| **Resource type** | **Resource name** | **ID** | **Description**               |
+| ----------------- | ----------------- | ------ | ----------------------------- |
+| Currency          | Coin              | `COIN` | A reward for certain actions. |
+| Currency          | Gem               | `GEM`  | A reward for certain actions. |
+
 
 #### Remote Config
-##### Config Values
-* COMMANDBATCH_ACHIEVE_BONUS_GOAL - Maps the Command Achieve Bonus Goal to its rewards.
-  * Type: json
-  * Value:
-  ```json
-    {
-        "rewards": [{
-            "service": "cloudSave",
-            "id": "COMMANDBATCH_XP",
-            "amount": 150
-        }, {
-            "service": "cloudSave",
-            "id": "COMMANDBATCH_GOALSACHIEVED",
-            "amount": 1
-        }]
-    }
-    ```
-* COMMANDBATCH_DEFEAT_BLUE_ENEMY - Maps the Command Defeat Blue Enemy to its rewards.
-  * Type: json
-  * Value:
-  ```json
-    {
-        "rewards": [{
-            "service": "currency",
-            "id": "GEM",
-            "amount": 5
-        }, {
-            "service": "cloudSave",
-            "id": "COMMANDBATCH_XP",
-            "amount": 50
-        }]
-    }
-    ```
-* COMMANDBATCH_DEFEAT_RED_ENEMY - Maps the Command Defeat Red Enemy to its rewards.
-  * Type: json
-  * Value:
-  ```json
-    {
-        "rewards": [{
-            "service": "currency",
-            "id": "COIN",
-            "amount": 5
-        }, {
-            "service": "cloudSave",
-            "id": "COMMANDBATCH_XP",
-            "amount": 50
-        }]
-    }
-    ```
-* COMMANDBATCH_OPEN_CHEST - Maps the Command Open Chest to its rewards.
-  * Type: json
-  * Value:
-  ```json
-    {
-        "rewards": [{
-            "service": "currency",
-            "id": "COIN",
-            "amount": 25
-        }, {
-            "service": "currency",
-            "id": "GEM",
-            "amount": 25
-        }, {
-            "service": "cloudSave",
-            "id": "COMMANDBATCH_XP",
-            "amount": 100
-        }]
-    }
-    ```
-* COMMANDBATCH_GAME_OVER - Maps the Command Game Over to its rewards.
-  * Type: json
-  * Value:
-  ```json
-    {
-        "rewards": [{
-            "service": "cloudSave",
-            "id": "COMMANDBATCH_XP",
-            "amount": 100
-        }]
-    }
-    ```
 
-#### Cloud Code Scripts
-* CommandBatch_ProcessBatch:
-  * Parameters: `batch` - An array of Command keys
-    * i.e. `{"commands": ["COMMANDBATCH_DEFEAT_RED_ENEMY", "COMMANDBATCH_OPEN_CHEST", "COMMANDBATCH_ACHIEVE_BONUS_GOAL", "COMMANDBATCH_DEFEAT_BLUE_ENEMY", "COMMANDBATCH_OPEN_CHEST", "COMMANDBATCH_ACHIEVE_BONUS_GOAL", "COMMANDBATCH_GAME_OVER"]}`
-  * Script: `Assets/Use Case Samples/Command Batching/Cloud Code/CommandBatch_ProcessBatch.js`
+[Set up the following config values](https://docs.unity.com/remote-config/HowDoesRemoteConfigWork.html) in the **LiveOps** dashboard:
 
-_**Note**:
-The Cloud Code scripts included in the `Cloud Code` folder are just local copies, since you can't see the sample's dashboard. Changes to these scripts will not affect the behavior of this sample since they will not be automatically uploaded to Cloud Code service._
+| **Value**                          | **Type** | **Description**                                                                  | **Default value**                                                                                                                                                                |
+|------------------------------------| -------- |----------------------------------------------------------------------------------| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `COMMANDBATCH_ACHIEVE_BONUS_GOAL`* | JSON     | Maps the **Achieve Bonus Goal** command to its corresponding rewards.            | <ul>{ <ul>"rewards":</ul><ul>\[{<ul>"service": "cloudSave",</ul><ul>"id": "COMMANDBATCH_XP",</ul><ul>"amount": 150</ul>},<br>{<ul>"service": "cloudSave",</ul><ul>"id": COMMANDBATCH_GOALSACHIEVED",</ul><ul>"amount": 1</ul>}]</ul>}</ul>                                                     |
+| `COMMANDBATCH_DEFEAT_BLUE_ENEMY`*  | JSON     | Maps the **Defeat Blue Enemy** button action to its corresponding rewards.       | <ul>{ <ul>"rewards":</ul><ul>\[{<ul>"service": "cloudSave",</ul><ul>"id": "COMMANDBATCH_XP",</ul><ul>"amount": 50</ul>},<br>{<ul>"service": "currency",</ul><ul>"id": “GEM",</ul><ul>"amount": 5</ul>}]</ul>}</ul>                                                     |
+| `COMMANDBATCH_DEFEAT_RED_ENEMY`*   | JSON     | Maps the **Defeat Red Enemy** button action to its corresponding rewards.        | <ul>{ <ul>"rewards":</ul><ul>\[{<ul>"service": "cloudSave",</ul><ul>"id": "COMMANDBATCH_XP",</ul><ul>"amount": 50</ul>},<br>{<ul>"service": "currency",</ul><ul>"id": COIN",</ul><ul>"amount": 5</ul>}]</ul>}</ul>                                                     |
+| `COMMANDBATCH_OPEN_CHEST`*         | JSON     | Maps the **Open Chest** button action to its corresponding rewards.              | <ul>{ <ul>"rewards":</ul><ul>\[{<ul>"service": "cloudSave",</ul><ul>"id": "COMMANDBATCH_XP",</ul><ul>"amount": 100</ul>},<br>{<ul>"service": "currency",</ul><ul>"id": “COIN",</ul><ul>"amount": 25</ul>},<br>{<ul>"service": "currency",</ul><ul>"id": “GEM",</ul><ul>"amount": 25</ul>}]</ul>}</ul>                                                     |
+| `COMMANDBATCH_GAME_OVER`*          | JSON     | Maps the game over command (no more turns remain) to its corresponding rewards.  | <ul>{ <ul>"rewards":</ul><ul>\[{<ul>"service": "cloudSave",</ul><ul>"id": "COMMANDBATCH_XP",</ul><ul>"amount": 100</ul>}]</ul>}</ul>                                                     |
+
+**\*Note**: The Remote Config `Values` are specific commands and cannot be changed nor new ones created without making corresponding changes to the Unity C# scripts and/or Cloud Code scripts.

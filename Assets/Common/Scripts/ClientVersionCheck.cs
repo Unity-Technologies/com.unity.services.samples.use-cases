@@ -11,7 +11,7 @@ namespace UnityGamingServicesUseCases
     {
         static bool s_VersionWasChecked;
 
-        const string k_NewerMinimumVersionTitle = "Newer Version Required";
+        const string k_NewerMinimumVersionTitle = "UGS Use Cases Update Required";
 
         const string k_NewerMinimumVersionMessage =
             "This working copy of the Unity Gaming Services Use Cases project is older than the " +
@@ -52,25 +52,30 @@ namespace UnityGamingServicesUseCases
 
             var clientVersion = new Version(Application.version);
             var clientVersionMinimumRaw = ConfigManager.appConfig.GetString("CLIENT_VERSION_MIN");
-            var clientVersionMinimum = new Version(clientVersionMinimumRaw);
             var clientVersionLatestRaw = ConfigManager.appConfig.GetString("CLIENT_VERSION_LATEST");
-            var clientVersionLatest = new Version(clientVersionLatestRaw);
 
-            if (clientVersion < clientVersionMinimum)
+            if (!string.IsNullOrEmpty(clientVersionMinimumRaw) 
+                && !string.IsNullOrEmpty(clientVersionLatestRaw))
             {
-                Debug.LogError(k_NewerMinimumVersionMessage);
+                var clientVersionMinimum = new Version(clientVersionMinimumRaw);
+                var clientVersionLatest = new Version(clientVersionLatestRaw);
+
+                if (clientVersion < clientVersionMinimum)
+                {
+                    Debug.LogError(k_NewerMinimumVersionMessage);
 
 #if UNITY_EDITOR
-                UnityEditor.EditorApplication.isPlaying = false;
-                UnityEditor.EditorUtility.DisplayDialog(k_NewerMinimumVersionTitle,
-                    k_NewerMinimumVersionMessage, "Okay");
+                    UnityEditor.EditorApplication.isPlaying = false;
+                    UnityEditor.EditorUtility.DisplayDialog(k_NewerMinimumVersionTitle,
+                        k_NewerMinimumVersionMessage, "Okay");
 #else
-                Application.Quit();
+                    Application.Quit();
 #endif
-            }
-            else if (clientVersion < clientVersionLatest)
-            {
-                Debug.Log(k_NewerLatestVersionMessage);
+                }
+                else if (clientVersion < clientVersionLatest)
+                {
+                    Debug.Log(k_NewerLatestVersionMessage);
+                }
             }
 
             s_VersionWasChecked = true;

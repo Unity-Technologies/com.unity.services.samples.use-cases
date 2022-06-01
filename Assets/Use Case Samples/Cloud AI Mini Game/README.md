@@ -1,87 +1,140 @@
 # Cloud AI Mini Game
-In some games, it's desirable to play a mini game as a reward or to advance game play. This sample demonstrates how to use Cloud Code and other UGS packages to validate game play in a mini game that implements a simple artificial opponent against the player. Additionally, this sample demonstrates how gameplay can be rewarded based on game outcome by awarding bonus Coins for wins and ties. This can make the mini games more enjoyable and even affect game economy going forward.
 
-This sample demonstrates how a user can play a Tic-Tac-Toe game against the AI and receive a Coin Currency reward based on the outcome: 100 Coins for a win, 25 for a tie. Each game begins with a random player (50% human, 50% AI) and progresses until a player successfully places 3 pieces in a row (win) or the board is full (tie).
 
-### Implementation Overview
-This sample uses 3 Cloud Code scripts to manage the game: 
-* CloudAi_GetState is called once at startup to return the existing game if possible or generate a random game if none exists. This script will also clear the player's Coin total to 0 at the start of the `first` game so win/tie count should reflect the current Coin quantity, unless other Use Case Samples are visited.
-* CloudAi_PlayerMove is called for each player move. The script is called with x,y coordinates and Cloud Code validates the player's move, makes an AI move if the game isn't over, determines if the game should end, and returns the final updated state. This script also maintains a win/loss/tie count and calls Economy to grant Coins for Wins and Ties.
-* CloudAi_StartNewGame is called when the player presses the [New Game] or [Forfeit] button (Forfeit replaces New Game whenever a game is in progress). This script checks if a game is in progress (`isGameOver` is false), and if so, the Loss Count is increased. Next, a new game is created, a random starting player is selected, and if AI is to go first, a piece is added at a random location on the board. Finally, the new game state is then returned to the client.
+Mini games introduce fun ways to earn additional rewards or advance gameplay. This sample demonstrates how to use Cloud Code with other UGS packages to validate game play by implementing a simple artificial opponent against the player in a tic-tac-toe mini game.
 
-At the start of the first game or whenever [Reset Game] is pressed, Cloud Code will reset the quantity of the Coin Currency to zero. By removing any initial Coins, the quantity will be a multiple of 100 or 25 which simplifies reward visualization. This also serves as example of how Currencies can be set to specific quantities from Cloud Code.
+![Cloud AI Mini Game scene](Documentation~/Cloud_AI_Mini_Game_scene.png)
 
-To verify that the AI works as expected, the AI is programmed to follow 3 simple rules:
-* If the AI can win, it always will (for example, if the AI has 2 pieces in a row with an empty space, it will make the winning play).
-* If the player has 2 in a row, the AI will always block the player's winning move.
-* Otherwise, it plays randomly.
 
-Popups occur at various key moments in the game, such as at startup to explain who plays first, at game over to notify the player of the winner (or tie), whenever the player makes an invalid move (for example, a player placing a piece atop an existing piece or plays after the game is over), and so on.
+## Overview
 
-Cloud Code directly accesses the Economy service to set a starting Coin quantity when no Cloud Save file is found (for example, the first time a player ever plays the game), as well as to grant Coins as a reward.
+In this sample, each mini game begins with a random player (50% human, 50% AI) and progresses until a player successfully places 3 pieces in a row (win) or the board is full (tie). The player receives 100 Coins for a win, 25 Coins for a tie, and nothing for a loss.
 
-Cloud Save keeps a json record of the full game state using the key "CLOUD_AI_GAME_STATE". The associated value stores sequential moves made by each player, the overall state, flags for game over, player turn, if this is a new game/move (so UI can show a popup, if appropriate), as well as a permanent counter for wins, losses and ties. To demonstrate the full game cycle, we've added the [Debug Reset Game] button which will remove the "CLOUD_AI_GAME_STATE" key from Cloud Save and call "CloudAi_GetState" as it did at the start of the session. Since Cloud Code then believes this to be a new player, it will reset Coin quantity to 0, create a new save state with all counters set to 0 and generate a new starting game with a random starting player.
+To see this use case in action:
+1. In the Unity Editor **Project** window, select **Assets** > **Use Case Samples** > **Cloud AI Mini Game**, and then double-click `CloudAIMiniGameSample.unity` to open the sample scene.
+2. Enter Play Mode to interact with the use case.
 
-### Packages Required
-- **Authentication:** Automatically signs in the user anonymously to keep track of their data on the server side.
-- **Cloud Code:** 3 scripts used to generate random games, validate game logic, execute AI turns, and grant Economy rewards based on game outcomes.
-- **Economy:** Stores current "COIN" count which is granted as a reward for winning/tying.
-- **Cloud Save:** Stores game state.
 
-See the [Authentication](http://documentation.cloud.unity3d.com/en/articles/5385907-unity-authentication-anonymous-sign-in-guide),
-[Cloud Code](https://docs.unity.com/cloud-code), [Economy](https://docs.unity.com/economy/Content/implementation.htm?tocpath=Implementation%7C_____0) and [Cloud Save](https://docs.unity.com/cloud-save)
-docs to learn how to install and configure these SDKs in your project.
+### Initialization
 
-### Dashboard Setup
-To use Economy, Cloud Code and Cloud Save services in your game, activate each service for your organization and project in the Unity Dashboard.
-You'll need a Currency item in the Economy, as well as a few scripts in Cloud Code:
+The `CloudAIMiniGameSceneManager.cs` script performs the following initialization tasks in its `Start` function:
+1. Initializes Unity Gaming Services.
+2. Signs in the player [anonymously](https://docs.unity.com/authentication/UsingAnonSignIn.html) using the Authentication service. If you’ve previously initialized any of the other sample scenes, Authentication will use your cached Player ID instead of creating a new one.
+3. Retrieves and updates currency balances from the Economy service for that authenticated user.
+4. Calls the `CloudAi_GetState.js` Cloud Code script to retrieve the current game state from the Cloud Save service, and updates the game state for the current tic-tac-toe game or creates a new one.
 
-#### Economy Item
-* Coin - `ID: "COIN"` - Granted by the Cloud Code script `CloudAi_PlayerMove` for Wins and, in a lesser quantity, for Ties.
 
-#### Cloud Code Scripts
-* CloudAi_GetState: Create and save the random game if no game is in progress. If this is a player's first game or after [Reset Game] is pressed, the Coin quantity will be reset to 0. Finally, the current game state will be returned.
-  * Parameters: `none`
-  * Script: `Assets/Use Case Samples/Cloud AI Mini Game/Cloud Code/CloudAi_GetState.js`
-* CloudAi_PlayerMove: Validate the player's requested move and add it to the game state based on coordinate passed, detect game over, if not game over then place 'AI' piece, detect game over again, and return final updated state to client. If player wins or draws, coins are awarded using the Economy service.
-  * Parameters: `coord` - x,y coordinate for the player piece to add.
-  * Script: `Assets/Use Case Samples/Cloud AI Mini Game/Cloud Code/CloudAi_PlayerMove.js`
-* CloudAi_StartNewGame: Called when [New game] or [Forfeit] button is pressed to grant the player a loss (if [Forfeit] is pressed mid-game) and generate a new random game with a random starting player.
-  * Parameters: `none`
-  * Script: `Assets/Use Case Samples/Cloud AI Mini Game/Cloud Code/CloudAi_StartNewGame.js`
+### Functionality
 
-_**Note**:
-The Cloud Code scripts included in the `Cloud Code` folder are just local copies, since you can't see the sample's dashboard. Changes to these scripts will not affect the behavior of this sample since they will not be automatically uploaded to Cloud Code service._
 
-#### Sample Cloud Save "CLOUD_AI_GAME_STATE" entries:
-Sample starting state with AI playing first (notice the `isNewGame` flag is true and aiPieces array already contains a move):
+When you click the **New Game** button (or the **Forfeit** button when a game is in progress), the following occurs on the backend:
+1. The button’s `OnClick` method calls the `CloudAi_StartNewGame.js` Cloud Code script to check if a game is in progress (the `isGameOver` variable is `false`).
+2. If a game is in progress, the player receives a loss for forfeiting.
+3. The script then creates a new game, clearing the board and randomly choosing the player or AI to go first.
+4. If the AI is selected to go first, the AI places a piece on a random spot on the board.
+5. The new game state is returned to the client.
+
+When a game is in progress you can click on a game tile to attempt to place a piece. The following occurs on the backend:
+1. The client calls the `CloudAi_ValidatePlayerMoveAndRespond.js` Cloud Code script, passing your click coordinates to the script.
+2. The move is validated based on the coordinate inputs. If the game is over or the tile is occupied, the move is invalid.
+
+3. If the move is valid, the script updates the game state to reflect the new piece placement, then places the piece on the client-side game board.
+
+4. The script checks to see if the new move triggers a game-over condition (either three in a row, or the board is full).
+
+5. If the game is not over, the script places an AI piece according to the following logic:
+
+   1. If the AI can win, it always will (for example, if the AI has 2 pieces in a row with an empty space, it will make the winning play).
+   2. If the player has 2 in a row, the AI will always block the player's winning move.
+   3. If neither a or b are true, it plays randomly.
+
+6. If the game is over, the script calls the Economy service to distribute rewards directly, according to the win condition detected. If the player won, they receive 100 Coins. If the board is full, they receive 25 Coins.
+
+The Cloud Save service keeps a JSON record of the full game state, using the `CLOUD_AI_GAME_STATE` key string. The associated value stores sequential moves made by each player, the overall state, flags for game-over, player turn, whether this is a new game or move, and a persistent counter for wins, losses, and ties.
+
+The **Reset Game** button exists to demonstrate the full game cycle. At the start of the first game (or when manually resetting the game), Cloud Code removes the `CLOUD_AI_GAME_STATE` key from Cloud Save and calls the `CloudAi_GetState.js` Cloud Code script to reset the Coin balance to 0, create a new save state with all counters set to 0, generate a new game board, and choose a random starting player.
+
+
+#### Example Cloud Save game states:
+
+`CLOUD_AI_GAME_STATE` for a new game with the AI going first:
 ```json
 {
-	"winCount":1,
-	"lossCount":1,
-	"tieCount":0,
-	"playerPieces":[],
-	"aiPieces":[{"x":0,"y":1}],
-	"isNewGame":true,
-	"isNewMove":true,
-	"isPlayerTurn":true,
-	"isGameOver":false,
-	"status":"playing"
+  "winCount":1,
+  "lossCount":1,
+  "tieCount":0,
+  "playerPieces":[],
+  "aiPieces":[{"x":0,"y":1}],
+  "isNewGame":true,
+  "isNewMove":true,
+  "isPlayerTurn":true,
+  "isGameOver":false,
+  "status":"playing"
 }
 ```
 
-Sample ending game state after the player wins the game (notice the `isGameOver` flag is true and the status is "playerWon"):
+`CLOUD_AI_GAME_STATE` when the player wins the game:
 ```json
 {
-	"winCount":2,
-	"lossCount":1,
-	"tieCount":0,
-	"playerPieces":[{"x":0,"y":0},{"x":0,"y":2},{"x":2,"y":2},{"x":1,"y":1}],
-	"aiPieces":[{"x":0,"y":1},{"x":2,"y":0},{"x":1,"y":2}],
-	"isNewGame":false,
-	"isNewMove":false,
-	"isPlayerTurn":false,
-	"isGameOver":true,
-	"status":"playerWon"
+  "winCount":2,
+  "lossCount":1,
+  "tieCount":0,
+  "playerPieces":[{"x":0,"y":0},{"x":0,"y":2},{"x":2,"y":2},{"x":1,"y":1}],
+  "aiPieces":[{"x":0,"y":1},{"x":2,"y":0},{"x":1,"y":2}],
+  "isNewGame":false,
+  "isNewMove":false,
+  "isPlayerTurn":false,
+  "isGameOver":true,
+  "status":"playerWon"
 }
+
 ```
+
+
+## Setup
+
+
+### Requirements
+
+To replicate this use case, you need the following [Unity packages](https://docs.unity3d.com/Manual/Packages.html) in your project:
+
+| **Package**                                                                                | **Role**                                                                                                            |
+| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------- |
+| [Authentication](https://docs.unity.com/authentication/Content/InstallAndConfigureSDK.htm) | Automatically signs in the player as an anonymous user to keep track of their data server-side.                     |
+| [Cloud Code](https://docs.unity.com//cloud-code/Content/implementation.htm)                | Generates random games, validates game logic, executes AI turns, and grants Economy rewards based on game outcomes. |
+| [Cloud Save](https://docs.unity.com/cloud-save/Content/index.htm#Implementation)           | Stores the active game state.                                                                                       |
+| [Economy](https://docs.unity.com/economy/Content/implementation.htm)                       | Retrieves the starting and updated currency balances at runtime.                                                    |
+
+To use these services in your game, activate each service for your Organization and project in the[Unity Dashboard](https://dashboard.unity3d.com/).
+
+
+### Dashboard setup
+
+
+To replicate this sample scene's setup on your own dashboard, you need to:
+- Publish three scripts to Cloud Code.
+- Create a Currency for the Economy service.
+
+
+#### Cloud Code
+
+
+[Publish the following scripts](https://docs.unity.com/cloud-code/implementation.html#Writing_your_first_script) in the **LiveOps** dashboard:
+
+| **Script**                             | **Parameters**                                                                                                     | **Description**                                                                                                                                                                                                                                                                                                                                                                                                                    | **Location in project**                                                                       |
+|----------------------------------------|--------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| -------------------------------------------------------------------- |
+| `CloudAi_GetState`                     | None                                                                                                               | Creates and saves a random game if no game is in progress. If it’s the player's first game (or their first game after clicking the **Reset Game** button, it also resets the Coin quantity to 0, then returns the current game state.                                                                                                                                                                                              | `Assets/Use Case Samples/Cloud AI Mini Game/Cloud Code/CloudAi_GetState.js`                    |
+| `CloudAi_ValidatePlayerMoveAndRespond` | `coord` <br><br>`JSON`<br><br>The {x,y} coordinate for the player piece to add. <br><br>Example: `{"x":0, "y":0}` | Validates the player's requested move and adds it to the game state based on the coordinates of the mouse click. After updating the game state, it checks for game-over conditions. if the game is not over, it places an AI piece then checks for game-over conditions again, and returns the final updated state to the client. If the player wins or ties, it awards Coins directly using the Economy service.    | `Assets/Use Case Samples/Cloud AI Mini Game/Cloud Code/CloudAi_ValidatePlayerMoveAndRespond.js` |
+| `CloudAi_StartNewGame`                 | None                                                                                                               | Called when clicking the **New Game** or **Forfeit** button, to assign the player a loss in the case of a forfeit and generate a new random game with a random starting player.                                                                                                                                                                                                                                                    | `Assets/Use Case Samples/Cloud AI Mini Game/Cloud Code/CloudAi_StartNewGame.js`                 |
+
+**Note**: The Cloud Code scripts included in theCloud Code folder are local copies because you cannot view the sample project's dashboard. Changes to these scripts do not affect the behavior of this sample because they are not automatically uploaded to the Cloud Code service.
+
+
+#### Economy
+
+
+[Configure the following resource](https://docs.unity.com/economy/) in the **LiveOps** dashboard:
+
+| **Resource type** | **Resource item** | **ID** | **Description**                     |
+| ----------------- | ----------------- | ------ | ----------------------------------- |
+| Currency          | Coin              | `COIN` | Currency awarded for wins and ties. |  

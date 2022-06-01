@@ -70,13 +70,6 @@ MonoBehaviour:
       bodyFormat: 0
       bulletList: []
       linkList: []
-    - body: Sends a SceneOpened custom event to the Analytics service. This, along
-        with the SceneSessionLength custom event (sent when you click the back button),
-        tracks the player's session length in the scene as an example of how you
-        can implement analytics to evaluate the results of your test.
-      bodyFormat: 0
-      bulletList: []
-      linkList: []
     - body: "Signs in the player anonymously using the Authentication service. If
         you\u2019ve previously initialized any of the other sample scenes, Authentication
         will use your cached Player ID instead of creating a new one."
@@ -153,8 +146,7 @@ MonoBehaviour:
     subHeader2: 
     subHeader3: Back button
     body: Pressing the back button in the top-left corner returns you to the "Start
-      Here" scene and triggers a SceneSessionLength custom Analytics event, which
-      captures the amount of time spent in this scene.
+      Here" scene.
     bodyFormat: 0
     boxCallout: 
     bulletList: []
@@ -170,8 +162,6 @@ MonoBehaviour:
     linkList:
     - linkText: Addressables
       url: https://docs.unity3d.com/Packages/com.unity.addressables@latest
-    - linkText: Analytics
-      url: https://docs.unity.com/analytics/UnityAnalytics.html
     - linkText: Authentication
       url: https://docs.unity.com/authentication/Content/InstallAndConfigureSDK.htm
     - linkText: Economy
@@ -195,10 +185,6 @@ MonoBehaviour:
     bodyFormat: 0
     boxCallout: 
     bulletList:
-    - body: Create custom events for the Analytics service.
-      bodyFormat: 0
-      bulletList: []
-      linkList: []
     - body: Create Currencies, Inventory Items, and Virtual Purchases for the Economy
         service.
       bodyFormat: 0
@@ -207,150 +193,6 @@ MonoBehaviour:
     - body: Configure values in the Remote Config service.
       bodyFormat: 0
       bulletList: []
-      linkList: []
-    linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
-    body: The Analytics custom events configuration contains a long list of potential
-      parameters that are sent with some of the events. This extended list allows
-      for a more flexible analysis of different parameter groupings in the Data Explorer
-      on the Analytics dashboard. Alternatively, you could send only the ungrouped
-      parameters (for example, buttonName or sceneName), and perform any kind of
-      grouped analysis by using the Data Export feature within the Data Explorer
-      on the dashboard.
-    bodyFormat: 0
-    boxCallout: 'Important: This sample demonstrates the code that is needed to trigger
-      Analytics events. However, additional code might be necessary to meet legal
-      requirements such as GDPR, CCPA, and PIPL. For more information, see the documentation
-      on managing data privacy.'
-    bulletList: []
-    linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
-    body: 'Configure and enable the following custom Analytics events:'
-    bodyFormat: 0
-    boxCallout: 
-    bulletList:
-    - body: 'Event name: SceneOpened'
-      bodyFormat: 0
-      bulletList:
-      - body: 'Description: Sent each time you load the scene.'
-        bodyFormat: 0
-        bulletList: []
-      - body: 'Custom parameters:'
-        bodyFormat: 0
-        bulletList:
-        - body: sceneName
-          bodyFormat: 0
-          bulletList: []
-      linkList: []
-    - body: 'Event name: SceneSessionLength'
-      bodyFormat: 0
-      bulletList:
-      - body: 'Description: Sent to indicate the time spent in the scene (measured
-          as the length of time between when AnalyticsManager.Start() triggers and
-          the player presses the back button in the scene).'
-        bodyFormat: 0
-        bulletList: []
-      - body: 'Custom parameters:'
-        bodyFormat: 0
-        bulletList:
-        - body: remoteConfigActiveEvent
-          bodyFormat: 0
-          bulletList: []
-        - body: sceneName
-          bodyFormat: 0
-          bulletList: []
-        - body: timeRange
-          bodyFormat: 0
-          bulletList: []
-        - body: timeRangeByRemoteConfigActiveEvent
-          bodyFormat: 0
-          bulletList: []
-        - body: timeRangeBySceneName
-          bodyFormat: 0
-          bulletList: []
-        - body: timeRangeBySceneNameAndRemoteConfigActiveEvent
-          bodyFormat: 0
-          bulletList: []
-      linkList: []
-    linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
-    body: 'Configure the following custom parameters to support your custom events:'
-    bodyFormat: 0
-    boxCallout: 
-    bulletList:
-    - body: 'Parameter name: remoteConfigEvent'
-      bodyFormat: 0
-      bulletList:
-      - body: 'Type: string'
-        bodyFormat: 0
-        bulletList: []
-      - body: 'Description: The active event as defined in and determined by Remote
-          Config.'
-        bodyFormat: 0
-        bulletList: []
-      linkList: []
-    - body: 'Parameter name: sceneName'
-      bodyFormat: 0
-      bulletList:
-      - body: 'Type: string'
-        bodyFormat: 0
-        bulletList: []
-      - body: 'Description: The name of the scene where the event is triggered.'
-        bodyFormat: 0
-        bulletList: []
-      linkList: []
-    - body: 'Parameter name: timeRange'
-      bodyFormat: 0
-      bulletList:
-      - body: 'Type: string'
-        bodyFormat: 0
-        bulletList: []
-      - body: 'Description: The amount of time spent in the scene when the event
-          is triggered.'
-        bodyFormat: 0
-        bulletList: []
-      linkList: []
-    - body: 'Parameter name: timeRangeByRemoteConfigEvent'
-      bodyFormat: 0
-      bulletList:
-      - body: 'Type: string'
-        bodyFormat: 0
-        bulletList: []
-      - body: 'Description: Groups the time spent in the scene when the event is
-          triggered with the active Remote Config event. The string format is "Time
-          range - Event key".'
-        bodyFormat: 0
-        bulletList: []
-      linkList: []
-    - body: 'Parameter name: timeRangeBySceneName'
-      bodyFormat: 0
-      bulletList:
-      - body: 'Type: string'
-        bodyFormat: 0
-        bulletList: []
-      - body: 'Description: Groups the time spent in the scene when the event is
-          triggered with the scene''s name. The string format is "Time range - Scene
-          name".'
-        bodyFormat: 0
-        bulletList: []
-      linkList: []
-    - body: 'Parameter name: timeRangeBySceneNameAndRemoteConfigEvent'
-      bodyFormat: 0
-      bulletList:
-      - body: 'Type: string'
-        bodyFormat: 0
-        bulletList: []
-      - body: 'Description: Groups the time spent in the scene when the event is
-          triggered with the scene''s name and the active Remote Config event. The
-          string format is "Time range - Scene name - Event key".'
-        bodyFormat: 0
-        bulletList: []
       linkList: []
     linkList: []
   - subHeader1: 

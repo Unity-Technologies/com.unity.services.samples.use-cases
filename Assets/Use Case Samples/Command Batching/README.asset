@@ -54,12 +54,15 @@ MonoBehaviour:
     - body: The first command increases XP by 100 and distributes 10 Coins.
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: The second command increases XP by 50 and distributes 5 Coins.
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: The third command increases XP by 100 and distributes 30 Coins.
       bodyFormat: 0
       bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: 
@@ -71,7 +74,7 @@ MonoBehaviour:
       these Commands are stored in a batch and processed at one time (described in
       greater detail in the Implementation Overview section below), it would result
       in just two Unity Services calls: one to Cloud Save to increase XP by 250,
-      and one to Economy to add 45 Coins. '
+      and one to Economy to add 45 Coins.'
     bodyFormat: 0
     boxCallout: 
     bulletList: []
@@ -163,17 +166,21 @@ MonoBehaviour:
     - body: 'Cloud Code: Processes Commands at the end of a game.'
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: 'Remote Config: Contains the mapping between Commands and their rewards
         used by both the client and Cloud Code when distributing rewards.'
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: 'Economy: Manages the currencies that are distributed as rewards.'
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: 'Cloud Save: Manages certain player stats (XP and Goals Achieved) that
         are increased as rewards.'
       bodyFormat: 0
       bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: 
@@ -218,6 +225,7 @@ MonoBehaviour:
       - body: 'ID: "COIN"'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: Gem
       bodyFormat: 1
       bulletList:
@@ -227,6 +235,7 @@ MonoBehaviour:
       - body: 'ID: "GEM"'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: Remote Config
@@ -247,6 +256,7 @@ MonoBehaviour:
       - body: 'Value: See markdown README for details'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: COMMANDBATCH_DEFEAT_BLUE_ENEMY
       bodyFormat: 1
       bulletList:
@@ -259,6 +269,7 @@ MonoBehaviour:
       - body: 'Value: See markdown README for details'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: COMMANDBATCH_DEFEAT_RED_ENEMY
       bodyFormat: 1
       bulletList:
@@ -271,6 +282,7 @@ MonoBehaviour:
       - body: 'Value: See markdown README for details'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: COMMANDBATCH_OPEN_CHEST
       bodyFormat: 1
       bulletList:
@@ -283,6 +295,7 @@ MonoBehaviour:
       - body: 'Value: See markdown README for details'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: COMMANDBATCH_GAME_OVER
       bodyFormat: 1
       bulletList:
@@ -295,6 +308,18 @@ MonoBehaviour:
       - body: 'Value: See markdown README for details'
         bodyFormat: 0
         bulletList: []
+      linkList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: Note that the Config Values (such as COMMANDBATCH_ACHIEVE_BONUS_GOAL
+      and COMMANDBATCH_DEFEAT_RED_ENEMY) are specific commands and cannot be changed
+      nor new ones created without making corresponding changes to the Unity C# and/or
+      Cloud Code scripts.
+    bulletList: []
     linkList: []
   - subHeader1: 
     subHeader2: Cloud Code Scripts
@@ -319,6 +344,7 @@ MonoBehaviour:
       - body: 'Script: "Assets/Use Case Samples/Command Batching/Cloud Code/CommandBatch_ProcessBatch.js"'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: 

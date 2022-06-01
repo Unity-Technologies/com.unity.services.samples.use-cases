@@ -23,7 +23,7 @@ MonoBehaviour:
       shooters - make use of loot boxes and grand random currency, items, and equipment
       to the player to reward them for leveling up or completing long stretches of
       gameplay without quitting. Loot boxes are a great way for players to feel engaged
-      and motivated to keep playing and get rewarded for it. '
+      and motivated to keep playing and get rewarded for it.'
     bodyFormat: 0
     boxCallout: 
     bulletList: []
@@ -59,10 +59,12 @@ MonoBehaviour:
     - body: 'Economy: Retrieves the starting and updated currency balances at runtime.'
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: 'Cloud Code: Picks and grants random currency for the loot box through
         the Economy server and returns the result.'
       bodyFormat: 0
       bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: 
@@ -102,6 +104,7 @@ MonoBehaviour:
       - body: 'ID: "COIN"'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: Gem
       bodyFormat: 1
       bulletList:
@@ -111,6 +114,7 @@ MonoBehaviour:
       - body: 'ID: "GEM"'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: Pearl
       bodyFormat: 1
       bulletList:
@@ -120,6 +124,7 @@ MonoBehaviour:
       - body: 'ID: "PEARL"'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: Star
       bodyFormat: 1
       bulletList:
@@ -129,6 +134,7 @@ MonoBehaviour:
       - body: 'ID: "STAR"'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: Cloud Code Scripts
@@ -137,15 +143,16 @@ MonoBehaviour:
     bodyFormat: 0
     boxCallout: 
     bulletList:
-    - body: 'GrantRandomCurrency:'
+    - body: 'LootBoxes_GrantRandomCurrency:'
       bodyFormat: 1
       bulletList:
       - body: 'Parameters: `none`'
         bodyFormat: 0
         bulletList: []
-      - body: 'Script: "Assets/Use Case Samples/Loot Boxes/Cloud Code/GrantRandomCurrency.js"'
+      - body: 'Script: "Assets/Use Case Samples/Loot Boxes/Cloud Code/LootBoxes_GrantRandomCurrency.js"'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: 

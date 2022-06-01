@@ -28,11 +28,13 @@ MonoBehaviour:
         the time
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: How the simulation can occur on the cloud to ensure all players' games
         are updated properly, regardless of timezone or any modifications to date/time
         on a player's device
       bodyFormat: 0
       bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: 
@@ -156,19 +158,23 @@ MonoBehaviour:
         track of their data on the server side.'
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: 'Cloud Code: Sets up game state for a new game by placing 3 random obstacles
         and setting starting Water Currency to 2000. It also validates moves, grants
         Water based on real-time production, and updates game state based on purchases.'
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: 'Economy: Stores current "WATER" count and processes Virtual Purchases
         when Cloud Code deems a move to be valid at a cost of 500 "WATER".'
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: 'Cloud Save: Stores updated game state for all obstacles, Wells (including
         last-production time), etc. Cloud Code checks and updates these values directly.'
       bodyFormat: 0
       bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: 
@@ -215,6 +221,7 @@ MonoBehaviour:
       - body: 'ID: "WATER"'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: Idle Clicker Game Well
       bodyFormat: 1
       bulletList:
@@ -226,6 +233,7 @@ MonoBehaviour:
       - body: 'ID: "IDLE_CLICKER_GAME_WELL"'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: Cloud Code Scripts
     subHeader2: 
@@ -248,6 +256,7 @@ MonoBehaviour:
       - body: 'Script: Assets/Use Case Samples/Idle Clicker Game/Cloud Code/IdleClicker_GetUpdatedState.js'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: 'IdleClicker_PlaceWell:'
       bodyFormat: 1
       bulletList:
@@ -257,12 +266,14 @@ MonoBehaviour:
           world, if successful).'
         bodyFormat: 0
         bulletList: []
-      - body: 'Parameters: coord - x,y coordinate for new Well to add to the game.'
+      - body: 'Parameters: coord (JSON) - {x,y} coordinate for new Well to add to
+          the game. Example: {"x":0, "y":0}'
         bodyFormat: 0
         bulletList: []
       - body: 'Script: Assets/Use Case Samples/Idle Clicker Game/Cloud Code/IdleClicker_PlaceWell.js'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: 

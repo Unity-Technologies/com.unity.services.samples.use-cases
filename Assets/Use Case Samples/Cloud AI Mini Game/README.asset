@@ -25,7 +25,7 @@ MonoBehaviour:
       against the player. Additionally, this sample demonstrates how gameplay can
       be rewarded based on game outcome by awarding bonus Coins for wins and ties.
       This can make the mini games more enjoyable and even affect game economy going
-      forward. '
+      forward.'
     bodyFormat: 0
     boxCallout: 
     bulletList: []
@@ -56,6 +56,7 @@ MonoBehaviour:
         are visited.
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: CloudAi_PlayerMove is called for each player move. The script is called
         with x,y coordinates and Cloud Code validates the player's move, makes an
         AI move if the game isn't over, determines if the game should end, and returns
@@ -63,6 +64,7 @@ MonoBehaviour:
         and calls Economy to grant Coins for Wins and Ties.
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: CloudAi_StartNewGame is called when the player presses the [New Game]
         or [Forfeit] button (Forfeit replaces New Game whenever a game is in progress).
         This script checks if a game is in progress (isGameOver is false), and if
@@ -72,6 +74,7 @@ MonoBehaviour:
         client.
       bodyFormat: 0
       bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: 
@@ -97,13 +100,16 @@ MonoBehaviour:
         in a row with an empty space, it will make the winning play).
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: If the player has 2 in a row, the AI will always block the player's winning
         move.
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: Otherwise, it plays randomly.
       bodyFormat: 0
       bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: 
@@ -154,17 +160,21 @@ MonoBehaviour:
         track of their data on the server side.'
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: 'Cloud Code: 3 scripts used to generate random games, validate game logic,
         execute AI turns, and grant Economy rewards based on game outcomes.'
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: 'Economy: Stores current "COIN" count which is granted as a reward for
         winning/tying.'
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: 'Cloud Save: Stores game state.'
       bodyFormat: 0
       bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: 
@@ -210,6 +220,7 @@ MonoBehaviour:
       - body: 'ID: "COIN"'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: Cloud Code Scripts
@@ -232,7 +243,8 @@ MonoBehaviour:
       - body: 'Script: "Assets/Use Case Samples/Cloud AI Mini Game/Cloud Code/CloudAi_GetState.js"'
         bodyFormat: 0
         bulletList: []
-    - body: 'CloudAi_PlayerMove:'
+      linkList: []
+    - body: 'CloudAi_ValidatePlayerMoveAndRespond:'
       bodyFormat: 1
       bulletList:
       - body: Validate the player's requested move and add it to the game state based
@@ -241,12 +253,14 @@ MonoBehaviour:
           If player wins or draws, coins are awarded using the Economy service.
         bodyFormat: 0
         bulletList: []
-      - body: 'Parameters: coord - x,y coordinate for the player piece to add.'
+      - body: 'Parameters: coord (JSON) - {x,y} coordinate for the player piece to
+          add. Example: {"x":0, "y":0}'
         bodyFormat: 0
         bulletList: []
-      - body: 'Script: "Assets/Use Case Samples/Cloud AI Mini Game/Cloud Code/CloudAi_PlayerMove.js"'
+      - body: 'Script: "Assets/Use Case Samples/Cloud AI Mini Game/Cloud Code/CloudAi_ValidatePlayerMoveAndRespond.js"'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: 'CloudAi_StartNewGame:'
       bodyFormat: 1
       bulletList:
@@ -261,6 +275,7 @@ MonoBehaviour:
       - body: 'Script: "Assets/Use Case Samples/Cloud AI Mini Game/Cloud Code/CloudAi_StartNewGame.js"'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: 
