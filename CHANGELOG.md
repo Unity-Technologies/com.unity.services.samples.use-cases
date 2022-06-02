@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 
 ### Changed
 
+* Various improvements to all readme documentation.
 * Updated Unity Gaming Services packages to the latest stable group of packages released as of 2022-05-31.
   * No notable deprecations or breaking changes.
   * Authentication updated to release 2.0.0 ([Changelog](https://docs.unity.com/authentication/Changelog.html)).
