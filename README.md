@@ -15,7 +15,7 @@ This Unity Gaming Services (UGS) Samples package contains a collection of sample
   - [Unity Hub](unityhub://2020.3.30f1/1fb1bf06830e)
   - [Download (Win)](https://download.unity3d.com/download_unity/1fb1bf06830e/UnityDownloadAssistant-2020.3.30f1.exe)
   - [Download (Mac)](https://download.unity3d.com/download_unity/1fb1bf06830e/UnityDownloadAssistant-2020.3.30f1.dmg)
-- Clone the repository: `git clone https://github.com/Unity-Technnologies/com.unity.services.samples.git`
+- Clone the repository: `git clone https://github.com/Unity-Technologies/com.unity.services.samples.use-cases.git`
 - Open the project from the Unity Hub or Unity Editor
 
 To view each sample in action, open the Start Here scene in the Assets directory and hit Play. To review an individual sample, find the use case directory in Assets/Use Case Samples and view the README file for implementation details.
