@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 
 ​The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).​
 
+## [1.4.2] - 2022-06-22
+
+### Changed
+
+* Updated Unity Gaming Services packages to the latest stable group of packages released as of 2022-06-07.
+  * Economy and Remote Config API names changed which required trivial code updates.
+  * EconomyService.Instance.Configuration.GetX methods now fetch and cache the latest Remote Config configuration as well.
+    This change introduced a potential race condition if the Economy configuration call and the RemoteConfigService.Instance.FetchConfigsAsync call were in the same Task.WhenAll.
+    They have now been separated out.
+
+### Fixed
+
+* There was a bug where if a new Economy Configuration was published, neither the client nor cloud code would get the latest Economy configuration until the cache expired on its own (after a few days).
+  * Fixed by adding a call to `EconomyService.Instance.Configuration.GetCurrenciesAsync()` during the initialization flow of each use case; this method call forces the Economy configuration cache to be updated.
+  * Note that this call must be finished before any other Economy or Remote Config async calls are started.
+
 ## [1.4.1] - 2022-06-01
 
 ### Changed

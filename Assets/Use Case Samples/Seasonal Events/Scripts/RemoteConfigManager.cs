@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Unity.RemoteConfig;
+using Unity.Services.RemoteConfig;
 using UnityEngine;
 
 namespace UnityGamingServicesUseCases
@@ -34,7 +34,7 @@ namespace UnityGamingServicesUseCases
             {
                 try
                 {
-                    await ConfigManager.FetchConfigsAsync(GetUserAttributes(), new AppAttributes());
+                    await RemoteConfigService.Instance.FetchConfigsAsync(GetUserAttributes(), new AppAttributes());
 
                     // Check that scene has not been unloaded while processing async wait to prevent throw.
                     if (this == null) return;
@@ -49,11 +49,11 @@ namespace UnityGamingServicesUseCases
 
             void GetConfigValues()
             {
-                activeEventName = ConfigManager.appConfig.GetString("EVENT_NAME");
-                activeEventEndTime = ConfigManager.appConfig.GetInt("EVENT_END_TIME");
-                activeEventDurationMinutes = ConfigManager.appConfig.GetInt("EVENT_TOTAL_DURATION_MINUTES");
-                activeEventKey = ConfigManager.appConfig.GetString("EVENT_KEY");
-                var challengeRewardsJson = ConfigManager.appConfig.GetJson("CHALLENGE_REWARD");
+                activeEventName = RemoteConfigService.Instance.appConfig.GetString("EVENT_NAME");
+                activeEventEndTime = RemoteConfigService.Instance.appConfig.GetInt("EVENT_END_TIME");
+                activeEventDurationMinutes = RemoteConfigService.Instance.appConfig.GetInt("EVENT_TOTAL_DURATION_MINUTES");
+                activeEventKey = RemoteConfigService.Instance.appConfig.GetString("EVENT_KEY");
+                var challengeRewardsJson = RemoteConfigService.Instance.appConfig.GetJson("CHALLENGE_REWARD");
                 challengeRewards = JsonUtility.FromJson<Rewards>(challengeRewardsJson).rewards;
             }
 

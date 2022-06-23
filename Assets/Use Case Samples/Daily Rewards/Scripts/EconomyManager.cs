@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Unity.Services.Economy;
+using Unity.Services.Economy.Model;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -15,6 +16,7 @@ namespace UnityGamingServicesUseCases
 
             public static EconomyManager instance { get; private set; }
 
+            private List<CurrencyDefinition> currencies;
             Dictionary<string, Sprite> m_CurrencyIdToSprite = new Dictionary<string, Sprite>();
 
 
@@ -30,12 +32,25 @@ namespace UnityGamingServicesUseCases
                 }
             }
 
-            public async Task InitializeCurrencySprites()
+            public async Task RefreshEconomyConfiguration()
             {
-                var currencies = await Economy.Configuration.GetCurrenciesAsync();
+                // Calling GetCurrenciesAsync (or GetInventoryItemsAsync), in addition to returning the appropriate
+                // Economy configurations, will update the cached configuration list, including any new Currency, 
+                // Inventory Item, or Purchases that have been published since the last time the player's configuration
+                // was cached.
+                //
+                // This is important to do before hitting the Economy or Remote Config services for any other calls as
+                // both use the cached data list.
+                currencies = await EconomyService.Instance.Configuration.GetCurrenciesAsync();
+            }
 
-                // Check that scene has not been unloaded while processing async wait to prevent throw.
-                if (this == null) return;
+            public async Task FetchCurrencySprites()
+            {
+                if (currencies is null || currencies.Count <= 0)
+                {
+                    Debug.Log("Can't fetch currency sprites, ensure RefreshEconomyConfiguration() has been called.");
+                    return;
+                }
 
                 // Setup 3 lists to facilitate async operation. Since we require a list of tasks to perform the
                 // await Task.WhenAll call, we can simply setup the other 2 lists to track corresponding ids and
@@ -79,8 +94,8 @@ namespace UnityGamingServicesUseCases
 
             public async Task RefreshCurrencyBalances()
             {
-                var options = new PlayerBalances.GetBalancesOptions { ItemsPerFetch = 100 };
-                var getBalancesTask = Economy.PlayerBalances.GetBalancesAsync(options);
+                var options = new GetBalancesOptions { ItemsPerFetch = 100 };
+                var getBalancesTask = EconomyService.Instance.PlayerBalances.GetBalancesAsync(options);
                 var balances = await Utils.ProcessEconomyTaskWithRetry(getBalancesTask);
                 if (this == null) return;
 

@@ -40,10 +40,23 @@ namespace UnityGamingServicesUseCases
 
                     Debug.Log($"Player id:{AuthenticationService.Instance.PlayerId}");
 
+                    // Economy configuration should be refreshed every time the app initializes.
+                    // Doing so updates the cached configuration data and initializes for this player any items or
+                    // currencies that were recently published.
+                    // 
+                    // It's important to do this update before making any other calls to the Economy or Remote Config
+                    // APIs as both use the cached data list. (Though it wouldn't be necessary to do if only using Remote
+                    // Config in your project and not Economy.)
+                    await EconomyManager.instance.RefreshEconomyConfiguration();
+                    if (this == null) return;
+
                     await Task.WhenAll(
-                        EconomyManager.instance.InitializeCurrencySprites(),
+                        EconomyManager.instance.FetchCurrencySprites(),
                         EconomyManager.instance.RefreshCurrencyBalances(),
-                        eventManager.RefreshDailyRewardsEventStatus());
+                        // This method ultimately calls a Cloud Code script that makes Remote Config calls, so must
+                        // happen after RefreshEconomyConfiguration.
+                        eventManager.RefreshDailyRewardsEventStatus()
+                    );
                     if (this == null) return;
 
                     Debug.Log("Initialization and signin complete.");

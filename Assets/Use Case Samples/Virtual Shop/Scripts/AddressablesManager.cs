@@ -47,13 +47,6 @@ namespace UnityGamingServicesUseCases
             // Read all Currencies and Items to preload all associated Sprite Addresses from Custom data.
             public async Task PreloadAllEconomySprites()
             {
-                var currenciesTask = Economy.Configuration.GetCurrenciesAsync();
-                var itemsTask = Economy.Configuration.GetInventoryItemsAsync();
-                await Task.WhenAll(currenciesTask, itemsTask);
-
-                // Check that scene has not been unloaded while processing async wait to prevent throw.
-                if (this == null) return;
-
                 // Setup 3 lists to facilitate async operation (within the AddressablesLoadAsyncData helper class).
                 // Since we require a list of tasks to perform the await Task.WhenAll call, we can simply setup
                 // the other 2 lists to track corresponding ids and sprite handles, which are required to
@@ -61,17 +54,18 @@ namespace UnityGamingServicesUseCases
                 var addressablesLoadAsyncData = new AddressablesLoadAsyncData();
 
                 // Add all addressables for Currencies and Inventory Items to load-async data queue.
-                AddAddressablesCurrencyTasks(currenciesTask.Result, addressablesLoadAsyncData);
-                AddAddressablesItemTasks(itemsTask.Result, addressablesLoadAsyncData);
+                AddAddressablesCurrencyTasks(EconomyManager.instance.currencyDefinitions, addressablesLoadAsyncData);
+                AddAddressablesItemTasks(EconomyManager.instance.inventoryItemDefinitions, addressablesLoadAsyncData);
 
                 // Wait for all Addressables to be loaded.
                 await Task.WhenAll(addressablesLoadAsyncData.tasks);
+
+                // Check that scene has not been unloaded while processing async wait to prevent throw.
                 if (this == null) return;
 
                 // Iterate all Addressables loaded and save off the Sprites into our Dictionary.
                 AddAddressablesSpritesToDictionary(addressablesLoadAsyncData, preloadedSpritesByEconomyId);
 
-                // TODO: remove these logs for epic pr
                 Debug.Log("Economy sprites loaded:");
                 foreach (var kvp in preloadedSpritesByEconomyId)
                 {
@@ -101,7 +95,6 @@ namespace UnityGamingServicesUseCases
                 // Iterate all Addressables loaded and save off the Sprites into our Dictionary.
                 AddAddressablesSpritesToDictionary(addressablesLoadAsyncData, preloadedSpritesByAddress);
 
-                // TODO: remove these logs for epic pr
                 Debug.Log("Preloaded sprites (currently only badges):");
                 foreach (var kvp in preloadedSpritesByAddress)
                 {
@@ -112,6 +105,11 @@ namespace UnityGamingServicesUseCases
             void AddAddressablesCurrencyTasks(List<CurrencyDefinition> currencyDefinitions,
                 AddressablesLoadAsyncData addressablesLoadData)
             {
+                if (currencyDefinitions == null)
+                {
+                    return;
+                }
+
                 foreach (var currencyDefinition in currencyDefinitions)
                 {
                     var spriteAddress = currencyDefinition.CustomData["spriteAddress"] as string;
@@ -122,6 +120,11 @@ namespace UnityGamingServicesUseCases
             void AddAddressablesItemTasks(List<InventoryItemDefinition> inventoryItemDefinitions,
                 AddressablesLoadAsyncData addressablesLoadData)
             {
+                if (inventoryItemDefinitions == null)
+                {
+                    return;
+                }
+
                 foreach (var inventoryItemDefinition in inventoryItemDefinitions)
                 {
                     var spriteAddress = inventoryItemDefinition.CustomData["spriteAddress"] as string;

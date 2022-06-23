@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Unity.RemoteConfig;
+using Unity.Services.RemoteConfig;
 using UnityEngine;
 
 namespace UnityGamingServicesUseCases
@@ -32,7 +32,7 @@ namespace UnityGamingServicesUseCases
             {
                 try
                 {
-                    await ConfigManager.FetchConfigsAsync(new UserAttributes(), new AppAttributes());
+                    await RemoteConfigService.Instance.FetchConfigsAsync(new UserAttributes(), new AppAttributes());
 
                     // Check that scene has not been unloaded while processing async wait to prevent throw.
                     if (this == null) return;
@@ -47,15 +47,8 @@ namespace UnityGamingServicesUseCases
 
             void GetConfigValues()
             {
-                var shopCategoriesConfigJson = ConfigManager.appConfig.GetJson("VIRTUAL_SHOP_CONFIG");
+                var shopCategoriesConfigJson = RemoteConfigService.Instance.appConfig.GetJson("VIRTUAL_SHOP_CONFIG");
                 virtualShopConfig = JsonUtility.FromJson<VirtualShopConfig>(shopCategoriesConfigJson);
-
-                // TODO: Remove these log lines for epic PR.
-                Debug.Log($"Virtual Shop config contains {virtualShopConfig.categories.Count} categories:");
-                for (var i = 0; i < virtualShopConfig.categories.Count; i++)
-                { 
-                    Debug.Log($"    #{i+1}: {virtualShopConfig.categories[i]}");
-                }
             }
 
             void OnDestroy()

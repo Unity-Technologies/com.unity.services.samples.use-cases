@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Unity.RemoteConfig;
 using Unity.Services.Authentication;
+using Unity.Services.RemoteConfig;
 using UnityEngine;
 
 namespace UnityGamingServicesUseCases
@@ -38,8 +38,8 @@ namespace UnityGamingServicesUseCases
                     // User ID field to check whether the player has already been grouped into a specific variant group. Since
                     // we call FetchConfigsIfServicesAreInitialized only upon a new sign-in, we want to make sure the custom
                     // User ID is pointing to the most current Player ID.
-                    ConfigManager.SetCustomUserID(AuthenticationService.Instance.PlayerId);
-                    await ConfigManager.FetchConfigsAsync(new UserAttributes(), new AppAttributes());
+                    RemoteConfigService.Instance.SetCustomUserID(AuthenticationService.Instance.PlayerId);
+                    await RemoteConfigService.Instance.FetchConfigsAsync(new UserAttributes(), new AppAttributes());
 
                     // Check that scene has not been unloaded while processing async wait to prevent throw.
                     if (this == null) return;
@@ -54,10 +54,10 @@ namespace UnityGamingServicesUseCases
             
             void GetConfigValues()
             {
-                levelUpXPNeeded = ConfigManager.appConfig.GetInt("LEVEL_UP_XP_NEEDED");
-                abGroupName = ConfigManager.appConfig.GetString("A_B_TEST_GROUP");
-                abTestID = ConfigManager.appConfig.GetString("A_B_TEST_ID");
-                var json = ConfigManager.appConfig.GetJson("CURRENCIES");
+                levelUpXPNeeded = RemoteConfigService.Instance.appConfig.GetInt("LEVEL_UP_XP_NEEDED");
+                abGroupName = RemoteConfigService.Instance.appConfig.GetString("A_B_TEST_GROUP");
+                abTestID = RemoteConfigService.Instance.appConfig.GetString("A_B_TEST_ID");
+                var json = RemoteConfigService.Instance.appConfig.GetJson("CURRENCIES");
                 currencyDataDictionary = CreateCurrencyDictionary(json);
             }
 

@@ -26,20 +26,24 @@ namespace UnityGamingServicesUseCases
                 }
             }
 
-            void OnDestroy()
+            public async Task RefreshEconomyConfiguration()
             {
-                if (instance == this)
-                {
-                    instance = null;
-                }
+                // Calling GetCurrenciesAsync (or GetInventoryItemsAsync), in addition to returning the appropriate
+                // Economy configurations, will update the cached configuration list, including any new Currency, 
+                // Inventory Item, or Purchases that have been published since the last time the player's configuration
+                // was cached.
+                // 
+                // This is important to do before hitting the Economy or Remote Config services for any other calls as
+                // both use the cached data list.
+                await EconomyService.Instance.Configuration.GetCurrenciesAsync();
             }
 
             public async Task RefreshCurrencyBalances()
             {
                 try
                 {
-                    var options = new PlayerBalances.GetBalancesOptions { ItemsPerFetch = 100 };
-                    var getBalancesTask = Economy.PlayerBalances.GetBalancesAsync(options);
+                    var options = new GetBalancesOptions { ItemsPerFetch = 100 };
+                    var getBalancesTask = EconomyService.Instance.PlayerBalances.GetBalancesAsync(options);
                     var balances = await Utils.ProcessEconomyTaskWithRetry(getBalancesTask);
 
                     // Check that scene has not been unloaded while processing async wait to prevent throw.
@@ -61,8 +65,8 @@ namespace UnityGamingServicesUseCases
 
                 try
                 {
-                    var options = new PlayerInventory.GetInventoryOptions { ItemsPerFetch = 100 };
-                    var getInventoryTask = Economy.PlayerInventory.GetInventoryAsync(options);
+                    var options = new GetInventoryOptions { ItemsPerFetch = 100 };
+                    var getInventoryTask = EconomyService.Instance.PlayerInventory.GetInventoryAsync(options);
                     var getInventoryResult = await Utils.ProcessEconomyTaskWithRetry(getInventoryTask);
 
                     if (this == null) return;
@@ -80,7 +84,7 @@ namespace UnityGamingServicesUseCases
             {
                 try
                 { 
-                    var balance = await Economy.PlayerBalances.IncrementBalanceAsync(currencyId, amount);
+                    var balance = await EconomyService.Instance.PlayerBalances.IncrementBalanceAsync(currencyId, amount);
 
                     currencyHudView.SetBalance(balance.CurrencyId, balance.Balance);
                 }
@@ -88,6 +92,14 @@ namespace UnityGamingServicesUseCases
                 {
                     Debug.Log("Problem calling cloud code endpoint: " + e.Message);
                     Debug.LogException(e);
+                }
+            }
+
+            void OnDestroy()
+            {
+                if (instance == this)
+                {
+                    instance = null;
                 }
             }
         }

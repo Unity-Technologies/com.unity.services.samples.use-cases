@@ -1,8 +1,8 @@
 using System;
 using System.Threading.Tasks;
-using Unity.RemoteConfig;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
+using Unity.Services.RemoteConfig;
 using UnityEngine;
 
 namespace UnityGamingServicesUseCases
@@ -43,16 +43,16 @@ namespace UnityGamingServicesUseCases
 
         async Task GetConfigs()
         {
-            ConfigManager.SetCustomUserID(AuthenticationService.Instance.PlayerId);
+            RemoteConfigService.Instance.SetCustomUserID(AuthenticationService.Instance.PlayerId);
 
-            await ConfigManager.FetchConfigsAsync(new UserAttributes(), new AppAttributes());
+            await RemoteConfigService.Instance.FetchConfigsAsync(new UserAttributes(), new AppAttributes());
 
             // Check that scene has not been unloaded while processing async wait to prevent throw.
             if (this == null) return;
 
             var clientVersion = new Version(Application.version);
-            var clientVersionMinimumRaw = ConfigManager.appConfig.GetString("CLIENT_VERSION_MIN");
-            var clientVersionLatestRaw = ConfigManager.appConfig.GetString("CLIENT_VERSION_LATEST");
+            var clientVersionMinimumRaw = RemoteConfigService.Instance.appConfig.GetString("CLIENT_VERSION_MIN");
+            var clientVersionLatestRaw = RemoteConfigService.Instance.appConfig.GetString("CLIENT_VERSION_LATEST");
 
             if (!string.IsNullOrEmpty(clientVersionMinimumRaw) 
                 && !string.IsNullOrEmpty(clientVersionLatestRaw))

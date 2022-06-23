@@ -34,10 +34,23 @@ namespace UnityGamingServicesUseCases
 
                     Debug.Log($"Player id:{AuthenticationService.Instance.PlayerId}");
 
-                    await Task.WhenAll(RemoteConfigManager.instance.FetchConfigs(),
-                        EconomyManager.instance.RefreshCurrencyBalances(),
-                        AddressablesManager.instance.PreloadAllEconomySprites(),
-                        EconomyManager.instance.ReadAllVirtualPurchaseTransactions());
+                    // Economy configuration should be refreshed every time the app initializes.
+                    // Doing so updates the cached configuration data and initializes for this player any items or
+                    // currencies that were recently published.
+                    // 
+                    // It's important to do this update before making any other calls to the Economy or Remote Config
+                    // APIs as both use the cached data list. (Though it wouldn't be necessary to do if only using Remote
+                    // Config in your project and not Economy.)
+                    await EconomyManager.instance.RefreshEconomyConfiguration();
+                    if (this == null) return;
+
+                    EconomyManager.instance.InitializeVirtualPurchaseLookup();
+
+                    // Note: We want these methods to use the most up to date configuration data, so we will wait to
+                    // call them until the previous two methods (which update the configuration data) have completed.
+                    await Task.WhenAll(AddressablesManager.instance.PreloadAllEconomySprites(),
+                        RemoteConfigManager.instance.FetchConfigs(),
+                        EconomyManager.instance.RefreshCurrencyBalances());
                     if (this == null) return;
 
                     // Read all badge addressables
@@ -48,18 +61,6 @@ namespace UnityGamingServicesUseCases
                     // Initialize all shops.
                     // Note: must be done after all other initialization has completed (above).
                     VirtualShopManager.instance.Initialize();
-
-                    // TODO: remove for epic PR
-                    Debug.Log("All shops:");
-                    foreach (var kvp in VirtualShopManager.instance.virtualShopCategories)
-                    {
-                        var virtualShopCategory = kvp.Value;
-                        Debug.Log($"  Category:{virtualShopCategory}");
-                        foreach (var virtualShopItem in kvp.Value.virtualShopItems)
-                        {
-                            Debug.Log($"    '{virtualShopCategory.id}' shop item:{virtualShopItem}");
-                        }
-                    }
 
                     virtualShopSampleView.Initialize(VirtualShopManager.instance.virtualShopCategories);
 
@@ -119,7 +120,7 @@ namespace UnityGamingServicesUseCases
             {
                 try
                 {
-                    await EconomyManager.instance.GrantDebugCurrency("GEM", 30);
+                    await EconomyManager.instance.GrantDebugCurrency("DIAMOND", 30);
                     if (this == null) return;
 
                     await EconomyManager.instance.RefreshCurrencyBalances();
