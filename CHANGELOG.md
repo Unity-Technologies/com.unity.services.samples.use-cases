@@ -19,6 +19,7 @@ All notable changes to this project will be documented in this file.
 * There was a bug where if a new Economy Configuration was published, neither the client nor cloud code would get the latest Economy configuration until the cache expired on its own (after a few days).
   * Fixed by adding a call to `EconomyService.Instance.Configuration.GetCurrenciesAsync()` during the initialization flow of each use case; this method call forces the Economy configuration cache to be updated.
   * Note that this call must be finished before any other Economy or Remote Config async calls are started.
+* Fixed a bug in the Virtual Shop use case. If an Inventory Item or Currency in Economy doesn't have any CustomData, that caused a null reference in the client at runtime.
 
 ## [1.4.1] - 2022-06-01
 

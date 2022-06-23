@@ -112,8 +112,12 @@ namespace UnityGamingServicesUseCases
 
                 foreach (var currencyDefinition in currencyDefinitions)
                 {
-                    var spriteAddress = currencyDefinition.CustomData["spriteAddress"] as string;
-                    addressablesLoadData.Add(currencyDefinition.Id, spriteAddress);
+                    if (currencyDefinition.CustomData != null
+                        && currencyDefinition.CustomData.ContainsKey("spriteAddress")
+                        && currencyDefinition.CustomData["spriteAddress"] is string spriteAddress)
+                    {
+                        addressablesLoadData.Add(currencyDefinition.Id, spriteAddress);
+                    }
                 }
             }
 
@@ -127,8 +131,12 @@ namespace UnityGamingServicesUseCases
 
                 foreach (var inventoryItemDefinition in inventoryItemDefinitions)
                 {
-                    var spriteAddress = inventoryItemDefinition.CustomData["spriteAddress"] as string;
-                    addressablesLoadData.Add(inventoryItemDefinition.Id, spriteAddress);
+                    if (inventoryItemDefinition.CustomData != null
+                        && inventoryItemDefinition.CustomData.ContainsKey("spriteAddress")
+                        && inventoryItemDefinition.CustomData["spriteAddress"] is string spriteAddress)
+                    {
+                        addressablesLoadData.Add(inventoryItemDefinition.Id, spriteAddress);
+                    }
                 }
             }
 

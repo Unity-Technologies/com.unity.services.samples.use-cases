@@ -120,7 +120,7 @@ namespace UnityGamingServicesUseCases
             {
                 try
                 {
-                    await EconomyManager.instance.GrantDebugCurrency("DIAMOND", 30);
+                    await EconomyManager.instance.GrantDebugCurrency("GEM", 30);
                     if (this == null) return;
 
                     await EconomyManager.instance.RefreshCurrencyBalances();
