@@ -83,8 +83,8 @@ To replicate this sample scene's setup on your own dashboard, you need to:
 | Currency | Gem | `GEM` | `{"spriteAddress": "Sprites/Currency/Gem"}` | A currency you can spend in the virtual shop. |
 | Currency | Pearl | `PEARL` | `{"spriteAddress": "Sprites/Currency/Pearl"}` | A currency you can purchase in the virtual shop. |
 | Currency | Star | `STAR` | `{"spriteAddress": "Sprites/Currency/Star"}` | A currency you can purchase in the virtual shop. |
-| Inventory Item | Sword | `SWORD` | `{"spriteAddress": "Sprites/Currency/Sword"}` | An item you can purchase in the virtual shop. |
-| Inventory Item | Shield | `SHIELD` | `{"spriteAddress": "Sprites/Currency/Shield"}` | An item you can purchase in the virtual shop. |
+| Inventory Item | Sword | `SWORD` | `{"spriteAddress": "Sprites/Inventory/Sword"}` | An item you can purchase in the virtual shop. |
+| Inventory Item | Shield | `SHIELD` | `{"spriteAddress": "Sprites/Inventory/Shield"}` | An item you can purchase in the virtual shop. |
 
 \* This sample uses Addressable Assets to implement the sprite icons for all Economy resources. As the developer, you can add the Addressables address of the icon for each currency directly in the Economy dashboard, and then retrieve it at runtime without needing to change your code. This is helpful if for example, you want to update currency icons by changing the address in your dashboard instead of updating your app. To do this for each resource:
 
