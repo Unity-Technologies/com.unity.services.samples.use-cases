@@ -47,7 +47,7 @@ module.exports = async ({ params, context, logger }) => {
 
         validateClaim(playerState, params.tierIndex);
 
-        returnObject.grantedRewards = getRewardsFromRemoteConfig(remoteConfigData, playerState, claimTierKey);
+        returnObject.grantedRewards = getRewardsFromRemoteConfigData(remoteConfigData, playerState, claimTierKey);
 
         await grantRewards(economyCurrencyApi, economyInventoryApi, projectId, playerId, returnObject.grantedRewards);
 
@@ -170,7 +170,7 @@ function validateClaim(playerState, tierToClaimArrayIndex) {
     }
 }
 
-function getRewardsFromRemoteConfig(remoteConfigData, playerState, claimTierKey) {
+function getRewardsFromRemoteConfigData(remoteConfigData, playerState, claimTierKey) {
     let returnRewards = [];
 
     const tierRewards = remoteConfigData[claimTierKey];

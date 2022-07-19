@@ -15,7 +15,6 @@ namespace UnityGamingServicesUseCases
 
         public TextMeshProUGUI closeButtonText;
 
-
         public void Show(List<RewardDetail> rewards)
         {
             rewardDisplayView.PopulateView(rewards);

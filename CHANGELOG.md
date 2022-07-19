@@ -4,6 +4,21 @@ All notable changes to this project will be documented in this file.
 
 ​The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).​
 
+## [1.5.0] - 2022-07-19
+
+### Added
+
+* Over-The-Air Content Delivery use case which demonstrates how you can use Cloud Content Delivery, Addressables, and Remote Config to download new content to a game while the game is running.
+
+### Changed
+
+* Updated Unity Gaming Services packages to the latest stable group of packages released as of 2022-07-18.
+  * Changes to this project were not needed as a result of any of these updates.
+
+### Fixed
+
+* Fixed Daily Rewards use case so it doesn't fail if any currencies are missing custom data or addressable address.
+
 ## [1.4.2] - 2022-06-22
 
 ### Changed

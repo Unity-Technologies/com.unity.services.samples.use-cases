@@ -22,7 +22,7 @@ module.exports = async ({ context }) => {
         const timestampMinutes = getTimestampMinutes(timestamp);
         const { remoteConfigData, cloudSaveData } = await GetData(remoteConfig, cloudSave, projectId, playerId, timestampMinutes);
 
-        const grantedRewards = await grantRewardsOrThrow(economy, projectId, playerId, remoteConfigData, cloudSaveData, timestamp);
+        const grantedRewards = await grantRewards(economy, projectId, playerId, remoteConfigData, cloudSaveData, timestamp);
         await saveEventCompleted(cloudSave, projectId, playerId, timestamp, remoteConfigData);
         
         const eventKey = remoteConfigData["EVENT_KEY"];
@@ -89,10 +89,10 @@ async function getCloudSaveData(cloudSave, projectId, playerId) {
     }
 }
 
-async function grantRewardsOrThrow(economy, projectId, playerId, remoteConfigData, cloudSaveData, timestamp) {
+async function grantRewards(economy, projectId, playerId, remoteConfigData, cloudSaveData, timestamp) {
     throwIfRewardDistributionNotAllowed(remoteConfigData, cloudSaveData, timestamp);
 
-    const rewards = getRewardsFromRemoteConfig(remoteConfigData);
+    const rewards = getRewardsFromRemoteConfigData(remoteConfigData);
 
     const incrementedRewards = [];
 
@@ -104,7 +104,8 @@ async function grantRewardsOrThrow(economy, projectId, playerId, remoteConfigDat
             let rewardBalance = {
                 "id": currencyBalance.data.currencyId,
                 "quantity": currencyBalance.data.balance,
-                "spriteAddress": rewards[i].spriteAddress};
+                "spriteAddress": rewards[i].spriteAddress
+            };
             incrementedRewards.push(rewardBalance);
         }
     }
@@ -143,7 +144,7 @@ function throwIfLastCompletedEventTimestampIsFromCurrentEvent(currentTime, activ
     }
 }
 
-function getRewardsFromRemoteConfig(remoteConfigData) {
+function getRewardsFromRemoteConfigData(remoteConfigData) {
     let eventRewards = [];
 
     const rewardResults = remoteConfigData["CHALLENGE_REWARD"];

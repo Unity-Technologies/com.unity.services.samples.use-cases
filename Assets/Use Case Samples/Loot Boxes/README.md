@@ -16,7 +16,7 @@ To see this use case in action:
 
 ### Initialization
 
-`TheLootBoxesSceneManager.cs` script performs the following initialization tasks:
+The `LootBoxesSceneManager.cs` script performs the following initialization tasks:
 
 1. Initializes Unity Gaming Services.
 2. Signs in the player [anonymously](https://docs.unity.com/authentication/UsingAnonSignIn.html) using the Authentication service. If you’ve previously initialized any of the other sample scenes, Authentication will use your cached Player ID instead of creating a new one.

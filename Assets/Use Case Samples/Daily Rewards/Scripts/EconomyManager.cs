@@ -62,12 +62,22 @@ namespace UnityGamingServicesUseCases
                 // Fill above 3 lists so we can async wait for all Addressables to be loaded and interpret results.
                 foreach (var currency in currencies)
                 {
-                    var spriteAddress = currency.CustomData["spriteAddress"] as string;
-                    var handle = Addressables.LoadAssetAsync<Sprite>(spriteAddress);
+                    var customData = currency.CustomData;
+                    if (!(customData is null))
+                    { 
+                        if (customData.TryGetValue("spriteAddress", out var spriteAddressObject))
+                        {
+                            var spriteAddress = spriteAddressObject as string;
+                            if (!(spriteAddress is null))
+                            { 
+                                var handle = Addressables.LoadAssetAsync<Sprite>(spriteAddress);
 
-                    ids.Add(currency.Id);
-                    handles.Add(handle);
-                    tasks.Add(handle.Task);
+                                ids.Add(currency.Id);
+                                handles.Add(handle);
+                                tasks.Add(handle.Task);
+                            }
+                        }
+                    }
                 }
 
                 // Wait for all Addressables to be loaded.

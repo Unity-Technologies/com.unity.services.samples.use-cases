@@ -63,7 +63,7 @@ namespace UnityGamingServicesUseCases
 
                     // Check that scene has not been unloaded while processing async wait to prevent throw.
                     if (this == null) return;
-                    
+
                     Debug.Log("Services Initialized.");
 
                     if (!AuthenticationService.Instance.IsSignedIn)
@@ -72,6 +72,7 @@ namespace UnityGamingServicesUseCases
                         await AuthenticationService.Instance.SignInAnonymouslyAsync();
                         if (this == null) return;
                     }
+
                     Debug.Log($"Player id: {AuthenticationService.Instance.PlayerId}");
 
                     // Economy configuration should be refreshed every time the app initializes.
