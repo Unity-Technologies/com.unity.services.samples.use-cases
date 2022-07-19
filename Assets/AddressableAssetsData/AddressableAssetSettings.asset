@@ -14,26 +14,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_DefaultGroup: 5a4554c8272074ba7b841f87ea806662
   m_OptimizeCatalogSize: 0
-  m_BuildRemoteCatalog: 0
+  m_BuildRemoteCatalog: 1
   m_BundleLocalCatalog: 0
   m_CatalogRequestsTimeout: 0
   m_DisableCatalogUpdateOnStart: 0
   m_IgnoreUnsupportedFilesInBuild: 0
   m_UniqueBundleIds: 0
   m_NonRecursiveBuilding: 0
+  m_CCDEnabled: 0
   m_maxConcurrentWebRequests: 500
   m_ContiguousBundles: 0
   m_StripUnityVersionFromBundleBuild: 0
   m_DisableVisibleSubAssetRepresentations: 0
   m_ShaderBundleNaming: 0
   m_ShaderBundleCustomNaming: 
-  m_MonoScriptBundleNaming: 0
+  m_MonoScriptBundleNaming: 1
+  m_CheckForContentUpdateRestrictionsOption: 0
   m_MonoScriptBundleCustomNaming: 
   m_RemoteCatalogBuildPath:
-    m_Id: 10b141bb4edec41d2a002b0de96def89
+    m_Id: 0b8c9936d5437432aa3b677dcbb94730
   m_RemoteCatalogLoadPath:
     m_Id: f67505216036b400f93634d854ade64f
+  m_ContentStateBuildPathProfileVariableName: <default settings path>
+  m_CustomContentStateBuildPath: 
   m_ContentStateBuildPath: 
+  m_BuildAddressablesWithPlayerBuild: 2
   m_overridePlayerVersion: 
   m_GroupAssets:
   - {fileID: 11400000, guid: 1532e18ee1c8440fb8fe35cedb78017f, type: 2}
@@ -42,7 +47,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: f1af4c78d2e424394a4e7ef4d10f4875, type: 2}
   - {fileID: 11400000, guid: 19b21f43acf664bbf8d1abb2a2aef330, type: 2}
   - {fileID: 11400000, guid: 9d82e9efde5bd43929742a3a06aa97a8, type: 2}
-  - {fileID: 11400000, guid: 5b2fc6607ff3d40b4a0582787d18c185, type: 2}
+  - {fileID: 11400000, guid: 9142f3c14507e416b9416c1d2cdcb0d8, type: 2}
   m_BuildSettings:
     m_CompileScriptsInVirtualMode: 0
     m_CleanupStreamingAssetsAfterBuilds: 1
@@ -64,6 +69,20 @@ MonoBehaviour:
         m_Value: ServerData/[BuildTarget]
       - m_Id: f67505216036b400f93634d854ade64f
         m_Value: http://localhost/[BuildTarget]
+    - m_InheritedParent: 
+      m_Id: c7f0395d23c4646abac9e7a9043bd3b4
+      m_ProfileName: Bucket
+      m_Values:
+      - m_Id: 09e9660f12e9d47a195889a5b77badd5
+        m_Value: '[UnityEditor.EditorUserBuildSettings.activeBuildTarget]'
+      - m_Id: 10b141bb4edec41d2a002b0de96def89
+        m_Value: '[UnityEngine.AddressableAssets.Addressables.BuildPath]/[BuildTarget]'
+      - m_Id: 1319aba5d390240cbbf0fe175b867fb7
+        m_Value: '{UnityEngine.AddressableAssets.Addressables.RuntimePath}/[BuildTarget]'
+      - m_Id: 0b8c9936d5437432aa3b677dcbb94730
+        m_Value: AssetBundles/[BuildTarget]
+      - m_Id: f67505216036b400f93634d854ade64f
+        m_Value: https://3e199042-b600-4248-97ac-f5eccc6292ad.client-api.unity3dusercontent.com/client_api/v1/environments/production/buckets/a041d8af-acb7-4042-8c30-2b6797622106/release_by_badge/latest/entry_by_path/content/?path=
     m_ProfileEntryNames:
     - m_Id: 09e9660f12e9d47a195889a5b77badd5
       m_Name: BuildTarget
@@ -101,7 +120,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 26b41c7155efb473e8f43c8dfb74b357, type: 2}
   - {fileID: 11400000, guid: ed884e813c15542eda932445484920db, type: 2}
   - {fileID: 11400000, guid: 71ba52c6be8b3477cb4e3a6e581701f0, type: 2}
-  m_ActiveProfileId: 772964cd236104241a17a08f61382cbe
+  m_ActiveProfileId: c7f0395d23c4646abac9e7a9043bd3b4
   m_HostingServicesManager:
     m_HostingServiceInfos: []
     m_Settings: {fileID: 11400000}
