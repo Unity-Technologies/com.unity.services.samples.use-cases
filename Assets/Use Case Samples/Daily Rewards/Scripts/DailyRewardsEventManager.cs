@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Unity.Services.Authentication;
-using Unity.Services.CloudCode;
 using UnityEngine;
 
 namespace UnityGamingServicesUseCases
@@ -40,6 +38,8 @@ namespace UnityGamingServicesUseCases
             public bool isClaimableNow => secondsTillClaimable <= 0 && !isEnded;
 
             public float secondsTillNextDay => m_Status.secondsTillNextDay;
+
+            public float secondsPerDay => m_Status.secondsPerDay;
 
             public List<DailyReward> GetDailyRewards(int dayIndex) => m_Status.dailyRewards[dayIndex];
 

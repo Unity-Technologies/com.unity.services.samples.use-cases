@@ -96,12 +96,17 @@ namespace UnityGamingServicesUseCases
                 // APIs as both use the cached data list. (Though it wouldn't be necessary to do if only using Remote
                 // Config in your project and not Economy.)
                 await EconomyManager.instance.RefreshEconomyConfiguration();
-                if (this == null) return;
             }
 
             async Task FetchUpdatedServicesData()
             {
+#if UNITY_ANDROID || UNITY_IOS
                 MediationManager.instance.LoadRewardedAd();
+#else
+                Debug.LogWarning("The Mediation SDK doesn't support the current platform, so ads are disabled. " +
+                                 "To test rewarded ads, change the build target to Android or iOS.");
+#endif
+
                 await Task.WhenAll(
                     EconomyManager.instance.RefreshCurrencyBalances(),
                     CloudSaveManager.instance.LoadAndCacheData()
@@ -110,7 +115,8 @@ namespace UnityGamingServicesUseCases
 
             public void OnCompleteLevelButtonPressed()
             {
-                if (m_LevelEndCount % k_FrequencyOfRewardedAdBoosterOccurrence == 0)
+                if (MediationManager.instance.isAdReady
+                    && m_LevelEndCount % k_FrequencyOfRewardedAdBoosterOccurrence == 0)
                 {
                     rewardedAdBoosterArrow.Start();
 

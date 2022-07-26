@@ -66,7 +66,7 @@ MonoBehaviour:
     bodyFormat: 0
     boxCallout: 
     bulletList:
-    - body: A/B Testing Level Difficulty - Segment players into multiple test groups
+    - body: A/B Test on Game Difficulty - Segment players into multiple test groups
         in order to determine which variation of a specific variable is the most
         engaging to the players (in this case, the amount of XP required for leveling
         up).
@@ -96,7 +96,7 @@ MonoBehaviour:
       bodyFormat: 0
       bulletList: []
       linkList: []
-    - body: Idle Clicker Mini Game - Update server authoritative game state in real
+    - body: Idle Clicker Game - Update server authoritative game state in real
         time, similar to idle clicker and social games.
       bodyFormat: 0
       bulletList: []

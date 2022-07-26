@@ -1,6 +1,5 @@
 ﻿using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace UnityGamingServicesUseCases
 {
@@ -14,6 +13,7 @@ namespace UnityGamingServicesUseCases
 
             public TextMeshProUGUI daysLeftText;
             public TextMeshProUGUI comeBackInText;
+            public TextMeshProUGUI secondsPerDayText;
 
             public CalendarView calendar;
             public BonusDayView bonusDay;
@@ -29,6 +29,8 @@ namespace UnityGamingServicesUseCases
 
             public void UpdateTimers(DailyRewardsEventManager eventManager)
             {
+                secondsPerDayText.text = $"1 day = {eventManager.secondsPerDay} sec";
+
                 if (eventManager.daysRemaining <= 0)
                 {
                     endedEventGameObject.SetActive(true);

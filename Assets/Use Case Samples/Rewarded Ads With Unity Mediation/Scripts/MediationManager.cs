@@ -71,7 +71,7 @@ namespace UnityGamingServicesUseCases
                 if (m_AdLoadAttempts < k_MaxAdLoadAttempts)
                 {
                     m_AdLoadAttempts++;
-                    m_RewardedAd.Load();
+                    m_RewardedAd.LoadAsync();
                 }
                 else
                 {
@@ -185,7 +185,7 @@ namespace UnityGamingServicesUseCases
 
                 isAdReady = false;
                 m_BonusRewardMultiplier = bonusRewardMultiplier;
-                m_RewardedAd.Show();
+                m_RewardedAd.ShowAsync();
             }
         }
     }

@@ -4,6 +4,18 @@ All notable changes to this project will be documented in this file.
 
 ​The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).​
 
+## [1.5.1] - 2022-07-25
+
+### Changed
+
+* Updated the Mediation package to 0.5.0.
+  * This upgrade fixes unexpected warnings that were appearing in non-Mediation-related scenes.
+  * The new version deprecated two sync methods in favor of async methods, so we're now using the newer async methods.
+  * This upgrade makes a cleaner distinction between supported and unsupported platforms for Mediation.
+  * When the build target is Android or iOS, rewarded ads will work normally. In other build targets, ads will be disabled.
+* Added a label to the Daily Rewards use case UI to indicate how many seconds are in a day.
+  * Also decreased the day length from 30 seconds to 10 seconds.
+
 ## [1.5.0] - 2022-07-19
 
 ### Added

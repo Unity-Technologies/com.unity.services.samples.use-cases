@@ -16,9 +16,11 @@ namespace UnityGamingServicesUseCases
             public Button claimLevelEndRewardsButton;
             
             [Space]
+            public TextMeshProUGUI adsDisabledText;
+
+            [Space]
             public Button watchRewardedAdButton;
             public TextMeshProUGUI standardRewardedAdRewardAmountText;
-
 
             [Space]
             public GameObject rewardedAdBooster;
@@ -39,7 +41,7 @@ namespace UnityGamingServicesUseCases
                 SetInteractable(false);
             }
 
-            public void SetInteractable(bool isInteractable = true)
+            public void SetInteractable(bool isInteractable)
             {
                 m_IsSceneInteractable = isInteractable;
 
@@ -57,12 +59,11 @@ namespace UnityGamingServicesUseCases
 
             public void ShowCompleteLevelPopup(int rewardAmount)
             {
-                standardRewardedAdRewardAmountText.text = rewardAmount.ToString();
-                rewardedAdBooster.SetActive(false);
-
-                // Only show the rewarded ad button if an ad is ready to show.
-                watchRewardedAdButton.gameObject.SetActive(MediationManager.instance.isAdReady);
+                watchRewardedAdButton.gameObject.SetActive(true);
                 watchRewardedAdButton.interactable = m_IsSceneInteractable && MediationManager.instance.isAdReady;
+                rewardedAdBooster.SetActive(false);
+                standardRewardedAdRewardAmountText.text = rewardAmount.ToString();
+                adsDisabledText.gameObject.SetActive(!MediationManager.instance.isAdReady);
                 levelCompletePopup.gameObject.SetActive(true);
             }
 
@@ -75,6 +76,7 @@ namespace UnityGamingServicesUseCases
                 // Only show the rewarded ad booster if an ad is ready to show.
                 rewardedAdBooster.SetActive(MediationManager.instance.isAdReady);
                 rewardedAdBoosterWatchAdButton.interactable = m_IsSceneInteractable && MediationManager.instance.isAdReady;
+                adsDisabledText.gameObject.SetActive(false);
                 watchRewardedAdButton.gameObject.SetActive(false);
                 levelCompletePopup.gameObject.SetActive(true);
             }
