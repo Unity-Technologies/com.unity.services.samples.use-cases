@@ -2,7 +2,7 @@
 // this file will not have any effect locally. Changes to Cloud Code scripts are normally done directly in the 
 // Unity Dashboard.
 
-const { DataApi } = require("@unity-services/cloud-save-1.0");
+const { DataApi } = require("@unity-services/cloud-save-1.2");
 
 const badRequestError = 400;
 const tooManyRequestsError = 429;

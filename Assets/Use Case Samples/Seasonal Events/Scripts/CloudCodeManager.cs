@@ -102,6 +102,13 @@ namespace UnityGamingServicesUseCases
 
             void HandleCloudCodeException(CloudCodeException e)
             {
+                if (e is CloudCodeRateLimitedException cloudCodeRateLimitedException)
+                {
+                    Debug.Log("Cloud Code rate limit has been exceeded. " +
+                              $"Wait {cloudCodeRateLimitedException.RetryAfter} seconds and try again.");
+                    return;
+                }
+
                 switch (e.ErrorCode)
                 {
                     case k_CloudCodeUnprocessableEntityExceptionStatusCode:

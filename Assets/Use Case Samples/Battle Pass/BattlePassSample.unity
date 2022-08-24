@@ -179,7 +179,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   battlePassSceneManager: {fileID: 1685906476}
   tierPrefab: {fileID: 6545411340689792964, guid: 8e15fdd3faa4b48d2ba59d855bd89ec3, type: 3}
-  tierPopupView: {fileID: 1942523005809497618}
   seasonXpProgressBarPanel: {fileID: 957912473}
   seasonXpProgressCurrentTierText: {fileID: 1466089075}
   seasonXpProgressNextTierText: {fileID: 549771322}
@@ -9099,6 +9098,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 8655527326657022464, guid: 024b420a64ec64e87a2c32ab21d9685a, type: 3}
   m_PrefabInstance: {fileID: 1954666992}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1954667002 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8655527328128398355, guid: 024b420a64ec64e87a2c32ab21d9685a, type: 3}
+  m_PrefabInstance: {fileID: 1954666992}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1954666995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1976832134
 GameObject:
   m_ObjectHideFlags: 0
@@ -9546,6 +9556,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   battlePassView: {fileID: 98420452}
   inventoryButton: {fileID: 6022610177594281646}
+  gainGemsButton: {fileID: 1954667002}
   messagePopup: {fileID: 777485312}
   inventoryPopupView: {fileID: 1111307160}
   eventWelcomeText: {fileID: 220277096}

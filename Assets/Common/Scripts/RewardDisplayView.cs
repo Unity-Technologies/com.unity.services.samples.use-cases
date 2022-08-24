@@ -15,15 +15,20 @@ namespace UnityGamingServicesUseCases
             {
                 var rewardItemView = InstantiateRewardItem();
                 rewardItemView.SetQuantity(reward.quantity);
+                ShowSprite(reward, rewardItemView);
+            }
+        }
 
-                if (reward.sprite != null)
-                {
-                    rewardItemView.SetIcon(reward.sprite);
-                }
-                else if (!string.IsNullOrEmpty(reward.spriteAddress))
-                {
-                    rewardItemView.LoadIconFromAddress(reward.spriteAddress);
-                }
+        public void PopulateView(List<RewardDetail> rewards, Color rewardItemViewColor)
+        {
+            ClearView();
+
+            foreach (var reward in rewards)
+            {
+                var rewardItemView = InstantiateRewardItem();
+                rewardItemView.SetQuantity(reward.quantity);
+                ShowSprite(reward, rewardItemView);
+                rewardItemView.SetColor(rewardItemViewColor);
             }
         }
 
@@ -42,6 +47,18 @@ namespace UnityGamingServicesUseCases
             rewardItem.gameObject.SetActive(false);
 
             return rewardItem;
+        }
+
+        void ShowSprite(RewardDetail reward, RewardItemView rewardItemView)
+        {
+            if (reward.sprite != null)
+            {
+                rewardItemView.SetIcon(reward.sprite);
+            }
+            else if (!string.IsNullOrEmpty(reward.spriteAddress))
+            {
+                rewardItemView.LoadIconFromAddress(reward.spriteAddress);
+            }
         }
     }
 }

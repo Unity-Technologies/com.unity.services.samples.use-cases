@@ -11,7 +11,6 @@ namespace UnityGamingServicesUseCases
         {
             public BattlePassSceneManager battlePassSceneManager;
             public GameObject tierPrefab;
-            public TierPopupView tierPopupView;
             public GameObject seasonXpProgressBarPanel;
             public TextMeshProUGUI seasonXpProgressCurrentTierText;
             public TextMeshProUGUI seasonXpProgressNextTierText;

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Unity.Services.Economy;
 using Unity.Services.Economy.Model;
 using UnityEngine;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -113,8 +112,8 @@ namespace UnityGamingServicesUseCases
                 foreach (var currencyDefinition in currencyDefinitions)
                 {
                     if (currencyDefinition.CustomData != null
-                        && currencyDefinition.CustomData.ContainsKey("spriteAddress")
-                        && currencyDefinition.CustomData["spriteAddress"] is string spriteAddress)
+                        && currencyDefinition.CustomData.TryGetValue("spriteAddress", out var spriteAddressObject)
+                        && spriteAddressObject is string spriteAddress)
                     {
                         addressablesLoadData.Add(currencyDefinition.Id, spriteAddress);
                     }
@@ -132,8 +131,8 @@ namespace UnityGamingServicesUseCases
                 foreach (var inventoryItemDefinition in inventoryItemDefinitions)
                 {
                     if (inventoryItemDefinition.CustomData != null
-                        && inventoryItemDefinition.CustomData.ContainsKey("spriteAddress")
-                        && inventoryItemDefinition.CustomData["spriteAddress"] is string spriteAddress)
+                        && inventoryItemDefinition.CustomData.TryGetValue("spriteAddress", out var spriteAddressObject)
+                        && spriteAddressObject is string spriteAddress)
                     {
                         addressablesLoadData.Add(inventoryItemDefinition.Id, spriteAddress);
                     }
@@ -158,19 +157,6 @@ namespace UnityGamingServicesUseCases
                             $" Addressables exception: {handle.OperationException}");
                     }
                 }
-            }
-
-            List<ItemAndAmountSpec> ParseEconomyItems(List<PurchaseItemQuantity> itemQuantities)
-            {
-                var itemsAndAmountsSpec = new List<ItemAndAmountSpec>();
-
-                foreach (var itemQuantity in itemQuantities)
-                {
-                    var id = itemQuantity.Item.GetReferencedConfigurationItem().Id;
-                    itemsAndAmountsSpec.Add(new ItemAndAmountSpec(id, itemQuantity.Amount));
-                }
-
-                return itemsAndAmountsSpec;
             }
         }
     }

@@ -3,8 +3,8 @@
 // Unity Dashboard.
 
 const _ = require("lodash-4.17");
-const { CurrenciesApi } = require("@unity-services/economy-2.0");
-const { DataApi } = require("@unity-services/cloud-save-1.0");
+const { CurrenciesApi } = require("@unity-services/economy-2.3");
+const { DataApi } = require("@unity-services/cloud-save-1.2");
 
 const badRequestError = 400;
 const tooManyRequestsError = 429;
@@ -23,7 +23,7 @@ module.exports = async ({ params, context, logger }) => {
     const services = { projectId, playerId, cloudSaveApi, economyCurrencyApi, logger };
 
     let gameState = await readState(services);
-  
+
     // If save state is found (normal condition) then remember this isn't a new game/move to avoid duplicate popups.
     if (gameState) {
       logger.info("read start state: " + JSON.stringify(gameState));
@@ -64,7 +64,7 @@ async function readState(services) {
 function startRandomGame(services, gameState) {
   gameState.playerPieces = [];
   gameState.aiPieces = [];
-  gameState.isNewGame = true; 
+  gameState.isNewGame = true;
   gameState.isNewMove = true;
   gameState.isPlayerTurn = true;
   gameState.isGameOver = false;
@@ -96,7 +96,7 @@ function transformAndThrowCaughtError(error) {
     result.status = error.response.data.status ? error.response.data.status : 0;
     result.name = error.response.data.title ? error.response.data.title : "Unknown Error";
     result.message = error.response.data.detail ? error.response.data.detail : error.response.data;
-    
+
     if (error.response.status === tooManyRequestsError) {
       result.retryAfter = error.response.headers['retry-after'];
     } else if (error.response.status === badRequestError) {

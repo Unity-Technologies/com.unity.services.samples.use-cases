@@ -3,9 +3,9 @@
 // Unity Dashboard.
 
 const _ = require("lodash-4.17");
-const { CurrenciesApi } = require("@unity-services/economy-2.0");
-const { SettingsApi } = require("@unity-services/remote-config-1.0");
-const { DataApi } = require("@unity-services/cloud-save-1.0");
+const { CurrenciesApi } = require("@unity-services/economy-2.3");
+const { SettingsApi } = require("@unity-services/remote-config-1.1");
+const { DataApi } = require("@unity-services/cloud-save-1.2");
 
 const badRequestError = 400;
 const tooManyRequestsError = 429;
@@ -126,8 +126,23 @@ async function claimRewards(services, eventState) {
 
     // Create list of asyncs for all grants in dailyRewards array.
     let asyncGrants = [];
-    eventState.result.rewardsGranted.forEach(reward => asyncGrants.push(services.economy.incrementPlayerCurrencyBalance(services.projectId, services.playerId, 
-        reward.id, { currencyId: reward.id, amount: reward.quantity })));
+
+    eventState.result.rewardsGranted.forEach(reward => {
+
+        const currencyModifyBalanceRequest = {
+            currencyId: reward.id,
+            amount: reward.quantity
+        };
+    
+        const requestParameters = {
+            projectId: services.projectId,
+            playerId: services.playerId,
+            currencyId: reward.id,
+            currencyModifyBalanceRequest
+        };
+    
+        asyncGrants.push(services.economy.incrementPlayerCurrencyBalance(requestParameters));
+    });
 
     // Grant all currency rewards at the same time
     const promiseResponses = await Promise.all(asyncGrants);

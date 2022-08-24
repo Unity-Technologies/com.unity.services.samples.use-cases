@@ -66,77 +66,119 @@ MonoBehaviour:
     bodyFormat: 0
     boxCallout: 
     bulletList:
-    - body: A/B Test on Game Difficulty - Segment players into multiple test groups
-        in order to determine which variation of a specific variable is the most
-        engaging to the players (in this case, the amount of XP required for leveling
-        up).
-      bodyFormat: 0
-      bulletList: []
+    - body: A/B Test on Game Difficulty
+      bodyFormat: 1
+      bulletList:
+      - body: Segment players into multiple test groups in order to determine which
+          variation of a specific variable is the most engaging to the players (in
+          this case, the amount of XP required for leveling up).
+        bodyFormat: 0
+        bulletList: []
       linkList: []
-    - body: Battle Pass - A seasonal reward tier system with a free track and a premium
-        track.
-      bodyFormat: 0
-      bulletList: []
+    - body: Battle Pass
+      bodyFormat: 1
+      bulletList:
+      - body: A seasonal reward tier system with a free track and a premium track.
+        bodyFormat: 0
+        bulletList: []
       linkList: []
-    - body: Cloud AI Mini Game - Server authoritative gameplay in a simple Tic-Tac-Toe
-        game played against AI running on UGS with persistent state, Currency rewards,
-        stats, and straightforward AI.
-      bodyFormat: 0
-      bulletList: []
+    - body: Cloud AI Mini Game
+      bodyFormat: 1
+      bulletList:
+      - body: Server authoritative gameplay in a simple Tic-Tac-Toe game played against
+          AI running on UGS with persistent state, Currency rewards, stats, and straightforward
+          AI.
+        bodyFormat: 0
+        bulletList: []
       linkList: []
-    - body: Command Batching - Group game Commands into a queue and process on the
-        server in a single batch to reduce the volume and frequency of server calls
-        made during gameplay.
-      bodyFormat: 0
-      bulletList: []
+    - body: Command Batching
+      bodyFormat: 1
+      bulletList:
+      - body: Group game Commands into a queue and process on the server in a single
+          batch to reduce the volume and frequency of server calls made during gameplay.
+        bodyFormat: 0
+        bulletList: []
       linkList: []
-    - body: Daily Rewards - A prevalent engagement feature that can boost retention
-        by showing players an escalating series of rewards incentivizes them to keep
-        logging in to claim better and better prizes.
-      bodyFormat: 0
-      bulletList: []
+    - body: Daily Rewards
+      bodyFormat: 1
+      bulletList:
+      - body: A prevalent engagement feature that can boost retention by showing
+          players an escalating series of rewards incentivizes them to keep logging
+          in to claim better and better prizes.
+        bodyFormat: 0
+        bulletList: []
       linkList: []
-    - body: Idle Clicker Game - Update server authoritative game state in real
-        time, similar to idle clicker and social games.
-      bodyFormat: 0
-      bulletList: []
+    - body: Idle Clicker Game
+      bodyFormat: 1
+      bulletList:
+      - body: Update server authoritative game state in real time, similar to idle
+          clicker and social games.
+        bodyFormat: 0
+        bulletList: []
       linkList: []
-    - body: Loot Boxes - Reward players with a random Economy currency using Cloud
-        Code to perform the Economy grants.
-      bodyFormat: 0
-      bulletList: []
+    - body: In-Game Mailbox
+      bodyFormat: 1
+      bulletList:
+      - body: Demonstrates a way that developers can send in-game messages to their
+          players, including with gifts of various game currencies and inventory
+          items.
+        bodyFormat: 0
+        bulletList: []
       linkList: []
-    - body: Loot Boxes With Cooldown - Grant players random collections of both Currencies
-        and Inventory Items at timed intervals.
-      bodyFormat: 0
-      bulletList: []
+    - body: Loot Boxes
+      bodyFormat: 1
+      bulletList:
+      - body: Reward players with a random Economy currency using Cloud Code to perform
+          the Economy grants.
+        bodyFormat: 0
+        bulletList: []
       linkList: []
-    - body: Over-The-Air Content Delivery - Add new downloaded content to a game
-        while the game is running.
-      bodyFormat: 0
-      bulletList: []
+    - body: Loot Boxes With Cooldown
+      bodyFormat: 1
+      bulletList:
+      - body: Grant players random collections of both Currencies and Inventory Items
+          at timed intervals.
+        bodyFormat: 0
+        bulletList: []
       linkList: []
-    - body: Rewarded Ads With Unity Mediation - Offer players opportunity to boost
-        level end rewards by interacting with a reward booster meter and watching
-        a rewarded ad.
-      bodyFormat: 0
-      bulletList: []
+    - body: Over-The-Air Content Delivery
+      bodyFormat: 1
+      bulletList:
+      - body: Add new downloaded content to a game while the game is running.
+        bodyFormat: 0
+        bulletList: []
       linkList: []
-    - body: Seasonal Events - Update game content remotely based on timed special
-        events.
-      bodyFormat: 0
-      bulletList: []
+    - body: Rewarded Ads With Unity Mediation
+      bodyFormat: 1
+      bulletList:
+      - body: Offer players opportunity to boost level end rewards by interacting
+          with a reward booster meter and watching a rewarded ad.
+        bodyFormat: 0
+        bulletList: []
       linkList: []
-    - body: Starter Packs - Allow players to purchase a Starter Pack using Cloud
-        Code to implement the one-time-only purchase.
-      bodyFormat: 0
-      bulletList: []
+    - body: Seasonal Events
+      bodyFormat: 1
+      bulletList:
+      - body: Update game content remotely based on timed special events.
+        bodyFormat: 0
+        bulletList: []
       linkList: []
-    - body: 'Virtual Shop - Demonstrates a key feature in many games: allowing players
-        to use in-game currency to purchase items and resources to facilitate a server-authoritative
-        in-game economy.'
-      bodyFormat: 0
-      bulletList: []
+    - body: Starter Packs
+      bodyFormat: 1
+      bulletList:
+      - body: Allow players to purchase a Starter Pack using Cloud Code to implement
+          the one-time-only purchase.
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: Virtual Shop
+      bodyFormat: 1
+      bulletList:
+      - body: 'Demonstrates a key feature in many games: allowing players to use
+          in-game currency to purchase items and resources to facilitate a server-authoritative
+          in-game economy.'
+        bodyFormat: 0
+        bulletList: []
       linkList: []
     linkList: []
   - subHeader1: 

@@ -3,8 +3,8 @@
 // Unity Dashboard.
 
 const _ = require("lodash-4.17");
-const { CurrenciesApi } = require("@unity-services/economy-2.0");
-const { DataApi } = require("@unity-services/cloud-save-1.0");
+const { CurrenciesApi } = require("@unity-services/economy-2.3");
+const { DataApi } = require("@unity-services/cloud-save-1.2");
 
 const badRequestError = 400;
 const tooManyRequestsError = 429;
@@ -30,20 +30,20 @@ module.exports = async ({ params, context, logger }) => {
     const services = { projectId, playerId, cloudSaveApi, economyCurrencyApi, logger };
 
     let gameState = await readState(services);
-    
+
     // If save state is found (normal condition) then remember this isn't a new game/move to avoid duplicate popups.
     if (gameState) {
-      gameState.isNewGame = false;  
+      gameState.isNewGame = false;
       gameState.isNewMove = false;
     } else {
       // DASHBOARD TESTING CODE: If the starting state is not found (only occurs in dashboard) then setup dummy state 
       // for testing only. By not randomizing here, testing can request valid or invalid locations as needed.
-      gameState = { playerPieces:[], aiPieces:[{x:0, y:1}], isPlayerTurn:true, isNewGame:true, isNewMove:true, isGameOver:false, 
-                    status:"playing", winCount: 0, lossCount: 0, tieCount: 0 };
+      gameState = { playerPieces:[], aiPieces:[{x:0, y:1}], isPlayerTurn:true, isNewGame:true, isNewMove:true, isGameOver:false,
+        status:"playing", winCount: 0, lossCount: 0, tieCount: 0 };
 
       logger.info("created debug start state: " + JSON.stringify(gameState));
     }
-    
+
     // If game is already over, return status to signal select-new-game popup.
     if (gameState.isGameOver) {
       logger.error("attempted to place when game over");
@@ -58,13 +58,13 @@ module.exports = async ({ params, context, logger }) => {
 
     // Handle valid move by placing the new piece.
     else {
-      gameState.isNewMove = true;  
+      gameState.isNewMove = true;
       gameState.status = "playing";
       gameState.isPlayerTurn = false;
 
       placePlayerPiece(services, gameState, coord);
       logger.info("player placement successful");
-      
+
       if (await detectAndHandleGameOver(services, gameState)) {
         logger.info("player triggered game over. updated status: " + gameState.status);
       } else {
@@ -148,7 +148,7 @@ function isSpaceOccupied(services, gameState, coord) {
   }
 
   return isPieceFound(services, gameState, gameState.playerPieces, coord.x, coord.y) ||
-    isPieceFound(services, gameState, gameState.aiPieces, coord.x, coord.y);
+      isPieceFound(services, gameState, gameState.aiPieces, coord.x, coord.y);
 }
 
 // Try all lines (horizontal, vertical, diagonal) to see if any has 2 pieces already and 
@@ -165,7 +165,7 @@ function tryToPlace3rdPieceOnAnyLine(services, gameState, pieceListToCheck, oppo
       return true;
     }
   }
- 
+
   // Try diagonal starting at top-left
   if (tryToPlace3rdPieceOnLine(services, gameState, 0, 0, 1, 1, pieceListToCheck, opponentPieceList)) {
     return true;
@@ -175,7 +175,7 @@ function tryToPlace3rdPieceOnAnyLine(services, gameState, pieceListToCheck, oppo
   if (tryToPlace3rdPieceOnLine(services, gameState, 0, 2, 1, -1, pieceListToCheck, opponentPieceList)) {
     return true;
   }
-  
+
   // All options exhausted--not possible to place the 3rd piece on any line
   return false;
 }
@@ -246,7 +246,7 @@ function isWin(services, gameState, pieces) {
       return true;
     }
   }
- 
+
   if (countLinePieces(services, gameState, pieces, 0, 0, 1, 1) === playfieldSize) {
     return true;
   }
@@ -286,8 +286,9 @@ async function saveState(services, gameState) {
 }
 
 async function grantCurrencyReward(services, gameState, amount) {
-  await services.economyCurrencyApi.incrementPlayerCurrencyBalance(services.projectId, services.playerId, currencyId, 
-    { currencyId, amount });
+  const currencyModifyBalanceRequest = { currencyId, amount };
+  const requestParameters = { projectId: services.projectId, playerId: services.playerId, currencyId, currencyModifyBalanceRequest };
+  await services.economyCurrencyApi.incrementPlayerCurrencyBalance(requestParameters);
 }
 
 // Some form of this function appears in all Cloud Code scripts.

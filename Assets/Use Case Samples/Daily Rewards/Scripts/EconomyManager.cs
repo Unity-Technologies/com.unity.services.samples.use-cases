@@ -63,20 +63,15 @@ namespace UnityGamingServicesUseCases
                 foreach (var currency in currencies)
                 {
                     var customData = currency.CustomData;
-                    if (!(customData is null))
-                    { 
-                        if (customData.TryGetValue("spriteAddress", out var spriteAddressObject))
-                        {
-                            var spriteAddress = spriteAddressObject as string;
-                            if (!(spriteAddress is null))
-                            { 
-                                var handle = Addressables.LoadAssetAsync<Sprite>(spriteAddress);
+                    if (customData != null
+                        && customData.TryGetValue("spriteAddress", out var spriteAddressObject)
+                        && spriteAddressObject is string spriteAddress)
+                    {
+                        var handle = Addressables.LoadAssetAsync<Sprite>(spriteAddress);
 
-                                ids.Add(currency.Id);
-                                handles.Add(handle);
-                                tasks.Add(handle.Task);
-                            }
-                        }
+                        ids.Add(currency.Id);
+                        handles.Add(handle);
+                        tasks.Add(handle.Task);
                     }
                 }
 

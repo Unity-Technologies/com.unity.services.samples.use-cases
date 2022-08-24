@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Unity.Services.CloudCode;
 using UnityEngine;
@@ -12,8 +11,8 @@ namespace UnityGamingServicesUseCases
         public class CloudCodeManager : MonoBehaviour
         {
             public static CloudCodeManager instance { get; private set; }
-            public static event Action<string, long> LeveledUp;
-            public static event Action<int> XPIncreased;
+            public static event Action<string, long> leveledUp;
+            public static event Action<int> xpIncreased;
 
             // Cloud Code SDK status codes from Client
             const int k_CloudCodeRateLimitExceptionStatusCode = 50;
@@ -54,7 +53,7 @@ namespace UnityGamingServicesUseCases
 
                     if (gainXPAndLevelResults.playerXPUpdateAmount > 0)
                     {
-                        XPIncreased?.Invoke(gainXPAndLevelResults.playerXPUpdateAmount);
+                        xpIncreased?.Invoke(gainXPAndLevelResults.playerXPUpdateAmount);
                     }
 
                     if (gainXPAndLevelResults.didLevelUp)
@@ -78,7 +77,7 @@ namespace UnityGamingServicesUseCases
             void CompleteLevelUpUpdates(GainXPAndLevelResult levelUpResults)
             {
                 var rewardCurrencyId = levelUpResults.levelUpRewards.currencyId;
-                LeveledUp?.Invoke(rewardCurrencyId, levelUpResults.levelUpRewards.rewardAmount);
+                leveledUp?.Invoke(rewardCurrencyId, levelUpResults.levelUpRewards.rewardAmount);
                 EconomyManager.instance.SetCurrencyBalance(rewardCurrencyId,
                     levelUpResults.levelUpRewards.balance);
 
@@ -87,6 +86,13 @@ namespace UnityGamingServicesUseCases
 
             void HandleCloudCodeException(CloudCodeException e)
             {
+                if (e is CloudCodeRateLimitedException cloudCodeRateLimitedException)
+                {
+                    Debug.Log("Cloud Code rate limit has been exceeded. " +
+                              $"Wait {cloudCodeRateLimitedException.RetryAfter} seconds and try again.");
+                    return;
+                }
+
                 switch (e.ErrorCode)
                 {
                     case k_CloudCodeUnprocessableEntityExceptionStatusCode:

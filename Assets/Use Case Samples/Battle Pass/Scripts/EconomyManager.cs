@@ -53,7 +53,7 @@ namespace UnityGamingServicesUseCases
                 }
                 catch (Exception e)
                 {
-                    Debug.Log("Problem calling cloud code endpoint: " + e.Message);
+                    Debug.Log("Problem getting Economy currency balances: " + e.Message);
                     Debug.LogException(e);
                 }
             }
@@ -75,7 +75,7 @@ namespace UnityGamingServicesUseCases
                 }
                 catch (Exception e)
                 {
-                    Debug.Log("Problem calling cloud code endpoint: " + e.Message);
+                    Debug.Log("Problem getting Economy inventory items: " + e.Message);
                     Debug.LogException(e);
                 }
             }

@@ -3,9 +3,9 @@
 // Unity Dashboard.
 
 const _ = require("lodash-4.17");
-const { CurrenciesApi } = require("@unity-services/economy-2.0");
-const { SettingsApi } = require("@unity-services/remote-config-1.0");
-const { DataApi } = require("@unity-services/cloud-save-1.0");
+const { CurrenciesApi } = require("@unity-services/economy-2.3");
+const { SettingsApi } = require("@unity-services/remote-config-1.1");
+const { DataApi } = require("@unity-services/cloud-save-1.2");
 
 const badRequestError = 400;
 const tooManyRequestsError = 429;
@@ -100,7 +100,10 @@ async function grantRewards(economy, projectId, playerId, remoteConfigData, clou
         let currencyId = rewards[i]["id"];
         let amount = rewards[i]["quantity"];
         if (currencyId != null && amount != null) {
-            let currencyBalance = await economy.incrementPlayerCurrencyBalance(projectId, playerId, currencyId, { currencyId, amount });
+            const currencyModifyBalanceRequest = { currencyId, amount };
+            const requestParameters = { projectId, playerId, currencyId, currencyModifyBalanceRequest };
+            let currencyBalance = await economy.incrementPlayerCurrencyBalance(requestParameters);
+
             let rewardBalance = {
                 "id": currencyBalance.data.currencyId,
                 "quantity": currencyBalance.data.balance,

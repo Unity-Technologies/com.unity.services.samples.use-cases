@@ -13,7 +13,7 @@ namespace UnityGamingServicesUseCases
     {
         public class StarterPackSceneManager : MonoBehaviour
         {
-            public static event Action<bool> StarterPackStatusChecked;
+            public static event Action<bool> starterPackStatusChecked;
 
             const string k_StarterPackCloudSaveKey = "STARTER_PACK_STATUS";
 
@@ -169,7 +169,7 @@ namespace UnityGamingServicesUseCases
                     Debug.LogException(e);
                 }
 
-                StarterPackStatusChecked?.Invoke(starterPackIsClaimed);
+                starterPackStatusChecked?.Invoke(starterPackIsClaimed);
             }
         }
     }

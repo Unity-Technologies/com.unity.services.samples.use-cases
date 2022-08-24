@@ -2,9 +2,9 @@
 // this file will not have any effect locally. Changes to Cloud Code scripts are normally done directly in the 
 // Unity Dashboard.
 
-const { DataApi } = require("@unity-services/cloud-save-1.0");
-const { CurrenciesApi } = require("@unity-services/economy-2.0");
-const { SettingsApi } = require("@unity-services/remote-config-1.0");
+const { DataApi } = require("@unity-services/cloud-save-1.2");
+const { CurrenciesApi } = require("@unity-services/economy-2.3");
+const { SettingsApi } = require("@unity-services/remote-config-1.1");
 
 const tooManyRequestsError = 429;
 const badRequestError = 400;
@@ -114,12 +114,14 @@ async function getRemoteConfigData(remoteConfig, projectId, environmentId) {
 }
 
 async function distributeLevelUpRewards(economy, projectId, playerId) {
-    const rewardId = "COIN";
-    const rewardAmount = 100;
+    const currencyId = "COIN";
+    const amount = 100;
 
-    const updatedCurrency = await economy.incrementPlayerCurrencyBalance(projectId, playerId, rewardId, { rewardId, amount: rewardAmount });
+    const currencyModifyBalanceRequest = { currencyId, amount };
+    const requestParameters = { projectId, playerId, currencyId, currencyModifyBalanceRequest };
+    const updatedCurrency = await economy.incrementPlayerCurrencyBalance(requestParameters);
 
-    return { currencyId: updatedCurrency.data.currencyId, rewardAmount: rewardAmount, balance: updatedCurrency.data.balance };
+    return { currencyId: updatedCurrency.data.currencyId, rewardAmount: amount, balance: updatedCurrency.data.balance };
 }
 
 async function saveUpdatedCloudSaveData(cloudSave, projectId, playerId, updatedPlayerXP, updatedPlayerLevel) {

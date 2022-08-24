@@ -3,7 +3,7 @@
 // Unity Dashboard.
 
 const _ = require("lodash-4.17");
-const { DataApi } = require("@unity-services/cloud-save-1.0");
+const { DataApi } = require("@unity-services/cloud-save-1.2");
 
 const badRequestError = 400;
 const tooManyRequestsError = 429;

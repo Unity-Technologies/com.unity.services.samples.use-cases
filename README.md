@@ -30,6 +30,7 @@ _Note: This project is tied to a Unity Services Account that allows read-only te
 - [Command Batching](Assets/Use%20Case%20Samples/Command%20Batching/README.md) - Group game Commands into a queue and process on the server in a single batch to reduce the volume and frequency of server calls made during gameplay.
 - [Daily Rewards](Assets/Use%20Case%20Samples/Daily%20Rewards/README.md) - A prevalent engagement feature that can boost retention by showing players an escalating series of rewards incentivizes them to keep logging in to claim better and better prizes.
 - [Idle Clicker Game](Assets/Use%20Case%20Samples/Idle%20Clicker%20Game/README.md) - Update server authoritative game state in real time, similar to idle clicker and social games.
+- [In-Game Mailbox](Assets/Use%20Case%20Samples/In-Game%20Mailbox/README.md) - Demonstrates a way that developers can send in-game messages to their players, including with gifts of various game currencies and inventory items.
 - [Loot Boxes](Assets/Use%20Case%20Samples/Loot%20Boxes/README.md) - Reward players with a random Economy currency using Cloud Code to perform the Economy grants.
 - [Loot Boxes With Cooldown](Assets/Use%20Case%20Samples/Loot%20Boxes%20With%20Cooldown/README.md) - Grant players random collections of both Currencies and Inventory Items at timed intervals.
 - [Over-The-Air Content Delivery](Assets/Use%20Case%20Samples/Over-The-Air%20Content/README.md) - Add new downloaded content to a game while the game is running.
@@ -61,4 +62,3 @@ To set up Cloud Diagnostics and User Reporting in your own project, follow the s
 [Setting up Cloud Diagnostics](https://unitytech.github.io/clouddiagnostics/userreporting/UnityCloudDiagnosticsSettingUp.html)
 
 _Note: If you don't want to automatically send exception data, disable Cloud Diagnostics under Project Settings > Services > Cloud Diagnostics._
-

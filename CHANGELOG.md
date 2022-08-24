@@ -4,6 +4,30 @@ All notable changes to this project will be documented in this file.
 
 ​The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).​
 
+## [1.6.0] - 2022-08-24
+
+### Added
+
+* In-Game Mailbox use case which demonstrates a way that developers can send in-game messages to their players, including with gifts of various game currencies and inventory items, using Economy, Remote Config, Game Overrides, and Cloud Code.
+
+### Changed
+
+* Updated Unity Gaming Services packages to the latest stable group of packages released as of 2022-08-23.
+  * Mediation updated from `0.5.0-preview.5` to `0.5.1-preview.1`
+  * Addressables updated from `1.20.3` to `1.20.5` 
+* Updated all Cloud Code scripts to use the most recent versions of the Cloud Code Service SDKs used within them.
+  * Economy updated from `2.0` to `2.3`
+    * This update required changes to some method signatures.
+  * Cloud Save updated from `1.0` to `1.2`
+  * Remote Config updated from `1.0` to `1.1`
+* If a Cloud Code rate limit is reached, the exception log in the console now includes the RetryAfter value.
+
+### Fixed
+
+* Implemented a patch to the User Reporting tool to fix an issue that resulted in occasional memory leak and errors in the console.
+  * *Note: A newer version of the User Reporting tool is not yet publicly available, so this fix has been cherry-picked.*
+* Implemented custom gradle settings files to prevent a dependency conflict warning when switching to the Android build target.
+
 ## [1.5.1] - 2022-07-26
 
 ### Changed

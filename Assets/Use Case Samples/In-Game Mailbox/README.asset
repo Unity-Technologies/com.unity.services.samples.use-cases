@@ -1,0 +1,1093 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfbabd22c62c640a6ba459d46825055b, type: 3}
+  m_Name: README
+  m_EditorClassIdentifier: 
+  header:
+    title: In-Game Mailbox README
+    icon: {fileID: 2800000, guid: 83f0684dab5534e2492f651aaaf4a151, type: 3}
+  sections:
+  - subHeader1: Intro
+    subHeader2: 
+    subHeader3: 
+    body: In-game mailboxes are common mechanisms for game developers to communicate
+      with their players. You can use them to tell players about new in-game events,
+      gift players items and currency, or to help retain players in the game.
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: Overview
+    subHeader2: 
+    subHeader3: 
+    body: 'When a player loads the scene for the first time, they see an inbox with
+      a list of messages waiting for them to read. On subsequent loads, the inbox
+      is either in the state they left it, or an updated state due to messages expiring
+      between sessions. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'Players can interact with the messages, claim their attachments, delete
+      messages, or reset the inbox to a brand new state. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'To see this use case in action:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: 'In the Unity Editor "Project" window, select "Assets" > "Use Case Samples"
+        > "In-Game Mailbox", and then double-click "InGameMailboxSample.unity" to
+        open the sample scene. '
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: Enter Play Mode to interact with the use case.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: Initialization
+    subHeader3: 
+    body: 'When the scene loads, the "InGameMailboxSceneManager" script performs
+      the following initialization steps:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: Initializes Unity Gaming Services.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: "Signs in the player anonymously using the Authentication service. If
+        you\u2019ve previously initialized any of the other sample scenes, Authentication
+        will use your cached Player ID instead of creating a new one."
+      bodyFormat: 0
+      bulletList: []
+      linkList:
+      - linkText: Using Anonymous Sign In Docs
+        url: https://docs.unity.com/authentication/UsingAnonSignIn.html
+    - body: Refreshes the Economy configuration data. If new Economy items were created
+        since the last time the player opened the app, this will initialize those
+        items in the player's configuration.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: Retrieves and updates currency balances from the Economy service for
+        that authenticated user.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: Uses the sprite addresses stored in the Economy item configuration's
+        custom data to load all possible currency and inventory item sprites from
+        Addressables.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: 'Retrieves the updated message info for the player''s inbox:'
+      bodyFormat: 0
+      bulletList:
+      - body: Downloads the list of all possible messages from Remote Config.
+        bodyFormat: 0
+        bulletList: []
+      - body: Retrieves the player's current inbox data from Cloud Save.
+        bodyFormat: 0
+        bulletList: []
+      - body: Checks whether any of the messages already saved in the player's inbox
+          are expired, and deletes them if so.
+        bodyFormat: 0
+        bulletList: []
+      - body: Checks for any new messages that were downloaded from Remote Config
+          and not yet added to the player's inbox.
+        bodyFormat: 0
+        bulletList: []
+      - body: Saves the updated inbox state for the player in Cloud Save.
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: Displays the updated list of inbox messages in the scene.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: Functionality
+    subHeader3: 
+    body: 'The left panel in the scene displays the list of messages in the player''s
+      inbox. This list updates over time as messages expire, or based on player interaction. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'Below the list, a counter displays how many messages are in the inbox
+      and the max number of messages that can be in the inbox at any given time.
+      When a player loads the scene for the first time, the inbox is full. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'When all messages have been deleted from the inbox (either through player
+      interaction or message expiration), a popup appears prompting the player to
+      reset the inbox.  '
+    bodyFormat: 0
+    boxCallout: 'Note: This popup is a usability feature of the sample, and would
+      not be an expected interaction in a real-world implementation. '
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: Open a message
+    body: 'When you select a message from the list, the following occurs:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: The full details of the message appears on the right side of the scene.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: The message is marked as read, and that status is saved to Cloud Save.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'If the message has an attachment, there is also an indication of which
+      Economy items are attached, along with a button to claim them. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: Claim an attachment
+    body: 'When you press the "Claim" button, the client code calls the "Messages_ClaimAttachment.js"
+      Cloud Code script with the selected message''s ID included as a parameter.
+      The following occurs on the backend: '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: The client requests the Cloud Save inbox data, and locates the message
+        with the supplied ID.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: The script checks whether the message has an unclaimed attachment.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: Assuming the message does have an unclaimed attachment, the script makes
+        an Economy "makeVirtualPurchase" call using the Virtual Purchase ID from
+        the "message.messageInfo.attachment" field.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: If the purchase processes successfully, the "message.metadata.hasUnclaimedAttachment'
+        field is set to "false" and saved in Cloud Save, so that the player cannot
+        claim the attachment again.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: Delete a message
+    body: 'When you press the delete button for a message:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: The message is removed from the local list of inbox messages.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: If the inbox was previously full, such that deleting the message created
+        space for a new message, the client rechecks the list of all possible messages
+        downloaded from Remote Config against the message ID of the last message
+        saved in Cloud Save to see if there are any new messages to add to the inbox.
+        If there are, it adds as many of those messages to the inbox as will fit.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: The updated list of inbox messages is then saved in Cloud Save.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: Finally, the view refreshes to show the updated list. If the deleted
+        message was previously selected, this also updates the UI to not display
+        the deleted message's detail view.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: Claim all attachments
+    body: 'When you press the "Claim All" button, the client code makes a call to
+      the "Messages_ClaimAllAttachments.js" Cloud Code script. The following occurs
+      on the backend: '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: The client requests inbox data from Cloud Save.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: Cloud Save returns a list of inbox messages filtered to only show messages
+        with "message.metadata.hasUnclaimedAttachment" set to "true".
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: 'For each message in this filtered list:'
+      bodyFormat: 0
+      bulletList:
+      - body: The script makes an Economy "makeVirtualPurchase" call using the Virtual
+          Purchase ID from the "message.messageInfo.attachment" field.
+        bodyFormat: 0
+        bulletList: []
+      - body: If the purchase processes successfully, "message.metadata.hasUnclaimedAttachment"
+          is set to "false", and "message.metadata.isRead" is set to "true".
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: Once all message attachments are claimed, the updated message list is
+        saved in Cloud Save.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 'Note: Saving changes in Cloud Save after each attachment is claimed
+      would make the process more fault tolerant. However, it would also require
+      more server calls and therefore be less efficient than the selected approach.
+      It is up to the developer which advantage to prioritize. '
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: Delete all read and claimed attachments
+    body: 'When you press the "Delete Read" button:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: The script loops through the list of inbox messages, and removes each
+        message that has both "message.metadata.isRead" set to "true" and "message.metadata.hasUnclaimedAttachment"
+        set to "false". This implementation does not delete messages with unclaimed
+        attachments, to prevent players from accidentally deleting messages with
+        available attachments.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: If the inbox was previously full, such that deleting the message created
+        space for a new message, the client rechecks the list of all possible messages
+        downloaded from Remote Config against the message ID of the last message
+        saved in Cloud Save to see if there are any new messages to add to the inbox.
+        If there are, it adds as many of those messages to the inbox as will fit.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: The updated list of inbox messages is then saved in Cloud Save.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: Finally, the view refreshes to show the updated list. If the deleted
+        message was previously selected, this also updates the UI to not display
+        the deleted message's detail view.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: Reset the inbox for a specific audience
+    body: 'At the bottom of the scene, you can reset the inbox while impersonating
+      a particular audience:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: Default
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: All Spenders
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: Unengaged Players
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: French Speakers
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: New Players
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'Each of the non-default audiences adds a message to the message list that
+      is specific to that particular audience. These messages are determined by Game
+      Overrides. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'When you reset the inbox for the given audience, the following occurs: '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: The scene resets, clearing the selected message field and deleting the
+        Cloud Save inbox data.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: The client queries Remote Config with the specified audience, to retrieve
+        the list of potential messages that includes any audience specific ones that
+        were previously omitted.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: The maximum number of messages are added to the inbox from the Remote
+        Config data, and saved in Cloud Save.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: The view refreshes to show the new list of messages.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: Open the inventory
+    body: 'When you press the inventory bag icon, the following occurs:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: The client calls "EconomyService.Instance.PlayerInventory.GetInventoryAsync()"
+        to refresh the player's list of owned Economy inventory items.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: A pop-up window displays the resulting list of inventory items.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    linkList: []
+  - subHeader1: Setup
+    subHeader2: Requirements
+    subHeader3: 
+    body: 'To replicate this use case, you need the following Unity packages in your
+      project: '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList:
+    - linkText: Addressables
+      url: https://docs.unity3d.com/Packages/com.unity.addressables@latest
+    - linkText: Authentication
+      url: https://docs.unity.com/authentication/Content/InstallAndConfigureSDK.htm
+    - linkText: Cloud Code
+      url: https://docs.unity.com/Cloud-Code
+    - linkText: Cloud Save
+      url: https://docs.unity.com/cloud-save/implementation.html#SDK-installation
+    - linkText: Economy
+      url: https://docs.unity.com/Economy
+    - linkText: Remote Config
+      url: https://docs.unity.com/remote-config
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'To use these services in your game, activate each service for your Organization
+      and project in the Unity Dashboard. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: Dashboard setup
+    subHeader3: 
+    body: 'To replicate this sample scene''s setup on your own dashboard, you need
+      to:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: Publish two scripts in Cloud Code.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: Create two Currencies, two Inventory Items, and several Virtual Purchases
+        for the Economy service.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: Configure values and Game Overrides for the Remote Config service.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: Cloud Code
+    body: 'Publish the following scripts in the LiveOps dashboard: '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: Messages_ClaimAttachment
+      bodyFormat: 1
+      bulletList:
+      - body: Fetches the appropriate attachment for the given message, validates
+          that the attachment hasn't already been claimed, calls Economy's process
+          purchase method for that Virtual Purchase, and marks the attachment as
+          claimed.
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Parameters: "messageId" - The id of the message that owns the attachment
+          the player wants to claim.'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Script: "Assets/Use Case Samples/In-Game Mailbox/Cloud Code/Messages_ClaimAttachment.js"'
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: Messages_ClaimAllAttachments
+      bodyFormat: 1
+      bulletList:
+      - body: Gets the list of messages in a player's inbox, finds all messages that
+          have an unclaimed attachment, and calls Economy's process purchase method
+          for each Virtual Purchase, marking each message as read and attachment
+          as claimed.
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Parameters: none'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Script: "Assets/Use Case Samples/In-Game Mailbox/Cloud Code/Messages_ClaimAllAttachments.js"'
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 'Note: The Cloud Code scripts included in the `Cloud Code` folder
+      are local copies because you cannot view the sample project''s dashboard. Changes
+      to these scripts do not affect the behavior of this sample because they are
+      not automatically uploaded to the Cloud Code service. '
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: Economy
+    body: 'Configure the following resources in the LiveOps dashboard:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: Gem
+      bodyFormat: 1
+      bulletList:
+      - body: A premium currency gifted by some messages.
+        bodyFormat: 2
+        bulletList: []
+      - body: 'Resource Type: Currency'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'ID: "GEM"'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Custom Data: { "spriteAddress": "Sprites/Currency/Gem" }'
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: Coin
+      bodyFormat: 1
+      bulletList:
+      - body: A soft currency gifted by some messages.
+        bodyFormat: 2
+        bulletList: []
+      - body: 'Resource Type: Currency'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'ID: "COIN"'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Custom Data: { "spriteAddress": "Sprites/Currency/Coin" }'
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: Sword
+      bodyFormat: 1
+      bulletList:
+      - body: An inventory item gifted by some messages.
+        bodyFormat: 2
+        bulletList: []
+      - body: 'Resource Type: Inventory Item'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'ID: "SWORD"'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Custom Data: { "spriteAddress": "Sprites/Inventory/Sword" }'
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: Shield
+      bodyFormat: 1
+      bulletList:
+      - body: An inventory item gifted by some messages.
+        bodyFormat: 2
+        bulletList: []
+      - body: 'Resource Type: Inventory Item'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'ID: "SHIELD"'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Custom Data: { "spriteAddress": "Sprites/Inventory/Shield" }'
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'In addition, configure the following virtual purchases: '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: Message 003 Gift for New Players
+      bodyFormat: 1
+      bulletList:
+      - body: 'ID: "MESSAGE_003_GIFT_NEW_PLAYERS"'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Rewards: Sword (1), Shield (1), Coin (100)'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Costs: none'
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: Message 004 Gift for Unengaged Players
+      bodyFormat: 1
+      bulletList:
+      - body: 'ID: "MESSAGE_004_GIFT_UNENGAGED"'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Rewards: Gem (50)'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Costs: none'
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: Message 005 Gift
+      bodyFormat: 1
+      bulletList:
+      - body: 'ID: "MESSAGE_005_GIFT"'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Rewards: Coin (50)'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Costs: none'
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: Message 008 Gift
+      bodyFormat: 1
+      bulletList:
+      - body: 'ID: "MESSAGE_008_GIFT"'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Rewards: Coin (100), Gem (50)'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Costs: none'
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: Message 010 Gift
+      bodyFormat: 1
+      bulletList:
+      - body: 'ID: "MESSAGE_010_GIFT"'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Rewards: Gem (50)'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Costs: none'
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: Message 011 Gift
+      bodyFormat: 1
+      bulletList:
+      - body: 'ID: "MESSAGE_011_GIFT"'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Rewards: Sword (1)'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Costs: none'
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 'There is no cost associated with these Virtual Purchases because
+      they are all gifts to the player reading the message. '
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: Remote Config
+    body: 'Set up the following config values in the LiveOps dashboard: '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: MESSAGES_ALL
+      bodyFormat: 1
+      bulletList:
+      - body: The JSON list of all possible message ids that exist in the Remote
+          Config dashboard, listed in the order they should be downloaded in.
+        bodyFormat: 2
+        bulletList: []
+      - body: 'Type: JSON'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Value: see README.md'
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: MESSAGE_001
+      bodyFormat: 1
+      bulletList:
+      - body: One of the messages that a player could receive.
+        bodyFormat: 2
+        bulletList: []
+      - body: 'Type: JSON'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Value: see README.md'
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: MESSAGE_002
+      bodyFormat: 1
+      bulletList:
+      - body: One of the messages that a player could receive.
+        bodyFormat: 2
+        bulletList: []
+      - body: 'Type: JSON'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Value: see README.md'
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: MESSAGE_003
+      bodyFormat: 1
+      bulletList:
+      - body: One of the messages that a player could receive.
+        bodyFormat: 2
+        bulletList: []
+      - body: 'Type: JSON'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Value: see README.md'
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: MESSAGE_004
+      bodyFormat: 1
+      bulletList:
+      - body: One of the messages that a player could receive.
+        bodyFormat: 2
+        bulletList: []
+      - body: 'Type: JSON'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Value: see README.md'
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: MESSAGE_005
+      bodyFormat: 1
+      bulletList:
+      - body: One of the messages that a player could receive.
+        bodyFormat: 2
+        bulletList: []
+      - body: 'Type: JSON'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Value: see README.md'
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: MESSAGE_006
+      bodyFormat: 1
+      bulletList:
+      - body: One of the messages that a player could receive.
+        bodyFormat: 2
+        bulletList: []
+      - body: 'Type: JSON'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Value: see README.md'
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: MESSAGE_007
+      bodyFormat: 1
+      bulletList:
+      - body: One of the messages that a player could receive.
+        bodyFormat: 2
+        bulletList: []
+      - body: 'Type: JSON'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Value: see README.md'
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: MESSAGE_008
+      bodyFormat: 1
+      bulletList:
+      - body: One of the messages that a player could receive.
+        bodyFormat: 2
+        bulletList: []
+      - body: 'Type: JSON'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Value: see README.md'
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: MESSAGE_009
+      bodyFormat: 1
+      bulletList:
+      - body: One of the messages that a player could receive.
+        bodyFormat: 2
+        bulletList: []
+      - body: 'Type: JSON'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Value: see README.md'
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: MESSAGE_010
+      bodyFormat: 1
+      bulletList:
+      - body: One of the messages that a player could receive.
+        bodyFormat: 2
+        bulletList: []
+      - body: 'Type: JSON'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Value: see README.md'
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: MESSAGE_011
+      bodyFormat: 1
+      bulletList:
+      - body: One of the messages that a player could receive.
+        bodyFormat: 2
+        bulletList: []
+      - body: 'Type: JSON'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Value: see README.md'
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: Game Overrides
+    body: 'Configure the following Overrides in the LiveOps dashboard: '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: Messages All Spenders Overrides
+      bodyFormat: 1
+      bulletList:
+      - body: 'Targeting: Select "Stateless JEXL" with the following JEXL code: `user.audience
+          == "AllSpenders"` (See Note, below)'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Content: Select "Choose content type" > "Config Overrides", then enter
+          override values for the following keys: "MESSAGE_001" (See README.md for
+          override value)'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Scheduling: '
+        bodyFormat: 0
+        bulletList:
+        - body: 'Start Date: Update content immediately'
+          bodyFormat: 0
+          bulletList: []
+        - body: 'End Date: Run indefinitely'
+          bodyFormat: 0
+          bulletList: []
+      linkList: []
+    - body: Messages French Speaker Overrides
+      bodyFormat: 1
+      bulletList:
+      - body: 'Targeting: Select "Stateless JEXL" with the following JEXL code: `user.audience
+          == "FrenchSpeakers"` (See Note, below)'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Content: Select "Choose content type" > "Config Overrides", then enter
+          override values for the following keys: "MESSAGE_002" (See README.md for
+          override value)'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Scheduling: '
+        bodyFormat: 0
+        bulletList:
+        - body: 'Start Date: Update content immediately'
+          bodyFormat: 0
+          bulletList: []
+        - body: 'End Date: Run indefinitely'
+          bodyFormat: 0
+          bulletList: []
+      linkList: []
+    - body: Messages New Players Overrides
+      bodyFormat: 1
+      bulletList:
+      - body: 'Targeting: Select "Stateless JEXL" with the following JEXL code: `user.audience
+          == "NewPlayers"` (See Note, below)'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Content: Select "Choose content type" > "Config Overrides", then enter
+          override values for the following keys: "MESSAGE_003" (See README.md for
+          override value)'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Scheduling: '
+        bodyFormat: 0
+        bulletList:
+        - body: 'Start Date: Update content immediately'
+          bodyFormat: 0
+          bulletList: []
+        - body: 'End Date: Run indefinitely'
+          bodyFormat: 0
+          bulletList: []
+      linkList: []
+    - body: Messages Unengaged Players Overrides
+      bodyFormat: 1
+      bulletList:
+      - body: 'Targeting: Select "Stateless JEXL" with the following JEXL code: `user.audience
+          == "UnengagedPlayers"` (See Note, below)'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Content: Select "Choose content type" > "Config Overrides", then enter
+          override values for the following keys: "MESSAGE_004" (See README.md for
+          override value)'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Scheduling: '
+        bodyFormat: 0
+        bulletList:
+        - body: 'Start Date: Update content immediately'
+          bodyFormat: 0
+          bulletList: []
+        - body: 'End Date: Run indefinitely'
+          bodyFormat: 0
+          bulletList: []
+      linkList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'Important: After configuring your Overrides, remember to enable them by
+      selecting the Override from the list and clicking the "Enable" button.   '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 'Note: This sample determines which Game Override data should be
+      returned based on a JEXL match with the audience value specified in the client.
+      This is so that the use case can fake a player being in different audiences
+      on demand. In a real app, the Game Overrides would likely be set up to use
+      built-in or custom-defined Analytics audiences for targeting (i.e. during Game
+      Override''s targeting step, choose `Stateful (Audiences)` and check the appropriate
+      analytics audience from the list or click `Build a new Audience`).   '
+    bulletList: []
+    linkList: []

@@ -3,9 +3,9 @@
 // Unity Dashboard.
 
 const _ = require("lodash-4.17");
-const { CurrenciesApi } = require("@unity-services/economy-2.0");
-const { InventoryApi } = require("@unity-services/economy-2.0");
-const { DataApi } = require("@unity-services/cloud-save-1.0");
+const { CurrenciesApi } = require("@unity-services/economy-2.3");
+const { InventoryApi } = require("@unity-services/economy-2.3");
+const { DataApi } = require("@unity-services/cloud-save-1.2");
 
 const badRequestError = 400;
 const tooManyRequestsError = 429;
@@ -89,7 +89,9 @@ function pickRandomCurrencyQuantity(currencyId) {
 
 // Grant the specified currency reward using the Economy service
 async function grantCurrency(currencyApi, projectId, playerId, currencyId, amount) {
-  await currencyApi.incrementPlayerCurrencyBalance(projectId, playerId, currencyId, { currencyId, amount });
+  const currencyModifyBalanceRequest = { currencyId, amount };
+  const requestParameters = { projectId, playerId, currencyId, currencyModifyBalanceRequest };
+  await currencyApi.incrementPlayerCurrencyBalance(requestParameters);
 }
 
 // Pick a random inventory item from the list
@@ -108,7 +110,9 @@ function pickRandomInventoryItemQuantity(inventoryItemId) {
 // Grant the specified inventory item the specified number of times
 async function grantInventoryItem(inventoryApi, projectId, playerId, inventoryItemId, amount) {
   for (let i = 0; i < amount; i++) {
-    await inventoryApi.addInventoryItem(projectId, playerId, { inventoryItemId: inventoryItemId });
+    const addInventoryRequest = { inventoryItemId };
+    const requestParameters = { projectId, playerId, addInventoryRequest };
+    await inventoryApi.addInventoryItem(requestParameters);
   }
 }
 

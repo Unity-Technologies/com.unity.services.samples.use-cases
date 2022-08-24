@@ -46,12 +46,12 @@ namespace UnityGamingServicesUseCases
 
             void StartSubscribe()
             {
-                CloudCodeManager.XPIncreased += ShowXPUpdateToast;
+                CloudCodeManager.xpIncreased += ShowXPUpdateToast;
             }
 
             void StopSubscribe()
             {
-                CloudCodeManager.XPIncreased -= ShowXPUpdateToast;
+                CloudCodeManager.xpIncreased -= ShowXPUpdateToast;
             }
 
             public void UpdateScene()

@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
@@ -47,26 +48,34 @@ namespace Unity.Cloud.UserReporting.Plugin
         /// <summary>
         /// Represents a post operation.
         /// </summary>
-        private class PostOperation
+        class PostOperation
         {
-            #region Properties
+            public PostOperation(string endpoint = null, string contentType = null, byte[] content = null,
+                Action<bool, byte[]> callback = null, Action<float, float> progressCallback = null)
+            {
+                Endpoint = endpoint;
+                ContentType = contentType;
+                Content = content;
+                Callback = callback;
+                ProgressCallback = progressCallback;
+            }
 
-            /// <summary>
-            /// Gets or sets the callback.
-            /// </summary>
-            public Action<bool, byte[]> Callback { get; set; }
+            internal Action<bool, byte[]> Callback { get; set; }
 
-            /// <summary>
-            /// Gets or sets the progress callback.
-            /// </summary>
-            public Action<float, float> ProgressCallback { get; set; }
+            internal Action<float, float> ProgressCallback { get; set; }
 
-            /// <summary>
-            /// Gets or sets the web request.
-            /// </summary>
-            public UnityWebRequest WebRequest { get; set; }
+            internal string Endpoint;
+            internal string ContentType;
+            internal string Error;
 
-            #endregion
+            internal long ResponseCode;
+
+            internal byte[] Content;
+            internal byte[] Data;
+
+            internal bool WebRequestStarted;
+
+            internal IEnumerator WebRequestUpdate;
         }
 
         /// <summary>
@@ -373,16 +382,40 @@ namespace Unity.Cloud.UserReporting.Plugin
         /// <inheritdoc cref="IUserReportingPlatform"/>
         public void Post(string endpoint, string contentType, byte[] content, Action<float, float> progressCallback, Action<bool, byte[]> callback)
         {
-            UnityWebRequest webRequest = new UnityWebRequest(endpoint, "POST");
-            webRequest.uploadHandler = new UploadHandlerRaw(content);
-            webRequest.downloadHandler = new DownloadHandlerBuffer();
-            webRequest.SetRequestHeader("Content-Type", contentType);
-            webRequest.SendWebRequest();
-            UnityUserReportingPlatform.PostOperation postOperation = new UnityUserReportingPlatform.PostOperation();
-            postOperation.WebRequest = webRequest;
-            postOperation.Callback = callback;
-            postOperation.ProgressCallback = progressCallback;
-            this.postOperations.Add(postOperation);
+            PostOperation postOperation = new PostOperation(endpoint, contentType, content, callback, progressCallback);
+            lock (postOperations)
+            {
+                postOperations.Add(postOperation);
+            }
+        }
+        
+        IEnumerator DoWebRequest(int postOperationIndex)
+        {
+            lock (postOperations)
+            {
+                postOperations[postOperationIndex].WebRequestStarted = true;
+
+                using (var webRequest = new UnityWebRequest(postOperations[postOperationIndex].Endpoint, "POST"))
+                {
+                    webRequest.disposeUploadHandlerOnDispose = true;
+                    webRequest.disposeDownloadHandlerOnDispose = true;
+                    webRequest.uploadHandler = new UploadHandlerRaw(postOperations[postOperationIndex].Content);
+                    webRequest.downloadHandler = new DownloadHandlerBuffer();
+                    webRequest.SetRequestHeader("Content-Type", postOperations[postOperationIndex].ContentType);
+                    webRequest.SendWebRequest();
+
+                    while (webRequest.result == UnityWebRequest.Result.InProgress)
+                    {
+                        postOperations[postOperationIndex].ProgressCallback(webRequest.uploadProgress,
+                            webRequest.downloadProgress);
+                        yield return true;
+                    }
+
+                    postOperations[postOperationIndex].Error = webRequest.error;
+                    postOperations[postOperationIndex].ResponseCode = webRequest.responseCode;
+                    postOperations[postOperationIndex].Data = webRequest.downloadHandler.data;
+                }
+            }
         }
 
         public void ReceiveLogMessage(string logString, string stackTrace, LogType logType)
@@ -476,26 +509,35 @@ namespace Unity.Cloud.UserReporting.Plugin
 
             // Post Operations
             int postOperationIndex = 0;
-            while (postOperationIndex < this.postOperations.Count)
+            lock (postOperations)
             {
-                UnityUserReportingPlatform.PostOperation postOperation = this.postOperations[postOperationIndex];
-                if (postOperation.WebRequest.isDone)
+                while (postOperationIndex < postOperations.Count)
                 {
-                    bool isError = postOperation.WebRequest.error != null && postOperation.WebRequest.responseCode != 200;
-                    if (isError)
+                    PostOperation postOperation = postOperations[postOperationIndex];
+                    if (!postOperation.WebRequestStarted)
                     {
-                        string errorMessage = string.Format("UnityUserReportingPlatform.Post: {0} {1}", postOperation.WebRequest.responseCode, postOperation.WebRequest.error);
-                        UnityEngine.Debug.Log(errorMessage);
-                        client.LogEvent(UserReportEventLevel.Error, errorMessage);
+                        postOperation.WebRequestUpdate = DoWebRequest(postOperationIndex);
                     }
-                    postOperation.ProgressCallback(1, 1);
-                    postOperation.Callback(!isError, postOperation.WebRequest.downloadHandler.data);
-                    this.postOperations.Remove(postOperation);
-                }
-                else
-                {
-                    postOperation.ProgressCallback(postOperation.WebRequest.uploadProgress, postOperation.WebRequest.downloadProgress);
-                    postOperationIndex++;
+
+                    if (postOperation.WebRequestUpdate.MoveNext())
+                    {
+                        postOperationIndex++;
+                    }
+                    else
+                    {
+                        // The operation is done.
+                        bool isError = postOperation.Error != null || postOperation.ResponseCode != 200;
+                        if (isError)
+                        {
+                            string errorMessage = $"UserReportingPlatform.Post: {postOperation.ResponseCode} {postOperation.Error}";
+                            UnityEngine.Debug.Log(errorMessage);
+                            client.LogEvent(UserReportEventLevel.Error, errorMessage);
+                        }
+
+                        postOperation.ProgressCallback(1, 1);
+                        postOperation.Callback(!isError, postOperation.Data);
+                        postOperations.RemoveAt(postOperationIndex);
+                    }
                 }
             }
         }

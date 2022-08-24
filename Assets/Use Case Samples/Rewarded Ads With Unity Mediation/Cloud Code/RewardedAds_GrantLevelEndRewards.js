@@ -3,8 +3,8 @@
 // Unity Dashboard.
 
 const _ = require("lodash-4.17");
-const { CurrenciesApi } = require("@unity-services/economy-2.0");
-const { DataApi } = require("@unity-services/cloud-save-1.0");
+const { CurrenciesApi } = require("@unity-services/economy-2.3");
+const { DataApi } = require("@unity-services/cloud-save-1.2");
 
 const badRequestError = 400;
 const tooManyRequestsError = 429;
@@ -162,12 +162,19 @@ async function processRewards(servicesData, multiplier, isDistributingBoosterRew
         amount = baseRewardAmount;
     }
 
-    const balanceResponse = await servicesData.economyCurrencyApi.incrementPlayerCurrencyBalance(
-        servicesData.projectId,
-        servicesData.playerId,
-        rewardCurrencyId,
-        { rewardCurrencyId, amount }
-    );
+    const currencyModifyBalanceRequest = {
+        currencyId: rewardCurrencyId,
+        amount
+    };
+
+    const requestParameters = {
+        projectId: servicesData.projectId,
+        playerId: servicesData.playerId,
+        currencyId: rewardCurrencyId,
+        currencyModifyBalanceRequest
+    };
+
+    const balanceResponse = await servicesData.economyCurrencyApi.incrementPlayerCurrencyBalance(requestParameters);
 
     return balanceResponse.data.balance;
 }

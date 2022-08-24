@@ -3,11 +3,11 @@
 // Unity Dashboard.
 
 const _ = require("lodash-4.17");
-const { DataApi } = require("@unity-services/cloud-save-1.0");
-const { SettingsApi } = require("@unity-services/remote-config-1.0");
-const { PurchasesApi } = require("@unity-services/economy-2.0");
-const { CurrenciesApi } = require("@unity-services/economy-2.0");
-const { InventoryApi } = require("@unity-services/economy-2.0");
+const { DataApi } = require("@unity-services/cloud-save-1.2");
+const { SettingsApi } = require("@unity-services/remote-config-1.1");
+const { PurchasesApi } = require("@unity-services/economy-2.3");
+const { CurrenciesApi } = require("@unity-services/economy-2.3");
+const { InventoryApi } = require("@unity-services/economy-2.3");
 
 const badRequestError = 400;
 const unprocessableEntityError = 422;
@@ -158,7 +158,9 @@ async function purchaseBattlePass(purchasesApi, projectId, playerId, remoteConfi
     }
 
     try {
-        await purchasesApi.makeVirtualPurchase(projectId, playerId, { id: "BATTLE_PASS" });
+        const playerPurchaseVirtualRequest = { id: "BATTLE_PASS" };
+        const requestParameters = { projectId, playerId, playerPurchaseVirtualRequest };
+        await purchasesApi.makeVirtualPurchase(requestParameters);
 
         playerState.battlePassPurchasedTimestamp = timestamp;
         playerState.battlePassPurchasedEventKey = remoteConfigData.EVENT_KEY;
@@ -244,12 +246,15 @@ async function grantRewards(economyCurrencyApi, economyInventoryApi, projectId, 
 }
 
 async function grantCurrency(economyCurrencyApi, projectId, playerId, currencyId, amount) {
-    await economyCurrencyApi.incrementPlayerCurrencyBalance(projectId, playerId, currencyId, { currencyId, amount });
+    const currencyModifyBalanceRequest = { currencyId, amount };
+    await economyCurrencyApi.incrementPlayerCurrencyBalance({ projectId, playerId, currencyId, currencyModifyBalanceRequest});
 }
 
 async function grantInventoryItem(economyInventoryApi, projectId, playerId, inventoryItemId, amount) {
     for (let i = 0; i < amount; i++) {
-        await economyInventoryApi.addInventoryItem(projectId, playerId, { inventoryItemId: inventoryItemId });
+        const addInventoryRequest = { inventoryItemId: inventoryItemId };
+        const requestParameters = { projectId, playerId, addInventoryRequest };
+        await economyInventoryApi.addInventoryItem(requestParameters);
     }
 }
 

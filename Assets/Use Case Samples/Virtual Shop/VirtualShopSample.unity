@@ -1965,7 +1965,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06b0a11160ab444328f4c66e07c105dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buttonName: SeasonalEvents_CollectRewardsButton
+  buttonName: Shops_CollectRewardsButton
 --- !u!1 &1467840582
 GameObject:
   m_ObjectHideFlags: 0

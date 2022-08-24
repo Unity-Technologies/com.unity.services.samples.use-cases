@@ -8,11 +8,16 @@ namespace UnityGamingServicesUseCases
         public TextMeshProUGUI titleField;
         public TextMeshProUGUI messageField;
 
+        public void Show()
+        {
+            gameObject.SetActive(true);
+        }
+
         public void Show(string title, string message)
         {
             titleField.text = "  " + title;
             messageField.text = message;
-            gameObject.SetActive(true);
+            Show();
         }
 
         public void Hide()

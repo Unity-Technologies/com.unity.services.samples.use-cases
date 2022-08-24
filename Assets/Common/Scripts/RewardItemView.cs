@@ -51,5 +51,11 @@ namespace UnityGamingServicesUseCases
                 quantityField.text = $"+{quantity}";
             }
         }
+
+        public void SetColor(Color newColor)
+        {
+            icon.color = newColor;
+            quantityField.color = newColor;
+        }
     }
 }

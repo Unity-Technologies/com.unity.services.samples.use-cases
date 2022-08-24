@@ -2,7 +2,7 @@
 // this file will not have any effect locally. Changes to Cloud Code scripts are normally done directly in the 
 // Unity Dashboard.
 
-const { CurrenciesApi } = require("@unity-services/economy-2.0");
+const { CurrenciesApi } = require("@unity-services/economy-2.3");
 
 const badRequestError = 400;
 const tooManyRequestsError = 429;
@@ -28,7 +28,9 @@ module.exports = async ({ params, context, logger }) => {
 };
 
 async function grantCurrency(economyCurrencyAPI, projectId, playerId, currencyId, amount) {
-  await economyCurrencyAPI.incrementPlayerCurrencyBalance(projectId, playerId, currencyId, { currencyId, amount });
+  const currencyModifyBalanceRequest = { currencyId, amount };
+  const requestParameters = { projectId, playerId, currencyId, currencyModifyBalanceRequest };
+  await economyCurrencyAPI.incrementPlayerCurrencyBalance(requestParameters);
 }
 
 function pickRandomCurrencyId(currencyIds) {

@@ -3,8 +3,8 @@
 // Unity Dashboard.
 
 const _ = require("lodash-4.17");
-const { CurrenciesApi } = require("@unity-services/economy-2.0");
-const { DataApi } = require("@unity-services/cloud-save-1.0");
+const { CurrenciesApi } = require("@unity-services/economy-2.3");
+const { DataApi } = require("@unity-services/cloud-save-1.2");
 
 const badRequestError = 400;
 const tooManyRequestsError = 429;
@@ -25,7 +25,7 @@ module.exports = async ({ params, context, logger }) => {
     const services = { projectId, playerId, cloudSaveApi, economyCurrencyApi, logger };
 
     let gameState = await readState(services);
-  
+
     if (gameState) {
       gameState.isNewMove = false;
       gameState.isNewGame = false;
@@ -37,7 +37,7 @@ module.exports = async ({ params, context, logger }) => {
       startRandomGame(services, gameState);
 
       await setInitialCurrency(services, gameState);
-      
+
       logger.info("created starting state: " + JSON.stringify(gameState));
     }
 
@@ -69,7 +69,7 @@ function createInitialPlayerProgressState(services) {
 function startRandomGame(services, gameState) {
   gameState.playerPieces = [];
   gameState.aiPieces = [];
-  gameState.isNewGame = true; 
+  gameState.isNewGame = true;
   gameState.isNewMove = true;
   gameState.isPlayerTurn = true;
   gameState.isGameOver = false;
@@ -85,8 +85,9 @@ function startRandomGame(services, gameState) {
 }
 
 async function setInitialCurrency(services, gameState) {
-  await services.economyCurrencyApi.setPlayerCurrencyBalance(services.projectId, services.playerId, currencyId, 
-    { currencyId, balance:initialQuantity });
+  const currencyBalanceRequest = { currencyId, balance:initialQuantity };
+  const requestParameters = { projectId: services.projectId, playerId: services.playerId, currencyId, currencyBalanceRequest };
+  await services.economyCurrencyApi.setPlayerCurrencyBalance(requestParameters);
 }
 
 async function saveState(services, gameState) {

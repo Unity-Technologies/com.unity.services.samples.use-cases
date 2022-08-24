@@ -1,56 +1,16 @@
 <dependencies>
   <packages>
-    <package>com.unity3d.mediation:mediation-sdk:[0.4,0.5[</package>
-    <package>com.unity3d.mediation:unityads-adapter:[0.4,0.5[</package>
+    <package>com.unity3d.mediation:mediation-sdk:[0.5,0.6[</package>
+    <package>com.unity3d.mediation:unityads-adapter:[0.5,0.6[</package>
   </packages>
-  <files>
-    <file>Assets/Plugins/Android/androidx.annotation.annotation-1.2.0.jar</file>
-    <file>Assets/Plugins/Android/androidx.arch.core.core-common-2.0.0.jar</file>
-    <file>Assets/Plugins/Android/androidx.arch.core.core-runtime-2.0.0.aar</file>
-    <file>Assets/Plugins/Android/androidx.asynclayoutinflater.asynclayoutinflater-1.0.0.aar</file>
-    <file>Assets/Plugins/Android/androidx.collection.collection-1.0.0.jar</file>
-    <file>Assets/Plugins/Android/androidx.coordinatorlayout.coordinatorlayout-1.0.0.aar</file>
-    <file>Assets/Plugins/Android/androidx.core.core-1.2.0.aar</file>
-    <file>Assets/Plugins/Android/androidx.cursoradapter.cursoradapter-1.0.0.aar</file>
-    <file>Assets/Plugins/Android/androidx.customview.customview-1.0.0.aar</file>
-    <file>Assets/Plugins/Android/androidx.documentfile.documentfile-1.0.0.aar</file>
-    <file>Assets/Plugins/Android/androidx.drawerlayout.drawerlayout-1.0.0.aar</file>
-    <file>Assets/Plugins/Android/androidx.fragment.fragment-1.0.0.aar</file>
-    <file>Assets/Plugins/Android/androidx.interpolator.interpolator-1.0.0.aar</file>
-    <file>Assets/Plugins/Android/androidx.legacy.legacy-support-core-ui-1.0.0.aar</file>
-    <file>Assets/Plugins/Android/androidx.legacy.legacy-support-core-utils-1.0.0.aar</file>
-    <file>Assets/Plugins/Android/androidx.lifecycle.lifecycle-common-2.0.0.jar</file>
-    <file>Assets/Plugins/Android/androidx.lifecycle.lifecycle-livedata-2.0.0.aar</file>
-    <file>Assets/Plugins/Android/androidx.lifecycle.lifecycle-livedata-core-2.0.0.aar</file>
-    <file>Assets/Plugins/Android/androidx.lifecycle.lifecycle-runtime-2.0.0.aar</file>
-    <file>Assets/Plugins/Android/androidx.lifecycle.lifecycle-viewmodel-2.0.0.aar</file>
-    <file>Assets/Plugins/Android/androidx.loader.loader-1.0.0.aar</file>
-    <file>Assets/Plugins/Android/androidx.localbroadcastmanager.localbroadcastmanager-1.0.0.aar</file>
-    <file>Assets/Plugins/Android/androidx.print.print-1.0.0.aar</file>
-    <file>Assets/Plugins/Android/androidx.slidingpanelayout.slidingpanelayout-1.0.0.aar</file>
-    <file>Assets/Plugins/Android/androidx.startup.startup-runtime-1.0.0.aar</file>
-    <file>Assets/Plugins/Android/androidx.swiperefreshlayout.swiperefreshlayout-1.0.0.aar</file>
-    <file>Assets/Plugins/Android/androidx.tracing.tracing-1.0.0.aar</file>
-    <file>Assets/Plugins/Android/androidx.versionedparcelable.versionedparcelable-1.1.0.aar</file>
-    <file>Assets/Plugins/Android/androidx.viewpager.viewpager-1.0.0.aar</file>
-    <file>Assets/Plugins/Android/com.google.android.gms.play-services-basement-17.6.0.aar</file>
-    <file>Assets/Plugins/Android/com.google.protobuf.protobuf-javalite-3.19.3.jar</file>
-    <file>Assets/Plugins/Android/com.squareup.okhttp3.okhttp-4.6.0.jar</file>
-    <file>Assets/Plugins/Android/com.squareup.okio.okio-2.6.0.jar</file>
-    <file>Assets/Plugins/Android/com.unity3d.ads.unity-ads-4.1.0.aar</file>
-    <file>Assets/Plugins/Android/com.unity3d.mediation.mediation-sdk-0.4.1.aar</file>
-    <file>Assets/Plugins/Android/com.unity3d.mediation.unityads-adapter-0.4.1.aar</file>
-    <file>Assets/Plugins/Android/org.jetbrains.annotations-13.0.jar</file>
-    <file>Assets/Plugins/Android/org.jetbrains.kotlin.kotlin-stdlib-1.5.21.jar</file>
-    <file>Assets/Plugins/Android/org.jetbrains.kotlin.kotlin-stdlib-common-1.5.21.jar</file>
-  </files>
+  <files />
   <settings>
     <setting name="androidAbis" value="armeabi-v7a" />
     <setting name="bundleId" value="com.UnityTechnologies.UnityGamingServicesUseCases" />
     <setting name="explodeAars" value="True" />
     <setting name="gradleBuildEnabled" value="True" />
-    <setting name="gradleTemplateEnabled" value="False" />
-    <setting name="installAndroidPackages" value="False" />
+    <setting name="gradleTemplateEnabled" value="True" />
+    <setting name="installAndroidPackages" value="True" />
     <setting name="packageDir" value="Assets/Plugins/Android" />
     <setting name="patchAndroidManifest" value="True" />
     <setting name="patchMainTemplateGradle" value="True" />

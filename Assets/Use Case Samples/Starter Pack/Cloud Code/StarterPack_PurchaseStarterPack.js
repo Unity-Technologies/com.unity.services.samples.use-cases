@@ -2,8 +2,8 @@
 // this file will not have any effect locally. Changes to Cloud Code scripts are normally done directly in the 
 // Unity Dashboard.
 
-const { PurchasesApi } = require("@unity-services/economy-2.0");
-const { DataApi } = require("@unity-services/cloud-save-1.0");
+const { PurchasesApi } = require("@unity-services/economy-2.3");
+const { DataApi } = require("@unity-services/cloud-save-1.2");
 
 const badRequestError = 400;
 const tooManyRequestsError = 429;
@@ -47,7 +47,11 @@ module.exports = async ({ params, context, logger }) => {
 
 async function purchaseStarterPack(purchasesApi, projectId, playerId) {
     try {
-        return await purchasesApi.makeVirtualPurchase(projectId, playerId, { id: "STARTER_PACK" });
+        const playerPurchaseVirtualRequest = { id: "STARTER_PACK" };
+        const requestParameters = { projectId, playerId, playerPurchaseVirtualRequest };
+
+        return await purchasesApi.makeVirtualPurchase(requestParameters);
+
     } catch (e) {
         const message = "Virtual purchase failed";
 

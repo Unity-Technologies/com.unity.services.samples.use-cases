@@ -35,12 +35,12 @@ namespace UnityGamingServicesUseCases
 
             void OnEnable()
             {
-                StarterPackSceneManager.StarterPackStatusChecked += OnStarterPackStatusChecked;
+                StarterPackSceneManager.starterPackStatusChecked += OnStarterPackStatusChecked;
             }
 
             void OnDisable()
             {
-                StarterPackSceneManager.StarterPackStatusChecked -= OnStarterPackStatusChecked;
+                StarterPackSceneManager.starterPackStatusChecked -= OnStarterPackStatusChecked;
             }
 
             public void ShowCantAffordStarterPackPopup()

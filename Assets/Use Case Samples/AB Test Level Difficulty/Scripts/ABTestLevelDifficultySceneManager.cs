@@ -26,12 +26,12 @@ namespace UnityGamingServicesUseCases
 
             void StartSubscribe()
             {
-                CloudCodeManager.LeveledUp += OpenLeveledUpPopup;
+                CloudCodeManager.leveledUp += OpenLeveledUpPopup;
             }
 
             void StopSubscribe()
             {
-                CloudCodeManager.LeveledUp -= OpenLeveledUpPopup;
+                CloudCodeManager.leveledUp -= OpenLeveledUpPopup;
             }
 
             async void Start()
