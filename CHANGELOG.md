@@ -9,10 +9,11 @@ All notable changes to this project will be documented in this file.
 ### Changed
 
 * The Idle Clicker Mini-Game has been extensively reworked to now permit merging and unlocking of wells. These features demonstrate upgrading units and a generic unlock manager which monitors in-game achievements to unlock new gameplay options as the game progresses.
+* Client Minimum version has been updated to 1.7.0 due to many breaking changes caused by renaming configuration entries in the backend, as well as revamp of the Idle Clicker use case.
+* Also note that if you have an existing player account, you should use the A/B Testing use case to sign out and in as a new player, due to Cloud Save keys being renamed.
 * Updated Unity Gaming Services packages to the latest stable group of packages released as of 2022-10-11.
   * Mediation updated from `0.5.1-preview.1` to `1.0.4`
 * Updated other supporting packages to their latest verified versions (Test Framework, 2D packages, IDE packages).
-* Client Minimum version has been updated to the current release version because the Idle Clicker use case sample has new Cloud Code scripts and Economy Items. Also, Command Batching and Seasonal Events use cases reference the Cloud Save keys in both cloud and client code, therefore the changes to these keys cause a mismatch between the published dashboard configurations and the previous versions of the client code, which causes a minor regression in the Seasonal Events use case and a major one in the Command Batching use case if the client code isn't updated. Also several UGS assets have been renamed to reflect the use cases requiring them so the Client Minimum version needs to be changed to ensure the client correctly accesses them.
 * Cloud Save keys have been updated in the Battle Pass, Command Batching, Loot Boxes with Cooldown, and Seasonal Events use cases to align with the naming conventions of the other use cases.
 * Updated UGS scripts, variables, virtual purchases, remote config items, etc. to include an appropriate prefix describing the Use Case which requires it. This change does not effect items used by multiple Use Cases nor does it effect Currencies.
 * Updated `SeasonalEvents_GrantEventReward` script to use a better practice when getting Cloud Save values to ensure the correct keys are saved to the correct variables.
