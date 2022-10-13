@@ -13,6 +13,8 @@ const tooManyRequestsError = 429;
 const cooldownSeconds = 60;
 const epochTimeToSeconds = 1000;
 
+const cloudSaveKeyGrantRewardTime = "LOOT_BOX_COOLDOWN_GRANT_REWARD_TIME";
+
 // Entry point for the Cloud Code script
 module.exports = async ({ params, context, logger }) => {
   try {
@@ -22,23 +24,23 @@ module.exports = async ({ params, context, logger }) => {
     var epochTime = Math.floor(new Date().valueOf() / epochTimeToSeconds);
 
     // Check if the cooldown has expired or was never set (the player hasn't yet ever claimed a Loot Box)
-    const getTimeResponse = await cloudSaveApi.getItems(projectId, playerId, [ "GRANT_TIMED_REWARD_TIME" ] );
+    const getTimeResponse = await cloudSaveApi.getItems(projectId, playerId, [ cloudSaveKeyGrantRewardTime ] );
     if (getTimeResponse.data.results &&
         getTimeResponse.data.results.length > 0 &&
         getTimeResponse.data.results[0] &&
         getTimeResponse.data.results[0].value) {
       var grantEpochTime = getTimeResponse.data.results[0].value;
       var cooldown = cooldownSeconds - (epochTime - grantEpochTime);
-      
+
       // If cooldown timer has not expired (using 1 for slight tolerance in case the Claim button is pressed early)
       if (cooldown > 1) {
         logger.error("The player tried to claim a Loot Box before the cooldown timer expired.");
-        throw new CloudCodeCustomError("The player tried to claim a Loot Box before the cooldown timer expired.");      
+        throw new CloudCodeCustomError("The player tried to claim a Loot Box before the cooldown timer expired.");
       }
-    }  
+    }
 
     // Select a random reward to grant
-    const currencyApi = new CurrenciesApi({ accessToken }); 
+    const currencyApi = new CurrenciesApi({ accessToken });
     const inventoryApi = new InventoryApi({ accessToken });
     let currencyIds = ["COIN", "GEM", "PEARL", "STAR"];
     let inventoryItemIds = ["SWORD", "SHIELD"];
@@ -52,17 +54,17 @@ module.exports = async ({ params, context, logger }) => {
 
     // Grant all rewards and update the cooldown timer
     await Promise.all([
-      cloudSaveApi.setItem(projectId, playerId, { key: "GRANT_TIMED_REWARD_TIME", value: epochTime } ),
+      cloudSaveApi.setItem(projectId, playerId, { key: cloudSaveKeyGrantRewardTime, value: epochTime } ),
       grantCurrency(currencyApi, projectId, playerId, currencyId1, currencyQuantity1),
       grantCurrency(currencyApi, projectId, playerId, currencyId2, currencyQuantity2),
       grantInventoryItem(inventoryApi, projectId, playerId, inventoryItemId, inventoryItemQuantity)
-      ]);
-    
-    return { 
-      currencyId: [currencyId1, currencyId2], 
+    ]);
+
+    return {
+      currencyId: [currencyId1, currencyId2],
       currencyQuantity: [currencyQuantity1, currencyQuantity2],
-      inventoryItemId: [inventoryItemId], 
-      inventoryItemQuantity: [inventoryItemQuantity] 
+      inventoryItemId: [inventoryItemId],
+      inventoryItemQuantity: [inventoryItemQuantity]
     };
   } catch (error) {
     transformAndThrowCaughtError(error);
@@ -72,7 +74,7 @@ module.exports = async ({ params, context, logger }) => {
 // Pick a random currency reward from the list
 function pickRandomCurrencyId(currencyIds, invalidId) {
   let i = _.random(currencyIds.length - 1);
-  
+
   if (currencyIds[i] === invalidId) {
     i++;
     if (i >= currencyIds.length) {

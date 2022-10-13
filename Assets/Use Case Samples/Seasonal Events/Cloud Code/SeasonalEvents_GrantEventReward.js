@@ -10,9 +10,12 @@ const { DataApi } = require("@unity-services/cloud-save-1.2");
 const badRequestError = 400;
 const tooManyRequestsError = 429;
 
+const cloudSaveKeyLastCompletedEvent = "SEASONAL_EVENTS_LAST_COMPLETED_EVENT";
+const cloudSaveKeyLastCompletedEventTimestamp = "SEASONAL_EVENTS_LAST_COMPLETED_EVENT_TIMESTAMP";
+
 module.exports = async ({ context }) => {
     try {
-        const { projectId, playerId, accessToken} = context;
+        const { projectId, environmentId, playerId, accessToken } = context;
         const economy = new CurrenciesApi({ accessToken });
         const remoteConfig = new SettingsApi();
         const cloudSave = new DataApi({ accessToken });
@@ -20,11 +23,11 @@ module.exports = async ({ context }) => {
         const timestamp = _.now();
 
         const timestampMinutes = getTimestampMinutes(timestamp);
-        const { remoteConfigData, cloudSaveData } = await GetData(remoteConfig, cloudSave, projectId, playerId, timestampMinutes);
+        const { remoteConfigData, cloudSaveData } = await GetData(remoteConfig, cloudSave, projectId, environmentId, playerId, timestampMinutes);
 
         const grantedRewards = await grantRewards(economy, projectId, playerId, remoteConfigData, cloudSaveData, timestamp);
         await saveEventCompleted(cloudSave, projectId, playerId, timestamp, remoteConfigData);
-        
+
         const eventKey = remoteConfigData["EVENT_KEY"];
 
         return { grantedRewards, eventKey, timestamp, timestampMinutes: parseInt(timestampMinutes) };
@@ -38,9 +41,9 @@ function getTimestampMinutes(timestamp) {
     return ("0" + date.getMinutes()).slice(-2);
 }
 
-async function GetData(remoteConfig, cloudSave, projectId, playerId, timestampMinutes) {
+async function GetData(remoteConfig, cloudSave, projectId, environmentId, playerId, timestampMinutes) {
     return await Promise.all([
-        getRemoteConfigData(remoteConfig, projectId, playerId, timestampMinutes),
+        getRemoteConfigData(remoteConfig, projectId, environmentId, playerId, timestampMinutes),
         getCloudSaveData(cloudSave, projectId, playerId)
     ]).then(function(promiseResponses) {
         return {
@@ -50,9 +53,10 @@ async function GetData(remoteConfig, cloudSave, projectId, playerId, timestampMi
     });
 }
 
-async function getRemoteConfigData(remoteConfig, projectId, playerId, timestampMinutes) {
+async function getRemoteConfigData(remoteConfig, projectId, environmentId, playerId, timestampMinutes) {
     const result = await remoteConfig.assignSettings({
         projectId,
+        environmentId,
         "userId": playerId,
         "attributes": {
             "unity": {},
@@ -70,23 +74,27 @@ async function getCloudSaveData(cloudSave, projectId, playerId) {
     const getItemsResponse = await cloudSave.getItems(
         projectId,
         playerId,
-        ["LAST_COMPLETED_EVENT", "LAST_COMPLETED_EVENT_TIMESTAMP"]
+        [cloudSaveKeyLastCompletedEvent, cloudSaveKeyLastCompletedEventTimestamp]
     );
 
-    if (getItemsResponse.data.results &&
-        getItemsResponse.data.results.length > 0 &&
-        getItemsResponse.data.results[0] &&
-        getItemsResponse.data.results[1]) {
-        return {
-            lastCompletedEvent: getItemsResponse.data.results[0].value,
-            lastCompletedEventTimestamp: getItemsResponse.data.results[1].value
-        };
-    }
+    return cloudSaveResponseToObject(getItemsResponse);
+}
 
-    return {
+function cloudSaveResponseToObject(getItemsResponse) {
+    let returnObject = {
         lastCompletedEvent: "",
-        lastCompletedEventTimestamp: 0
-    }
+        lastCompletedEventTimestamp: 0,
+    };
+
+    getItemsResponse.data.results.forEach(item => {
+        if (item.key === cloudSaveKeyLastCompletedEvent) {
+            returnObject.lastCompletedEvent = item.value;
+        } else if (item.key === cloudSaveKeyLastCompletedEventTimestamp) {
+            returnObject.lastCompletedEventTimestamp = item.value;
+        }
+    });
+
+    return returnObject;
 }
 
 async function grantRewards(economy, projectId, playerId, remoteConfigData, cloudSaveData, timestamp) {
@@ -150,9 +158,10 @@ function throwIfLastCompletedEventTimestampIsFromCurrentEvent(currentTime, activ
 function getRewardsFromRemoteConfigData(remoteConfigData) {
     let eventRewards = [];
 
-    const rewardResults = remoteConfigData["CHALLENGE_REWARD"];
+    const rewardResults = remoteConfigData["SEASONAL_EVENTS_CHALLENGE_REWARD"];
 
     if (rewardResults != null && rewardResults["rewards"] != null) {
+
         eventRewards = rewardResults["rewards"];
     }
 
@@ -165,8 +174,8 @@ async function saveEventCompleted(cloudSave, projectId, playerId, timestamp, rem
         playerId,
         {
             data: [
-                { key: "LAST_COMPLETED_EVENT", value: remoteConfigData["EVENT_KEY"] },
-                { key: "LAST_COMPLETED_EVENT_TIMESTAMP", value: timestamp },
+                { key: cloudSaveKeyLastCompletedEvent, value: remoteConfigData["EVENT_KEY"] },
+                { key: cloudSaveKeyLastCompletedEventTimestamp, value: timestamp },
             ]
         }
     );

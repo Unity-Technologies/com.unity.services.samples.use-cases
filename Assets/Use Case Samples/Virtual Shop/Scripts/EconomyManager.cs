@@ -20,7 +20,8 @@ namespace UnityGamingServicesUseCases
 
             // Dictionary of all Virtual Purchase transactions ids to lists of costs & rewards.
             public Dictionary<string, (List<ItemAndAmountSpec> costs, List<ItemAndAmountSpec> rewards)>
-                virtualPurchaseTransactions { get; private set; }
+                virtualPurchaseTransactions
+            { get; private set; }
 
             public List<CurrencyDefinition> currencyDefinitions { get; private set; }
             public List<InventoryItemDefinition> inventoryItemDefinitions { get; private set; }
@@ -63,7 +64,8 @@ namespace UnityGamingServicesUseCases
                 await Task.WhenAll(getCurrenciesTask, getInventoryItemsTask, getVirtualPurchasesTask);
 
                 // Check that scene has not been unloaded while processing async wait to prevent throw.
-                if (this == null) return;
+                if (this == null)
+                    return;
 
                 currencyDefinitions = getCurrenciesTask.Result;
                 inventoryItemDefinitions = getInventoryItemsTask.Result;
@@ -72,43 +74,66 @@ namespace UnityGamingServicesUseCases
 
             public async Task RefreshCurrencyBalances()
             {
+                GetBalancesResult balanceResult = null;
+
                 try
                 {
-                    var options = new GetBalancesOptions { ItemsPerFetch = 100 };
-                    var getBalancesTask = EconomyService.Instance.PlayerBalances.GetBalancesAsync(options);
-                    var balances = await Utils.ProcessEconomyTaskWithRetry(getBalancesTask);
-
-                    if (this == null) return;
-
-                    currencyHudView.SetBalances(balances);
+                    balanceResult = await GetEconomyBalances();
+                }
+                catch (EconomyRateLimitedException e)
+                {
+                    balanceResult = await Utils.RetryEconomyFunction(GetEconomyBalances, e.RetryAfter);
                 }
                 catch (Exception e)
                 {
-                    Debug.Log("Problem calling cloud code endpoint: " + e.Message);
+                    Debug.Log("Problem getting Economy currency balances:");
                     Debug.LogException(e);
                 }
+
+                // Check that scene has not been unloaded while processing async wait to prevent throw.
+                if (this == null)
+                    return;
+
+                currencyHudView.SetBalances(balanceResult);
+            }
+
+            static Task<GetBalancesResult> GetEconomyBalances()
+            {
+                var options = new GetBalancesOptions { ItemsPerFetch = 100 };
+                return EconomyService.Instance.PlayerBalances.GetBalancesAsync(options);
             }
 
             public async Task RefreshInventory()
             {
+                GetInventoryResult inventoryResult = null;
+
                 // empty the inventory view first
                 inventoryHudView.Refresh(default);
 
                 try
                 {
-                    var options = new GetInventoryOptions { ItemsPerFetch = 100 };
-                    var getInventoryTask = EconomyService.Instance.PlayerInventory.GetInventoryAsync(options);
-                    var getInventoryResult = await Utils.ProcessEconomyTaskWithRetry(getInventoryTask);
-
-                    if (this == null) return;
-
-                    inventoryHudView.Refresh(getInventoryResult);
+                    inventoryResult = await GetEconomyPlayerInventory();
+                }
+                catch (EconomyRateLimitedException e)
+                {
+                    inventoryResult = await Utils.RetryEconomyFunction(GetEconomyPlayerInventory, e.RetryAfter);
                 }
                 catch (Exception e)
                 {
-                    Debug.Log("Problem calling cloud code endpoint: " + e.Message);
+                    Debug.Log("Problem getting Economy inventory items:");
                     Debug.LogException(e);
                 }
+
+                if (this == null)
+                    return;
+
+                inventoryHudView.Refresh(inventoryResult.PlayersInventoryItems);
+            }
+
+            static Task<GetInventoryResult> GetEconomyPlayerInventory()
+            {
+                var options = new GetInventoryOptions { ItemsPerFetch = 100 };
+                return EconomyService.Instance.PlayerInventory.GetInventoryAsync(options);
             }
 
             public void InitializeVirtualPurchaseLookup()
@@ -118,7 +143,7 @@ namespace UnityGamingServicesUseCases
                     return;
                 }
 
-                virtualPurchaseTransactions = new Dictionary<string, 
+                virtualPurchaseTransactions = new Dictionary<string,
                     (List<ItemAndAmountSpec> costs, List<ItemAndAmountSpec> rewards)>();
 
                 foreach (var virtualPurchaseDefinition in m_VirtualPurchaseDefinitions)

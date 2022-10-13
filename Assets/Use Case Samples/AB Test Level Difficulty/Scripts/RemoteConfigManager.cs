@@ -54,9 +54,9 @@ namespace UnityGamingServicesUseCases
             
             void GetConfigValues()
             {
-                levelUpXPNeeded = RemoteConfigService.Instance.appConfig.GetInt("LEVEL_UP_XP_NEEDED");
-                abGroupName = RemoteConfigService.Instance.appConfig.GetString("A_B_TEST_GROUP");
-                abTestID = RemoteConfigService.Instance.appConfig.GetString("A_B_TEST_ID");
+                levelUpXPNeeded = RemoteConfigService.Instance.appConfig.GetInt("AB_TEST_LEVEL_UP_XP_NEEDED");
+                abGroupName = RemoteConfigService.Instance.appConfig.GetString("AB_TEST_GROUP");
+                abTestID = RemoteConfigService.Instance.appConfig.GetString("AB_TEST_ID");
                 var json = RemoteConfigService.Instance.appConfig.GetJson("CURRENCIES");
                 currencyDataDictionary = CreateCurrencyDictionary(json);
             }

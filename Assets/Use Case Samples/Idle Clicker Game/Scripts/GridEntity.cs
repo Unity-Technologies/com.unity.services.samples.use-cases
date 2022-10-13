@@ -1,4 +1,5 @@
 ﻿using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,60 +16,94 @@ namespace UnityGamingServicesUseCases
 
             public Button button { get; private set; }
 
-            GameObject obstacleImage;
-            GameObject wellImage;
-            GameObject uiHighlightImage;
-            GameObject inProgressImage;
-            GameObject purchaseToast;
-            GameObject generateToast;
+            public GameObject allPiecesParent;
+            public GameObject obstacle;
+            public GameObject[] wells;
 
-            Animator purchaseAnimator;
-            Animator generateAnimator;
-            
+            public GameObject highlight;
+            public GameObject inProgress;
+            public GameObject purchaseToast;
+            public TextMeshProUGUI purchaseToastText;
+            public GameObject generateToast;
+
+            Animator m_PurchaseAnimator;
+            Animator m_GenerateAnimator;
+
+            static readonly GridContents[] k_WellLevelToGridContents = {
+                GridContents.Well_Level1,
+                GridContents.Well_Level2,
+                GridContents.Well_Level3,
+                GridContents.Well_Level4
+            };
 
             public GridContents buttonState { get; private set; } = GridContents.Empty;
-
 
             public enum GridContents
             {
                 Empty,
                 Obstacle,
-                Factory
+                Well_Level1,
+                Well_Level2,
+                Well_Level3,
+                Well_Level4
             }
 
+            static public GridContents WellLevelToGridContents(int wellLevel)
+            {
+                return k_WellLevelToGridContents[wellLevel];
+            }
 
             void Start()
             {
                 button = GetComponent<Button>();
 
-                obstacleImage = transform.Find("ObstacleImage").gameObject;
-                wellImage = transform.Find("WellImage").gameObject;
-                uiHighlightImage = transform.Find("UiHighlightImage").gameObject;
-                inProgressImage = transform.Find("InProgressImage").gameObject;
-                purchaseToast = transform.Find("PurchaseToast").gameObject;
-                generateToast = transform.Find("GenerateToast").gameObject;
-
-                purchaseAnimator = purchaseToast.GetComponent<Animator>();
-                generateAnimator = generateToast.GetComponent<Animator>();
+                m_PurchaseAnimator = purchaseToast.GetComponent<Animator>();
+                m_GenerateAnimator = generateToast.GetComponent<Animator>();
 
                 sceneView.RegisterGridEntity(this);
             }
 
             public void OnPointerEnter()
             {
-                uiHighlightImage.SetActive(true);
+                highlight.SetActive(true);
+                sceneView.SetActiveGridEntity(this);
             }
 
             public void OnPointerExit()
             {
-                uiHighlightImage.SetActive(false);
+                highlight.SetActive(false);
+                sceneView.ClearActiveGridEntity(this);
+            }
+
+            public void OnPointerDown()
+            {
+                if (button.interactable)
+                {
+                    if (buttonState >= GridContents.Well_Level1 &&
+                        buttonState <= GridContents.Well_Level4)
+                    {
+                        sceneView.StartDragging(this, allPiecesParent);
+                    }
+                }
+            }
+
+            public async void OnPointerUp()
+            {
+                try
+                {
+                    await sceneView.StopDragging();
+                }
+                catch (Exception e)
+                {
+                    Debug.LogException(e);
+                }
             }
 
             async public void OnButtonPressed()
             {
                 try
                 {
-                    await sceneManager.PlayfieldButtonPressed((int)gridLocation.x, (int)gridLocation.y);
+                    await sceneManager.PlayfieldButtonPressed(gridLocation);
                 }
                 catch (Exception e)
                 {
@@ -78,31 +113,37 @@ namespace UnityGamingServicesUseCases
 
             public void ShowInProgress(bool flag)
             {
-                inProgressImage.SetActive(flag);
+                inProgress.SetActive(flag);
             }
 
             public void SetGridContents(GridContents gridContents)
             {
                 this.buttonState = gridContents;
 
-                obstacleImage.SetActive(gridContents == GridContents.Obstacle);
-                wellImage.SetActive(gridContents == GridContents.Factory);
+                obstacle.SetActive(gridContents == GridContents.Obstacle);
+
+                for (var i = 0; i < IdleClickerGameSceneManager.k_NumWellLevels; i++)
+                {
+                    wells[i].SetActive(gridContents == k_WellLevelToGridContents[i]);
+                }
             }
 
             public void ShowUiHighlight(bool showFlag)
             {
-                uiHighlightImage.SetActive(showFlag);
+                highlight.SetActive(showFlag);
             }
 
             public void ShowInProgressImage(bool showFlag)
             {
-                inProgressImage.SetActive(showFlag);
+                inProgress.SetActive(showFlag);
             }
 
-            public void ShowPurchaseAnimation()
+            public void ShowPurchaseAnimation(int wellLevel)
             {
+                var wellCost = IdleClickerGameSceneManager.GetWellCost(wellLevel);
                 purchaseToast.SetActive(true);
-                purchaseAnimator.SetTrigger("ToastPop");
+                m_PurchaseAnimator.SetTrigger("ToastPop");
+                purchaseToastText.text = (-wellCost).ToString();
                 Invoke(nameof(HidePurchaseAnimation), 1f);
             }
 
@@ -114,7 +155,7 @@ namespace UnityGamingServicesUseCases
             public void ShowGenerateAnimation()
             {
                 generateToast.SetActive(true);
-                generateAnimator.SetTrigger("ToastPop");
+                m_GenerateAnimator.SetTrigger("ToastPop");
                 Invoke(nameof(HideGenerateAnimation), .5f);
             }
 
@@ -123,8 +164,15 @@ namespace UnityGamingServicesUseCases
                 generateToast.SetActive(false);
             }
 
+            public override string ToString()
+            {
+                return $"{buttonState} at ({gridLocation.x:0},{gridLocation.y:0})";
+            }
+
             void OnDestroy()
             {
+                HidePurchaseAnimation();
+                HideGenerateAnimation();
                 button.onClick.RemoveListener(OnButtonPressed);
             }
         }

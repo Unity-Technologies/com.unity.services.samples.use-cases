@@ -38,11 +38,12 @@ This example also uses Cloud Code to access Cloud Save to implement a cooldown b
 
 To replicate this use case, you need the following [Unity packages](https://docs.unity3d.com/Manual/Packages.html) in your project:
 
-| **Package**                                                                          | **Role**                                                                                                                                                  |
-| ------------------------------------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [Cloud Code](https://docs.unity.com/cloud-code/implementation.html#SDK_installation) | Accesses the cooldown status, picks and grants random currency and inventory items through the Economy server, and then returns the result of the reward. |
-| [Cloud Save](https://docs.unity.com/cloud-save/implementation.html#SDK-installation) | Stores and retrieves the last granted reward time to allow cooldown values to persist between sessions.                                                   |
-| [Economy](https://docs.unity.com/economy/SDK-installation.html)                      | Retrieves the starting and updated currency balances at runtime.                                                                                          |To use these services in your game, activate each service for your Organization and project in the[Unity Dashboard](https://dashboard.unity3d.com/).**
+| **Package**                                                                           | **Role**                                                                                                                                                   |
+|---------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [Cloud Code](https://docs.unity.com/cloud-code/implementation.html#SDK_installation)  | Accesses the cooldown status, picks and grants random currency and inventory items through the Economy server, and then returns the result of the reward.  |
+| [Cloud Save](https://docs.unity.com/cloud-save/implementation.html#SDK-installation)  | Stores and retrieves the last granted reward time to allow cooldown values to persist between sessions.                                                    |
+| [Economy](https://docs.unity.com/economy/SDK-installation.html)                       | Retrieves the starting and updated currency balances at runtime.                                                                                           |
+To use these services in your game, activate each service for your Organization and project in the [Unity Dashboard](https://dashboard.unity3d.com/).
 
 
 ### Dashboard setup
@@ -56,21 +57,22 @@ To replicate this sample scene's setup on your own dashboard, you need to:
 
 [Publish the following scripts](https://docs.unity.com/cloud-code/implementation.html#Writing_your_first_script) in the **LiveOps** dashboard:
 
-| **Script**                       | **Parameters** | **Description**                                                                                                                                                                 | **Location in project**                                                              |
-|----------------------------------| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |--------------------------------------------------------------------------------------|
-| `GrantTimedRandomReward`         | None           | Checks if the cooldown has expired (or was never set), then selects a random reward from the reward pool, grants the reward to the player, and then updates the cooldown timer. | `Assets/Use Case Samples/Daily Rewards/Cloud Code/GrantTimedRandomReward.js`         |
-| `GrantTimedRandomRewardCooldown` | None           | Checks for the last grant time and returns a flag indicating if the player is eligible for a reward.                                                                            | `Assets/Use Case Samples/Daily Rewards/Cloud Code/GrantTimedRandomRewardCooldown.js` |**Note**: The Cloud Code scripts included in theCloud Code folder are local copies because you cannot view the sample project's dashboard. Changes to these scripts do not affect the behavior of this sample because they are not automatically uploaded to the Cloud Code service.**
+| **Script**                         | **Parameters** | **Description**                                                                                                                                                                  | **Location in project**                                                                          |
+|------------------------------------|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------|
+| `LootBoxesWithCooldown_Claim`      | None           | Checks if the cooldown has expired (or was never set), then selects a random reward from the reward pool, grants the reward to the player, and then updates the cooldown timer.  | `Assets/Use Case Samples/Loot Boxes With Cooldown/Cloud Code/LootBoxesWithCooldown_Claim.js`     |
+| `LootBoxesWithCooldown_GetStatus`  | None           | Checks for the last grant time and returns a flag indicating if the player is eligible for a reward, and how many seconds are left in cooldown.                                  | `Assets/Use Case Samples/Loot Boxes With Cooldown/Cloud Code/LootBoxesWithCooldown_GetStatus.js` |
+**Note**: The Cloud Code scripts included in theCloud Code folder are local copies because you cannot view the sample project's dashboard. Changes to these scripts do not affect the behavior of this sample because they are not automatically uploaded to the Cloud Code service.**
 
 
 #### Economy
 
 [Configure the following resources](https://docs.unity.com/economy/) in the **LiveOps** dashboard:
 
-| **Resource type** | **Resource name** | **ID**    | **Description**                                            |
-| ----------------- | ----------------- |-----------| ---------------------------------------------------------- |
-| Currency          | Coin              | `COIN`    | A currency for the randomized loot box reward pool.        |
-| Currency          | Gem               | `GEM`     | A currency for the randomized loot box reward pool.        |
-| Currency          | Pearl             | `PEARL`   | A currency for the randomized loot box reward pool.        |
-| Currency          | Star              | `STAR`    | A currency for the randomized loot box reward pool.        |
-| Inventory item    | Sword             | `SWORD`   | An inventory item for the randomized loot box reward pool. |
-| Inventory item    | Shield            | `SHIELD`  | An inventory item for the randomized loot box reward pool. |
+| **Resource type** | **Resource name** | **ID**     | **Description**                                             |
+|-------------------|-------------------|------------|-------------------------------------------------------------|
+| Currency          | Coin              | `COIN`     | A currency for the randomized loot box reward pool.         |
+| Currency          | Gem               | `GEM`      | A currency for the randomized loot box reward pool.         |
+| Currency          | Pearl             | `PEARL`    | A currency for the randomized loot box reward pool.         |
+| Currency          | Star              | `STAR`     | A currency for the randomized loot box reward pool.         |
+| Inventory item    | Sword             | `SWORD`    | An inventory item for the randomized loot box reward pool.  |
+| Inventory item    | Shield            | `SHIELD`   | An inventory item for the randomized loot box reward pool.  |

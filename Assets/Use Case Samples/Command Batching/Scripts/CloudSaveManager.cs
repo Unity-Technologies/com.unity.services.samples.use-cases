@@ -12,8 +12,8 @@ namespace UnityGamingServicesUseCases
         {
             public static CloudSaveManager instance { get; private set; }
 
-            const string k_XPKey = "COMMANDBATCH_XP";
-            const string k_GoalsAchievedKey = "COMMANDBATCH_GOALSACHIEVED";
+            public const string xpKey = "COMMAND_BATCH_XP";
+            public const string goalsAchievedKey = "COMMAND_BATCH_GOALS_ACHIEVED";
 
             Dictionary<string, string> m_CachedCloudData;
 
@@ -45,21 +45,21 @@ namespace UnityGamingServicesUseCases
             {
                 var xp = 0;
 
-                if (m_CachedCloudData != null && m_CachedCloudData.ContainsKey(k_XPKey))
+                if (m_CachedCloudData != null && m_CachedCloudData.ContainsKey(xpKey))
                 {
-                    int.TryParse(m_CachedCloudData[k_XPKey], out xp);
+                    int.TryParse(m_CachedCloudData[xpKey], out xp);
                 }
 
                 return xp;
             }
-            
+
             public int GetCachedGoalsAchieved()
             {
                 var goalsAchieved = 0;
 
-                if (m_CachedCloudData != null && m_CachedCloudData.ContainsKey(k_GoalsAchievedKey))
+                if (m_CachedCloudData != null && m_CachedCloudData.ContainsKey(goalsAchievedKey))
                 {
-                    int.TryParse(m_CachedCloudData[k_GoalsAchievedKey], out goalsAchieved);
+                    int.TryParse(m_CachedCloudData[goalsAchievedKey], out goalsAchieved);
                 }
 
                 return goalsAchieved;

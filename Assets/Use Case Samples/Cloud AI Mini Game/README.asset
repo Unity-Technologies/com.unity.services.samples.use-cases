@@ -49,7 +49,7 @@ MonoBehaviour:
     bodyFormat: 0
     boxCallout: 
     bulletList:
-    - body: CloudAi_GetState is called once at startup to return the existing game
+    - body: CloudAiMiniGame_GetState is called once at startup to return the existing game
         if possible or generate a random game if none exists. This script will also
         clear the player's Coin total to 0 at the start of the first game so win/tie
         count should reflect the current Coin quantity, unless other Use Case Samples
@@ -57,7 +57,7 @@ MonoBehaviour:
       bodyFormat: 0
       bulletList: []
       linkList: []
-    - body: CloudAi_PlayerMove is called for each player move. The script is called
+    - body: CloudAiMiniGame_PlayerMove is called for each player move. The script is called
         with x,y coordinates and Cloud Code validates the player's move, makes an
         AI move if the game isn't over, determines if the game should end, and returns
         the final updated state. This script also maintains a win/loss/tie count
@@ -65,7 +65,7 @@ MonoBehaviour:
       bodyFormat: 0
       bulletList: []
       linkList: []
-    - body: CloudAi_StartNewGame is called when the player presses the [New Game]
+    - body: CloudAiMiniGame_StartNewGame is called when the player presses the [New Game]
         or [Forfeit] button (Forfeit replaces New Game whenever a game is in progress).
         This script checks if a game is in progress (isGameOver is false), and if
         so, the Loss Count is increased. Next, a new game is created, a random starting
@@ -141,7 +141,7 @@ MonoBehaviour:
       can show a popup, if appropriate), as well as a permanent counter for wins,
       losses and ties. To demonstrate the full game cycle, we've added the [Debug
       Reset Game] button which will remove the "CLOUD_AI_GAME_STATE" key from Cloud
-      Save and call "CloudAi_GetState" as it did at the start of the session. Since
+      Save and call "CloudAiMiniGame_GetState" as it did at the start of the session. Since
       Cloud Code then believes this to be a new player, it will reset Coin quantity
       to 0, create a new save state with all counters set to 0 and generate a new
       starting game with a random starting player.
@@ -213,7 +213,7 @@ MonoBehaviour:
     - body: Coin
       bodyFormat: 1
       bulletList:
-      - body: Granted by the Cloud Code script CloudAi_PlayerMove for Wins and, in
+      - body: Granted by the Cloud Code script CloudAiMiniGame_PlayerMove for Wins and, in
           a lesser quantity, for Ties.
         bodyFormat: 0
         bulletList: []
@@ -229,7 +229,7 @@ MonoBehaviour:
     bodyFormat: 0
     boxCallout: 
     bulletList:
-    - body: 'CloudAi_GetState:'
+    - body: 'CloudAiMiniGame_GetState:'
       bodyFormat: 1
       bulletList:
       - body: Create and save the random game if no game is in progress. If this
@@ -240,11 +240,11 @@ MonoBehaviour:
       - body: 'Parameters: none'
         bodyFormat: 0
         bulletList: []
-      - body: 'Script: "Assets/Use Case Samples/Cloud AI Mini Game/Cloud Code/CloudAi_GetState.js"'
+      - body: 'Script: "Assets/Use Case Samples/Cloud AI Mini Game/Cloud Code/CloudAiMiniGame_GetState.js"'
         bodyFormat: 0
         bulletList: []
       linkList: []
-    - body: 'CloudAi_ValidatePlayerMoveAndRespond:'
+    - body: 'CloudAiMiniGame_ValidatePlayerMoveAndRespond:'
       bodyFormat: 1
       bulletList:
       - body: Validate the player's requested move and add it to the game state based
@@ -257,11 +257,11 @@ MonoBehaviour:
           add. Example: {"x":0, "y":0}'
         bodyFormat: 0
         bulletList: []
-      - body: 'Script: "Assets/Use Case Samples/Cloud AI Mini Game/Cloud Code/CloudAi_ValidatePlayerMoveAndRespond.js"'
+      - body: 'Script: "Assets/Use Case Samples/Cloud AI Mini Game/Cloud Code/CloudAiMiniGame_ValidatePlayerMoveAndRespond.js"'
         bodyFormat: 0
         bulletList: []
       linkList: []
-    - body: 'CloudAi_StartNewGame:'
+    - body: 'CloudAiMiniGame_StartNewGame:'
       bodyFormat: 1
       bulletList:
       - body: Called when [New game] or [Forfeit] button is pressed to grant the
@@ -272,7 +272,7 @@ MonoBehaviour:
       - body: 'Parameters: none'
         bodyFormat: 0
         bulletList: []
-      - body: 'Script: "Assets/Use Case Samples/Cloud AI Mini Game/Cloud Code/CloudAi_StartNewGame.js"'
+      - body: 'Script: "Assets/Use Case Samples/Cloud AI Mini Game/Cloud Code/CloudAiMiniGame_StartNewGame.js"'
         bodyFormat: 0
         bulletList: []
       linkList: []

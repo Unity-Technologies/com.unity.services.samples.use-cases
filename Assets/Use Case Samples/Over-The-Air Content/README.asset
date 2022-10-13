@@ -219,12 +219,18 @@ MonoBehaviour:
   - subHeader1: 
     subHeader2: 
     subHeader3: 
-    body: 
+    body: When you cloned or downloaded this project, you likely got the main branch.
+      This branch contains the main project, which downloads new content from CCD.
+      To see how that downloadable content is created, see the ota-content branch
+      of this GitHub repo. It has additional Addressables configurations needed for
+      creating the asset bundles. You can explore the differences in the AddressableAssetSettings
+      file, the Addressables Groups window, and the Addressables Profiles window.
     bodyFormat: 0
-    boxCallout: 'Note: To see how this sample''s second project is configured, look
-      at the "ota-content" branch of the Use Cases github repository.'
+    boxCallout: 
     bulletList: []
-    linkList: []
+    linkList:
+    - linkText: See the ota-content branch in GitHub
+      url: https://github.com/Unity-Technologies/com.unity.services.samples.use-cases/tree/ota-content
   - subHeader1: 
     subHeader2: 
     subHeader3: 
@@ -260,17 +266,6 @@ MonoBehaviour:
   - subHeader1: 
     subHeader2: 
     subHeader3: 
-    body: To learn more about using Addressables with multiple projects, visit the
-      "Loading from Multiple Projects" page in the Addressables documentation.
-    bodyFormat: 0
-    boxCallout: 
-    bulletList: []
-    linkList:
-    - linkText: Loading from Multiple Projects
-      url: https://docs.unity3d.com/Packages/com.unity.addressables@1.20/manual/MultiProject.html
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
     body: 'After you''ve uploaded an Addressables build to a CCD bucket, make notes
       of a few things that you''ll use in the Remote Config settings:'
     bodyFormat: 0
@@ -290,6 +285,21 @@ MonoBehaviour:
       bulletList: []
       linkList: []
     linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: Setting up your own content creation
+    body: 'If you want to set up your own content creation workflow using Addressables
+      and CCD, please have a look at these other learning resources:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList:
+    - linkText: CCD + Addressables Walkthrough using the Loady Dungeons sample project
+      url: https://docs.unity.com/ccd/UnityCCDWalkthrough.html
+    - linkText: Managing catalogs at runtime
+      url: https://docs.unity3d.com/Packages/com.unity.addressables@1.20/manual/LoadContentCatalogAsync.html
+    - linkText: Loading from Multiple Projects (optional)
+      url: https://docs.unity3d.com/Packages/com.unity.addressables@1.20/manual/MultiProject.html
   - subHeader1: 
     subHeader2: Remote Config
     subHeader3: Config Values
@@ -339,4 +349,15 @@ MonoBehaviour:
         bodyFormat: 0
         bulletList: []
       linkList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 'Note: Every time you build and upload a new catalog file, you''ll
+      need to update the OTA_CATALOG_URL value in Remote Config to reflect the new
+      filename. If you use the Update a Previous Build option, you won''t need to
+      update the catalog URL in Remote Config.'
+    bulletList: []
     linkList: []

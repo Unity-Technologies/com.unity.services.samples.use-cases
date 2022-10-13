@@ -4,6 +4,29 @@ All notable changes to this project will be documented in this file.
 
 ​The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).​
 
+## [1.7.0] - 2022-10-12
+
+### Changed
+
+* The Idle Clicker Mini-Game has been extensively reworked to now permit merging and unlocking of wells. These features demonstrate upgrading units and a generic unlock manager which monitors in-game achievements to unlock new gameplay options as the game progresses.
+* Updated Unity Gaming Services packages to the latest stable group of packages released as of 2022-10-11.
+  * Mediation updated from `0.5.1-preview.1` to `1.0.4`
+* Updated other supporting packages to their latest verified versions (Test Framework, 2D packages, IDE packages).
+* Client Minimum version has been updated to the current release version because the Idle Clicker use case sample has new Cloud Code scripts and Economy Items. Also, Command Batching and Seasonal Events use cases reference the Cloud Save keys in both cloud and client code, therefore the changes to these keys cause a mismatch between the published dashboard configurations and the previous versions of the client code, which causes a minor regression in the Seasonal Events use case and a major one in the Command Batching use case if the client code isn't updated. Also several UGS assets have been renamed to reflect the use cases requiring them so the Client Minimum version needs to be changed to ensure the client correctly accesses them.
+* Cloud Save keys have been updated in the Battle Pass, Command Batching, Loot Boxes with Cooldown, and Seasonal Events use cases to align with the naming conventions of the other use cases.
+* Updated UGS scripts, variables, virtual purchases, remote config items, etc. to include an appropriate prefix describing the Use Case which requires it. This change does not effect items used by multiple Use Cases nor does it effect Currencies.
+* Updated `SeasonalEvents_GrantEventReward` script to use a better practice when getting Cloud Save values to ensure the correct keys are saved to the correct variables.
+* Added some additional helpful information to the Over-The-Air use case's README documents.
+* Fixed minor title centering issue in popup messages.
+
+### Removed
+
+* Removed unused `CloudCodeExceptionParsedMessage` struct that was in most CloudCodeManagers.
+
+### Known Issues
+
+* Because of a potential compatibility issue with Xcode version 14 and CocoaPods (used by the Mediation package), this project may not run properly when built with Xcode version 14.
+
 ## [1.6.0] - 2022-08-24
 
 ### Added

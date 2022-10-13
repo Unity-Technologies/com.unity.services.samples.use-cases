@@ -3,123 +3,130 @@
 // Unity Dashboard.
 
 const _ = require("lodash-4.17");
-const { CurrenciesApi } = require("@unity-services/economy-2.0");
-const { DataApi } = require("@unity-services/cloud-save-1.0");
-const { PurchasesApi } = require("@unity-services/economy-2.0");
+const { CurrenciesApi } = require("@unity-services/economy-2.2");
+const { PurchasesApi } = require("@unity-services/economy-2.2");
+const { DataApi } = require("@unity-services/cloud-save-1.1");
 
 const badRequestError = 400;
 const tooManyRequestsError = 429;
 
+const millisecondsPerSecond = 1000;
 const playfieldSize = 5;
 const currencyId = "WATER";
-const factoryGrantFrequencySeconds = 1;
-const factoryGrantFrequency = factoryGrantFrequencySeconds * 1000;
-const factoryGrantPerCycle = 1;
+const wellCurrencyCost = 100;
+const gameStateCloudSaveKey = "IDLE_CLICKER_GAME_STATE";
+const wellPurchaseId_Level1 = "IDLE_CLICKER_GAME_PURCHASE_WELL_LEVEL_1";
 
 // Entry point for the Cloud Code script 
 module.exports = async ({ params, context, logger }) => {
-  let instance;
-
   try {
     logger.info("Script parameters: " + JSON.stringify(params));
-    logger.info("Authenticated within the following context: " + JSON.stringify(context));
 
-    const { projectId, playerId, accessToken} = context;
+    const { projectId, playerId, accessToken } = context;
     const cloudSaveApi = new DataApi({ accessToken });
-    const economyCurrencyApi = new CurrenciesApi({ accessToken });
+    const currencyApi = new CurrenciesApi({ accessToken });
     const purchasesApi = new PurchasesApi({ accessToken });
 
     let coord = params.coord;
 
-    instance = { projectId, playerId, cloudSaveApi, economyCurrencyApi, purchasesApi, logger };
+    let instance = { projectId, playerId, cloudSaveApi, currencyApi, purchasesApi, logger };
 
+    const timestamp = getCurrentTimestamp();
+    instance.currentTimestamp = timestamp;
+
+    // Update the current state by granting Water and updating timestamp.
     instance.state = await readState(instance);
-
-    instance.timestamp = getCurrentTimestamp();
-
-    // If save state is found (normal condition) then update it based on duration since last update.
-    if (instance.state) {
-      logger.info("read start state: " + JSON.stringify(instance.state));
-
-      await updateState(instance);
-      logger.info("updated state: " + JSON.stringify(instance.state));
-    } else {
-      // DASHBOARD TESTING CODE: If the starting state is not found (only occurs in dashboard) then setup dummy state 
-      // for testing only. By not randomizing here, testing can request valid or invalid locations as needed.
-      instance.state = { timestamp:instance.timestamp, factories:[], obstacles:[{x:1, y:2}, {x:2, y:2}, {x:3, y:2}] };
-      await economyCurrencyApi.setPlayerCurrencyBalance(projectId, playerId, currencyId, { currencyId, balance:2000 });
-      logger.info("created debug start state: " + JSON.stringify(instance.state));
+    if (!instance.state) {
+      throw new StateMissingError("PlaceWell script executed without valid state setup. Be sure to call GetUpdatedState script before merging wells.");
     }
+    logger.info("Start state: " + JSON.stringify(instance.state));
 
-    // Check the placement coord for Obstacles and Wells. Throws if placement is found to be invalid.    
+    // Update the current state by granting Water and updating timestamp.
+    await updateState(instance);
+    logger.info("Updated state: " + JSON.stringify(instance.state));
+
+    // Save state now with updated timestamp. 
+    // It's important to save now and again after Well has been added so, if we throw between the calls, Cloud Save maintains
+    // the correct timestamp for when we last granted water.
+    await saveGameState(instance);
+
+    // Validate the location and throw if invalid.
+    // Note: This is done after updating status since we want to always update water even if the placement fails.
+    throwIfLocationInvalid(instance, coord);
+
     throwIfSpaceOccupied(instance, coord);
 
     // Attempt the Virtual Purchase for the Well. Throws if purchase is unsuccessful.
     await purchaseWell(instance);
 
-    // If we get to this point, the space is empty and Virtual Purchases has succeeded so we can add the factory to the game state.
-    placeFactory(instance, coord);
+    // If we get to this point, the space is empty and Virtual Purchases has succeeded so we just need add it to the game state.
+    addWellToState(instance, coord);
 
-    await saveState(instance);
+    // Save state now with new well added to game state. 
+    await saveGameState(instance);
 
-    logger.info("placement successful.");
+    // After we've saved the state, insert the currency balance to return to caller.
+    // We retrieved the currency balance at the start so we must now update it by deducting the cost of purchasing the Well.
+    instance.state.currencyBalance = instance.currencyBalance - wellCurrencyCost;
 
     return instance.state;
+
   } catch (error) {
-
-    // This use case is unique in that it updates in real time. Since we've already distributed currency based on the passage of time
-    // before an exception occurred, we must save the updated state so we do not redistribute more currency based on the original time.
-    // This will save the correct time that currency was last distributed for each Well so correct currency will be granted for next call.
-    try {
-      if (instance.hasOwnProperty('state')) {
-        logger.info("Saving state in exception handler catch statement to ensure water is not distributed multiple times in response to an exception.");
-        await saveState(instance);
-      }
-    } catch (ignoreError) {
-
-      // If a second exception occurs when trying to save the state, there's nothing we can do to prevent granting additional currency.
-      // Note: The only known scenario that could cause this is due to rate limiting on Cloud Save. If it does occur, game play will
-      //       need to be adjusted to prevent players 'spamming' the feature too quickly.
-      logger.error("Exception thrown when saving state. Save FAILED so updated state lost.");
-      logger.error(ignoreError);
-    }
-
-    // Throw the original exception so Unity client can display an appropriate popup. This will usually be insufficient funds or space occupied.
     transformAndThrowCaughtError(error);
   }
 }
 
+function getCurrentTimestamp() {
+  return Date.now();
+}
+
 async function readState(instance) {
-  let response = await instance.cloudSaveApi.getItems(instance.projectId, instance.playerId, [ "IDLE_CLICKER_GAME_STATE" ] );
+  let response = await instance.cloudSaveApi.getItems(instance.projectId, instance.playerId, [ gameStateCloudSaveKey ]);
 
   if (response.data.results &&
-      response.data.results.length > 0 &&
-      response.data.results[0] &&
-      response.data.results[0].value) {
-    return JSON.parse(response.data.results[0].value);
+      response.data.results.length >= 1) {
+    return response.data.results[0] ? response.data.results[0].value : null;
   }
 
   return null;
 }
 
 async function updateState(instance) {
-  let totalElapsedCycles = updateAllFactories(instance);
+  instance.lastTimestamp = instance.state.timestamp;
+  let waterToProduce = updateAllWells(instance)
 
-  instance.state.timestamp = instance.timestamp;
+  instance.state.timestamp = instance.currentTimestamp;
+  
+  instance.currencyBalance = await grantWater(instance, waterToProduce);
+}
 
-  await grantCurrencyForCycles(instance, totalElapsedCycles);
+async function saveGameState(instance) {
+  await instance.cloudSaveApi.setItem(instance.projectId, instance.playerId, { key: gameStateCloudSaveKey, value: instance.state } );
+}
+
+function throwIfLocationInvalid(instance, coord) {
+  if (coord.x < 0 || coord.x >= playfieldSize ||
+      coord.y < 0 || coord.y >= playfieldSize) {
+    throw new InvalidLocationError("Player attemped to place a piece at invalid location.");
+  }
 }
 
 function throwIfSpaceOccupied(instance, coord) {
-  if (instance.state.factories.some(item => item.x == coord.x && item.y == coord.y) ||
-      instance.state.obstacles.some(item => item.x == coord.x && item.y == coord.y)) {
+  if (instance.state.obstacles.some(item => item.x == coord.x && item.y == coord.y) ||
+      instance.state.wells_level1.some(item => item.x == coord.x && item.y == coord.y) ||
+      instance.state.wells_level2.some(item => item.x == coord.x && item.y == coord.y) ||
+      instance.state.wells_level3.some(item => item.x == coord.x && item.y == coord.y) ||
+      instance.state.wells_level4.some(item => item.x == coord.x && item.y == coord.y)) {
     throw new SpaceOccupiedError("Player attemped to place a piece in an occupied space.");
   }
 }
 
 async function purchaseWell(instance) {
-  try {
-    await instance.purchasesApi.makeVirtualPurchase(instance.projectId, instance.playerId, { id: "IDLE_CLICKER_GAME_WELL" });
+  try {         
+    const projectId = instance.projectId;
+    const playerId = instance.playerId;
+    const playerPurchaseVirtualRequest = { id: wellPurchaseId_Level1 };
+    await instance.purchasesApi.makeVirtualPurchase({ projectId, playerId, playerPurchaseVirtualRequest });
   } catch (e) {
     const message = "Purchasing Well failed";
 
@@ -151,50 +158,46 @@ async function purchaseWell(instance) {
   }
 }
 
-function placeFactory(instance, coord) {
-  instance.state.factories.push({x:coord.x, y:coord.y, timestamp:instance.timestamp});
+function addWellToState(instance, coord) {
+  const newWell = { x:coord.x, y:coord.y, timestamp:instance.currentTimestamp };
+  instance.state.wells_level1.push(newWell);
+  instance.logger.info("Placement successful. Updated state: " + JSON.stringify(instance.state));
 }
 
-async function saveState(instance) {
-  await instance.cloudSaveApi.setItem(instance.projectId, instance.playerId, { key: "IDLE_CLICKER_GAME_STATE", value: JSON.stringify(instance.state) } );
+function updateAllWells(instance) {
+  const waterToProduce = updateWells(instance, instance.state.wells_level1, 1) +
+    updateWells(instance, instance.state.wells_level2, 2) +
+    updateWells(instance, instance.state.wells_level3, 3) +
+    updateWells(instance, instance.state.wells_level4, 4);
+  
+  return waterToProduce;
 }
 
-function updateAllFactories(instance) {
-  let factories = instance.state.factories;
-  let totalElapsedCycles = 0;
-  factories.forEach(factory => totalElapsedCycles += updateFactory(instance, factory));
+async function grantWater(instance, amount) {
+  instance.logger.info("Granting " + amount + " water.");
 
-  return totalElapsedCycles;
+  const projectId = instance.projectId;
+  const playerId = instance.playerId;
+  const currencyModifyBalanceRequest = { currencyId, amount };
+  const result = await instance.currencyApi.incrementPlayerCurrencyBalance({ projectId, playerId, currencyId, currencyModifyBalanceRequest });
+
+  return result.data.balance;
 }
 
-function updateFactory(instance, factory) {
-  let elapsed = instance.timestamp - factory.timestamp;
-  let elapsedCycles = Math.floor(elapsed / factoryGrantFrequency);
-
-  instance.logger.info("factory " + JSON.stringify(factory) + "  elapsed time: " + elapsed + "  elapsed cycles: " + elapsedCycles);
-
-  factory.timestamp += elapsedCycles * factoryGrantFrequency;
-
-  return elapsedCycles;
+function updateWells(instance, wells, waterGrantedPerSecond) {
+  let waterToProduce = 0;
+  wells.forEach(well => waterToProduce += calculateWaterProducedSinceLastUpdate(instance, well, waterGrantedPerSecond));
+  
+  return waterToProduce;
 }
 
-async function grantCurrencyForCycles(instance, totalElapsedCycles) {
-  if (totalElapsedCycles > 0) {
-    let currencyProduced = totalElapsedCycles * factoryGrantPerCycle;
+function calculateWaterProducedSinceLastUpdate(instance, well, waterGrantedPerSecond) {
+  const totalElapsed = instance.currentTimestamp - well.timestamp;
+  const totalWaterProduced = Math.floor(totalElapsed * waterGrantedPerSecond / millisecondsPerSecond);
+  const previousElapsed = instance.lastTimestamp - well.timestamp;
+  const waterAlreadyProduced = Math.floor(previousElapsed * waterGrantedPerSecond / millisecondsPerSecond);
 
-    instance.logger.info("granting currency for total cycles: " + totalElapsedCycles + "  currency produced: " + currencyProduced);
-
-    await grantCurrency(instance, currencyProduced);
-  }
-}
-
-async function grantCurrency(instance, amount) {
-  await instance.economyCurrencyApi.incrementPlayerCurrencyBalance(instance.projectId, instance.playerId, currencyId,
-      { currencyId, amount });
-}
-
-function getCurrentTimestamp() {
-  return Date.now();
+  return totalWaterProduced - waterAlreadyProduced;
 }
 
 // Some form of this function appears in all Cloud Code scripts.
@@ -248,11 +251,19 @@ class CloudCodeCustomError extends Error {
   }
 }
 
+class StateMissingError extends CloudCodeCustomError {
+  constructor(message) {
+    super(message);
+    this.name = "StateMissingError";
+    this.status = 2;
+  }
+}
+
 class SpaceOccupiedError extends CloudCodeCustomError {
   constructor(message) {
     super(message);
     this.name = "SpaceOccupiedError";
-    this.status = 2;
+    this.status = 3;
   }
 }
 
@@ -260,9 +271,17 @@ class EconomyError extends CloudCodeCustomError {
   constructor(message) {
     super(message);
     this.name = "EconomyError";
-    this.status = 3;
+    this.status = 4;
     this.retryAfter = null;
     this.details = "";
+  }
+}
+
+class InvalidLocationError extends CloudCodeCustomError {
+  constructor(message) {
+    super(message);
+    this.name = "InvalidLocationError";
+    this.status = 9;
   }
 }
 

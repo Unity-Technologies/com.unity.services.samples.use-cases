@@ -20,7 +20,7 @@ const commandKeys = {
 
 module.exports = async ({ params, context, logger }) => {
     try {
-        const { projectId, playerId, environmentId, accessToken} = context;
+        const { projectId, playerId, environmentId, accessToken } = context;
         const economyCurrency = new CurrenciesApi({ accessToken });
         const cloudSave = new DataApi({ accessToken });
         const remoteConfig = new SettingsApi({ accessToken });

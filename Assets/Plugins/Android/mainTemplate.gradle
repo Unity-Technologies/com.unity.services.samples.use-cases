@@ -28,8 +28,8 @@ apply plugin: 'com.android.library'
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 // Android Resolver Dependencies Start
-    implementation 'com.unity3d.mediation:mediation-sdk:[0.5,0.6[' // Assets/Editor/MediationAdapterDependencies.xml:8
-    implementation 'com.unity3d.mediation:unityads-adapter:[0.5,0.6[' // Assets/Editor/MediationAdapterDependencies.xml:10
+    implementation 'com.unity3d.mediation:mediation-sdk:[1.0,2.0[' // Assets/Editor/MediationAdapterDependencies.xml:8
+    implementation 'com.unity3d.mediation:unityads-adapter:[1.0,2.0[' // Assets/Editor/MediationAdapterDependencies.xml:10
 // Android Resolver Dependencies End
 **DEPS**}
 

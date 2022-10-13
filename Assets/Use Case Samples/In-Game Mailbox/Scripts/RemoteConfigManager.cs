@@ -183,7 +183,7 @@ namespace UnityGamingServicesUseCases
             }
 
             [Serializable]
-            struct MessageIds
+            public struct MessageIds
             {
                 public List<string> messageList;
             }

@@ -8,11 +8,11 @@ namespace UnityGamingServicesUseCases
     {
         public class SimulatedCurrencyManager : MonoBehaviour
         {
-            public const string k_FactoryGrantCurrency = "WATER";
+            public const string k_WellGrantCurrency = "WATER";
             public const long k_MillisecondsPerSecond = 1000;
-            public const long k_FactoryGrantFrequencySeconds = 1;
-            public const long k_FactoryGrantQuantity = 1;
-            public const long k_FactoryGrantFrequency = k_FactoryGrantFrequencySeconds * k_MillisecondsPerSecond;
+            public const long k_WellGrantFrequencySeconds = 1;
+            public const long k_WellGrantQuantity = 1;
+            public const long k_WellGrantFrequency = k_WellGrantFrequencySeconds * k_MillisecondsPerSecond;
 
             public CurrencyHudView currencyHudView;
 
@@ -25,9 +25,9 @@ namespace UnityGamingServicesUseCases
             // can always be synced.
             public long serverTimestampOffset { get; private set; }
 
-            List<FactoryInfo> m_Factories;
+            List<WellInfo>[] m_AllWells;
 
-            long m_NextFactoryProduceTime = long.MaxValue;
+            long m_NextWellProduceTime = long.MaxValue;
 
 
             void Awake()
@@ -48,70 +48,101 @@ namespace UnityGamingServicesUseCases
                 serverTimestampOffset = serverTimestamp - localTimestamp;
             }
 
-            public void StartRefreshingCurrencyBalances(List<FactoryInfo> factories)
+            public void StartRefreshingCurrencyBalances(List<WellInfo>[] allWells)
             {
-                m_Factories = factories;
+                UpdateWellsLastProduceTime(allWells);
 
-                m_NextFactoryProduceTime = CalculateNextFactoryProduceTimestamp();
+                m_AllWells = allWells;
+
+                m_NextWellProduceTime = CalculateNextWellProduceTimestamp();
+            }
+
+            void UpdateWellsLastProduceTime(List<WellInfo>[] allWells)
+            {
+                foreach (var wellsByLevel in allWells)
+                { 
+                    var serverTime = GetApproxServerTimestamp();
+                    for (int i = 0; i < wellsByLevel.Count; i++)
+                    {
+                        var well = wellsByLevel[i];
+                        var elapsed = serverTime - well.timestamp;
+                        if (elapsed > 0)
+                        {
+                            var lastProducedTimestamp = well.timestamp +
+                                ((elapsed / k_MillisecondsPerSecond) * k_MillisecondsPerSecond);
+                            well.timestamp = lastProducedTimestamp;
+                            wellsByLevel[i] = well;
+                        }
+                    }
+                }
             }
 
             public void StopRefreshingCurrencyBalances()
             {
-                m_Factories = null;
+                m_AllWells = null;
 
-                m_NextFactoryProduceTime = long.MaxValue;
+                m_NextWellProduceTime = long.MaxValue;
             }
 
             void Update()
             {
                 var serverTimestamp = GetApproxServerTimestamp();
 
-                if (serverTimestamp >= m_NextFactoryProduceTime)
+                if (serverTimestamp >= m_NextWellProduceTime)
                 { 
-                    UpdateAllFactoriesForTimestamp(serverTimestamp);
+                    UpdateAllWellsForTimestamp(serverTimestamp);
 
-                    m_NextFactoryProduceTime = CalculateNextFactoryProduceTimestamp();
+                    m_NextWellProduceTime = CalculateNextWellProduceTimestamp();
                 }
             }
 
-            void UpdateAllFactoriesForTimestamp(long timestamp)
+            void UpdateAllWellsForTimestamp(long timestamp)
             {
                 long currencyProduced = 0;
 
-                for (var i = 0; i < m_Factories.Count; i++)
+                for (int wellLevelOn = 0; wellLevelOn < IdleClickerGameSceneManager.k_NumWellLevels;
+                    wellLevelOn++)
                 {
-                    var factory = m_Factories[i];
-
-                    var elapsed = timestamp - factory.timestamp;
-                    var grantCycles = elapsed / k_FactoryGrantFrequency;
-                    if (grantCycles > 0)
+                    var wellsByLevel = m_AllWells[wellLevelOn];
+                    for (var i = 0; i < wellsByLevel.Count; i++)
                     {
-                        currencyProduced += grantCycles * k_FactoryGrantQuantity;
+                        var well = wellsByLevel[i];
 
-                        factory.timestamp += grantCycles * k_FactoryGrantFrequency;
-                        m_Factories[i] = factory;
+                        var elapsed = timestamp - well.timestamp;
+                        var grantCycles = elapsed / k_WellGrantFrequency;
+                        if (grantCycles > 0)
+                        {
+                            currencyProduced += grantCycles * k_WellGrantQuantity * (wellLevelOn + 1);
 
-                        sampleView.ShowGenerateAnimation(new Vector2(factory.x, factory.y));
+                            well.timestamp += grantCycles * k_WellGrantFrequency;
+                            wellsByLevel[i] = well;
+
+                            sampleView.ShowGenerateAnimation(new Vector2(well.x, well.y));
+                        }
                     }
                 }
 
-                EconomyManager.instance.IncrementCurrencyBalance(k_FactoryGrantCurrency, currencyProduced);
+                EconomyManager.instance.IncrementCurrencyBalance(k_WellGrantCurrency, currencyProduced);
             }
 
-            long CalculateNextFactoryProduceTimestamp()
+            long CalculateNextWellProduceTimestamp()
             {
-                var oldestTime = FindOldestFactoryTimestamp();
-                return oldestTime + k_FactoryGrantFrequency;
+                var oldestTime = FindOldestWellTimestamp();
+                return oldestTime + k_WellGrantFrequency;
             }
 
-            long FindOldestFactoryTimestamp()
+            long FindOldestWellTimestamp()
             {
                 var oldestTime = long.MaxValue;
-                foreach (var factory in m_Factories)
-                {
-                    if (factory.timestamp < oldestTime)
+
+                foreach (var wellsByLevel in m_AllWells)
+                { 
+                    foreach (var well in wellsByLevel)
                     {
-                        oldestTime = factory.timestamp;
+                        if (well.timestamp < oldestTime)
+                        {
+                            oldestTime = well.timestamp;
+                        }
                     }
                 }
 

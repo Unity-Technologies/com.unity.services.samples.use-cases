@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Unity.Services.CloudCode;
 using Unity.Services.Economy.Model;
@@ -164,11 +163,6 @@ namespace UnityGamingServicesUseCases
                                   $"{cloudCodeCustomError.name}: {cloudCodeCustomError.message}");
                         break;
                 }
-            }
-
-            struct CloudCodeExceptionParsedMessage
-            {
-                public string message;
             }
 
             class CloudCodeCustomError : Exception

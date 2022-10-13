@@ -11,7 +11,7 @@ const badRequestError = 400;
 
 module.exports = async ({ params, context, logger }) => {
     try {
-        const { projectId, playerId, environmentId, accessToken} = context;
+        const { projectId, playerId, environmentId, accessToken } = context;
         const economy = new CurrenciesApi({ accessToken });
         const cloudSave = new DataApi({ accessToken });
         const remoteConfig = new SettingsApi({ accessToken });
@@ -96,21 +96,21 @@ async function getRemoteConfigData(remoteConfig, projectId, environmentId) {
         projectId,
         environmentId,
         'settings',
-        ["XP_INCREASE", "LEVEL_UP_XP_NEEDED"]
+        ["AB_TEST_XP_INCREASE", "AB_TEST_LEVEL_UP_XP_NEEDED"]
     );
 
     if (getRemoteConfigSettingsResponse.data.configs &&
         getRemoteConfigSettingsResponse.data.configs.settings &&
-        getRemoteConfigSettingsResponse.data.configs.settings.XP_INCREASE &&
-        getRemoteConfigSettingsResponse.data.configs.settings.LEVEL_UP_XP_NEEDED) {
+        getRemoteConfigSettingsResponse.data.configs.settings.AB_TEST_XP_INCREASE &&
+        getRemoteConfigSettingsResponse.data.configs.settings.AB_TEST_LEVEL_UP_XP_NEEDED) {
 
         return {
-            xpIncreaseAmount: getRemoteConfigSettingsResponse.data.configs.settings.XP_INCREASE,
-            xpNeededForNextLevel: getRemoteConfigSettingsResponse.data.configs.settings.LEVEL_UP_XP_NEEDED
+            xpIncreaseAmount: getRemoteConfigSettingsResponse.data.configs.settings.AB_TEST_XP_INCREASE,
+            xpNeededForNextLevel: getRemoteConfigSettingsResponse.data.configs.settings.AB_TEST_LEVEL_UP_XP_NEEDED
         };
     }
 
-    throw new CloudCodeCustomError("Failed to get XP_INCREASE or LEVEL_UP_XP_NEEDED data from Remote Config.");
+    throw new CloudCodeCustomError("Failed to get AB_TEST_XP_INCREASE or AB_TEST_LEVEL_UP_XP_NEEDED data from Remote Config.");
 }
 
 async function distributeLevelUpRewards(economy, projectId, playerId) {

@@ -277,11 +277,6 @@ namespace UnityGamingServicesUseCases
                 public string eventName;
             }
 
-            public struct GainSeasonXpRequest
-            {
-                public int amount;
-            }
-
             public struct GainSeasonXpResult
             {
                 public int seasonXp;
@@ -302,11 +297,6 @@ namespace UnityGamingServicesUseCases
                 public string validationResult;
                 public ResultReward[] grantedRewards;
                 public int[] seasonTierStates;
-            }
-
-            struct CloudCodeExceptionParsedMessage
-            {
-                public string message;
             }
 
             class CloudCodeCustomError : Exception

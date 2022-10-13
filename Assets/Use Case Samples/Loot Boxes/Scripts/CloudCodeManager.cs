@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Unity.Services.Authentication;
 using Unity.Services.CloudCode;
@@ -164,11 +163,6 @@ namespace UnityGamingServicesUseCases
             {
                 public string currencyId;
                 public int amount;
-            }
-
-            struct CloudCodeExceptionParsedMessage
-            {
-                public string message;
             }
 
             class CloudCodeCustomError : Exception

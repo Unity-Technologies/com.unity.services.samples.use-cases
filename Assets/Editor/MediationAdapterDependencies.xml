@@ -5,13 +5,13 @@
       <repository>https://unity3ddist.jfrog.io/artifactory/unity-mediation-mvn-prod-local/</repository>
     </repositories>
     <!-- Mediation Android SDK -->
-    <androidPackage spec="com.unity3d.mediation:mediation-sdk:[0.5,0.6[" mediation-identifier="mediation-sdk" mediation-version="0.5" />
+    <androidPackage spec="com.unity3d.mediation:mediation-sdk:[1.0,2.0[" mediation-identifier="mediation-sdk" mediation-version="1.0" />
     <!-- Mediation SDK Android Adapters -->
-    <androidPackage spec="com.unity3d.mediation:unityads-adapter:[0.5,0.6[" mediation-identifier="unityads-adapter" mediation-version="latest" />
+    <androidPackage spec="com.unity3d.mediation:unityads-adapter:[1.0,2.0[" mediation-identifier="unityads-adapter" mediation-version="latest" />
   </androidPackages>
   <iosPods>
     <!-- Mediation iOS SDK -->
-    <iosPod name="UnityMediationSdk" version="~> 0.5.0" source="'https://github.com/Unity-Technologies/unity-mediation-cocoapods-prod.git'" mediation-identifier="mediation-sdk" mediation-version="0.5" />
+    <iosPod name="UnityMediationSdk" version="~> 1.0" source="'https://github.com/Unity-Technologies/unity-mediation-cocoapods-prod.git'" mediation-identifier="mediation-sdk" mediation-version="1.0" />
     <!-- Mediation Dependency Required For resolution -->
     <iosPod name="Protobuf" />
     <!-- Mediation SDK iOS Adapters -->

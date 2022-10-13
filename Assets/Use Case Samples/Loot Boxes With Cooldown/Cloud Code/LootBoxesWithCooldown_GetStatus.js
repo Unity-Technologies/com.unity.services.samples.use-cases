@@ -10,13 +10,15 @@ const tooManyRequestsError = 429;
 const cooldownSeconds = 60;
 const epochTimeToSeconds = 1000;
 
+const cloudSaveKeyGrantRewardTime = "LOOT_BOX_COOLDOWN_GRANT_REWARD_TIME";
+
 // Entry point for the Cloud Code script
 module.exports = async ({ params, context, logger }) => {
   try {
     const { projectId, playerId, accessToken} = context;
     const cloudSaveApi = new DataApi({ accessToken });
 
-    const getTimeResponse = await cloudSaveApi.getItems(projectId, playerId, [ "GRANT_TIMED_REWARD_TIME" ] );
+    const getTimeResponse = await cloudSaveApi.getItems(projectId, playerId, [ cloudSaveKeyGrantRewardTime ] );
 
     // Check for the last grant epoch time
     if (getTimeResponse.data.results &&
@@ -27,7 +29,7 @@ module.exports = async ({ params, context, logger }) => {
       var nowEpochTime = Math.floor(new Date().valueOf() / epochTimeToSeconds);
       var grantEpochTime = getTimeResponse.data.results[0].value;
       var cooldown = cooldownSeconds - (nowEpochTime - grantEpochTime);
-      
+
       // If cooldown has NOT expired
       if (cooldown > 0) {
         // Return canGrantFlag: false, and remaining cooldown time in seconds

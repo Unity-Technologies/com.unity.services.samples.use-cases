@@ -1,22 +1,34 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace UnityGamingServicesUseCases
 {
     namespace IdleClickerGame
     {
         [Serializable]
-        public struct UpdatedState
+        public struct IdleClickerResult
         {
             public long timestamp;
+            public long currencyBalance;
+            public List<WellInfo> wells_level1;
+            public List<WellInfo> wells_level2;
+            public List<WellInfo> wells_level3;
+            public List<WellInfo> wells_level4;
             public List<Coord> obstacles;
-            public List<FactoryInfo> factories;
+            public Dictionary<string, int> unlockCounters;
 
             public override string ToString()
             {
-                return $"timestamp:{timestamp} " +
-                    $"[obstacles:{string.Join(",", obstacles)}] " +
-                    $"[factories:{string.Join(",", factories)}]";
+                var unlockCountersStr = string.Join(",", unlockCounters.Select(kv => $"{kv.Key}={kv.Value}"));
+                return $"timestamp:{timestamp}, " + 
+                    $"currencyBalance:{currencyBalance}, " + 
+                    $"wells_level1:[{string.Join(",", wells_level1)}], " +
+                    $"wells_level2:[{string.Join(",", wells_level2)}], " +
+                    $"wells_level3:[{string.Join(",", wells_level3)}], " +
+                    $"wells_level4:[{string.Join(",", wells_level4)}], " +
+                    $"obstacles:[{string.Join(",", obstacles)}], " +
+                    $"unlockCounters:[{unlockCountersStr}]";
             }
         }
 
@@ -33,30 +45,16 @@ namespace UnityGamingServicesUseCases
         }
 
         [Serializable]
-        public struct FactoryInfo
+        public struct WellInfo
         {
             public int x;
             public int y;
             public long timestamp;
+            public int wellLevel;
 
             public override string ToString()
             {
-                return $"({x},{y}, timestamp:{timestamp})";
-            }
-        }
-
-        [Serializable]
-        public struct PlacePieceResult
-        {
-            public long timestamp;
-            public List<Coord> obstacles;
-            public List<FactoryInfo> factories;
-
-            public override string ToString()
-            {
-                return $"timestamp:{timestamp} " +
-                    $"obstacles:[{string.Join(",", obstacles)}] " +
-                    $"factories:[{string.Join(",", factories)}]";
+                return $"({x},{y}, level:{wellLevel}, timestamp:{timestamp})";
             }
         }
 

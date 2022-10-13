@@ -1,40 +1,56 @@
 using System;
 using System.Threading.Tasks;
 using UnityEngine;
-using Unity.Services.Economy;
 
 namespace UnityGamingServicesUseCases
 {
     public static class Utils
     {
-        public static async Task<T> ProcessEconomyTaskWithRetry<T>(Task<T> task)
+        public static async Task<T> RetryEconomyFunction<T>(Func<Task<T>> functionToRetry, int retryAfterSeconds)
         {
-            var delayMs = 100;
-            while (true)
+            if (retryAfterSeconds > 60)
             {
-                try
+                Debug.Log($"Economy returned a rate limit exception with an extended Retry After time " +
+                          $"of {retryAfterSeconds} seconds. Suggest manually retrying at a later time.");
+                return default;
+            }
+
+            Debug.Log($"Economy returned a rate limit exception. Retrying after {retryAfterSeconds} seconds");
+
+            try
+            {
+                // Using a CancellationToken allows us to ensure that the Task.Delay gets cancelled if we exit
+                // playmode while it's waiting its delay time. Without it, it would continue trying to execute
+                // the rest of this code, even outside of playmode.
+                using (var cancellationTokenHelper = new CancellationTokenHelper())
                 {
-                    var ret = await task;
+                    var cancellationToken = cancellationTokenHelper.cancellationToken;
 
-                    return ret;
-                }
-                catch (EconomyException e)
-                when (e.Reason == EconomyExceptionReason.RateLimited)
-                {
-                    // If the rate-limited exception occurs, use exponential back-off when retrying
-                    await Task.Delay(delayMs);
+                    await Task.Delay(retryAfterSeconds * 1000, cancellationToken);
 
-                    Debug.Log($"Retrying Economy call due to rate-limit exception after {delayMs}ms delay.");
+                    // Call the function that we passed in to this method after the retry after time period has passed.
+                    var result = await functionToRetry();
 
-                    delayMs *= 2;
-                }
-                catch (Exception e)
-                {
-                    Debug.LogException(e);
+                    if (cancellationToken.IsCancellationRequested)
+                    {
+                        return default;
+                    }
 
-                    return default;
+                    Debug.Log("Economy retry successfully completed");
+
+                    return result;
                 }
             }
+            catch (OperationCanceledException)
+            {
+                return default;
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+            }
+
+            return default;
         }
 
         public static string GetElapsedTimeRange(DateTime startTime)
@@ -49,7 +65,7 @@ namespace UnityGamingServicesUseCases
 
             // BottomRange is the nearest divisible-by-10 number less than elapsedSeconds.
             // For instance, 47.85 seconds has a bottom range of 40.
-            var bottomRange = (int) Math.Floor(elapsedSeconds / 10) * 10;
+            var bottomRange = (int)Math.Floor(elapsedSeconds / 10) * 10;
 
             // TopRange is the nearest divisible-by-10 number greater than elapsedSeconds.
             // For instance, 47.85 seconds has a top range of 50.

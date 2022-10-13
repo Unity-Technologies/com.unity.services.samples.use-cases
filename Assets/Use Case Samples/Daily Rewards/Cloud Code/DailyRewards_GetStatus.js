@@ -11,7 +11,7 @@ const tooManyRequestsError = 429;
 
 module.exports = async ({ context, logger }) => {
     try {
-        const { projectId, playerId, environmentId, accessToken} = context;
+        const { projectId, playerId, environmentId, accessToken } = context;
         const remoteConfig = new SettingsApi({ accessToken });
         const cloudSave = new DataApi({ accessToken });
 
@@ -143,7 +143,7 @@ async function getPlayerStatus(services) {
 }
 
 async function getCloudSaveResult(services, key) {
-    const response = await services.cloudSave.getItems(services.projectId, services.playerId, [ key ] );
+    const response = await services.cloudSave.getItems(services.projectId, services.playerId, [ key ]);
 
     if (response.data.results &&
         response.data.results.length > 0 &&

@@ -19,19 +19,30 @@ MonoBehaviour:
   - subHeader1: Intro
     subHeader2: 
     subHeader3: 
-    body: 'In real-time idle clicker and social games, such as farming games and
-      city building games, common considerations are:'
+    body: 'In real-time idle clicker and social games, such as farming or city-building
+      games, common considerations include:'
     bodyFormat: 0
     boxCallout: 
     bulletList:
-    - body: How to simulate real-time activities in a game that isn't running all
-        the time
+    - body: How to simulate real-time activities in a game that is not running all
+        the time.
       bodyFormat: 0
       bulletList: []
       linkList: []
-    - body: How the simulation can occur on the cloud to ensure all players' games
-        are updated properly, regardless of timezone or any modifications to date/time
-        on a player's device
+    - body: How the simulation can occur on the cloud, to ensure that all players'
+        games are updated properly, regardless of timezone or any modifications to
+        the date and time on a player's device.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: How to merge playing pieces to form more powerful pieces by utilizing
+        Inventory Items as playing pieces and upgrading them using Economy Virtual
+        Purchases.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: How to implement an Unlock Manager to permit new game play options as
+        the player achieves in-game goals.
       bodyFormat: 0
       bulletList: []
       linkList: []
@@ -39,8 +50,9 @@ MonoBehaviour:
   - subHeader1: 
     subHeader2: 
     subHeader3: 
-    body: This sample use case shows how to solve both challenges while limiting
-      calls to UGS, which can cause throttling issues or increased costs.
+    body: This sample use case shows how to solve the above challenges while limiting
+      calls to Unity Gaming Services, which can cause throttling issues or increased
+      costs.
     bodyFormat: 0
     boxCallout: 
     bulletList: []
@@ -48,130 +60,497 @@ MonoBehaviour:
   - subHeader1: 
     subHeader2: 
     subHeader3: 
-    body: In this sample, the player uses a Currency ("WATER") to purchase Wells
-      which produce 1 Water per second (per Well).
+    body: In this sample, the player uses a resource (Water) to purchase Wells, which
+      initially produce 1 unit of Water per second. These 'Wood' Wells can be merged
+      to form improved Wells which produce more Water. Once unlocked, the player
+      can even merge identical 'improved' Wells together to create even better Wells
+      that produce even more Water.
     bodyFormat: 0
     boxCallout: 
     bulletList: []
     linkList: []
   - subHeader1: 
-    subHeader2: 
+    subHeader2: Overview
     subHeader3: 
-    body: 'Each time a player loads this use case, or attempts to place a new Well
-      by clicking on the playfield, the Unity script calls Cloud Code which, among
-      other things, calculates how much Water the Wells should have granted since
-      the last time the script was called and calls Economy directly to grant the
-      required Water. '
+    body: 'To see this use case in action:'
     bodyFormat: 0
     boxCallout: 
+    bulletList:
+    - body: In the Unity Editor Project window, select Assets > Use Case Samples
+        > Idle Clicker Game, and then double-click IdleClickerGameSample.unity to
+        open the sample scene.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: Enter Play Mode to interact with the use case.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: Initialization
+    subHeader3: 
+    body: 'The IdleClickerGameSceneManager.cs script performs the following initialization
+      tasks in its Start function:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: Initializes Unity Gaming Services.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: "Signs in the player anonymously using the Authentication service. If
+        you\u2019ve previously initialized any of the other sample scenes, Authentication
+        will use your cached Player ID instead of creating a new one."
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: Retrieves and updates the player's currency balances from the Economy
+        service.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: "Retrieves or creates the current game state by calling the IdleClicker_GetUpdatedState.js
+        Cloud Code script. If this is a new game, this script will generate a random
+        game playfield and reset the player's Water, otherwise it calculates the
+        amount of Water generated since the last update and calls the Economy service
+        to grant that amount to the player\u2019s currency balance. It also retrieves
+        the state of the Unlock Manager."
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: Enables button-click functionality for the available tiles in the playfield.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: Functionality
+    subHeader3: Placing Wells
+    body: 'You can click any open tile in the playfield to place a Well in exchange
+      for 100 Water. The client and Cloud Code both validate whether the purchase
+      is valid (the space is empty and the player has enough Water), then a Well
+      is placed. When you click a tile, the following occurs:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: The client validates that the selected location is empty and that the
+        player has enough Water to purchase the Well. If either test fails, a popup
+        occurs and the client does not call Cloud Code.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: 'Once the client validates the request, the Cloud Code script IdleClicker_PlaceWell.js
+        is called to perform the following steps:'
+      bodyFormat: 0
+      bulletList:
+      - body: First it grants all Water generated since the last Cloud Code call
+          using the Economy service. Note that, until this occurs, the Water total
+          the player is seeing in the Unity Client is just a simulation of how much
+          Water he or she should have. Once Cloud Code determines the actual amount
+          and grants it, the Client will be updated with this new total and will
+          then continue simulating Water from that point until Cloud Code is called
+          again.
+        bodyFormat: 0
+        bulletList: []
+      - body: Cloud Save is updated with the latest timestamp so future calls will
+          only grant Water generated since this latest update.
+        bodyFormat: 0
+        bulletList: []
+      - body: "It then checks that the selected tile isn\u2019t occupied (or throws
+          an exception back to the client)."
+        bodyFormat: 0
+        bulletList: []
+      - body: If the placement is valid, it attempts the Virtual Purchase to consume
+          100 Water. If this purchase fails (for example not enough Water), an exception
+          will be thrown back to the client).
+        bodyFormat: 0
+        bulletList: []
+      - body: If above Virtual Purchase is successful, a new Well is added to the
+          Cloud Save state data. The Well data includes its location (x,y) and creation
+          timestamp.
+        bodyFormat: 0
+        bulletList: []
+      - body: All Cloud Save data is re-saved with the new Well included. Note that
+          we save twice on each call to ensure that the timestamp matches the Water
+          granted even if placement fails. The first save (above) ensures Water granted
+          is accurate even if a throw occurs after Water is granted, but before Well
+          has been successfully placed (such as player not having enough Water).
+          This save adds the new Well to game state in Cloud Save.
+        bodyFormat: 0
+        bulletList: []
+      - body: The final updated game state is returned to the client which now includes
+          the newly-placed Well.
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: Moving Wells
+    body: 'You can drag any Well to any other open tile in the playfield to change
+      a Well''s position as a free action. The client, then Cloud Code both validate
+      that you are moving the Well to an empty tile. When you drag a Well, the following
+      occurs:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: The client first validates the move. If the destination is blocked, a
+        popup appears and Cloud Code is not called.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: 'If the move is valid, the Cloud Code script IdleClicker_MoveWell.js
+        is called to perform the following actions:'
+      bodyFormat: 0
+      bulletList:
+      - body: Grant all Water that was generated since the last Cloud Code call.
+        bodyFormat: 0
+        bulletList: []
+      - body: Update Cloud Save with the latest timestamp.
+        bodyFormat: 0
+        bulletList: []
+      - body: Verify the move in Cloud Code. This ensures that the client's request
+          is valid before permitting the move.
+        bodyFormat: 0
+        bulletList: []
+      - body: Update the Well's location in memory to prepare it to be stored in
+          Cloud Save.
+        bodyFormat: 0
+        bulletList: []
+      - body: All Cloud Save data is re-saved with the Well in the new location.
+          For explanation of saving twice, please see 'Placing Wells' above.
+        bodyFormat: 0
+        bulletList: []
+      - body: Return the updated game state to the client so it can update the UI.
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: The final updated game state is displayed on the client with the Well
+        in the new location.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: Merging Wells
+    body: 'You can drag any Well onto another Well of the same type to attempt to
+      merge them into a single, improved Well that produces more Water. Both the
+      client and Cloud Code will validate that the merge is valid. Any of the following
+      issues would make a merge request invalid and result in a popup message:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: The Wells are different types, such as a Wood Well and a Bronze Well.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: The upgraded Well has not been unlocked. Bronze Wells begin unlocked.
+        To unlock Silver Wells, the player must successfully merge Wood Wells 4 times
+        (merging 8 Wood Wells to create 4 Bronze Wells). An indicator on the right
+        side of the screen shows which Wells are unlocked, and overall progress toward
+        unlocking each upgraded Well.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: The player has insufficient Water. Each improvement requires 100 more
+        Water than the last so making a Bronze Well requires 200 Water, making Silver
+        Wells requires 300 Water, and Gold Wells require 400.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: The best Well improvement has been made. Gold Wells are the best possible
+        so they cannot be merged.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'If the merge is valid, the client will call Cloud Code script IdleClicker_MergeWells
+      to perform the following:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: First it grants all Water generated since the last Cloud Code call using
+        the Economy service.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: Cloud Save is updated with the latest timestamp.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: It then removes the Wells from both the starting and ending locations.
+        This is done on the internal game state and, if anything prevents merging
+        the Wells (including either of the Wells being missing), Cloud Code will
+        throw an exception back to the client and this temporary state will be lost
+        thus leaving the game state unchanged. Only if this and all future tests
+        succeed will this game state become official, and be updated on UGS and returned
+        to the client.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: The Wells are checked to ensure they are the same type. If not, an exception
+        is thrown.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: The Wells are checked to confirm they are eligible to upgrade (i.e. not
+        already a Gold Well). If they are not upgradeable an exception is thrown.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: The Unlock Manager is checked to confirm that the upgraded Well type
+        has been unlocked. If less than 4 Wells of the previous type have been merged,
+        an exception is thrown.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: The Economy Virtual Purchase is attempted to consume the correct quantity
+        of Water. If the purchase fails, an exception will be thrown back to the
+        client.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: With all checks complete and Water deducted (previous step), the newly
+        upgraded Well is added to the internal state so it can be written to Cloud
+        Save and returned to the client.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: The unlock counters are updated to reflect that another Well has been
+        successfully merged and the new state saved to Cloud Save. This is the value
+        that will be shown in the client and is used to permit merging Wells of higher
+        levels as the player progresses in the game.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: The updated state, including the existence of the new Well, removal of
+        the old Wells, and update to the unlock counter, is saved to Cloud Save. 
+        Note that until this step, any failures would just discard the updated local
+        state so that the saved state in Cloud Save would remain unchanged.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: The updated state with old Wells removed and the newly-created, upgraded
+        Well is returned to the client. This state also includes the latest unlock
+        counts so it's possible that the player will now be able to merge a new type
+        of Well.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: Client updates state to show the new Well and Unlock Manager state.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: Resetting Game State
+    body: 'Whenever you need to start over, the [Reset Game] button can be pressed
+      to perform the following:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: Call Cloud Code script `IdleClicker_Reset` which clears the Cloud Save
+        data so the state resembles that of a new player.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: Call Cloud Code script IdleClicker_GetUpdatedState. Since the Cloud Save
+        data is missing, it treats the get-state request as a new player and creates
+        a random playfield, resets the player's Water currency to 1,000 and sets
+        the starting values for the Unlock Manager.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: Real-time resource updates
+    body: 'Between moves, while the player is viewing the game scene but not interacting,
+      the client simulates Water production and updates the Currency HUD accordingly.
+      Each Well produces one Water per second per level of the Well (Wood Wells produce
+      1/sec, Bronze Wells produce 2/sec, etc.). Because this sample is intended to
+      be real-time, whenever the client calls Cloud Code, it checks the current time
+      and calculates how much cumulative Water has been produced by each Well since
+      its last production cycle. Every time the Use Case is opened or the player
+      attempts to place/move/merge a Well, the following occurs on the backend:'
+    bodyFormat: 0
+    boxCallout: 'Note: Because the Water quantity displayed in the currency HUD is
+      simulated by the client and not actually in sync with the server until the
+      scene is reloaded or the player attempts to place/move/merge a Well, its server-side
+      values will usually be different. However, the next time Cloud Code is called,
+      the appropriate Water will be granted so they will reflect what the player
+      is seeing in the HUD.'
+    bulletList:
+    - body: The current timestamp is determined using Date.now().
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: Cloud Save is read to determine the last update timestamps for the last
+        timestamp.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: Each Well is processed to determine how much Water should have been produced
+        since the last time it was updated. This is determined by comparing how much
+        Water should have been produced since it was created (using the current timestamp
+        and the Well's Cloud Save data which records the Well's creation time) and
+        deducting the amount of Water the Well has already produced (using the last
+        update timestamp and the Well's creation time). By simply subtracting these
+        numbers, we can determine how much Water the Well will produce now (i.e.
+        how much Water each Well produced since the last time the game state was
+        updated).
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: The Economy Service is called to grant the appropriate total quantity
+        of Water.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: Cloud Save is updated with the new last-update timestamp.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: Virtual Purchases
+    body: This sample illustrates how Virtual Purchases occur through the Economy
+      service. In this case, the Virtual Purchase for a Wood Well costs 100 Water.
+      Upgraded Wells cost more Water. For example, Bronze Wells cost 200 Water and
+      remove 2 Wood Wells from the game state. Note that the Virtual Purchases themselves
+      do not effect the Well information stored in Cloud Save. However, once the
+      Virtual Purchase has been successfully executed to deduct the correct amount
+      of Water, Cloud Code updates the game state to remove any merged Wells and
+      add the new Well.
+    bodyFormat: 0
+    boxCallout: 'Note: Cloud Code only attempts the transaction after confirming
+      that the move is valid.'
     bulletList: []
     linkList: []
   - subHeader1: 
     subHeader2: 
     subHeader3: 
-    body: Between moves, while the player is viewing the game scene but not interacting,
-      the client simulates the Water granting behavior and updates the Currency HUD
-      accordingly. Then, whenever the player attempts to place a new Well, Cloud
-      Code is again called and the simulated Water is actually granted before any
-      Virutal Purchase is attempted.
-    bodyFormat: 0
-    boxCallout: 
-    bulletList: []
-    linkList: []
-  - subHeader1: Implementation Overview
-    subHeader2: 
-    subHeader3: 
-    body: 
+    body: Upon successful Virtual Purchase, all necessary data is added to the Cloud
+      Save game state so it can be shown on the playfield and generate Water correctly.
+      This data includes location (x,y) and timestamp when the item was created.
     bodyFormat: 0
     boxCallout: 
     bulletList: []
     linkList: []
   - subHeader1: 
-    subHeader2: 
+    subHeader2: Well Types
     subHeader3: 
-    body: 'Since this sample game is intended to be real-time, whenever Cloud Code
-      is called, it checks the current time and calculates how much cumulative Water
-      should have been produced by all Wells since their last production cycle at
-      the rate of 1 Water per well per second. To determine how much time has passed,
-      a "last produce time" for each well is stored on Cloud Save along with the
-      full game state including obstacle locations, well locations, last update time,
-      etc. Once the appropriate quantity of Water is granted on the Economy Service,
-      the last-produce-time is updated for all Wells and the fully-updated state
-      is saved back to Cloud Save. This full update occurs at startup as well as
-      whenever the player attempts to place a Well, regardless of whether the Well
-      is successfully placed or not (Note: the player is only charged 500 Water for
-      a successful Well placement).'
+    body: Wood Well
     bodyFormat: 0
     boxCallout: 
-    bulletList: []
+    bulletList:
+    - body: 'Cost: 100 Water drops'
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: 'Generates: 1 Water drop per minute'
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: Unlocked from start
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: 
     subHeader3: 
-    body: The "WATER" Currency used in this Use Case is not displayed in any other
-      Use Cases because the quantity displayed in the Currency HUD is often only
-      simulated on device and not actually in sync with the server until the scene
-      is reloaded or an attempt to place a Well is made. This means that if the Water
-      Currency's server values were visible in other use cases, the quantity would
-      often be inaccurate. To avoid confusion, we only show the Water quantity in
-      this Use Case.
+    body: Bronze Well
     bodyFormat: 0
     boxCallout: 
-    bulletList: []
+    bulletList:
+    - body: 'Cost: 200 Water drops + 2 Wood Wells'
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: 'Generates: 2 Water drops per minute'
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: Unlocked from start
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: 
     subHeader3: 
-    body: As with other samples, we are showing how Cloud Code can validate gameplay
-      moves by sending even illegal requests to Cloud Code and allowing it to reject
-      them as appropriate. This happens if the player attempts to place a Well in
-      an occupied place (either obstacle or another Well), as well as when the player
-      lacks sufficient funds to place a Well (i.e. less than 500 Water).
+    body: Silver Well
     bodyFormat: 0
     boxCallout: 
-    bulletList: []
+    bulletList:
+    - body: 'Cost: 300 Water drops + 2 Bronze Wells'
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: 'Generates: 3 Water drops per minute'
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: Merge Wood Wells into Bronze Wells 4 times
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: 
     subHeader3: 
-    body: Another feature of this sample is how the Virtual Purchases are made. In
-      this sample, the Virtual Purchase for a Well costs 500 Water, but, unlike most
-      other Virtual Purchases, the purchase itself does not actually grant anything.
-      Instead, we use the Virtual Purchase to consume the transaction costs (i.e.
-      500 Water) so, upon a successful transaction, we are permitting the game state
-      to be updated with the new Well. Since this transaction is only attempted after
-      all other failure tests have been passed (i.e. the space is determined to be
-      empty), we know we can safely add the Well to the playfield and return the
-      updated state upon a successful transaction.
+    body: Gold Well
     bodyFormat: 0
     boxCallout: 
-    bulletList: []
+    bulletList:
+    - body: 'Cost: 400 Water drops + 2 Silver Wells'
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: 'Generates: 4 Water drops per minute'
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: Merge Bronze Wells into Silver Wells 4 times
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
     linkList: []
-  - subHeader1: Packages Required
-    subHeader2: 
+  - subHeader1: Setup
+    subHeader2: Requirements
     subHeader3: 
-    body: 
+    body: 'To replicate this use case, you need the following Unity packages in your
+      project:'
     bodyFormat: 0
     boxCallout: 
     bulletList:
     - body: 'Authentication: Automatically signs in the user anonymously to keep
-        track of their data on the server side.'
+        track of their data on the server side. '
       bodyFormat: 0
       bulletList: []
       linkList: []
-    - body: 'Cloud Code: Sets up game state for a new game by placing 3 random obstacles
-        and setting starting Water Currency to 2000. It also validates moves, grants
-        Water based on real-time production, and updates game state based on purchases.'
+    - body: 'Cloud Code: Sets up the game state for a new game by placing three random
+        obstacles and setting the starting Water currency to 1000. It also validates
+        moves, grants Water based on real-time production, and updates game state
+        based on Virtual Purchases.'
       bodyFormat: 0
       bulletList: []
       linkList: []
-    - body: 'Economy: Stores current "WATER" count and processes Virtual Purchases
-        when Cloud Code deems a move to be valid at a cost of 500 "WATER".'
+    - body: 'Cloud Save: Stores the game state, last update timestamp and unlock
+        data. Cloud Code checks and updates these values directly.'
       bodyFormat: 0
       bulletList: []
       linkList: []
-    - body: 'Cloud Save: Stores updated game state for all obstacles, Wells (including
-        last-production time), etc. Cloud Code checks and updates these values directly.'
+    - body: 'Economy: Retrieves the player''s starting and updated Water balances
+        at runtime and performs Virtual Purchases to place and/or merge Wells.'
       bodyFormat: 0
       bulletList: []
       linkList: []
@@ -186,91 +565,124 @@ MonoBehaviour:
     bulletList: []
     linkList:
     - linkText: Authentication
-      url: http://documentation.cloud.unity3d.com/en/articles/5385907-unity-authentication-anonymous-sign-in-guide
+      url: https://docs.unity.com/authentication/Content/InstallAndConfigureSDK.htm
     - linkText: Cloud Code
-      url: https://docs.unity.com/cloud-code
+      url: https://docs.unity.com//cloud-code/Content/implementation.htm?tocpath=Implementation%7C_____0#SDK_installation
+    - linkText: Cloud Save
+      url: https://docs.unity.com/cloud-save/implementation.htm
     - linkText: Economy
       url: https://docs.unity.com/economy/Content/implementation.htm?tocpath=Implementation%7C_____0
-    - linkText: Cloud Save
-      url: https://docs.unity.com/cloud-save
-  - subHeader1: Dashboard Setup
+  - subHeader1: Dashboard setup
     subHeader2: 
     subHeader3: 
-    body: 'To use Economy, Cloud Code and Cloud Save services in your game, activate
-      each service for your organization and project in the Unity Dashboard. You''ll
-      need a few Currencies and inventory items in the Economy setup, as well as
-      a couple of scripts in Cloud Code:'
+    body: 'To replicate this sample scene''s setup on your own dashboard, you need
+      to:'
     bodyFormat: 0
     boxCallout: 
-    bulletList: []
+    bulletList:
+    - body: Publish 5 scripts in Cloud Code.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: Create one Currency and 4 Virtual Transactions for the Economy service.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
-    subHeader2: Economy Items
+    subHeader2: Cloud Code
     subHeader3: 
-    body: 
+    body: 'Publish the following scripts in the LiveOps dashboard:'
     bodyFormat: 0
     boxCallout: 
     bulletList:
-    - body: Water
-      bodyFormat: 1
+    - body: IdleClicker_GetUpdatedState
+      bodyFormat: 0
       bulletList:
-      - body: Granted at the start of a new game, consumed in Virtual Purchase to
-          place new Wells, granted every second for each Well on the playfield.
-        bodyFormat: 0
-        bulletList: []
-      - body: 'ID: "WATER"'
-        bodyFormat: 0
-        bulletList: []
-      linkList: []
-    - body: Idle Clicker Game Well
-      bodyFormat: 1
-      bulletList:
-      - body: Virtual Purchase used to charge 500 Water. Note that the Well itself
-          is not granted by the Virtual Purchase--it is added to the game state directly
-          by Cloud Code upon successful completion of the Virtual Purchase.
-        bodyFormat: 0
-        bulletList: []
-      - body: 'ID: "IDLE_CLICKER_GAME_WELL"'
-        bodyFormat: 0
-        bulletList: []
-      linkList: []
-    linkList: []
-  - subHeader1: Cloud Code Scripts
-    subHeader2: 
-    subHeader3: 
-    body: 
-    bodyFormat: 0
-    boxCallout: 
-    bulletList:
-    - body: 'IdleClicker_GetUpdatedState:'
-      bodyFormat: 1
-      bulletList:
-      - body: 'Purpose: Create random game if necessary, update game state since
-          last call (including granting any necessary Water) and return state to
-          caller.'
+      - body: 'Creates a random game if necessary, updates the game state since the
+          last call (including granting any necessary Water), and returns the state
+          to the client. '
         bodyFormat: 0
         bulletList: []
       - body: 'Parameters: none'
         bodyFormat: 0
         bulletList: []
-      - body: 'Script: Assets/Use Case Samples/Idle Clicker Game/Cloud Code/IdleClicker_GetUpdatedState.js'
+      - body: Assets/Use Case Samples/Idle Clicker Game/Cloud Code/IdleClicker_GetUpdatedState.js
         bodyFormat: 0
         bulletList: []
       linkList: []
-    - body: 'IdleClicker_PlaceWell:'
-      bodyFormat: 1
+    - body: IdleClicker_PlaceWell
+      bodyFormat: 0
       bulletList:
-      - body: 'Purpose: Update state the since last call to grant any necessary Water,
-          validate the player''s move, use Economy Virtual Purchase to ''buy'' the
-          new Well and update the game state appropriately (i.e. add Well to the
-          world, if successful).'
+      - body: "Updates currency balances since the last server call, validates the
+          player's moves, uses Economy service Virtual Purchases to \u201Cbuy\u201D
+          new Wells, and updates the game state appropriately (for example, adding
+          a Well to the game board)."
         bodyFormat: 0
         bulletList: []
-      - body: 'Parameters: coord (JSON) - {x,y} coordinate for new Well to add to
-          the game. Example: {"x":0, "y":0}'
+      - body: 'Parameters:'
+        bodyFormat: 0
+        bulletList:
+        - body: '"coord" (JSON). Position for Well. Example: {1, 2}'
+          bodyFormat: 0
+          bulletList: []
+      - body: Assets/Use Case Samples/Idle Clicker Game/Cloud Code/IdleClicker_PlaceWell.js
         bodyFormat: 0
         bulletList: []
-      - body: 'Script: Assets/Use Case Samples/Idle Clicker Game/Cloud Code/IdleClicker_PlaceWell.js'
+      linkList: []
+    - body: IdleClicker_MoveWell
+      bodyFormat: 0
+      bulletList:
+      - body: Updates Water balances since the last server call, validates the player's
+          move, and updates the game state appropriately.
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Parameters:'
+        bodyFormat: 0
+        bulletList:
+        - body: '"drag" (JSON). Start position where Well is now. Example: {1,2}'
+          bodyFormat: 0
+          bulletList: []
+        - body: '"drop" (JSON). Ending position for the Well after operation.. Example:
+            {2,3}'
+          bodyFormat: 0
+          bulletList: []
+      - body: Assets/Use Case Samples/Idle Clicker Game/Cloud Code/IdleClicker_MoveWell.js
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: IdleClicker_MergeWells
+      bodyFormat: 0
+      bulletList:
+      - body: "Updates currency balances since the last server call, validates the
+          player's moves, uses Economy service Virtual Purchases to \u201Cbuy\u201D
+          the new Well, and updates the game state appropriately."
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Parameters:'
+        bodyFormat: 0
+        bulletList:
+        - body: '"drag" (JSON). Pposition where first Well is now. Example: {1,2}'
+          bodyFormat: 0
+          bulletList: []
+        - body: '"drop" (JSON). Position where second  Well is and final position
+            for the merged Well after operation.. Example: {2,3}'
+          bodyFormat: 0
+          bulletList: []
+      - body: Assets/Use Case Samples/Idle Clicker Game/Cloud Code/IdleClicker_MergeWells.js
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: IdleClicker_Reset
+      bodyFormat: 0
+      bulletList:
+      - body: Clears Cloud Save entries to simulate a new player
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Parameters: none.'
+        bodyFormat: 0
+        bulletList: []
+      - body: Assets/Use Case Samples/Idle Clicker Game/Cloud Code/IdleClicker_Reset.js
         bodyFormat: 0
         bulletList: []
       linkList: []
@@ -280,9 +692,71 @@ MonoBehaviour:
     subHeader3: 
     body: 
     bodyFormat: 0
-    boxCallout: 'Note: The Cloud Code scripts included in the `Cloud Code` folder
-      are just local copies, since you can''t see the sample''s dashboard. Changes
-      to these scripts will not affect the behavior of this sample since they will
-      not be automatically uploaded to Cloud Code service.'
+    boxCallout: 'Note: The Cloud Code scripts included in the Cloud Code folder are
+      local copies because you cannot see the sample''s dashboard. Changes to these
+      scripts do not affect the behavior of this sample because they are not automatically
+      uploaded to the Cloud Code service.'
     bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: Economy
+    subHeader3: 
+    body: 'Configure the following resources in the LiveOps dashboard:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: Currency
+      bodyFormat: 0
+      bulletList:
+      - body: Water
+        bodyFormat: 0
+        bulletList:
+        - body: Granted at the start of a new game, consumed in Virtual Purchases
+            to place new Wells, and granted every second based on Wells on the playfield.
+          bodyFormat: 0
+          bulletList: []
+        - body: 'ID: "WATER"'
+          bodyFormat: 0
+          bulletList: []
+      linkList: []
+    - body: Virtual Purchases
+      bodyFormat: 0
+      bulletList:
+      - body: Idle Clicker Game Well Purchase Well Level 1
+        bodyFormat: 0
+        bulletList:
+        - body: Virtual Purchase consumes 100 Water in order to place a Wood Well.
+          bodyFormat: 0
+          bulletList: []
+        - body: 'ID: "IDLE_CLICKER_GAME_PURCHASE_WELL_LEVEL_1"'
+          bodyFormat: 0
+          bulletList: []
+      - body: Idle Clicker Game Well Purchase Well Level 2
+        bodyFormat: 0
+        bulletList:
+        - body: Virtual Purchase consumes 200 Water to produce a Bronze Well.
+          bodyFormat: 0
+          bulletList: []
+        - body: 'ID: "IDLE_CLICKER_GAME_PURCHASE_WELL_LEVEL_2"'
+          bodyFormat: 0
+          bulletList: []
+      - body: Idle Clicker Game Well Purchase Well Level 3
+        bodyFormat: 0
+        bulletList:
+        - body: Virtual Purchase consumes 300 Water to produce a Silver Well.
+          bodyFormat: 0
+          bulletList: []
+        - body: 'ID: "IDLE_CLICKER_GAME_PURCHASE_WELL_LEVEL_3"'
+          bodyFormat: 0
+          bulletList: []
+      - body: Idle Clicker Game Well Purchase Well Level 4
+        bodyFormat: 0
+        bulletList:
+        - body: Virtual Purchase consumes 400 Water to produce a Gold Well.
+          bodyFormat: 0
+          bulletList: []
+        - body: 'ID: "IDLE_CLICKER_GAME_PURCHASE_WELL_LEVEL_4"'
+          bodyFormat: 0
+          bulletList: []
+      linkList: []
     linkList: []
