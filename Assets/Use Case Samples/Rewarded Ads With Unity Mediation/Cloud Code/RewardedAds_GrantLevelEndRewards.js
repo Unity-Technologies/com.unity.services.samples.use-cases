@@ -23,7 +23,7 @@ const cloudSaveKeyLevelBoosterRewardsDistributed = "REWARDED_ADS_LEVEL_BOOSTER_R
 
 module.exports = async ({ params, context, logger }) => {
     try {
-        const { projectId, playerId, environmentId, accessToken} = context;
+        const { projectId, playerId, environmentId, accessToken } = context;
         const economyCurrencyApi = new CurrenciesApi({ accessToken });
         const cloudSaveApi = new DataApi({ accessToken });
         const servicesData = { projectId, playerId, environmentId, cloudSaveApi, economyCurrencyApi, logger };

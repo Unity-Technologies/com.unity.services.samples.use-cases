@@ -47,7 +47,7 @@ module.exports = async ({ params, context, logger }) => {
 
 async function purchaseStarterPack(purchasesApi, projectId, playerId) {
     try {
-        const playerPurchaseVirtualRequest = { id: "STARTER_PACK" };
+        const playerPurchaseVirtualRequest = { id: "STARTER_PACK_PURCHASE" };
         const requestParameters = { projectId, playerId, playerPurchaseVirtualRequest };
 
         return await purchasesApi.makeVirtualPurchase(requestParameters);

@@ -209,7 +209,7 @@ MonoBehaviour:
   - subHeader1: 
     subHeader2: 
     subHeader3: Claim an attachment
-    body: 'When you press the "Claim" button, the client code calls the "Messages_ClaimAttachment.js"
+    body: 'When you press the "Claim" button, the client code calls the "InGameMailbox_ClaimAttachment.js"
       Cloud Code script with the selected message''s ID included as a parameter.
       The following occurs on the backend: '
     bodyFormat: 0
@@ -287,7 +287,7 @@ MonoBehaviour:
     subHeader2: 
     subHeader3: Claim all attachments
     body: 'When you press the "Claim All" button, the client code makes a call to
-      the "Messages_ClaimAllAttachments.js" Cloud Code script. The following occurs
+      the "InGameMailbox_ClaimAllAttachments.js" Cloud Code script. The following occurs
       on the backend: '
     bodyFormat: 0
     boxCallout: 
@@ -563,7 +563,7 @@ MonoBehaviour:
     bodyFormat: 0
     boxCallout: 
     bulletList:
-    - body: Messages_ClaimAttachment
+    - body: InGameMailbox_ClaimAttachment
       bodyFormat: 1
       bulletList:
       - body: Fetches the appropriate attachment for the given message, validates
@@ -576,11 +576,11 @@ MonoBehaviour:
           the player wants to claim.'
         bodyFormat: 0
         bulletList: []
-      - body: 'Script: "Assets/Use Case Samples/In-Game Mailbox/Cloud Code/Messages_ClaimAttachment.js"'
+      - body: 'Script: "Assets/Use Case Samples/In-Game Mailbox/Cloud Code/InGameMailbox_ClaimAttachment.js"'
         bodyFormat: 0
         bulletList: []
       linkList: []
-    - body: Messages_ClaimAllAttachments
+    - body: InGameMailbox_ClaimAllAttachments
       bodyFormat: 1
       bulletList:
       - body: Gets the list of messages in a player's inbox, finds all messages that
@@ -592,7 +592,7 @@ MonoBehaviour:
       - body: 'Parameters: none'
         bodyFormat: 0
         bulletList: []
-      - body: 'Script: "Assets/Use Case Samples/In-Game Mailbox/Cloud Code/Messages_ClaimAllAttachments.js"'
+      - body: 'Script: "Assets/Use Case Samples/In-Game Mailbox/Cloud Code/InGameMailbox_ClaimAllAttachments.js"'
         bodyFormat: 0
         bulletList: []
       linkList: []
@@ -987,8 +987,7 @@ MonoBehaviour:
         bodyFormat: 0
         bulletList: []
       - body: 'Content: Select "Choose content type" > "Config Overrides", then enter
-          override values for the following keys: "MESSAGE_001" (See README.md for
-          override value)'
+          override values for the following keys: "MESSAGE_001" (See README.md for override value)'
         bodyFormat: 0
         bulletList: []
       - body: 'Scheduling: '
@@ -1009,8 +1008,7 @@ MonoBehaviour:
         bodyFormat: 0
         bulletList: []
       - body: 'Content: Select "Choose content type" > "Config Overrides", then enter
-          override values for the following keys: "MESSAGE_002" (See README.md for
-          override value)'
+          override values for the following keys: "MESSAGE_002" (See README.md for override value)'
         bodyFormat: 0
         bulletList: []
       - body: 'Scheduling: '
@@ -1031,8 +1029,7 @@ MonoBehaviour:
         bodyFormat: 0
         bulletList: []
       - body: 'Content: Select "Choose content type" > "Config Overrides", then enter
-          override values for the following keys: "MESSAGE_003" (See README.md for
-          override value)'
+          override values for the following keys: "MESSAGE_003" (See README.md for override value)'
         bodyFormat: 0
         bulletList: []
       - body: 'Scheduling: '
@@ -1053,8 +1050,7 @@ MonoBehaviour:
         bodyFormat: 0
         bulletList: []
       - body: 'Content: Select "Choose content type" > "Config Overrides", then enter
-          override values for the following keys: "MESSAGE_004" (See README.md for
-          override value)'
+          override values for the following keys: "MESSAGE_004" (See README.md for override value)'
         bodyFormat: 0
         bulletList: []
       - body: 'Scheduling: '

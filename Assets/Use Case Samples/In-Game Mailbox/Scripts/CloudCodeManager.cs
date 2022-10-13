@@ -55,7 +55,7 @@ namespace UnityGamingServicesUseCases
 
                     Debug.Log($"Claiming attachment for message {messageId} via Cloud Code...");
 
-                    await CloudCodeService.Instance.CallEndpointAsync("Messages_ClaimAttachment",
+                    await CloudCodeService.Instance.CallEndpointAsync("InGameMailbox_ClaimAttachment",
                         new Dictionary<string, object> { { "messageId", messageId } });
                 }
                 catch (CloudCodeException e)
@@ -84,7 +84,7 @@ namespace UnityGamingServicesUseCases
                     Debug.Log("Claiming all message attachments via Cloud Code...");
 
                     var result = await CloudCodeService.Instance.CallEndpointAsync<ClaimAllResult>(
-                        "Messages_ClaimAllAttachments", new Dictionary<string, object>());
+                        "InGameMailbox_ClaimAllAttachments", new Dictionary<string, object>());
                     if (this == null) return;
 
                     var rewards = GetAggregatedRewardDetails(result.processedTransactions);

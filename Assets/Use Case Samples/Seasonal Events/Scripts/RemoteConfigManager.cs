@@ -53,7 +53,7 @@ namespace UnityGamingServicesUseCases
                 activeEventEndTime = RemoteConfigService.Instance.appConfig.GetInt("EVENT_END_TIME");
                 activeEventDurationMinutes = RemoteConfigService.Instance.appConfig.GetInt("EVENT_TOTAL_DURATION_MINUTES");
                 activeEventKey = RemoteConfigService.Instance.appConfig.GetString("EVENT_KEY");
-                var challengeRewardsJson = RemoteConfigService.Instance.appConfig.GetJson("CHALLENGE_REWARD");
+                var challengeRewardsJson = RemoteConfigService.Instance.appConfig.GetJson("SEASONAL_EVENTS_CHALLENGE_REWARD");
                 challengeRewards = JsonUtility.FromJson<Rewards>(challengeRewardsJson).rewards;
             }
 

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Unity.Services.CloudCode;
 using UnityEngine;
@@ -57,7 +56,7 @@ namespace UnityGamingServicesUseCases
                 try
                 {
                     var updatedState = await CloudCodeService.Instance.CallEndpointAsync<UpdatedState>(
-                        "CloudAi_GetState",
+                        "CloudAiMiniGame_GetState",
                         new Dictionary<string, object>());
 
                     return updatedState;
@@ -76,7 +75,7 @@ namespace UnityGamingServicesUseCases
                 try
                 {
                     var updatedState = await CloudCodeService.Instance.CallEndpointAsync<UpdatedState>(
-                        "CloudAi_ValidatePlayerMoveAndRespond",
+                        "CloudAiMiniGame_ValidatePlayerMoveAndRespond",
                         new Dictionary<string, object>{{ "coord", coord }});
 
                     return updatedState;
@@ -95,7 +94,7 @@ namespace UnityGamingServicesUseCases
                 try
                 {
                     var updatedState = await CloudCodeService.Instance.CallEndpointAsync<UpdatedState>(
-                        "CloudAi_StartNewGame",
+                        "CloudAiMiniGame_StartNewGame",
                         new Dictionary<string, object>());
 
                     return updatedState;
@@ -200,11 +199,6 @@ namespace UnityGamingServicesUseCases
                                   $"{cloudCodeCustomError.name}: {cloudCodeCustomError.message}");
                         break;
                 }
-            }
-
-            struct CloudCodeExceptionParsedMessage
-            {
-                public string message;
             }
 
             class CloudCodeCustomError : Exception

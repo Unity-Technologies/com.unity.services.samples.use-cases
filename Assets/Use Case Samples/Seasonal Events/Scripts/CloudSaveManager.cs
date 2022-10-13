@@ -12,8 +12,8 @@ namespace UnityGamingServicesUseCases
         {
             public static CloudSaveManager instance { get; private set; }
 
-            const string k_LastCompletedEventKey = "LAST_COMPLETED_EVENT";
-            const string k_LastCompletedEventTimestampKey = "LAST_COMPLETED_EVENT_TIMESTAMP";
+            const string k_LastCompletedEventKey = "SEASONAL_EVENTS_LAST_COMPLETED_EVENT";
+            const string k_LastCompletedEventTimestampKey = "SEASONAL_EVENTS_LAST_COMPLETED_EVENT_TIMESTAMP";
 
             const string k_DefaultCompletedEvent = "";
             DateTime k_DefaultCompletedEventTimestamp = DateTime.MinValue;
@@ -57,6 +57,7 @@ namespace UnityGamingServicesUseCases
                 if (m_CachedCloudData.ContainsKey(k_LastCompletedEventKey))
                 {
                     var eventKey = m_CachedCloudData[k_LastCompletedEventKey];
+
                     // When a string value is saved in Cloud Save, quotes are added around the value.
                     // These quotes don't exist in the value stored in Remote Config which we'll be comparing with, so
                     // we will remove the quotes from the value that we return here. 
@@ -72,7 +73,7 @@ namespace UnityGamingServicesUseCases
                 if (m_CachedCloudData.ContainsKey(k_LastCompletedEventTimestampKey))
                 {
                     var eventTimestampMilliseconds = m_CachedCloudData[k_LastCompletedEventTimestampKey];
-                    
+
                     // The event timestamp is being saved in Cloud Code, which uses lodash's .now() function to get the
                     // timestamp. Lodash calculates milliseconds from the unix epoch (1 January 1970 00:00:00 UTC).
                     // DateTime's default initialization is to 0001-01-01 00:00:00.
@@ -83,6 +84,7 @@ namespace UnityGamingServicesUseCases
 
                 return k_DefaultCompletedEventTimestamp;
             }
+
             void OnDestroy()
             {
                 if (instance == this)

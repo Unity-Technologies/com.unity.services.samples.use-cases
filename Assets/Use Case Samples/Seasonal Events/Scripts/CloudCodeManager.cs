@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Unity.Services.CloudCode;
 using UnityEngine;
@@ -210,11 +209,6 @@ namespace UnityGamingServicesUseCases
                     return $"Updated Balances:{string.Join(",", grantedRewards.Select(reward => reward.ToString()).ToArray())}, " +
                         $"Season:{eventKey}, Timestamp:{timestamp} (minutes:{timestampMinutes})";
                 }
-            }
-
-            struct CloudCodeExceptionParsedMessage
-            {
-                public string message;
             }
 
             class CloudCodeCustomError : Exception

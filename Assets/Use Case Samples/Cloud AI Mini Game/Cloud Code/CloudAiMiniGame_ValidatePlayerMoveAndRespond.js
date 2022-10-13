@@ -21,7 +21,7 @@ module.exports = async ({ params, context, logger }) => {
     logger.info("Script parameters: " + JSON.stringify(params));
     logger.info("Authenticated within the following context: " + JSON.stringify(context));
 
-    const { projectId, playerId, accessToken} = context;
+    const { projectId, playerId, accessToken } = context;
     const cloudSaveApi = new DataApi({ accessToken });
     const economyCurrencyApi = new CurrenciesApi({ accessToken });
 
@@ -88,7 +88,7 @@ module.exports = async ({ params, context, logger }) => {
 }
 
 async function readState(services) {
-  const response = await services.cloudSaveApi.getItems(services.projectId, services.playerId, [ "CLOUD_AI_GAME_STATE" ] );
+  const response = await services.cloudSaveApi.getItems(services.projectId, services.playerId, [ "CLOUD_AI_GAME_STATE" ]);
 
   if (response.data.results &&
       response.data.results.length > 0 &&

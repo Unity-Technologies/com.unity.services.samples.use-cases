@@ -238,7 +238,7 @@ MonoBehaviour:
     bodyFormat: 0
     boxCallout: 
     bulletList:
-    - body: A_B_TEST_GROUP
+    - body: AB_TEST_GROUP
       bodyFormat: 1
       bulletList:
       - body: The identifier for which test user group the player is in.
@@ -250,7 +250,7 @@ MonoBehaviour:
       - body: 'Value: ""'
         bodyFormat: 0
         bulletList: []
-    - body: A_B_TEST_ID
+    - body: AB_TEST_ID
       bodyFormat: 1
       bulletList:
       - body: The identifier for which AB Test is actively being run for this user.
@@ -262,7 +262,7 @@ MonoBehaviour:
       - body: 'Value: ""'
         bodyFormat: 0
         bulletList: []
-    - body: LEVEL_UP_XP_NEEDED
+    - body: AB_TEST_LEVEL_UP_XP_NEEDED
       bodyFormat: 1
       bulletList:
       - body: The amount of XP needed in order for the player to level up.
@@ -274,7 +274,7 @@ MonoBehaviour:
       - body: 'Value: 100'
         bodyFormat: 0
         bulletList: []
-    - body: XP_INCREASE
+    - body: AB_TEST_XP_INCREASE
       bodyFormat: 1
       bulletList:
       - body: The amount the player's XP will increase by each time they gain XP.
@@ -307,7 +307,7 @@ MonoBehaviour:
     bodyFormat: 0
     boxCallout: 
     bulletList:
-    - body: Level Difficulty A/B Test
+    - body: A/B Test Level Difficulty
       bodyFormat: 1
       bulletList:
       - body: 'Status: Active'
@@ -328,33 +328,33 @@ MonoBehaviour:
         - body: 'Variant 1 (control group):'
           bodyFormat: 0
           bulletList:
-          - 'LEVEL_UP_XP_NEEDED: 100'
-          - 'A_B_TEST_GROUP: A'
-          - 'A_B_TEST_ID: LevelDifficultyTest1'
+          - 'AB_TEST_LEVEL_UP_XP_NEEDED: 100'
+          - 'AB_TEST_GROUP: A'
+          - 'AB_TEST_ID: LevelDifficultyTest1'
         - body: 'Variant 2:'
           bodyFormat: 0
           bulletList:
-          - 'LEVEL_UP_XP_NEEDED: 80'
-          - 'A_B_TEST_GROUP: B'
-          - 'A_B_TEST_ID: LevelDifficultyTest1'
+          - 'AB_TEST_LEVEL_UP_XP_NEEDED: 80'
+          - 'AB_TEST_GROUP: B'
+          - 'AB_TEST_ID: LevelDifficultyTest1'
         - body: 'Variant 3:'
           bodyFormat: 0
           bulletList:
-          - 'LEVEL_UP_XP_NEEDED: 60'
-          - 'A_B_TEST_GROUP: C'
-          - 'A_B_TEST_ID: LevelDifficultyTest1'
+          - 'AB_TEST_LEVEL_UP_XP_NEEDED: 60'
+          - 'AB_TEST_GROUP: C'
+          - 'AB_TEST_ID: LevelDifficultyTest1'
         - body: 'Variant 4:'
           bodyFormat: 0
           bulletList:
-          - 'LEVEL_UP_XP_NEEDED: 50'
-          - 'A_B_TEST_GROUP: D'
-          - 'A_B_TEST_ID: LevelDifficultyTest1'
+          - 'AB_TEST_LEVEL_UP_XP_NEEDED: 50'
+          - 'AB_TEST_GROUP: D'
+          - 'AB_TEST_ID: LevelDifficultyTest1'
         - body: 'Variant 5:'
           bodyFormat: 0
           bulletList:
-          - 'LEVEL_UP_XP_NEEDED: 30'
-          - 'A_B_TEST_GROUP: E'
-          - 'A_B_TEST_ID: LevelDifficultyTest1'
+          - 'AB_TEST_LEVEL_UP_XP_NEEDED: 30'
+          - 'AB_TEST_GROUP: E'
+          - 'AB_TEST_ID: LevelDifficultyTest1'
     linkList: []
   - subHeader1: 
     subHeader2: Cloud Code Scripts
@@ -363,13 +363,13 @@ MonoBehaviour:
     bodyFormat: 0
     boxCallout: 
     bulletList:
-    - body: 'ABTest_GainXPAndLevelIfReady:'
+    - body: 'ABTestLevelDifficulty_GainXPAndLevelIfReady:'
       bodyFormat: 1
       bulletList:
       - body: 'Parameters: `none`'
         bodyFormat: 0
         bulletList: []
-      - body: 'Script: "Assets/Use Case Samples/AB Test Level Difficulty/Cloud Code/ABTest_GainXPAndLevelIfReady.js"'
+      - body: 'Script: "Assets/Use Case Samples/AB Test Level Difficulty/Cloud Code/ABTestLevelDifficulty_GainXPAndLevelIfReady.js"'
         bodyFormat: 0
         bulletList: []
     linkList: []

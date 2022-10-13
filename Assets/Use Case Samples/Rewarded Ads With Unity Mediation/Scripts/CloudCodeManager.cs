@@ -181,15 +181,10 @@ namespace UnityGamingServicesUseCases
                 }
             }
 
-            struct GrantLevelEndRewardsResult
+            public struct GrantLevelEndRewardsResult
             {
                 public string rewardCurrencyId;
                 public int rewardCurrencyBalance;
-            }
-
-            struct CloudCodeExceptionParsedMessage
-            {
-                public string message;
             }
 
             class CloudCodeCustomError : Exception

@@ -9,7 +9,7 @@ const tooManyRequestsError = 429;
 
 module.exports = async ({ params, context, logger }) => {
   try {
-    const { projectId, playerId, accessToken} = context;
+    const { projectId, playerId, accessToken } = context;
     const economyCurrencyAPI = new CurrenciesApi({ accessToken });
 
     let currencyIds = ["COIN", "GEM", "PEARL", "STAR"];

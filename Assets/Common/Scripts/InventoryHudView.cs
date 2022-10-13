@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Unity.Services.Economy.Model;
 using UnityEngine;
 
@@ -9,16 +10,16 @@ namespace UnityGamingServicesUseCases
         public Transform itemListParentTransform;
 
 
-        public void Refresh(GetInventoryResult inventory)
+        public void Refresh(List<PlayersInventoryItem> playersInventoryItems)
         {
             // Check that scene has not been unloaded while processing async wait to prevent throw.
             if (inventoryItemPrefab == null || itemListParentTransform == null) return;
 
             RemoveAll();
 
-            if (inventory?.PlayersInventoryItems is null) return;
+            if (playersInventoryItems is null) return;
 
-            foreach (var item in inventory.PlayersInventoryItems)
+            foreach (var item in playersInventoryItems)
             {
                 var newInventoryItemGameObject = Instantiate(inventoryItemPrefab, itemListParentTransform);
                 var inventoryItemView = newInventoryItemGameObject.GetComponent<InventoryItemView>();
@@ -26,7 +27,7 @@ namespace UnityGamingServicesUseCases
             }
 
             Debug.Log("Inventory items retrieved and updated. Total inventory item count: " +
-                $"{inventory.PlayersInventoryItems.Count}");
+                $"{playersInventoryItems.Count}");
         }
 
         void RemoveAll()

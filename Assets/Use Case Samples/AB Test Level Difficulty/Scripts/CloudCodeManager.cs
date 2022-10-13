@@ -45,7 +45,7 @@ namespace UnityGamingServicesUseCases
                 try
                 {
                     var gainXPAndLevelResults = await CloudCodeService.Instance.CallEndpointAsync<GainXPAndLevelResult>(
-                        "ABTest_GainXPAndLevelIfReady",
+                        "ABTestLevelDifficulty_GainXPAndLevelIfReady",
                         new Dictionary<string, object>());
 
                     // Check that scene has not been unloaded while processing async wait to prevent throw.
@@ -196,11 +196,6 @@ namespace UnityGamingServicesUseCases
                 public int playerXPUpdateAmount;
                 public bool didLevelUp;
                 public LevelUpRewards levelUpRewards;
-            }
-
-            struct CloudCodeExceptionParsedMessage
-            {
-                public string message;
             }
 
             class CloudCodeCustomError : Exception

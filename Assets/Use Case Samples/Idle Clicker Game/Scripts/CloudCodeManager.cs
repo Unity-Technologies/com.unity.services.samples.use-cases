@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Unity.Services.CloudCode;
 using UnityEngine;
@@ -22,8 +21,15 @@ namespace UnityGamingServicesUseCases
 
             // Custom status codes
             const int k_UnexpectedFormatCustomStatusCode = int.MinValue;
-            const int k_SpaceOccupiedScriptStatusCode = 2;
-            const int k_VirtualPurchaseFailedStatusCode = 3;
+            const int k_CloudSaveStateMissingCode = 2;
+            const int k_SpaceOccupiedScriptStatusCode = 3;
+            const int k_VirtualPurchaseFailedStatusCode = 4;
+            const int k_WellNotFoundCode = 5;
+            const int k_InvalidDragCode = 6;
+            const int k_WellsDifferentLevelCode = 7;
+            const int k_MaxLevelCode = 8;
+            const int k_InvalidLocationCode = 9;
+            const int k_WellLevelLockedCode = 10;
 
             // Unity Gaming Services status codes via Cloud Code
             const int k_EconomyPurchaseCostsNotMetStatusCode = 10504;
@@ -55,11 +61,11 @@ namespace UnityGamingServicesUseCases
                 }
             }
 
-            public async Task<UpdatedState> CallGetUpdatedStateEndpoint()
+            public async Task<IdleClickerResult> CallGetUpdatedStateEndpoint()
             {
                 try
                 {
-                    var updatedState = await CloudCodeService.Instance.CallEndpointAsync<UpdatedState>(
+                    var updatedState = await CloudCodeService.Instance.CallEndpointAsync<IdleClickerResult>(
                         "IdleClicker_GetUpdatedState",
                         new Dictionary<string, object>());
 
@@ -73,21 +79,80 @@ namespace UnityGamingServicesUseCases
                 }
             }
 
-            public async Task<PlacePieceResult> CallPlaceWellEndpoint(Vector2 coord)
+            public async Task<IdleClickerResult> CallPlaceWellEndpoint(Vector2 coord)
             {
                 try
                 {
-                    var placePieceResult = await CloudCodeService.Instance.CallEndpointAsync<PlacePieceResult>(
+                    var updatedState = await CloudCodeService.Instance.CallEndpointAsync<IdleClickerResult>(
                         "IdleClicker_PlaceWell",
-                        new Dictionary<string, object> {{ "coord", new Coord { x = (int)coord.x, y = (int)coord.y } }});
+                        new Dictionary<string, object> {
+                            { "coord", new Coord { x = (int)coord.x, y = (int)coord.y }}
+                        });
 
-                    return placePieceResult;
+                    return updatedState;
                 }
                 catch (CloudCodeException e)
                 {
                     HandleCloudCodeException(e);
                     throw new CloudCodeResultUnavailableException(e,
                         "Handled exception in CallPlaceWellEndpoint.");
+                }
+            }
+
+            public async Task<IdleClickerResult> CallMergeWellsEndpoint(Vector2 drag, Vector2 drop)
+            {
+                try
+                {
+                    var updatedState = await CloudCodeService.Instance.CallEndpointAsync<IdleClickerResult>(
+                        "IdleClicker_MergeWells",
+                        new Dictionary<string, object> {
+                            { "drag", new Coord { x = (int)drag.x, y = (int)drag.y }},
+                            { "drop", new Coord { x = (int)drop.x, y = (int)drop.y }}
+                        });
+
+                    return updatedState;
+                }
+                catch (CloudCodeException e)
+                {
+                    HandleCloudCodeException(e);
+                    throw new CloudCodeResultUnavailableException(e,
+                        "Handled exception in CallMergeWellsEndpoint.");
+                }
+            }
+
+            public async Task<IdleClickerResult> CallMoveWellEndpoint(Vector2 drag, Vector2 drop)
+            {
+                try
+                {
+                    var updatedState = await CloudCodeService.Instance.CallEndpointAsync<IdleClickerResult>(
+                        "IdleClicker_MoveWell",
+                        new Dictionary<string, object> {
+                            { "drag", new Coord { x = (int)drag.x, y = (int)drag.y }},
+                            { "drop", new Coord { x = (int)drop.x, y = (int)drop.y }}
+                        });
+
+                    return updatedState;
+                }
+                catch (CloudCodeException e)
+                {
+                    HandleCloudCodeException(e);
+                    throw new CloudCodeResultUnavailableException(e,
+                        "Handled exception in CallMoveWellEndpoint.");
+                }
+            }
+
+            public async Task CallResetEndpoint()
+            {
+                try
+                {
+                    await CloudCodeService.Instance.CallEndpointAsync(
+                        "IdleClicker_Reset", new Dictionary<string, object>());
+                }
+                catch (CloudCodeException e)
+                {
+                    HandleCloudCodeException(e);
+                    throw new CloudCodeResultUnavailableException(e,
+                        "Handled exception in CallMoveWellEndpoint.");
                 }
             }
 
@@ -148,20 +213,47 @@ namespace UnityGamingServicesUseCases
             {
                 switch (cloudCodeCustomError.status)
                 {
+                    case k_CloudSaveStateMissingCode:
+                        sceneView.ShowCloudSaveMissingPopup();
+                        break;
+
                     case k_SpaceOccupiedScriptStatusCode:
                         sceneView.ShowSpaceOccupiedErrorPopup();
                         break;
 
-                    case k_EconomyValidationExceptionStatusCode:
-                    case k_HttpBadRequestStatusCode:
-                        Debug.Log("A bad server request occurred during Cloud Code script execution: " + 
-                                  $"{cloudCodeCustomError.name}: {cloudCodeCustomError.message} : " +
-                                  $"{cloudCodeCustomError.details[0]}");
+                    case k_VirtualPurchaseFailedStatusCode:
+                        sceneView.ShowVirtualPurchaseFailedErrorPopup();
                         break;
 
-                    case k_VirtualPurchaseFailedStatusCode:
-                        Debug.Log($"The purchase could not be completed: {cloudCodeCustomError.name}: " +
-                                  $"{cloudCodeCustomError.message}");
+                    case k_WellNotFoundCode:
+                        sceneView.ShowWellNotFoundPopup();
+                        break;
+
+                    case k_InvalidDragCode:
+                        sceneView.ShowInvalidDragPopup();
+                        break;
+
+                    case k_WellsDifferentLevelCode:
+                        sceneView.ShowWellsDifferentLevelPopup();
+                        break;
+
+                    case k_MaxLevelCode:
+                        sceneView.ShowMaxLevelPopup();
+                        break;
+
+                    case k_InvalidLocationCode:
+                        sceneView.ShowInvalidLocationPopup();
+                        break;
+
+                    case k_WellLevelLockedCode:
+                        sceneView.ShowWellLockedPopup();
+                        break;
+
+                    case k_EconomyValidationExceptionStatusCode:
+                    case k_HttpBadRequestStatusCode:
+                        Debug.Log("A bad server request occurred during Cloud Code script execution: " +
+                                  $"{cloudCodeCustomError.name}: {cloudCodeCustomError.message} : " +
+                                  $"{cloudCodeCustomError.details[0]}");
                         break;
 
                     case k_EconomyPurchaseCostsNotMetStatusCode:
@@ -192,11 +284,6 @@ namespace UnityGamingServicesUseCases
                 }
             }
 
-            struct CloudCodeExceptionParsedMessage
-            {
-                public string message;
-            }
-
             class CloudCodeCustomError : Exception
             {
                 public int status;
@@ -205,7 +292,7 @@ namespace UnityGamingServicesUseCases
                 public string retryAfter;
                 public string[] details;
 
-                public CloudCodeCustomError(string name, int status, string message = null, 
+                public CloudCodeCustomError(string name, int status, string message = null,
                     Exception innerException = null) : base(message, innerException)
                 {
                     this.name = name;

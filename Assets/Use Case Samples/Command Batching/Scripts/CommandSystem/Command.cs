@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace UnityGamingServicesUseCases
 {
@@ -24,11 +25,16 @@ namespace UnityGamingServicesUseCases
                         case "cloudSave":
                             switch (reward.id)
                             {
-                                case "COMMANDBATCH_XP":
+                                case CloudSaveManager.xpKey:
                                     GameStateManager.instance.xp += reward.amount;
                                     break;
-                                case "COMMANDBATCH_GOALSACHIEVED":
+
+                                case CloudSaveManager.goalsAchievedKey:
                                     GameStateManager.instance.goalsAchieved += reward.amount;
+                                    break;
+
+                                default:
+                                    Debug.Log($"No local disbursement action exists for the reward {reward.id}");
                                     break;
                             }
                             break;

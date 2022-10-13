@@ -279,7 +279,7 @@ MonoBehaviour:
       - body: 'Description: An item you can purchase in the virtual shop.'
         bodyFormat: 0
         bulletList: []
-      - body: 'Custom data: {"spriteAddress": "Sprites/Currency/Sword"}'
+      - body: 'Custom data: {"spriteAddress": "Sprites/Inventory/Sword"}'
         bodyFormat: 0
         bulletList: []
       linkList: []
@@ -295,7 +295,7 @@ MonoBehaviour:
       - body: 'Description: An item you can purchase in the virtual shop.'
         bodyFormat: 0
         bulletList: []
-      - body: 'Custom data: {"spriteAddress": "Sprites/Currency/Shield"}'
+      - body: 'Custom data: {"spriteAddress": "Sprites/Inventory/Shield"}'
         bodyFormat: 0
         bulletList: []
       linkList: []
@@ -351,7 +351,7 @@ MonoBehaviour:
     - body: 1 Sword for Coins
       bodyFormat: 1
       bulletList:
-      - body: 'ID: "1_SWORD_FOR_COINS"'
+      - body: 'ID: "VIRTUAL_SHOP_1_SWORD_FOR_COINS"'
         bodyFormat: 0
         bulletList: []
       - body: This purchase buys 1 Sword.
@@ -364,7 +364,7 @@ MonoBehaviour:
     - body: 2 Sword for Coins
       bodyFormat: 1
       bulletList:
-      - body: 'ID: "2_SWORD_FOR_COINS"'
+      - body: 'ID: "VIRTUAL_SHOP_2_SWORD_FOR_COINS"'
         bodyFormat: 0
         bulletList: []
       - body: This purchase buys 2 Swords.
@@ -377,7 +377,7 @@ MonoBehaviour:
     - body: 3 Sword for Coins
       bodyFormat: 1
       bulletList:
-      - body: 'ID: "3_SWORD_FOR_COINS"'
+      - body: 'ID: "VIRTUAL_SHOP_3_SWORD_FOR_COINS"'
         bodyFormat: 0
         bulletList: []
       - body: This purchase buys 3 Swords.
@@ -390,7 +390,7 @@ MonoBehaviour:
     - body: 1 Shield for Coins
       bodyFormat: 1
       bulletList:
-      - body: 'ID: "1_SHIELD_FOR_COINS"'
+      - body: 'ID: "VIRTUAL_SHOP_1_SHIELD_FOR_COINS"'
         bodyFormat: 0
         bulletList: []
       - body: This purchase buys 1 Shield.
@@ -403,7 +403,7 @@ MonoBehaviour:
     - body: 2 Shield for Coins
       bodyFormat: 1
       bulletList:
-      - body: 'ID: "2_SHIELD_FOR_COINS"'
+      - body: 'ID: "VIRTUAL_SHOP_2_SHIELD_FOR_COINS"'
         bodyFormat: 0
         bulletList: []
       - body: This purchase buys 2 Shields.
@@ -416,7 +416,7 @@ MonoBehaviour:
     - body: 3 Shield for Coins
       bodyFormat: 1
       bulletList:
-      - body: 'ID: "3_SHIELD_FOR_COINS"'
+      - body: 'ID: "VIRTUAL_SHOP_3_SHIELD_FOR_COINS"'
         bodyFormat: 0
         bulletList: []
       - body: This purchase buys 3 Shields.
@@ -429,7 +429,7 @@ MonoBehaviour:
     - body: 100 Coin for Gems
       bodyFormat: 1
       bulletList:
-      - body: 'ID: "100_COIN_FOR_GEMS"'
+      - body: 'ID: "VIRTUAL_SHOP_100_COIN_FOR_GEMS"'
         bodyFormat: 0
         bulletList: []
       - body: This purchase buys 100 Coins.
@@ -442,7 +442,7 @@ MonoBehaviour:
     - body: 250 Coin for Gems
       bodyFormat: 1
       bulletList:
-      - body: 'ID: "250_COIN_FOR_GEMS"'
+      - body: 'ID: "VIRTUAL_SHOP_250_COIN_FOR_GEMS"'
         bodyFormat: 0
         bulletList: []
       - body: This purchase buys 250 Coins.
@@ -455,7 +455,7 @@ MonoBehaviour:
     - body: 1000 Coin for Gems
       bodyFormat: 1
       bulletList:
-      - body: 'ID: "1000_COIN_FOR_GEMS"'
+      - body: 'ID: "VIRTUAL_SHOP_1000_COIN_FOR_GEMS"'
         bodyFormat: 0
         bulletList: []
       - body: This purchase buys 1000 Coins.
@@ -468,7 +468,7 @@ MonoBehaviour:
     - body: 1 Star for Coins
       bodyFormat: 1
       bulletList:
-      - body: 'ID: "1_STAR_FOR_COINS"'
+      - body: 'ID: "VIRTUAL_SHOP_1_STAR_FOR_COINS"'
         bodyFormat: 0
         bulletList: []
       - body: This purchase buys 1 Star.
@@ -481,7 +481,7 @@ MonoBehaviour:
     - body: 3 Pearl for Coins
       bodyFormat: 1
       bulletList:
-      - body: 'ID: "3_PEARL_FOR_COINS"'
+      - body: 'ID: "VIRTUAL_SHOP_3_PEARL_FOR_COINS"'
         bodyFormat: 0
         bulletList: []
       - body: This purchase buys 3 Pearls.

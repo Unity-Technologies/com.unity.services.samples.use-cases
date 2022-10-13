@@ -83,8 +83,8 @@ To replicate this sample scene's setup on your own dashboard, you need to:
 | Currency | Gem | `GEM` | `{"spriteAddress": "Sprites/Currency/Gem"}` | A currency you can spend in the virtual shop. |
 | Currency | Pearl | `PEARL` | `{"spriteAddress": "Sprites/Currency/Pearl"}` | A currency you can purchase in the virtual shop. |
 | Currency | Star | `STAR` | `{"spriteAddress": "Sprites/Currency/Star"}` | A currency you can purchase in the virtual shop. |
-| Inventory Item | Sword | `SWORD` | `{"spriteAddress": "Sprites/Currency/Sword"}` | An item you can purchase in the virtual shop. |
-| Inventory Item | Shield | `SHIELD` | `{"spriteAddress": "Sprites/Currency/Shield"}` | An item you can purchase in the virtual shop. |
+| Inventory Item | Sword | `SWORD` | `{"spriteAddress": "Sprites/Inventory/Sword"}` | An item you can purchase in the virtual shop. |
+| Inventory Item | Shield | `SHIELD` | `{"spriteAddress": "Sprites/Inventory/Shield"}` | An item you can purchase in the virtual shop. |
 
 \* This sample uses Addressable Assets to implement the sprite icons for all Economy resources. As the developer, you can add the Addressables address of the icon for each currency directly in the Economy dashboard, and then retrieve it at runtime without needing to change your code. This is helpful if for example, you want to update currency icons by changing the address in your dashboard instead of updating your app. To do this for each resource:
 
@@ -96,26 +96,26 @@ When the client needs to initialize sprites (for example, to display the costs a
 
 In addition, [configure the following virtual purchases](https://docs.unity.com/economy/item-types.html#Virtual_purchase) for the virtual shop:
 
-| **Item name** | **ID** | **This purchase buys** | **This purchase costs** |
-| :------------ | :----- | :--------------------- | :---------------------- |
-| 1 Sword for Coins | `1_SWORD_FOR_COINS` | Sword (1) | Coins (15) |
-| 2 Sword for Coins | `2_SWORD_FOR_COINS` | Sword (2) | Coins (25) |
-| 3 Sword for Coins | `3_SWORD_FOR_COINS` | Sword (3) | Coins (30) |
-| 1 Shield for Coins | `1_SHIELD_FOR_COINS` | Shield (1) | Coins (10) |
-| 2 Shield for Coins | `2_SHIELD_FOR_COINS` | Shield (2) | Coins (15) |
-| 3 Shield for Coins | `3_SHIELD_FOR_COINS` | Shield (3) | Coins (20) |
-| 100 Coin for Gems | `100_COIN_FOR_GEMS` | Coin (100) | Gem (7) |
-| 250 Coin for Gems | `250_COIN_FOR_GEMS` | Coin (250) | Gem (15) |
-| 1000 Coin for Gems | `1000_COIN_FOR_GEMS` | Coin (1000) | Gem (25) |
-| 1 Star for Coins | `1_STAR_FOR_COINS` | Star (1) | Coin (25) |
-| 3 Pearl for Coins | `3_PEARL_FOR_COINS` | Pearl (3) | Coin (50) |
+| **Item name**      | **ID**                            | **This purchase buys**  | **This purchase costs** |
+| :----------------- | :-------------------------------- | :---------------------- | :---------------------- |
+| 1 Sword for Coins  | `VIRTUAL_SHOP_1_SWORD_FOR_COINS`  | Sword (1)               | Coins (15)              |
+| 2 Sword for Coins  | `VIRTUAL_SHOP_2_SWORD_FOR_COINS`  | Sword (2)               | Coins (25)              |
+| 3 Sword for Coins  | `VIRTUAL_SHOP_3_SWORD_FOR_COINS`  | Sword (3)               | Coins (30)              |
+| 1 Shield for Coins | `VIRTUAL_SHOP_1_SHIELD_FOR_COINS` | Shield (1)              | Coins (10)              |
+| 2 Shield for Coins | `VIRTUAL_SHOP_2_SHIELD_FOR_COINS` | Shield (2)              | Coins (15)              |
+| 3 Shield for Coins | `VIRTUAL_SHOP_3_SHIELD_FOR_COINS` | Shield (3)              | Coins (20)              |
+| 100 Coin for Gems  | `VIRTUAL_SHOP_100_COIN_FOR_GEMS`  | Coin (100)              | Gem (7)                 |
+| 250 Coin for Gems  | `VIRTUAL_SHOP_250_COIN_FOR_GEMS`  | Coin (250)              | Gem (15)                |
+| 1000 Coin for Gems | `VIRTUAL_SHOP_1000_COIN_FOR_GEMS` | Coin (1000)             | Gem (25)                |
+| 1 Star for Coins   | `VIRTUAL_SHOP_1_STAR_FOR_COINS`   | Star (1)                | Coin (25)               |
+| 3 Pearl for Coins  | `VIRTUAL_SHOP_3_PEARL_FOR_COINS`  | Pearl (3)               | Coin (50)               |
 
 #### Remote Config
 [Set up the following config values](https://docs.unity.com/remote-config/HowDoesRemoteConfigWork.html) in the **LiveOps** dashboard:
 
-| **Key** | **Type** | **Description** |
-| :------ | :------- | :-------------- |
-| `VIRTUAL_SHOP_CONFIG` | JSON | Contains information about Virtual Purchases and where they should appear in the virtual shop. |
+| **Key**               | **Type** | **Description**                                                                                |
+| :-------------------- | :------- | :--------------------------------------------------------------------------------------------- |
+| `VIRTUAL_SHOP_CONFIG` | JSON     | Contains information about Virtual Purchases and where they should appear in the virtual shop. |
 
 Enter the following JSON data for the `VIRTUAL_SHOP_CONFIG` key:
 
@@ -125,25 +125,25 @@ Enter the following JSON data for the `VIRTUAL_SHOP_CONFIG` key:
         "id": "Items",
         "enabledFlag": true,
         "items": [{
-            "id": "1_SWORD_FOR_COINS"
+            "id": "VIRTUAL_SHOP_1_SWORD_FOR_COINS"
         }, {
-            "id": "2_SWORD_FOR_COINS",
+            "id": "VIRTUAL_SHOP_2_SWORD_FOR_COINS",
             "color": "#FFFFFFFF",
             "badgeIconAddress": ""
         }, {
-            "id": "3_SWORD_FOR_COINS",
+            "id": "VIRTUAL_SHOP_3_SWORD_FOR_COINS",
             "color": "#FFFFFFFF",
             "badgeIconAddress": ""
         }, {
-            "id": "1_SHIELD_FOR_COINS",
+            "id": "VIRTUAL_SHOP_1_SHIELD_FOR_COINS",
             "color": "#FFFFFFFF",
             "badgeIconAddress": ""
         }, {
-            "id": "2_SHIELD_FOR_COINS",
+            "id": "VIRTUAL_SHOP_2_SHIELD_FOR_COINS",
             "color": "#FFFFFFFF",
             "badgeIconAddress": ""
         }, {
-            "id": "3_SHIELD_FOR_COINS",
+            "id": "VIRTUAL_SHOP_3_SHIELD_FOR_COINS",
             "color": "#FFFFFFFF",
             "badgeIconAddress": "Sprites/Badges/Banner",
             "badgeColor": "#FF0000FF",
@@ -154,26 +154,26 @@ Enter the following JSON data for the `VIRTUAL_SHOP_CONFIG` key:
         "id": "Currencies",
         "enabledFlag": true,
         "items": [{
-            "id": "100_COIN_FOR_GEMS",
+            "id": "VIRTUAL_SHOP_100_COIN_FOR_GEMS",
             "color": "#FFFFFFFF",
             "badgeIconAddress": ""
         }, {
-            "id": "250_COIN_FOR_GEMS",
+            "id": "VIRTUAL_SHOP_250_COIN_FOR_GEMS",
             "color": "#FFFFFFFF",
             "badgeIconAddress": ""
         }, {
-            "id": "1000_COIN_FOR_GEMS",
+            "id": "VIRTUAL_SHOP_1000_COIN_FOR_GEMS",
             "color": "#FFFFFFFF",
             "badgeIconAddress": "Sprites/Badges/Banner",
             "badgeColor": "#FF0000FF",
             "badgeText": "Best Value",
             "badgeTextColor": "#FFFFFFFF"
         }, {
-            "id": "1_STAR_FOR_COINS",
+            "id": "VIRTUAL_SHOP_1_STAR_FOR_COINS",
             "color": "#FFFFFFFF",
             "badgeIconAddress": ""
         }, {
-            "id": "3_PEARL_FOR_COINS",
+            "id": "VIRTUAL_SHOP_3_PEARL_FOR_COINS",
             "color": "#FFFFFFFF",
             "badgeIconAddress": ""
         }]

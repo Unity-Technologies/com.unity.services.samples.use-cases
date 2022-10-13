@@ -111,8 +111,8 @@ MonoBehaviour:
     - body: Idle Clicker Game
       bodyFormat: 1
       bulletList:
-      - body: Update server authoritative game state in real time, similar to idle
-          clicker and social games.
+      - body: Update server authoritative game state in real time, similar to idle clicker
+          and social games with a merging mechanic and a generic unlock manager.
         bodyFormat: 0
         bulletList: []
       linkList: []

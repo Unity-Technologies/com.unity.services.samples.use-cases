@@ -16,17 +16,24 @@ const tooManyRequestsError = 429;
 const tierState = { Locked: 0, Unlocked: 1, Claimed: 2 };
 const seasonTierStatesDefault = [ 1, 0, 0, 0, 0, 0, 0, 0, 0, 0 ];
 const playerStateDefault = {
-    seasonXp                     : 0,
-    seasonTierStates             : seasonTierStatesDefault,
-    latestSeasonActivityTimestamp: 0,
-    latestSeasonActivityEventKey : "",
-    battlePassPurchasedTimestamp : 0,
-    battlePassPurchasedEventKey  : "",
+    battlePassSeasonXp                      : 0,
+    battlePassSeasonTierStates              : seasonTierStatesDefault,
+    battlePassLatestSeasonActivityTimestamp : 0,
+    battlePassLatestSeasonActivityEventKey  : "",
+    battlePassPurchasedTimestamp            : 0,
+    battlePassPurchasedSeason               : "",
 }
+
+const cloudSaveKeySeasonXP = "BATTLE_PASS_SEASON_XP";
+const cloudSaveKeySeasonTierStates = "BATTLE_PASS_SEASON_TIER_STATES";
+const cloudSaveKeyLatestSeasonActivityTimestamp = "BATTLE_PASS_LATEST_SEASON_ACTIVITY_TIMESTAMP";
+const cloudSaveKeyLatestSeasonActivityEventKey = "BATTLE_PASS_LATEST_SEASON_ACTIVITY_EVENT_KEY";
+const cloudSaveKeyBattlePassPurchasedTimestamp = "BATTLE_PASS_PURCHASED_TIMESTAMP";
+const cloudSaveKeyBattlePassPurchasedSeason = "BATTLE_PASS_PURCHASED_SEASON";
 
 module.exports = async ({ params, context, logger }) => {
     try {
-        const { projectId, playerId, accessToken } = context;
+        const { projectId, environmentId, playerId, accessToken } = context;
         const cloudSaveApi = new DataApi({ accessToken });
         const remoteConfigApi = new SettingsApi();
         const purchasesApi = new PurchasesApi({ accessToken });
@@ -38,7 +45,7 @@ module.exports = async ({ params, context, logger }) => {
 
         let returnObject = {};
 
-        const remoteConfigData = await getRemoteConfigData(remoteConfigApi, projectId, playerId, timestampMinutes);
+        const remoteConfigData = await getRemoteConfigData(remoteConfigApi, projectId, environmentId, playerId, timestampMinutes);
         let playerState = await getCloudSaveData(cloudSaveApi, projectId, playerId);
 
         if (shouldResetBattlePassProgress(remoteConfigData, playerState, timestamp)) {
@@ -50,7 +57,7 @@ module.exports = async ({ params, context, logger }) => {
         returnObject.grantedRewards = await grantPastClaimedBattlePassRewards(
             projectId, playerId, economyCurrencyApi, economyInventoryApi, remoteConfigData, playerState);
 
-        returnObject.seasonTierStates = playerState.seasonTierStates;
+        returnObject.seasonTierStates = playerState.battlePassSeasonTierStates;
 
         await setCloudSaveData(cloudSaveApi, projectId, playerId, remoteConfigData, playerState, timestamp);
 
@@ -66,10 +73,11 @@ function getTimestampMinutes(timestamp) {
     return ("0" + date.getMinutes()).slice(-2);
 }
 
-async function getRemoteConfigData(remoteConfigApi, projectId, playerId, timestampMinutes) {
+async function getRemoteConfigData(remoteConfigApi, projectId, environmentId, playerId, timestampMinutes) {
     // get the current season configuration
     const result = await remoteConfigApi.assignSettings({
         projectId,
+        environmentId, 
         "userId": playerId,
         // associate the current timestamp with the user in Remote Config to affect which season Game Override we get
         "attributes": {
@@ -91,12 +99,12 @@ async function getCloudSaveData(cloudSaveApi, projectId, playerId) {
         projectId,
         playerId,
         [
-            "SEASON_XP",
-            "SEASON_TIER_STATES",
-            "LATEST_SEASON_ACTIVITY_TIMESTAMP",
-            "LATEST_SEASON_ACTIVITY_EVENT_KEY",
-            "BATTLE_PASS_PURCHASED_TIMESTAMP",
-            "BATTLE_PASS_PURCHASED_EVENT_KEY",
+            cloudSaveKeySeasonXP,
+            cloudSaveKeySeasonTierStates,
+            cloudSaveKeyLatestSeasonActivityTimestamp,
+            cloudSaveKeyLatestSeasonActivityEventKey,
+            cloudSaveKeyBattlePassPurchasedTimestamp,
+            cloudSaveKeyBattlePassPurchasedSeason,
         ]
     );
 
@@ -123,13 +131,13 @@ function cloudSaveResponseToObject(getItemsResponse) {
 function shouldResetBattlePassProgress(remoteConfigData, playerState, timestamp) {
     // If the progress object is empty, then it might be the first time this player has ever used this function.
     // Resetting will create a fresh object.
-    if (!playerState.seasonTierStates) {
+    if (!playerState.battlePassSeasonTierStates) {
         return true;
     }
 
     // Because the seasonal events repeat and do not have unique keys for each iteration, we first check whether the
     // current season's key is the same as the key of the season that was active the last time the event was completed.
-    if (remoteConfigData.EVENT_KEY !== playerState.latestSeasonActivityEventKey) {
+    if (remoteConfigData.EVENT_KEY !== playerState.battlePassLatestSeasonActivityEventKey) {
         return true;
     }
 
@@ -145,7 +153,7 @@ function shouldResetBattlePassProgress(remoteConfigData, playerState, timestamp)
     const eventDurationMilliseconds = currentEventDurationMinutes * millisecondsPerMinute;
     const currentSeasonEarliestPotentialStartTimestamp = timestamp - eventDurationMilliseconds;
 
-    if (playerState.latestSeasonActivityTimestamp < currentSeasonEarliestPotentialStartTimestamp) {
+    if (playerState.battlePassLatestSeasonActivityTimestamp < currentSeasonEarliestPotentialStartTimestamp) {
         return true;
     }
 
@@ -153,17 +161,17 @@ function shouldResetBattlePassProgress(remoteConfigData, playerState, timestamp)
 }
 
 async function purchaseBattlePass(purchasesApi, projectId, playerId, remoteConfigData, playerState, timestamp) {
-    if (playerState.battlePassPurchasedEventKey === remoteConfigData.EVENT_KEY) {
+    if (playerState.battlePassPurchasedSeason === remoteConfigData.EVENT_KEY) {
         throw new Error("Cannot purchase Battle Pass because you already own it for the current season.");
     }
 
     try {
-        const playerPurchaseVirtualRequest = { id: "BATTLE_PASS" };
+        const playerPurchaseVirtualRequest = { id: "BATTLE_PASS_PURCHASE" };
         const requestParameters = { projectId, playerId, playerPurchaseVirtualRequest };
         await purchasesApi.makeVirtualPurchase(requestParameters);
 
         playerState.battlePassPurchasedTimestamp = timestamp;
-        playerState.battlePassPurchasedEventKey = remoteConfigData.EVENT_KEY;
+        playerState.battlePassPurchasedSeason = remoteConfigData.EVENT_KEY;
     } catch (e) {
         const message = "Virtual purchase failed";
 
@@ -199,8 +207,8 @@ async function grantPastClaimedBattlePassRewards(
     projectId, playerId, economyCurrencyApi, economyInventoryApi, remoteConfigData, playerState) {
     let returnRewards = [];
 
-    for (let i = 0; i < playerState.seasonTierStates.length; i++) {
-        const tierStateToTest = playerState.seasonTierStates[i];
+    for (let i = 0; i < playerState.battlePassSeasonTierStates.length; i++) {
+        const tierStateToTest = playerState.battlePassSeasonTierStates[i];
 
         if (tierStateToTest !== tierState.Claimed) {
             continue;
@@ -265,12 +273,12 @@ async function setCloudSaveData(cloudSaveApi, projectId, playerId, remoteConfigD
         playerId,
         {
             data: [
-                { key: "SEASON_XP", value: playerState.seasonXp },
-                { key: "SEASON_TIER_STATES", value: playerState.seasonTierStates },
-                { key: "LATEST_SEASON_ACTIVITY_TIMESTAMP", value: timestamp },
-                { key: "LATEST_SEASON_ACTIVITY_EVENT_KEY", value: remoteConfigData.EVENT_KEY },
-                { key: "BATTLE_PASS_PURCHASED_TIMESTAMP", value: playerState.battlePassPurchasedTimestamp },
-                { key: "BATTLE_PASS_PURCHASED_EVENT_KEY", value: playerState.battlePassPurchasedEventKey },
+                { key: cloudSaveKeySeasonXP, value: playerState.battlePassSeasonXp },
+                { key: cloudSaveKeySeasonTierStates, value: playerState.battlePassSeasonTierStates },
+                { key: cloudSaveKeyLatestSeasonActivityTimestamp, value: timestamp },
+                { key: cloudSaveKeyLatestSeasonActivityEventKey, value: remoteConfigData.EVENT_KEY },
+                { key: cloudSaveKeyBattlePassPurchasedTimestamp, value: playerState.battlePassPurchasedTimestamp },
+                { key: cloudSaveKeyBattlePassPurchasedSeason, value: playerState.battlePassPurchasedSeason },
             ]
         }
     );

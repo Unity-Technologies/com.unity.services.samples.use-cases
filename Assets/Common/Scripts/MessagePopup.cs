@@ -15,7 +15,7 @@ namespace UnityGamingServicesUseCases
 
         public void Show(string title, string message)
         {
-            titleField.text = "  " + title;
+            titleField.text = title;
             messageField.text = message;
             Show();
         }

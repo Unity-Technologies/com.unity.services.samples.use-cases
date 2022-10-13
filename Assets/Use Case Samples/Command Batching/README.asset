@@ -328,7 +328,7 @@ MonoBehaviour:
     bodyFormat: 0
     boxCallout: 
     bulletList:
-    - body: 'CommandBatch_ProcessBatch:'
+    - body: 'CommandBatching_ProcessBatch:'
       bodyFormat: 1
       bulletList:
       - body: 'Parameters:'
@@ -341,7 +341,7 @@ MonoBehaviour:
           - 'i.e. ''{"commands": ["COMMANDBATCH_DEFEAT_RED_ENEMY", "COMMANDBATCH_OPEN_CHEST",
             "COMMANDBATCH_ACHIEVE_BONUS_GOAL", "COMMANDBATCH_DEFEAT_BLUE_ENEMY",
             "COMMANDBATCH_OPEN_CHEST", "COMMANDBATCH_ACHIEVE_BONUS_GOAL", "COMMANDBATCH_GAME_OVER"]}'''
-      - body: 'Script: "Assets/Use Case Samples/Command Batching/Cloud Code/CommandBatch_ProcessBatch.js"'
+      - body: 'Script: "Assets/Use Case Samples/Command Batching/Cloud Code/CommandBatching_ProcessBatch.js"'
         bodyFormat: 0
         bulletList: []
       linkList: []

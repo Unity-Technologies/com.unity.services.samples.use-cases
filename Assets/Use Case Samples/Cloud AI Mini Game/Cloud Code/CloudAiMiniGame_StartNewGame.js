@@ -10,13 +10,11 @@ const badRequestError = 400;
 const tooManyRequestsError = 429;
 
 const playfieldSize = 3;
-const currencyId = "COIN";
-const initialQuantity = 0;
 
 // Entry point for the Cloud Code script 
 module.exports = async ({ params, context, logger }) => {
   try {
-    const { projectId, playerId, accessToken} = context;
+    const { projectId, playerId, accessToken } = context;
     const cloudSaveApi = new DataApi({ accessToken });
     const economyCurrencyApi = new CurrenciesApi({ accessToken });
 
@@ -26,20 +24,21 @@ module.exports = async ({ params, context, logger }) => {
 
     let gameState = await readState(services);
 
+    // If save state is found (normal condition) then remember this isn't a new game/move to avoid duplicate popups.
     if (gameState) {
-      gameState.isNewMove = false;
-      gameState.isNewGame = false;
-
       logger.info("read start state: " + JSON.stringify(gameState));
+
+      if (!gameState.isGameOver) {
+        gameState.lossCount += 1;
+        logger.info("player forfeited; updated state: " + JSON.stringify(gameState));
+      }
     } else {
-      gameState = createInitialPlayerProgressState(services);
-
-      startRandomGame(services, gameState);
-
-      await setInitialCurrency(services, gameState);
-
+      // DASHBOARD TESTING CODE: If the starting state is not found (only occurs in dashboard) then setup dummy state. 
+      gameState = { winCount:0, lossCount:0, tieCount:0};
       logger.info("created starting state: " + JSON.stringify(gameState));
     }
+
+    startRandomGame(services, gameState);
 
     await saveState(services, gameState);
 
@@ -50,7 +49,7 @@ module.exports = async ({ params, context, logger }) => {
 }
 
 async function readState(services) {
-  const response = await services.cloudSaveApi.getItems(services.projectId, services.playerId, [ "CLOUD_AI_GAME_STATE" ] );
+  const response = await services.cloudSaveApi.getItems(services.projectId, services.playerId, [ "CLOUD_AI_GAME_STATE" ]);
 
   if (response.data.results &&
       response.data.results.length > 0 &&
@@ -62,10 +61,6 @@ async function readState(services) {
   return null;
 }
 
-function createInitialPlayerProgressState(services) {
-  return { winCount:0, lossCount:0, tieCount:0 };
-}
-
 function startRandomGame(services, gameState) {
   gameState.playerPieces = [];
   gameState.aiPieces = [];
@@ -75,19 +70,11 @@ function startRandomGame(services, gameState) {
   gameState.isGameOver = false;
   gameState.status = "playing";
 
-  // Pick first player at random. If it's the AI then place the first move in random space.
-  // Note: the fact that isNewGame is true and gameState.aiPieces contains an entry is used by client to detect that AI was player 1.
   if (_.random(1)) {
-    let x = _.random(playfieldSize - 1);
-    let y = _.random(playfieldSize - 1);
+    const x = _.random(playfieldSize - 1);
+    const y = _.random(playfieldSize - 1);
     gameState.aiPieces = [{x,y}];
   }
-}
-
-async function setInitialCurrency(services, gameState) {
-  const currencyBalanceRequest = { currencyId, balance:initialQuantity };
-  const requestParameters = { projectId: services.projectId, playerId: services.playerId, currencyId, currencyBalanceRequest };
-  await services.economyCurrencyApi.setPlayerCurrencyBalance(requestParameters);
 }
 
 async function saveState(services, gameState) {

@@ -108,6 +108,6 @@ To replicate this sample scene's setup on your own dashboard, you need to:
 
 Also, [configure the following Virtual Purchase resource](https://docs.unity.com/economy/) in the **LiveOps** dashboard:
 
-| **Item**     | **ID**         | **Type**          | **Cost** | **Reward**                      |
-|--------------|----------------|-------------------|----------|---------------------------------|
-| Starter Pack | `STARTER_PACK` | Virtual Purchase  | 10 Gems  | 100 Coins + 1 Sword + 10 Pearls |
+| **Item**     | **ID**                  | **Type**          | **Cost** | **Reward**                      |
+|--------------|-------------------------|-------------------|----------|---------------------------------|
+| Starter Pack | `STARTER_PACK_PURCHASE` | Virtual Purchase  | 10 Gems  | 100 Coins + 1 Sword + 10 Pearls |

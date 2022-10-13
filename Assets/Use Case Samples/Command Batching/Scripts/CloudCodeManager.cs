@@ -51,7 +51,7 @@ namespace UnityGamingServicesUseCases
                     Debug.Log("Processing command batch via Cloud Code...");
 
                     await CloudCodeService.Instance.CallEndpointAsync(
-                        "CommandBatch_ProcessBatch",
+                        "CommandBatching_ProcessBatch",
                         new Dictionary<string, object>{{ "commands", commands }});
 
                     Debug.Log("Cloud Code successfully processed batch.");
@@ -168,11 +168,6 @@ namespace UnityGamingServicesUseCases
                 {
                     instance = null;
                 }
-            }
-
-            struct CloudCodeExceptionParsedMessage
-            {
-                public string message;
             }
 
             class CloudCodeCustomError : Exception

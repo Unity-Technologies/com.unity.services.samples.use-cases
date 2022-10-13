@@ -10,7 +10,7 @@ const tooManyRequestsError = 429;
 
 module.exports = async ({ context, logger }) => {
     try {
-        const { projectId, playerId, environmentId, accessToken} = context;
+        const { projectId, playerId, environmentId, accessToken } = context;
         const cloudSave = new DataApi({ accessToken });
 
         const services = { projectId, playerId, environmentId, cloudSave, logger };

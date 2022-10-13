@@ -194,7 +194,7 @@ MonoBehaviour:
       - body: A Virtual Purchase required to process the Starter Pack purchase
         bodyFormat: 0
         bulletList: []
-      - body: 'ID: "STARTER_PACK"'
+      - body: 'ID: "STARTER_PACK_PURCHASE"'
         bodyFormat: 0
         bulletList: []
       - body: 'Cost:'
