@@ -1,12 +1,9 @@
-namespace UnityGamingServicesUseCases
+namespace Unity.Services.Samples.BattlePass
 {
-    namespace BattlePass
+    public class BattlePassState
     {
-        public class BattlePassState
-        {
-            public int seasonXP;
-            public bool ownsBattlePass;
-            public TierState[] tierStates;
-        }
+        public int seasonXP;
+        public bool ownsBattlePass;
+        public TierState[] tierStates;
     }
 }

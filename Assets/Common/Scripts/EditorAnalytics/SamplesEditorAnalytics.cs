@@ -9,12 +9,13 @@
 // the AB Test Level Difficulty sample or the Seasonal Events sample.
 
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
 
-namespace UnityGamingServicesUseCases
+namespace Unity.Services.Samples
 {
     [InitializeOnLoad]
     public static class SamplesEditorAnalytics
@@ -38,6 +39,13 @@ namespace UnityGamingServicesUseCases
             public int sessionLengthSeconds;
         }
 
+        [Serializable]
+        struct ProjectInboxMessageData
+        {
+            public string messageId;
+            public List<string> playerIds;
+        }
+
         const int k_WaitForEnabledMilliseconds = 500;
 
         const int k_MaxEventsPerHour = 3600;
@@ -51,6 +59,10 @@ namespace UnityGamingServicesUseCases
         const int k_ButtonPressedInPlayModeEventVersion = 2;
         const string k_SceneTotalSessionLengthEvent = k_Prefix + "SceneTotalSessionLength";
         const int k_SceneTotalSessionLengthEventVersion = 2;
+        const string k_ProjectInboxMessageReceivedEvent = k_Prefix + "InboxMessageReceived";
+        const int k_ProjectInboxMessageReceivedEventVersion = 2;
+        const string k_ProjectInboxMessageOpenedEvent = k_Prefix + "InboxMessageOpened";
+        const int k_ProjectInboxMessageOpenedEventVersion = 1;        
 
         static string m_CurrentSceneName;
         static DateTime m_CurrentSceneSessionCheckpoint;
@@ -110,6 +122,20 @@ namespace UnityGamingServicesUseCases
                 k_MaxItems,
                 k_VendorKey,
                 k_SceneTotalSessionLengthEventVersion);
+            
+            EditorAnalytics.RegisterEventWithLimit(
+                k_ProjectInboxMessageReceivedEvent,
+                k_MaxEventsPerHour,
+                k_MaxItems,
+                k_VendorKey,
+                k_ProjectInboxMessageReceivedEventVersion);
+            
+            EditorAnalytics.RegisterEventWithLimit(
+                k_ProjectInboxMessageOpenedEvent,
+                k_MaxEventsPerHour,
+                k_MaxItems,
+                k_VendorKey,
+                k_ProjectInboxMessageOpenedEventVersion);
         }
 
         public static void SendButtonPressedInPlayModeEvent(string buttonName)
@@ -118,6 +144,22 @@ namespace UnityGamingServicesUseCases
                 k_ButtonPressedInPlayModeEvent,
                 new PlayModeButtonPressedData { buttonName = buttonName },
                 k_ButtonPressedInPlayModeEventVersion);
+        }
+        
+        public static void SendProjectInboxMessageReceivedEvent(string messageId, List<string> playerIds)
+        {
+            EditorAnalytics.SendEventWithLimit(
+                k_ProjectInboxMessageReceivedEvent,
+                new ProjectInboxMessageData { messageId = messageId, playerIds = playerIds },
+                k_ProjectInboxMessageReceivedEventVersion);
+        }
+        
+        public static void SendProjectInboxMessageOpenedEvent(string messageId, List<string> playerIds)
+        {
+            EditorAnalytics.SendEventWithLimit(
+                k_ProjectInboxMessageOpenedEvent,
+                new ProjectInboxMessageData { messageId = messageId, playerIds = playerIds },
+                k_ProjectInboxMessageOpenedEventVersion);
         }
 
         static void OnSceneLoaded(Scene scene, LoadSceneMode loadSceneMode)

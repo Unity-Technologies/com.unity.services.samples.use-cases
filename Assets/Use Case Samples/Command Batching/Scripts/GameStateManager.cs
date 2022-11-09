@@ -1,73 +1,70 @@
 using UnityEngine;
 
-namespace UnityGamingServicesUseCases
+namespace Unity.Services.Samples.CommandBatching
 {
-    namespace CommandBatching
+    public class GameStateManager : MonoBehaviour
     {
-        public class GameStateManager : MonoBehaviour
+        public static GameStateManager instance { get; private set; }
+
+        public bool isOpenChestValidMove { get; private set; }
+        public bool isAchieveBonusGoalValidMove { get; private set; }
+        public int turnsRemaining = k_TotalTurnCount;
+        public int xp = 0;
+        public int goalsAchieved = 0;
+
+        const int k_TotalTurnCount = 6;
+
+        void Awake()
         {
-            public static GameStateManager instance { get; private set; }
-
-            public bool isOpenChestValidMove { get; private set; }
-            public bool isAchieveBonusGoalValidMove { get; private set; }
-            public int turnsRemaining = k_TotalTurnCount;
-            public int xp = 0;
-            public int goalsAchieved = 0;
-
-            const int k_TotalTurnCount = 6;
-
-            void Awake()
+            if (instance != null && instance != this)
             {
-                if (instance != null && instance != this)
-                {
-                    Destroy(this);
-                }
-                else
-                {
-                    instance = this;
-                }
+                Destroy(this);
             }
-
-            public void SetUpNewGame()
+            else
             {
-                turnsRemaining = k_TotalTurnCount;
-                xp = CloudSaveManager.instance.GetCachedXP();
-                goalsAchieved = CloudSaveManager.instance.GetCachedGoalsAchieved();
+                instance = this;
+            }
+        }
+
+        public void SetUpNewGame()
+        {
+            turnsRemaining = k_TotalTurnCount;
+            xp = CloudSaveManager.instance.GetCachedXP();
+            goalsAchieved = CloudSaveManager.instance.GetCachedGoalsAchieved();
                 
-                SetIsOpenChestValidMove(false);
-                SetIsAchieveBonusGoalValidMove(false);
-            }
+            SetIsOpenChestValidMove(false);
+            SetIsAchieveBonusGoalValidMove(false);
+        }
 
-            public void SetIsOpenChestValidMove(bool valid)
-            {
-                isOpenChestValidMove = valid;
-            }
+        public void SetIsOpenChestValidMove(bool valid)
+        {
+            isOpenChestValidMove = valid;
+        }
 
-            public void SetIsAchieveBonusGoalValidMove(bool valid)
-            {
-                isAchieveBonusGoalValidMove = valid;
-            }
+        public void SetIsAchieveBonusGoalValidMove(bool valid)
+        {
+            isAchieveBonusGoalValidMove = valid;
+        }
             
-            public bool ConsumeTurnIfAnyAvailable()
-            {
-                if (turnsRemaining <= 0)
-                    return false;
+        public bool ConsumeTurnIfAnyAvailable()
+        {
+            if (turnsRemaining <= 0)
+                return false;
 
-                turnsRemaining -= 1;
-                return true;
-            }
+            turnsRemaining -= 1;
+            return true;
+        }
 
-            public bool IsGameOver()
-            {
-                return turnsRemaining <= 0;
-            }
+        public bool IsGameOver()
+        {
+            return turnsRemaining <= 0;
+        }
 
-            void OnDestroy()
+        void OnDestroy()
+        {
+            if (instance == this)
             {
-                if (instance == this)
-                {
-                    instance = null;
-                }
+                instance = null;
             }
         }
     }

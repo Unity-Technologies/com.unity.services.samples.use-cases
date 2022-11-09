@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-namespace UnityGamingServicesUseCases
+namespace Unity.Services.Samples
 {
     public class CurrencyItemView : MonoBehaviour
     {

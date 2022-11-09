@@ -2,43 +2,40 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UnityGamingServicesUseCases
+namespace Unity.Services.Samples.IdleClickerGame
 {
-    namespace IdleClickerGame
+    public class WellUnlockView : MonoBehaviour
     {
-        public class WellUnlockView : MonoBehaviour
+        public string unlockKey;
+        public TextMeshProUGUI wellLockedStatusText;
+        public Slider wellLockedProgressSlider;
+        public GameObject lockedState;
+        public string wellUnlockedText;
+
+        public void ShowStatus()
         {
-            public string unlockKey;
-            public TextMeshProUGUI wellLockedStatusText;
-            public Slider wellLockedProgressSlider;
-            public GameObject lockedState;
-            public string wellUnlockedText;
+            var unlockCountRequired = UnlockManager.unlockCountRequired;
 
-            public void ShowStatus()
+            wellLockedProgressSlider.maxValue = unlockCountRequired;
+            wellLockedProgressSlider.value = unlockCountRequired;
+
+            lockedState.SetActive(false);
+
+            if (!string.IsNullOrEmpty(unlockKey))
             {
-                var unlockCountRequired = UnlockManager.unlockCountRequired;
+                var unlockedCount = UnlockManager.instance.GetUnlockedCount(unlockKey);
 
-                wellLockedProgressSlider.maxValue = unlockCountRequired;
-                wellLockedProgressSlider.value = unlockCountRequired;
-
-                lockedState.SetActive(false);
-
-                if (!string.IsNullOrEmpty(unlockKey))
+                if (unlockedCount < unlockCountRequired)
                 {
-                    var unlockedCount = UnlockManager.instance.GetUnlockedCount(unlockKey);
+                    wellLockedStatusText.text = $"{unlockedCount}/{unlockCountRequired}";
 
-                    if (unlockedCount < unlockCountRequired)
-                    {
-                        wellLockedStatusText.text = $"{unlockedCount}/{unlockCountRequired}";
+                    wellLockedProgressSlider.value = unlockedCount;
 
-                        wellLockedProgressSlider.value = unlockedCount;
-
-                        lockedState.SetActive(true);
-                    }
-                    else
-                    {
-                        wellLockedStatusText.text = wellUnlockedText;
-                    }
+                    lockedState.SetActive(true);
+                }
+                else
+                {
+                    wellLockedStatusText.text = wellUnlockedText;
                 }
             }
         }

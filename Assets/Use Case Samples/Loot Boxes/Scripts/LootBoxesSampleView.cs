@@ -1,19 +1,16 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace UnityGamingServicesUseCases
+namespace Unity.Services.Samples.LootBoxes
 {
-    namespace LootBoxes
+    public class LootBoxesSampleView : MonoBehaviour
     {
-        public class LootBoxesSampleView : MonoBehaviour
+        public Button grantRandomRewardButton;
+
+
+        public void SetInteractable(bool isInteractable = true)
         {
-            public Button grantRandomRewardButton;
-
-
-            public void SetInteractable(bool isInteractable = true)
-            {
-                grantRandomRewardButton.interactable = isInteractable;
-            }
+            grantRandomRewardButton.interactable = isInteractable;
         }
     }
 }

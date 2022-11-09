@@ -5,155 +5,152 @@ using Unity.Services.Core;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UnityGamingServicesUseCases
+namespace Unity.Services.Samples.DailyRewards
 {
-    namespace DailyRewards
+    public class DailyRewardsSceneManager : MonoBehaviour
     {
-        public class DailyRewardsSceneManager : MonoBehaviour
+        public DailyRewardsSampleView sceneView;
+
+        public Button openDailyRewardsButton;
+
+        DailyRewardsEventManager eventManager;
+
+
+        void Awake()
         {
-            public DailyRewardsSampleView sceneView;
+            eventManager = GetComponent<DailyRewardsEventManager>();
+        }
 
-            public Button openDailyRewardsButton;
-
-            DailyRewardsEventManager eventManager;
-
-
-            void Awake()
+        async void Start()
+        {
+            try
             {
-                eventManager = GetComponent<DailyRewardsEventManager>();
+                await UnityServices.InitializeAsync();
+
+                // Check that scene has not been unloaded while processing async wait to prevent throw.
+                if (this == null) return;
+
+                if (!AuthenticationService.Instance.IsSignedIn)
+                {
+                    await AuthenticationService.Instance.SignInAnonymouslyAsync();
+                    if (this == null) return;
+                }
+
+                Debug.Log($"Player id:{AuthenticationService.Instance.PlayerId}");
+
+                // Economy configuration should be refreshed every time the app initializes.
+                // Doing so updates the cached configuration data and initializes for this player any items or
+                // currencies that were recently published.
+                // 
+                // It's important to do this update before making any other calls to the Economy or Remote Config
+                // APIs as both use the cached data list. (Though it wouldn't be necessary to do if only using Remote
+                // Config in your project and not Economy.)
+                await EconomyManager.instance.RefreshEconomyConfiguration();
+                if (this == null) return;
+
+                await Task.WhenAll(
+                    EconomyManager.instance.FetchCurrencySprites(),
+                    EconomyManager.instance.RefreshCurrencyBalances(),
+                    // This method ultimately calls a Cloud Code script that makes Remote Config calls, so must
+                    // happen after RefreshEconomyConfiguration.
+                    eventManager.RefreshDailyRewardsEventStatus()
+                );
+                if (this == null) return;
+
+                Debug.Log("Initialization and signin complete.");
+
+                if (eventManager.isEnded)
+                {
+                    await eventManager.Demonstration_StartNextMonth();
+                    if (this == null) return;
+                }
+
+                ShowStatus();
+
+                openDailyRewardsButton.interactable = true;
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+            }
+        }
+
+        void Update()
+        {
+            if (!eventManager.isEventReady)
+            {
+                return;
             }
 
-            async void Start()
+            // Only update if the event is actually active
+            if (eventManager.isStarted && !eventManager.isEnded)
             {
-                try
+                // Request periodic update to update timers and start new day, if necessary.
+                if (eventManager.UpdateRewardsStatus(sceneView))
                 {
-                    await UnityServices.InitializeAsync();
-
-                    // Check that scene has not been unloaded while processing async wait to prevent throw.
-                    if (this == null) return;
-
-                    if (!AuthenticationService.Instance.IsSignedIn)
-                    {
-                        await AuthenticationService.Instance.SignInAnonymouslyAsync();
-                        if (this == null) return;
-                    }
-
-                    Debug.Log($"Player id:{AuthenticationService.Instance.PlayerId}");
-
-                    // Economy configuration should be refreshed every time the app initializes.
-                    // Doing so updates the cached configuration data and initializes for this player any items or
-                    // currencies that were recently published.
-                    // 
-                    // It's important to do this update before making any other calls to the Economy or Remote Config
-                    // APIs as both use the cached data list. (Though it wouldn't be necessary to do if only using Remote
-                    // Config in your project and not Economy.)
-                    await EconomyManager.instance.RefreshEconomyConfiguration();
-                    if (this == null) return;
-
-                    await Task.WhenAll(
-                        EconomyManager.instance.FetchCurrencySprites(),
-                        EconomyManager.instance.RefreshCurrencyBalances(),
-                        // This method ultimately calls a Cloud Code script that makes Remote Config calls, so must
-                        // happen after RefreshEconomyConfiguration.
-                        eventManager.RefreshDailyRewardsEventStatus()
-                    );
-                    if (this == null) return;
-
-                    Debug.Log("Initialization and signin complete.");
-
-                    if (eventManager.isEnded)
-                    {
-                        await eventManager.Demonstration_StartNextMonth();
-                        if (this == null) return;
-                    }
-
-                    ShowStatus();
-
-                    openDailyRewardsButton.interactable = true;
+                    // Update call returned true to signal start of new day so full update is required.
+                    sceneView.UpdateStatus(eventManager);
                 }
-                catch (Exception e)
+                else
                 {
-                    Debug.LogException(e);
+                    // Update call signaled that only timers require updating (new day did not begin yet).
+                    sceneView.UpdateTimers(eventManager);
                 }
             }
+        }
 
-            void Update()
+        void ShowStatus()
+        {
+            sceneView.UpdateStatus(eventManager);
+
+            if (eventManager.firstVisit)
+            {
+                eventManager.MarkFirstVisitComplete();
+            }
+        }
+
+        public async void OnClaimButtonPressed()
+        {
+            try
+            {
+                // Disable all claim buttons to prevent multiple collect requests.
+                // Button is reenabled when the state is refreshed after the claim has been fully processed.
+                sceneView.SetAllDaysUnclaimable();
+
+                await eventManager.ClaimDailyReward();
+                if (this == null) return;
+
+                ShowStatus();
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+            }
+        }
+
+        public async void OnOpenEventButtonPressed()
+        {
+            try
             {
                 if (!eventManager.isEventReady)
                 {
                     return;
                 }
 
-                // Only update if the event is actually active
-                if (eventManager.isStarted && !eventManager.isEnded)
+                if (eventManager.isEnded)
                 {
-                    // Request periodic update to update timers and start new day, if necessary.
-                    if (eventManager.UpdateRewardsStatus(sceneView))
-                    {
-                        // Update call returned true to signal start of new day so full update is required.
-                        sceneView.UpdateStatus(eventManager);
-                    }
-                    else
-                    {
-                        // Update call signaled that only timers require updating (new day did not begin yet).
-                        sceneView.UpdateTimers(eventManager);
-                    }
-                }
-            }
-
-            void ShowStatus()
-            {
-                sceneView.UpdateStatus(eventManager);
-
-                if (eventManager.firstVisit)
-                {
-                    eventManager.MarkFirstVisitComplete();
-                }
-            }
-
-            public async void OnClaimButtonPressed()
-            {
-                try
-                {
-                    // Disable all claim buttons to prevent multiple collect requests.
-                    // Button is reenabled when the state is refreshed after the claim has been fully processed.
-                    sceneView.SetAllDaysUnclaimable();
-
-                    await eventManager.ClaimDailyReward();
+                    await eventManager.Demonstration_StartNextMonth();
                     if (this == null) return;
-
-                    ShowStatus();
                 }
-                catch (Exception e)
-                {
-                    Debug.LogException(e);
-                }
-            }
 
-            public async void OnOpenEventButtonPressed()
-            {
-                try
-                {
-                    if (!eventManager.isEventReady)
-                    {
-                        return;
-                    }
-
-                    if (eventManager.isEnded)
-                    {
-                        await eventManager.Demonstration_StartNextMonth();
-                        if (this == null) return;
-                    }
-
-                    ShowStatus();
+                ShowStatus();
                  
-                    sceneView.OpenEventWindow();
-                }
-                catch (Exception e)
-                {
-                    Debug.LogException(e);
-                }
+                sceneView.OpenEventWindow();
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
             }
         }
     }
-}   
+}

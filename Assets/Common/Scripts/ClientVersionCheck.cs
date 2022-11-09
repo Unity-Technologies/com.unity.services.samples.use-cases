@@ -5,7 +5,7 @@ using Unity.Services.Core;
 using Unity.Services.RemoteConfig;
 using UnityEngine;
 
-namespace UnityGamingServicesUseCases
+namespace Unity.Services.Samples
 {
     public class ClientVersionCheck : MonoBehaviour
     {

@@ -3,116 +3,113 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UnityGamingServicesUseCases
+namespace Unity.Services.Samples.SeasonalEvents
 {
-    namespace SeasonalEvents
+    public class SeasonalEventsSampleView : MonoBehaviour
     {
-        public class SeasonalEventsSampleView : MonoBehaviour
+        public TextMeshProUGUI eventWelcomeText;
+        public RewardDisplayView challengeRewardsDisplay;
+        public TextMeshProUGUI countdownText;
+        public GameObject playChallengeButtonContainer;
+        public Button playChallengeButton;
+        public TextMeshProUGUI playChallengeButtonText;
+
+        [Space]
+        public Image backgroundImage;
+        public GameObject playButtonContainer;
+        public Button playButton;
+        public TextMeshProUGUI playButtonText;
+
+        [Space]
+        public RewardPopupView rewardPopup;
+
+        internal bool playChallengeAllowed;
+        internal bool sceneInitialized;
+
+        public void SetInteractable(bool isInteractable = true)
         {
-            public TextMeshProUGUI eventWelcomeText;
-            public RewardDisplayView challengeRewardsDisplay;
-            public TextMeshProUGUI countdownText;
-            public GameObject playChallengeButtonContainer;
-            public Button playChallengeButton;
-            public TextMeshProUGUI playChallengeButtonText;
+            UpdateButtonTexts();
+            playChallengeButton.interactable = isInteractable && playChallengeAllowed && sceneInitialized;
+        }
 
-            [Space]
-            public Image backgroundImage;
-            public GameObject playButtonContainer;
-            public Button playButton;
-            public TextMeshProUGUI playButtonText;
-
-            [Space]
-            public RewardPopupView rewardPopup;
-
-            internal bool playChallengeAllowed;
-            internal bool sceneInitialized;
-
-            public void SetInteractable(bool isInteractable = true)
+        void UpdateButtonTexts()
+        {
+            if (sceneInitialized)
             {
-                UpdateButtonTexts();
-                playChallengeButton.interactable = isInteractable && playChallengeAllowed && sceneInitialized;
-            }
-
-            void UpdateButtonTexts()
-            {
-                if (sceneInitialized)
-                {
-                    playButtonText.text = "Play";
-                    playChallengeButtonText.text = playChallengeAllowed ? "Play Challenge" : "Challenge Won!";
-                }
-                else
-                {
-                    playButtonText.text = "Initializing";
-                    playChallengeButtonText.text = "Initializing";
-                }
-            }
-
-            public void UpdateBackgroundImage(Sprite image)
-            {
-                if (backgroundImage != null)
-                {
-                    backgroundImage.sprite = image;
-                }
-            }
-
-            public void UpdatePlayButton(GameObject playButtonPrefab)
-            {
-                ClearContainer(playButtonContainer.transform);
-                var newPlayButtonGameObject = Instantiate(playButtonPrefab, playButtonContainer.transform);
-                playButtonText = newPlayButtonGameObject.GetComponentInChildren<TextMeshProUGUI>();
                 playButtonText.text = "Play";
-                playButton = newPlayButtonGameObject.GetComponent<Button>();
-                playButton.interactable = false;
+                playChallengeButtonText.text = playChallengeAllowed ? "Play Challenge" : "Challenge Won!";
             }
-
-            public void UpdatePlayChallengeButton(GameObject playChallengeButtonPrefab)
+            else
             {
-                ClearContainer(playChallengeButtonContainer.transform);
-                var newPlayChallengeButtonGameObject = Instantiate(playChallengeButtonPrefab, playChallengeButtonContainer.transform);
-                playChallengeButtonText = newPlayChallengeButtonGameObject.GetComponentInChildren<TextMeshProUGUI>();
-                playChallengeButtonText.text = "Play Challenge";
-                playChallengeButton = newPlayChallengeButtonGameObject.GetComponent<Button>();
-                playChallengeButton.interactable = false;
+                playButtonText.text = "Initializing";
+                playChallengeButtonText.text = "Initializing";
             }
+        }
 
-            void ClearContainer(Transform buttonContainerTransform)
+        public void UpdateBackgroundImage(Sprite image)
+        {
+            if (backgroundImage != null)
             {
-                for (var i = buttonContainerTransform.childCount - 1; i >= 0; i--)
-                {
-                    Destroy(buttonContainerTransform.GetChild(i).gameObject);
-                }
+                backgroundImage.sprite = image;
             }
+        }
 
-            public void UpdateRewardView()
+        public void UpdatePlayButton(GameObject playButtonPrefab)
+        {
+            ClearContainer(playButtonContainer.transform);
+            var newPlayButtonGameObject = Instantiate(playButtonPrefab, playButtonContainer.transform);
+            playButtonText = newPlayButtonGameObject.GetComponentInChildren<TextMeshProUGUI>();
+            playButtonText.text = "Play";
+            playButton = newPlayButtonGameObject.GetComponent<Button>();
+            playButton.interactable = false;
+        }
+
+        public void UpdatePlayChallengeButton(GameObject playChallengeButtonPrefab)
+        {
+            ClearContainer(playChallengeButtonContainer.transform);
+            var newPlayChallengeButtonGameObject = Instantiate(playChallengeButtonPrefab, playChallengeButtonContainer.transform);
+            playChallengeButtonText = newPlayChallengeButtonGameObject.GetComponentInChildren<TextMeshProUGUI>();
+            playChallengeButtonText.text = "Play Challenge";
+            playChallengeButton = newPlayChallengeButtonGameObject.GetComponent<Button>();
+            playChallengeButton.interactable = false;
+        }
+
+        void ClearContainer(Transform buttonContainerTransform)
+        {
+            for (var i = buttonContainerTransform.childCount - 1; i >= 0; i--)
             {
-                var welcomeText = "";
-
-                if (!string.IsNullOrEmpty(RemoteConfigManager.instance.activeEventName))
-                {
-                    welcomeText = $"Welcome to {RemoteConfigManager.instance.activeEventName}";
-                }
-
-                eventWelcomeText.text = welcomeText;
-                challengeRewardsDisplay.PopulateView(RemoteConfigManager.instance.challengeRewards);
+                Destroy(buttonContainerTransform.GetChild(i).gameObject);
             }
+        }
 
-            public void UpdateCountdownText(string counterText)
+        public void UpdateRewardView()
+        {
+            var welcomeText = "";
+
+            if (!string.IsNullOrEmpty(RemoteConfigManager.instance.activeEventName))
             {
-                countdownText.text = counterText;
+                welcomeText = $"Welcome to {RemoteConfigManager.instance.activeEventName}";
             }
 
-            public void ShowRewardPopup(List<RewardDetail> rewards)
-            {
-                rewardPopup.transform.localScale = Vector3.one;
+            eventWelcomeText.text = welcomeText;
+            challengeRewardsDisplay.PopulateView(RemoteConfigManager.instance.challengeRewards);
+        }
 
-                rewardPopup.Show(rewards);
-            }
+        public void UpdateCountdownText(string counterText)
+        {
+            countdownText.text = counterText;
+        }
 
-            public void CloseRewardPopup()
-            {
-                rewardPopup.Close();
-            }
+        public void ShowRewardPopup(List<RewardDetail> rewards)
+        {
+            rewardPopup.transform.localScale = Vector3.one;
+
+            rewardPopup.Show(rewards);
+        }
+
+        public void CloseRewardPopup()
+        {
+            rewardPopup.Close();
         }
     }
 }

@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace UnityGamingServicesUseCases
+namespace Unity.Services.Samples
 {
     [Serializable]
     public struct RewardDetail

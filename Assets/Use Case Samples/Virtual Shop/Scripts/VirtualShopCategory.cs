@@ -1,31 +1,28 @@
 using System.Collections.Generic;
 
-namespace UnityGamingServicesUseCases
+namespace Unity.Services.Samples.VirtualShop
 {
-    namespace VirtualShop
+    public class VirtualShopCategory
     {
-        public class VirtualShopCategory
+        public string id { get; private set; }
+        public bool enabledFlag { get; private set; }
+        public List<VirtualShopItem> virtualShopItems { get; private set; }
+
+        public VirtualShopCategory(RemoteConfigManager.CategoryConfig categoryConfig)
         {
-            public string id { get; private set; }
-            public bool enabledFlag { get; private set; }
-            public List<VirtualShopItem> virtualShopItems { get; private set; }
+            id = categoryConfig.id;
+            enabledFlag = categoryConfig.enabledFlag;
+            virtualShopItems = new List<VirtualShopItem>();
 
-            public VirtualShopCategory(RemoteConfigManager.CategoryConfig categoryConfig)
+            foreach (var item in categoryConfig.items)
             {
-                id = categoryConfig.id;
-                enabledFlag = categoryConfig.enabledFlag;
-                virtualShopItems = new List<VirtualShopItem>();
-
-                foreach (var item in categoryConfig.items)
-                {
-                    virtualShopItems.Add(new VirtualShopItem(item));
-                }
+                virtualShopItems.Add(new VirtualShopItem(item));
             }
+        }
 
-            public override string ToString()
-            {
-                return $"\"{id}\" enabled:{enabledFlag} items:{virtualShopItems?.Count}";
-            }
+        public override string ToString()
+        {
+            return $"\"{id}\" enabled:{enabledFlag} items:{virtualShopItems?.Count}";
         }
     }
 }

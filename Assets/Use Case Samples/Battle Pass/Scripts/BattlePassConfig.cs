@@ -1,14 +1,11 @@
-namespace UnityGamingServicesUseCases
+namespace Unity.Services.Samples.BattlePass
 {
-    namespace BattlePass
+    public struct BattlePassConfig
     {
-        public struct BattlePassConfig
-        {
-            public RewardDetail[] rewardsFree;
-            public RewardDetail[] rewardsPremium;
-            public int seasonXpPerTier;
-            public int tierCount;
-            public string eventName;
-        }
+        public RewardDetail[] rewardsFree;
+        public RewardDetail[] rewardsPremium;
+        public int seasonXpPerTier;
+        public int tierCount;
+        public string eventName;
     }
 }

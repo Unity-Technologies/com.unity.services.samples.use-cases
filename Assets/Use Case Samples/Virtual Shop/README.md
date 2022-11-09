@@ -56,12 +56,12 @@ Pressing the back button in the top-left corner returns you to the "Start Here" 
 
 To replicate this use case, you need the following [Unity packages](https://docs.unity3d.com/Manual/Packages.html) in your project:
 
-| **Package** | **Role** |
-| :---        | :-----   | 
-| [Addressables](https://docs.unity.com/authentication/Content/InstallAndConfigureSDK.htm) | Allows developers to ask for an asset via its address. Wherever the asset resides (local or remote), the system will locate it and its dependencies, then return it. |
-| [Authentication](https://docs.unity.com/authentication) | Automatically signs in the user anonymously to keep track of their data on the server side. |
-| [Economy](https://docs.unity.com/economy/Content/implementation.htm) | Keeps track of the player's currencies and inventory items, as well as definitions for all currencies, inventory items and Virtual Purchase transactions. Currencies and inventory items all include Custom data to identify which icon sprites to use in the shop. |
-| [Remote Config](https://docs.unity.com/remote-config) | Provides key-value pairs where the value that is mapped to a given key can be changed on the server-side, either manually or based on specific Game Overrides. The `VIRTUAL_SHOPS_CONFIG` entry stores all details for Virtual Purchase transactions to be available in each Category. |
+| **Package**                                                                              | **Role**                                                                                                                                                                                                                                                                               |
+|:-----------------------------------------------------------------------------------------|:---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------| 
+| [Addressables](https://docs.unity.com/authentication/Content/InstallAndConfigureSDK.htm) | Allows developers to ask for an asset via its address. Wherever the asset resides (local or remote), the system will locate it and its dependencies, then return it.                                                                                                                   |
+| [Authentication](https://docs.unity.com/authentication)                                  | Automatically signs in the user anonymously to keep track of their data on the server side.                                                                                                                                                                                            |
+| [Economy](https://docs.unity.com/economy/Content/implementation.htm)                     | Keeps track of the player's currencies and inventory items, as well as definitions for all currencies, inventory items and Virtual Purchase transactions. Currencies and inventory items all include Custom data to identify which icon sprites to use in the shop.                    |
+| [Remote Config](https://docs.unity.com/remote-config)                                    | Provides key-value pairs where the value that is mapped to a given key can be changed on the server-side, either manually or based on specific Game Overrides. The `VIRTUAL_SHOPS_CONFIG` entry stores all details for Virtual Purchase transactions to be available in each Category. |
 
 To use these services in your game, activate each service for your Organization and project in the [Unity Dashboard](https://dashboard.unity3d.com/).
 
@@ -77,14 +77,14 @@ To replicate this sample scene's setup on your own dashboard, you need to:
 
 [Configure the following resource](https://docs.unity.com/economy/) in the **LiveOps** dashboard:
 
-| **Resource type** | **Resource item** | **ID** | **Custom data** | **Description** |
-| :---------------- | :---------------- | :----- | :-------------- | :-------------- |
-| Currency | Coin | `COIN` | `{"spriteAddress": "Sprites/Currency/Coin"}` | A currency you can spend and purchase in the virtual shop. |
-| Currency | Gem | `GEM` | `{"spriteAddress": "Sprites/Currency/Gem"}` | A currency you can spend in the virtual shop. |
-| Currency | Pearl | `PEARL` | `{"spriteAddress": "Sprites/Currency/Pearl"}` | A currency you can purchase in the virtual shop. |
-| Currency | Star | `STAR` | `{"spriteAddress": "Sprites/Currency/Star"}` | A currency you can purchase in the virtual shop. |
-| Inventory Item | Sword | `SWORD` | `{"spriteAddress": "Sprites/Inventory/Sword"}` | An item you can purchase in the virtual shop. |
-| Inventory Item | Shield | `SHIELD` | `{"spriteAddress": "Sprites/Inventory/Shield"}` | An item you can purchase in the virtual shop. |
+| **Resource type**  | **Resource item**  | **ID**   | **Custom data**                                 | **Description**                                            |
+|:-------------------|:-------------------|:---------|:------------------------------------------------|:-----------------------------------------------------------|
+| Currency           | Coin               | `COIN`   | `{"spriteAddress": "Sprites/Currency/Coin"}`    | A currency you can spend and purchase in the virtual shop. |
+| Currency           | Gem                | `GEM`    | `{"spriteAddress": "Sprites/Currency/Gem"}`     | A currency you can spend in the virtual shop.              |
+| Currency           | Pearl              | `PEARL`  | `{"spriteAddress": "Sprites/Currency/Pearl"}`   | A currency you can purchase in the virtual shop.           |
+| Currency           | Star               | `STAR`   | `{"spriteAddress": "Sprites/Currency/Star"}`    | A currency you can purchase in the virtual shop.           |
+| Inventory Item     | Sword              | `SWORD`  | `{"spriteAddress": "Sprites/Inventory/Sword"}`  | An item you can purchase in the virtual shop.              |
+| Inventory Item     | Shield             | `SHIELD` | `{"spriteAddress": "Sprites/Inventory/Shield"}` | An item you can purchase in the virtual shop.              |
 
 \* This sample uses Addressable Assets to implement the sprite icons for all Economy resources. As the developer, you can add the Addressables address of the icon for each currency directly in the Economy dashboard, and then retrieve it at runtime without needing to change your code. This is helpful if for example, you want to update currency icons by changing the address in your dashboard instead of updating your app. To do this for each resource:
 

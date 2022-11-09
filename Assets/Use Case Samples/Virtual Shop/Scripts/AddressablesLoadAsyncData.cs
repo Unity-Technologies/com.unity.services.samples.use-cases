@@ -4,36 +4,33 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
-namespace UnityGamingServicesUseCases
+namespace Unity.Services.Samples.VirtualShop
 {
-    namespace VirtualShop
+    public class AddressablesLoadAsyncData
     {
-        public class AddressablesLoadAsyncData
+        public List<string> ids { get; private set; } =
+            new List<string>();
+
+        public List<AsyncOperationHandle<Sprite>> handles { get; private set; } =
+            new List<AsyncOperationHandle<Sprite>>();
+
+        public List<Task<Sprite>> tasks { get; private set; } =
+            new List<Task<Sprite>>();
+
+        public void Add(string spriteAddress)
         {
-            public List<string> ids { get; private set; } =
-                new List<string>();
+            Add(spriteAddress, spriteAddress);
+        }
 
-            public List<AsyncOperationHandle<Sprite>> handles { get; private set; } =
-                new List<AsyncOperationHandle<Sprite>>();
-
-            public List<Task<Sprite>> tasks { get; private set; } =
-                new List<Task<Sprite>>();
-
-            public void Add(string spriteAddress)
+        public void Add(string id, string spriteAddress)
+        {
+            if (!string.IsNullOrEmpty(spriteAddress) && !ids.Contains(id))
             {
-                Add(spriteAddress, spriteAddress);
-            }
+                var handle = Addressables.LoadAssetAsync<Sprite>(spriteAddress);
 
-            public void Add(string id, string spriteAddress)
-            {
-                if (!string.IsNullOrEmpty(spriteAddress) && !ids.Contains(id))
-                {
-                    var handle = Addressables.LoadAssetAsync<Sprite>(spriteAddress);
-
-                    ids.Add(id);
-                    handles.Add(handle);
-                    tasks.Add(handle.Task);
-                }
+                ids.Add(id);
+                handles.Add(handle);
+                tasks.Add(handle.Task);
             }
         }
     }

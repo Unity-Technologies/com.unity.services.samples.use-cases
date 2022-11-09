@@ -4,107 +4,104 @@ using System.Threading.Tasks;
 using Unity.Services.RemoteConfig;
 using UnityEngine;
 
-namespace UnityGamingServicesUseCases
+namespace Unity.Services.Samples.OverTheAirContent
 {
-    namespace OverTheAirContent
+    public class RemoteConfigManager : MonoBehaviour
     {
-        public class RemoteConfigManager : MonoBehaviour
+        const string k_CatalogAddressKey = "OTA_CATALOG_URL";
+        const string k_ContentUpdatesKey = "OTA_CONTENT_UPDATES";
+
+        public static RemoteConfigManager instance { get; private set; }
+
+        public string cloudCatalogAddress { get; private set; }
+
+        public ContentUpdates contentUpdates { get; private set; }
+
+        void Awake()
         {
-            const string k_CatalogAddressKey = "OTA_CATALOG_URL";
-            const string k_ContentUpdatesKey = "OTA_CONTENT_UPDATES";
-
-            public static RemoteConfigManager instance { get; private set; }
-
-            public string cloudCatalogAddress { get; private set; }
-
-            public ContentUpdates contentUpdates { get; private set; }
-
-            void Awake()
+            if (instance != null && instance != this)
             {
-                if (instance != null && instance != this)
-                {
-                    Destroy(this);
-                }
-                else
-                {
-                    instance = this;
-                }
+                Destroy(this);
             }
-
-            public async Task FetchConfigs()
+            else
             {
-                try
-                {
-                    await RemoteConfigService.Instance.FetchConfigsAsync(new UserAttributes(), new AppAttributes());
-                    if (this == null) return;
+                instance = this;
+            }
+        }
 
-                    cloudCatalogAddress = RemoteConfigService.Instance.appConfig.GetString(k_CatalogAddressKey);
+        public async Task FetchConfigs()
+        {
+            try
+            {
+                await RemoteConfigService.Instance.FetchConfigsAsync(new UserAttributes(), new AppAttributes());
+                if (this == null) return;
 
-                    var contentUpdatesJson = RemoteConfigService.Instance.appConfig.GetJson(k_ContentUpdatesKey);
-                    if (!string.IsNullOrEmpty(contentUpdatesJson))
-                    {
-                        contentUpdates = JsonUtility.FromJson<ContentUpdates>(contentUpdatesJson);
-                    }
-                }
-                catch (Exception e)
+                cloudCatalogAddress = RemoteConfigService.Instance.appConfig.GetString(k_CatalogAddressKey);
+
+                var contentUpdatesJson = RemoteConfigService.Instance.appConfig.GetJson(k_ContentUpdatesKey);
+                if (!string.IsNullOrEmpty(contentUpdatesJson))
                 {
-                    Debug.LogException(e);
+                    contentUpdates = JsonUtility.FromJson<ContentUpdates>(contentUpdatesJson);
                 }
             }
-
-            public List<string> GetNewContentAddresses()
+            catch (Exception e)
             {
-                var newContentAddresses = new List<string>();
+                Debug.LogException(e);
+            }
+        }
 
-                foreach (var contentUpdate in contentUpdates.updates)
-                {
-                    var configKey = contentUpdate.configKey;
-                    var contentUpdateJson = RemoteConfigService.Instance.appConfig.GetJson(configKey);
-                    var newContent = JsonUtility.FromJson<NewContent>(contentUpdateJson);
-                    newContentAddresses.Add(newContent.prefabAddress);
-                }
+        public List<string> GetNewContentAddresses()
+        {
+            var newContentAddresses = new List<string>();
 
-                return newContentAddresses;
+            foreach (var contentUpdate in contentUpdates.updates)
+            {
+                var configKey = contentUpdate.configKey;
+                var contentUpdateJson = RemoteConfigService.Instance.appConfig.GetJson(configKey);
+                var newContent = JsonUtility.FromJson<NewContent>(contentUpdateJson);
+                newContentAddresses.Add(newContent.prefabAddress);
             }
 
-            void OnDestroy()
-            {
-                if (instance == this)
-                {
-                    instance = null;
-                }
-            }
+            return newContentAddresses;
+        }
 
-            // Remote Config's FetchConfigs call requires passing two non-nullable objects to the method, regardless of
-            // whether any data needs to be passed in them. Candidates for what you may want to pass in the UserAttributes
-            // struct could be things like device type, however it is completely customizable.
-            public struct UserAttributes
+        void OnDestroy()
+        {
+            if (instance == this)
             {
+                instance = null;
             }
+        }
 
-            // Candidates for what you can pass in the AppAttributes struct could be things like what level the player
-            // is on, or what version of the app is installed. The candidates are completely customizable.
-            public struct AppAttributes
-            {
-            }
+        // Remote Config's FetchConfigs call requires passing two non-nullable objects to the method, regardless of
+        // whether any data needs to be passed in them. Candidates for what you may want to pass in the UserAttributes
+        // struct could be things like device type, however it is completely customizable.
+        public struct UserAttributes
+        {
+        }
 
-            [Serializable]
-            public struct NewContent
-            {
-                public string prefabAddress;
-            }
+        // Candidates for what you can pass in the AppAttributes struct could be things like what level the player
+        // is on, or what version of the app is installed. The candidates are completely customizable.
+        public struct AppAttributes
+        {
+        }
 
-            [Serializable]
-            public struct ContentUpdate
-            {
-                public string configKey;
-            }
+        [Serializable]
+        public struct NewContent
+        {
+            public string prefabAddress;
+        }
 
-            [Serializable]
-            public struct ContentUpdates
-            {
-                public List<ContentUpdate> updates;
-            }
+        [Serializable]
+        public struct ContentUpdate
+        {
+            public string configKey;
+        }
+
+        [Serializable]
+        public struct ContentUpdates
+        {
+            public List<ContentUpdate> updates;
         }
     }
 }

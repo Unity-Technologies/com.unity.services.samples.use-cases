@@ -572,10 +572,14 @@ MonoBehaviour:
           claimed.
         bodyFormat: 0
         bulletList: []
-      - body: 'Parameters: "messageId" - The id of the message that owns the attachment
-          the player wants to claim.'
+      - body: 'Parameters:'
         bodyFormat: 0
-        bulletList: []
+        bulletList:
+        - body: '"messageId"'
+          bodyFormat: 0
+          bulletList:
+          - 'Type: STRING'
+          - The id of the message that owns the attachment the player wants to claim.
       - body: 'Script: "Assets/Use Case Samples/In-Game Mailbox/Cloud Code/InGameMailbox_ClaimAttachment.js"'
         bodyFormat: 0
         bulletList: []

@@ -3,117 +3,114 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UnityGamingServicesUseCases
+namespace Unity.Services.Samples.InGameMailbox
 {
-    namespace InGameMailbox
+    public class MessageView : MonoBehaviour
     {
-        public class MessageView : MonoBehaviour
+        public TextMeshProUGUI titleText;
+        public TextMeshProUGUI contentText;
+        public RewardDisplayView rewardDisplayView;
+        public Button claimAttachmentButton;
+        public Color rewardItemViewClaimedColor;
+
+        InboxMessage m_Message;
+        string m_Title;
+        string m_Content;
+        bool m_HasAttachment;
+        bool m_HasUnclaimedAttachment;
+        List<RewardDetail> m_RewardDetails = new List<RewardDetail>();
+
+        public void SetData(InboxMessage message)
         {
-            public TextMeshProUGUI titleText;
-            public TextMeshProUGUI contentText;
-            public RewardDisplayView rewardDisplayView;
-            public Button claimAttachmentButton;
-            public Color rewardItemViewClaimedColor;
+            m_Message = message;
 
-            InboxMessage m_Message;
-            string m_Title;
-            string m_Content;
-            bool m_HasAttachment;
-            bool m_HasUnclaimedAttachment;
-            List<RewardDetail> m_RewardDetails = new List<RewardDetail>();
+            m_Title = message?.messageInfo?.title ?? "";
+            m_Content = message?.messageInfo?.content ?? "";
+            m_HasAttachment = !string.IsNullOrEmpty(message?.messageInfo?.attachment);
+            m_HasUnclaimedAttachment = message?.metadata?.hasUnclaimedAttachment ?? false;
 
-            public void SetData(InboxMessage message)
+            if (message != null && message.messageInfo != null)
             {
-                m_Message = message;
-
-                m_Title = message?.messageInfo?.title ?? "";
-                m_Content = message?.messageInfo?.content ?? "";
-                m_HasAttachment = !string.IsNullOrEmpty(message?.messageInfo?.attachment);
-                m_HasUnclaimedAttachment = message?.metadata?.hasUnclaimedAttachment ?? false;
-
-                if (message != null && message.messageInfo != null)
-                {
-                    GetRewardDetails(message.messageInfo.attachment);
-                }
-
-                UpdateView();
+                GetRewardDetails(message.messageInfo.attachment);
             }
 
-            void GetRewardDetails(string virtualPurchaseId)
-            {
-                m_RewardDetails.Clear();
+            UpdateView();
+        }
 
-                if (EconomyManager.instance.virtualPurchaseTransactions.TryGetValue(virtualPurchaseId, out var rewards))
+        void GetRewardDetails(string virtualPurchaseId)
+        {
+            m_RewardDetails.Clear();
+
+            if (EconomyManager.instance.virtualPurchaseTransactions.TryGetValue(virtualPurchaseId, out var rewards))
+            {
+                foreach (var reward in rewards)
                 {
-                    foreach (var reward in rewards)
+                    if (AddressablesManager.instance.preloadedSpritesByEconomyId.TryGetValue(reward.id, out var sprite))
                     {
-                        if (AddressablesManager.instance.preloadedSpritesByEconomyId.TryGetValue(reward.id, out var sprite))
+                        m_RewardDetails.Add(new RewardDetail
                         {
-                            m_RewardDetails.Add(new RewardDetail
-                            {
-                                id = reward.id,
-                                quantity = reward.amount,
-                                sprite = sprite
-                            });
-                        }
+                            id = reward.id,
+                            quantity = reward.amount,
+                            sprite = sprite
+                        });
                     }
                 }
             }
+        }
 
-            void UpdateView()
+        void UpdateView()
+        {
+            gameObject.SetActive(m_Message != null);
+
+            if (titleText != null)
             {
-                gameObject.SetActive(m_Message != null);
-
-                if (titleText != null)
-                {
-                    titleText.text = m_Title;
-                }
-
-                if (contentText != null)
-                {
-                    contentText.text = m_Content;
-                }
-
-                UpdateAttachmentViewAndClaimButton();
+                titleText.text = m_Title;
             }
 
-            void UpdateAttachmentViewAndClaimButton()
+            if (contentText != null)
             {
-                if (m_HasAttachment)
+                contentText.text = m_Content;
+            }
+
+            UpdateAttachmentViewAndClaimButton();
+        }
+
+        void UpdateAttachmentViewAndClaimButton()
+        {
+            if (m_HasAttachment)
+            {
+                if (rewardDisplayView != null)
                 {
-                    if (rewardDisplayView != null)
+                    // The message only has a claimed attachment if it both has an attachment, and that
+                    // attachment is not unclaimed.
+                    if (m_HasAttachment && !m_HasUnclaimedAttachment)
                     {
-                        // The message only has a claimed attachment if it both has an attachment, and that
-                        // attachment is not unclaimed.
-                        if (m_HasAttachment && !m_HasUnclaimedAttachment)
-                        {
-                            rewardDisplayView.PopulateView(m_RewardDetails, rewardItemViewClaimedColor);
-                        }
-                        else
-                        {
-                            rewardDisplayView.PopulateView(m_RewardDetails);
-                        }
-
-                        rewardDisplayView.gameObject.SetActive(true);
+                        rewardDisplayView.PopulateView(m_RewardDetails, rewardItemViewClaimedColor);
+                    }
+                    else
+                    {
+                        rewardDisplayView.PopulateView(m_RewardDetails);
                     }
 
-                    if (claimAttachmentButton != null)
-                    {
-                        claimAttachmentButton.gameObject.SetActive(true);
-                        claimAttachmentButton.interactable = m_HasUnclaimedAttachment;
-                    }
+                    rewardDisplayView.gameObject.SetActive(true);
                 }
-                else
-                {
-                    if (rewardDisplayView != null)
-                    {
-                        rewardDisplayView.gameObject.SetActive(false);
-                    }
 
-                    if (claimAttachmentButton != null)
-                    {
-                        claimAttachmentButton.gameObject.SetActive(false);
-                    }
+                if (claimAttachmentButton != null)
+                {
+                    claimAttachmentButton.gameObject.SetActive(true);
+                    claimAttachmentButton.interactable = m_HasUnclaimedAttachment;
+                }
+            }
+            else
+            {
+                if (rewardDisplayView != null)
+                {
+                    rewardDisplayView.gameObject.SetActive(false);
+                }
+
+                if (claimAttachmentButton != null)
+                {
+                    claimAttachmentButton.gameObject.SetActive(false);
                 }
             }
         }

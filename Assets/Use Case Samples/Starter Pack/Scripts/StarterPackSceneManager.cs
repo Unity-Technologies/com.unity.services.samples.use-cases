@@ -7,170 +7,167 @@ using Unity.Services.Core;
 using Unity.Services.Economy;
 using UnityEngine;
 
-namespace UnityGamingServicesUseCases
+namespace Unity.Services.Samples.StarterPack
 {
-    namespace StarterPack
+    public class StarterPackSceneManager : MonoBehaviour
     {
-        public class StarterPackSceneManager : MonoBehaviour
+        public static event Action<bool> starterPackStatusChecked;
+
+        const string k_StarterPackCloudSaveKey = "STARTER_PACK_STATUS";
+
+
+        async void Start()
         {
-            public static event Action<bool> starterPackStatusChecked;
-
-            const string k_StarterPackCloudSaveKey = "STARTER_PACK_STATUS";
-
-
-            async void Start()
+            try
             {
-                try
-                {
-                    await UnityServices.InitializeAsync();
+                await UnityServices.InitializeAsync();
 
-                    // Check that scene has not been unloaded while processing async wait to prevent throw.
+                // Check that scene has not been unloaded while processing async wait to prevent throw.
+                if (this == null) return;
+
+                if (!AuthenticationService.Instance.IsSignedIn)
+                {
+                    await AuthenticationService.Instance.SignInAnonymouslyAsync();
                     if (this == null) return;
-
-                    if (!AuthenticationService.Instance.IsSignedIn)
-                    {
-                        await AuthenticationService.Instance.SignInAnonymouslyAsync();
-                        if (this == null) return;
-                    }
-
-                    Debug.Log($"Player id: {AuthenticationService.Instance.PlayerId}");
-
-                    // Economy configuration should be refreshed every time the app initializes.
-                    // Doing so updates the cached configuration data and initializes for this player any items or
-                    // currencies that were recently published.
-                    // 
-                    // It's important to do this update before making any other calls to the Economy or Remote Config
-                    // APIs as both use the cached data list. (Though it wouldn't be necessary to do if only using Remote
-                    // Config in your project and not Economy.)
-                    await EconomyManager.instance.RefreshEconomyConfiguration();
-                    if (this == null) return;
-
-                    await Task.WhenAll(EconomyManager.instance.RefreshCurrencyBalances(),
-                        EconomyManager.instance.RefreshInventory(),
-                        RefreshStarterPackStatus());
                 }
-                catch (Exception e)
+
+                Debug.Log($"Player id: {AuthenticationService.Instance.PlayerId}");
+
+                // Economy configuration should be refreshed every time the app initializes.
+                // Doing so updates the cached configuration data and initializes for this player any items or
+                // currencies that were recently published.
+                // 
+                // It's important to do this update before making any other calls to the Economy or Remote Config
+                // APIs as both use the cached data list. (Though it wouldn't be necessary to do if only using Remote
+                // Config in your project and not Economy.)
+                await EconomyManager.instance.RefreshEconomyConfiguration();
+                if (this == null) return;
+
+                await Task.WhenAll(EconomyManager.instance.RefreshCurrencyBalances(),
+                    EconomyManager.instance.RefreshInventory(),
+                    RefreshStarterPackStatus());
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+            }
+            finally
+            {
+                if (this != null)
                 {
-                    Debug.LogException(e);
-                }
-                finally
-                {
-                    if (this != null)
-                    {
-                        StarterPackSampleView.instance.SetInteractable();
-                    }
+                    StarterPackSampleView.instance.SetInteractable();
                 }
             }
+        }
 
-            public async void OnBuyButtonPressed()
+        public async void OnBuyButtonPressed()
+        {
+            try
+            { 
+                StarterPackSampleView.instance.SetInteractable(false);
+
+                await CloudCodeManager.instance.CallPurchaseStarterPackEndpoint();
+                if (this == null) return;
+
+                await Task.WhenAll(EconomyManager.instance.RefreshCurrencyBalances(),
+                    EconomyManager.instance.RefreshInventory(),
+                    RefreshStarterPackStatus());
+            }
+            catch (Exception e)
             {
-                try
-                { 
-                    StarterPackSampleView.instance.SetInteractable(false);
-
-                    await CloudCodeManager.instance.CallPurchaseStarterPackEndpoint();
-                    if (this == null) return;
-
-                    await Task.WhenAll(EconomyManager.instance.RefreshCurrencyBalances(),
-                        EconomyManager.instance.RefreshInventory(),
-                        RefreshStarterPackStatus());
-                }
-                catch (Exception e)
+                Debug.LogException(e);
+            }
+            finally
+            {
+                if (this != null)
                 {
-                    Debug.LogException(e);
-                }
-                finally
-                {
-                    if (this != null)
-                    {
-                        StarterPackSampleView.instance.SetInteractable();
-                    }
+                    StarterPackSampleView.instance.SetInteractable();
                 }
             }
+        }
 
-            public async void OnGiveTenGemsButtonPressed()
+        public async void OnGiveTenGemsButtonPressed()
+        {
+            try
+            { 
+                StarterPackSampleView.instance.SetInteractable(false);
+
+                var balanceResponse = await EconomyService.Instance.PlayerBalances.IncrementBalanceAsync("GEM", 10);
+                if (this == null) return;
+
+                EconomyManager.instance.SetCurrencyBalance(balanceResponse.CurrencyId, balanceResponse.Balance);
+            }
+            catch (Exception e)
             {
-                try
-                { 
-                    StarterPackSampleView.instance.SetInteractable(false);
-
-                    var balanceResponse = await EconomyService.Instance.PlayerBalances.IncrementBalanceAsync("GEM", 10);
-                    if (this == null) return;
-
-                    EconomyManager.instance.SetCurrencyBalance(balanceResponse.CurrencyId, balanceResponse.Balance);
-                }
-                catch (Exception e)
+                Debug.LogException(e);
+            }
+            finally
+            {
+                if (this != null)
                 {
-                    Debug.LogException(e);
-                }
-                finally
-                {
-                    if (this != null)
-                    {
-                        StarterPackSampleView.instance.SetInteractable();
-                    }
+                    StarterPackSampleView.instance.SetInteractable();
                 }
             }
+        }
 
-            public async void OnResetPlayerDataButtonPressed()
+        public async void OnResetPlayerDataButtonPressed()
+        {
+            try
             {
-                try
-                {
-                    StarterPackSampleView.instance.SetInteractable(false);
+                StarterPackSampleView.instance.SetInteractable(false);
 
-                    // Delete the Starter-Pack-purchased key ("STARTER_PACK_STATUS") from Cloud Save so
-                    // Starter Pack can be purchased again. This is used for testing to permit repurchasing
-                    // this one-time-only product.
-                    await CloudSaveService.Instance.Data.ForceDeleteAsync(k_StarterPackCloudSaveKey);
-                    if (this == null) return;
+                // Delete the Starter-Pack-purchased key ("STARTER_PACK_STATUS") from Cloud Save so
+                // Starter Pack can be purchased again. This is used for testing to permit repurchasing
+                // this one-time-only product.
+                await CloudSaveService.Instance.Data.ForceDeleteAsync(k_StarterPackCloudSaveKey);
+                if (this == null) return;
 
-                    await RefreshStarterPackStatus();
-                }
-                catch (Exception e)
+                await RefreshStarterPackStatus();
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+            }
+            finally
+            {
+                if (this != null)
                 {
-                    Debug.LogException(e);
-                }
-                finally
-                {
-                    if (this != null)
-                    {
-                        StarterPackSampleView.instance.SetInteractable();
-                    }
+                    StarterPackSampleView.instance.SetInteractable();
                 }
             }
+        }
 
-            static async Task RefreshStarterPackStatus()
+        static async Task RefreshStarterPackStatus()
+        {
+            var starterPackIsClaimed = false;
+
+            try
             {
-                var starterPackIsClaimed = false;
+                // Read the "STARTER_PACK_STATUS" key from Cloud Save
+                var starterPackStatusCloudSaveResult = await CloudSaveService.Instance.Data.LoadAsync(
+                    new HashSet<string> { k_StarterPackCloudSaveKey });
 
-                try
+                // If key is found, mark it as purchased if it it contains:  "claimed":true
+                if (starterPackStatusCloudSaveResult.TryGetValue(k_StarterPackCloudSaveKey, out var result))
                 {
-                    // Read the "STARTER_PACK_STATUS" key from Cloud Save
-                    var starterPackStatusCloudSaveResult = await CloudSaveService.Instance.Data.LoadAsync(
-                        new HashSet<string> { k_StarterPackCloudSaveKey });
+                    Debug.Log($"{k_StarterPackCloudSaveKey} value: {result}");
 
-                    // If key is found, mark it as purchased if it it contains:  "claimed":true
-                    if (starterPackStatusCloudSaveResult.TryGetValue(k_StarterPackCloudSaveKey, out var result))
+                    if (result.Contains("\"claimed\":true"))
                     {
-                        Debug.Log($"{k_StarterPackCloudSaveKey} value: {result}");
-
-                        if (result.Contains("\"claimed\":true"))
-                        {
-                            starterPackIsClaimed = true;
-                        }
-                    }
-                    else
-                    {
-                        Debug.Log($"{k_StarterPackCloudSaveKey} key not set");
+                        starterPackIsClaimed = true;
                     }
                 }
-                catch (Exception e)
+                else
                 {
-                    Debug.LogException(e);
+                    Debug.Log($"{k_StarterPackCloudSaveKey} key not set");
                 }
-
-                starterPackStatusChecked?.Invoke(starterPackIsClaimed);
             }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+            }
+
+            starterPackStatusChecked?.Invoke(starterPackIsClaimed);
         }
     }
 }

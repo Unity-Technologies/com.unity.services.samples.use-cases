@@ -1,12 +1,9 @@
-namespace UnityGamingServicesUseCases
+namespace Unity.Services.Samples.BattlePass
 {
-    namespace BattlePass
+    public enum TierState : int
     {
-        public enum TierState : int
-        {
-            Locked,
-            Unlocked,
-            Claimed,
-        }
+        Locked,
+        Unlocked,
+        Claimed,
     }
 }

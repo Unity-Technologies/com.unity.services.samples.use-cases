@@ -623,9 +623,11 @@ MonoBehaviour:
       - body: 'Parameters:'
         bodyFormat: 0
         bulletList:
-        - body: '"coord" (JSON). Position for Well. Example: {1, 2}'
+        - body: '"coord"'
           bodyFormat: 0
-          bulletList: []
+          bulletList:
+          - 'Type: JSON'
+          - 'Position for Well.'
       - body: Assets/Use Case Samples/Idle Clicker Game/Cloud Code/IdleClicker_PlaceWell.js
         bodyFormat: 0
         bulletList: []
@@ -640,13 +642,16 @@ MonoBehaviour:
       - body: 'Parameters:'
         bodyFormat: 0
         bulletList:
-        - body: '"drag" (JSON). Start position where Well is now. Example: {1,2}'
+        - body: '"drag"'
           bodyFormat: 0
-          bulletList: []
-        - body: '"drop" (JSON). Ending position for the Well after operation.. Example:
-            {2,3}'
+          bulletList:
+          - 'Type: JSON'
+          - 'Start position where Well is now.'
+        - body: '"drop"'
           bodyFormat: 0
-          bulletList: []
+          bulletList:
+          - 'Type: JSON'
+          - 'Ending position for the Well after operation.'
       - body: Assets/Use Case Samples/Idle Clicker Game/Cloud Code/IdleClicker_MoveWell.js
         bodyFormat: 0
         bulletList: []
@@ -662,13 +667,16 @@ MonoBehaviour:
       - body: 'Parameters:'
         bodyFormat: 0
         bulletList:
-        - body: '"drag" (JSON). Pposition where first Well is now. Example: {1,2}'
+        - body: '"drag"'
           bodyFormat: 0
-          bulletList: []
-        - body: '"drop" (JSON). Position where second  Well is and final position
-            for the merged Well after operation.. Example: {2,3}'
+          bulletList:
+          - 'Type: JSON'
+          - 'Start position where Well is now.'
+        - body: '"drop"'
           bodyFormat: 0
-          bulletList: []
+          bulletList:
+          - 'Type: JSON'
+          - 'Position where second Well is and final position for the merged Well after operation.'
       - body: Assets/Use Case Samples/Idle Clicker Game/Cloud Code/IdleClicker_MergeWells.js
         bodyFormat: 0
         bulletList: []

@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace UnityGamingServicesUseCases
+namespace Unity.Services.Samples
 {
     // We don't need a ton of frames to run this project.
     // Lower frame rates use less energy.

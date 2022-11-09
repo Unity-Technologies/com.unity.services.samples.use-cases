@@ -253,10 +253,14 @@ MonoBehaviour:
           If player wins or draws, coins are awarded using the Economy service.
         bodyFormat: 0
         bulletList: []
-      - body: 'Parameters: coord (JSON) - {x,y} coordinate for the player piece to
-          add. Example: {"x":0, "y":0}'
+      - body: 'Parameters:'
         bodyFormat: 0
-        bulletList: []
+        bulletList:
+        - body: '"coord"'
+          bodyFormat: 0
+          bulletList:
+          - 'Type: JSON'
+          - '{x,y} coordinate for the player piece to add.'
       - body: 'Script: "Assets/Use Case Samples/Cloud AI Mini Game/Cloud Code/CloudAiMiniGame_ValidatePlayerMoveAndRespond.js"'
         bodyFormat: 0
         bulletList: []

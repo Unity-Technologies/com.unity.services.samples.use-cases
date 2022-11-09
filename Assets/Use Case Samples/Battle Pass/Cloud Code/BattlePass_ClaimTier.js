@@ -208,7 +208,7 @@ async function grantRewards(currencyApi, inventoryApi, projectId, playerId, rewa
                 break;
 
             case "inventory":
-                grantInventoryItem(inventoryApi, projectId, playerId, reward.id, reward.quantity);
+                await grantInventoryItem(inventoryApi, projectId, playerId, reward.id, reward.quantity);
                 break;
         }
     }

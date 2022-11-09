@@ -2,104 +2,101 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UnityGamingServicesUseCases
+namespace Unity.Services.Samples.CloudAIMiniGame
 {
-    namespace CloudAIMiniGame
+    public class GridEntityView : MonoBehaviour
     {
-        public class GridEntityView : MonoBehaviour
+        public CloudAIMiniGameSceneManager sceneManager;
+        public CloudAIMiniGameSampleView sceneView;
+
+        public Coord coord;
+
+        Button m_Button;
+        GridContents m_ButtonState = GridContents.Empty;
+        bool m_IsPointerHovering = false;
+
+        GameObject m_PieceAiImage;
+        GameObject m_PiecePlayerImage;
+        GameObject m_UiHighlightImage;
+        GameObject m_InProgressImage;
+
+
+        public enum GridContents
         {
-            public CloudAIMiniGameSceneManager sceneManager;
-            public CloudAIMiniGameSampleView sceneView;
-
-            public Coord coord;
-
-            Button m_Button;
-            GridContents m_ButtonState = GridContents.Empty;
-            bool m_IsPointerHovering = false;
-
-            GameObject m_PieceAiImage;
-            GameObject m_PiecePlayerImage;
-            GameObject m_UiHighlightImage;
-            GameObject m_InProgressImage;
+            Empty,
+            AiPiece,
+            PlayerPiece
+        }
 
 
-            public enum GridContents
+        void Start()
+        {
+            m_Button = GetComponent<Button>();
+
+            m_PieceAiImage = transform.Find("PieceAiImage").gameObject;
+            m_PiecePlayerImage = transform.Find("PiecePlayerImage").gameObject;
+            m_UiHighlightImage = transform.Find("UiHighlightImage").gameObject;
+            m_InProgressImage = transform.Find("InProgressImage").gameObject;
+
+            sceneView.RegisterGridEntityView(this);
+        }
+
+        public void OnPointerEnter()
+        {
+            m_UiHighlightImage.SetActive(m_Button.interactable);
+            m_IsPointerHovering = true;
+        }
+
+        public void OnPointerExit()
+        {
+            m_UiHighlightImage.SetActive(false);
+            m_IsPointerHovering = false;
+        }
+
+        public void SetInteractable(bool isInteractable = true)
+        {
+            m_Button.interactable = isInteractable;
+            m_UiHighlightImage.SetActive(m_IsPointerHovering && isInteractable);
+        }
+
+        async public void OnButtonPressed()
+        {
+            try
             {
-                Empty,
-                AiPiece,
-                PlayerPiece
+                await sceneManager.PlayfieldButtonPressed(coord);
             }
-
-
-            void Start()
+            catch (Exception e)
             {
-                m_Button = GetComponent<Button>();
-
-                m_PieceAiImage = transform.Find("PieceAiImage").gameObject;
-                m_PiecePlayerImage = transform.Find("PiecePlayerImage").gameObject;
-                m_UiHighlightImage = transform.Find("UiHighlightImage").gameObject;
-                m_InProgressImage = transform.Find("InProgressImage").gameObject;
-
-                sceneView.RegisterGridEntityView(this);
+                Debug.LogException(e);
             }
+        }
 
-            public void OnPointerEnter()
-            {
-                m_UiHighlightImage.SetActive(m_Button.interactable);
-                m_IsPointerHovering = true;
-            }
+        public void ShowInProgress(bool flag)
+        {
+            m_InProgressImage.SetActive(flag);
+        }
 
-            public void OnPointerExit()
-            {
-                m_UiHighlightImage.SetActive(false);
-                m_IsPointerHovering = false;
-            }
+        public void SetGridContents(GridContents gridContents)
+        {
+            this.m_ButtonState = gridContents;
 
-            public void SetInteractable(bool isInteractable = true)
-            {
-                m_Button.interactable = isInteractable;
-                m_UiHighlightImage.SetActive(m_IsPointerHovering && isInteractable);
-            }
+            m_PieceAiImage.SetActive(gridContents == GridContents.AiPiece);
+            m_PiecePlayerImage.SetActive(gridContents == GridContents.PlayerPiece);
+        }
 
-            async public void OnButtonPressed()
-            {
-                try
-                {
-                    await sceneManager.PlayfieldButtonPressed(coord);
-                }
-                catch (Exception e)
-                {
-                    Debug.LogException(e);
-                }
-            }
+        public void ShowUiHighlight(bool showFlag)
+        {
+            m_UiHighlightImage.SetActive(showFlag);
+        }
 
-            public void ShowInProgress(bool flag)
-            {
-                m_InProgressImage.SetActive(flag);
-            }
+        public void ShowInProgressImage(bool showFlag)
+        {
+            m_InProgressImage.SetActive(showFlag);
+        }
 
-            public void SetGridContents(GridContents gridContents)
-            {
-                this.m_ButtonState = gridContents;
-
-                m_PieceAiImage.SetActive(gridContents == GridContents.AiPiece);
-                m_PiecePlayerImage.SetActive(gridContents == GridContents.PlayerPiece);
-            }
-
-            public void ShowUiHighlight(bool showFlag)
-            {
-                m_UiHighlightImage.SetActive(showFlag);
-            }
-
-            public void ShowInProgressImage(bool showFlag)
-            {
-                m_InProgressImage.SetActive(showFlag);
-            }
-
-            void OnDestroy()
-            {
-                m_Button.onClick.RemoveListener(OnButtonPressed);
-            }
+        void OnDestroy()
+        {
+            m_Button.onClick.RemoveListener(OnButtonPressed);
         }
     }
 }

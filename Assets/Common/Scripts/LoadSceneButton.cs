@@ -7,7 +7,7 @@ using Object = UnityEngine.Object;
 using UnityEditor;
 #endif
 
-namespace UnityGamingServicesUseCases
+namespace Unity.Services.Samples
 {
     [RequireComponent(typeof(Button))]
     public class LoadSceneButton : MonoBehaviour

@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Unity.Services.Economy.Model;
 using UnityEngine;
 
-namespace UnityGamingServicesUseCases
+namespace Unity.Services.Samples
 {
     public class InventoryHudView : MonoBehaviour
     {

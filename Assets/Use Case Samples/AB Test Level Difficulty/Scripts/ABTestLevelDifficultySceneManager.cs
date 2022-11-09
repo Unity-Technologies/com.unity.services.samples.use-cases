@@ -6,199 +6,196 @@ using Unity.Services.Core;
 using Unity.Services.Core.Environments;
 using UnityEngine;
 
-namespace UnityGamingServicesUseCases
+namespace Unity.Services.Samples.ABTestLevelDifficulty
 {
-    namespace ABTestLevelDifficulty
+    public class ABTestLevelDifficultySceneManager : MonoBehaviour
     {
-        public class ABTestLevelDifficultySceneManager : MonoBehaviour
+        public ABTestLevelDifficultySampleView sceneView;
+
+        void OnEnable()
         {
-            public ABTestLevelDifficultySampleView sceneView;
+            StartSubscribe();
+        }
 
-            void OnEnable()
+        void OnDisable()
+        {
+            StopSubscribe();
+        }
+
+        void StartSubscribe()
+        {
+            CloudCodeManager.leveledUp += OpenLeveledUpPopup;
+        }
+
+        void StopSubscribe()
+        {
+            CloudCodeManager.leveledUp -= OpenLeveledUpPopup;
+        }
+
+        async void Start()
+        {
+            try
             {
-                StartSubscribe();
+                await InitializeServices();
             }
-
-            void OnDisable()
+            catch (Exception e)
             {
-                StopSubscribe();
+                Debug.LogException(e);
             }
+        }
 
-            void StartSubscribe()
-            {
-                CloudCodeManager.leveledUp += OpenLeveledUpPopup;
-            }
+        async Task InitializeServices()
+        {
+            await UnityServices.InitializeAsync();
 
-            void StopSubscribe()
-            {
-                CloudCodeManager.leveledUp -= OpenLeveledUpPopup;
-            }
+            // Check that scene has not been unloaded while processing async wait to prevent throw.
+            if (this == null) return;
 
-            async void Start()
-            {
-                try
-                {
-                    await InitializeServices();
-                }
-                catch (Exception e)
-                {
-                    Debug.LogException(e);
-                }
-            }
+            // Analytics events must be sent after UnityServices.Initialize() is finished.
+            AnalyticsManager.instance.SendSceneOpenedEvent();
 
-            async Task InitializeServices()
-            {
-                await UnityServices.InitializeAsync();
+            await SignInAndLoadDataFromServices();
+            if (this == null) return;
 
-                // Check that scene has not been unloaded while processing async wait to prevent throw.
-                if (this == null) return;
+            Debug.Log("Initialization and signin complete.");
+        }
 
-                // Analytics events must be sent after UnityServices.Initialize() is finished.
-                AnalyticsManager.instance.SendSceneOpenedEvent();
-
-                await SignInAndLoadDataFromServices();
-                if (this == null) return;
-
-                Debug.Log("Initialization and signin complete.");
-            }
-
-            async Task SignInAndLoadDataFromServices()
-            {
-                await SignInIfNecessary();
-                if (this == null) return;
-                Debug.Log($"Player id: {AuthenticationService.Instance.PlayerId}");
+        async Task SignInAndLoadDataFromServices()
+        {
+            await SignInIfNecessary();
+            if (this == null) return;
+            Debug.Log($"Player id: {AuthenticationService.Instance.PlayerId}");
                 
-                // Economy configuration should be refreshed every time the app initializes.
-                // Doing so updates the cached configuration data and initializes for this player any items or
-                // currencies that were recently published.
-                // 
-                // It's important to do this update before making any other calls to the Economy or Remote Config
-                // APIs as both use the cached data list. (Though it wouldn't be necessary to do if only using Remote
-                // Config in your project and not Economy.)
-                await EconomyManager.instance.RefreshEconomyConfiguration();
-                if (this == null) return;
+            // Economy configuration should be refreshed every time the app initializes.
+            // Doing so updates the cached configuration data and initializes for this player any items or
+            // currencies that were recently published.
+            // 
+            // It's important to do this update before making any other calls to the Economy or Remote Config
+            // APIs as both use the cached data list. (Though it wouldn't be necessary to do if only using Remote
+            // Config in your project and not Economy.)
+            await EconomyManager.instance.RefreshEconomyConfiguration();
+            if (this == null) return;
 
-                await LoadServicesData();
-                if (this == null) return;
+            await LoadServicesData();
+            if (this == null) return;
 
-                UpdateSceneViewAfterSignIn();
-            }
+            UpdateSceneViewAfterSignIn();
+        }
 
-            async Task SignInIfNecessary()
+        async Task SignInIfNecessary()
+        {
+            if (!AuthenticationService.Instance.IsSignedIn)
             {
-                if (!AuthenticationService.Instance.IsSignedIn)
-                {
-                    Debug.Log("Signing in...");
-                    await AuthenticationService.Instance.SignInAnonymouslyAsync();
-                }
+                Debug.Log("Signing in...");
+                await AuthenticationService.Instance.SignInAnonymouslyAsync();
             }
+        }
 
-            async Task LoadServicesData()
-            {
-                await Task.WhenAll(
-                    CloudSaveManager.instance.LoadAndCacheData(),
-                    EconomyManager.instance.RefreshCurrencyBalances(),
-                    RemoteConfigManager.instance.FetchConfigs()
-                );
-            }
+        async Task LoadServicesData()
+        {
+            await Task.WhenAll(
+                CloudSaveManager.instance.LoadAndCacheData(),
+                EconomyManager.instance.RefreshCurrencyBalances(),
+                RemoteConfigManager.instance.FetchConfigs()
+            );
+        }
 
-            void UpdateSceneViewAfterSignIn()
-            {
-                sceneView.OnSignedIn();
-                sceneView.EnableAndUpdate();
-            }
+        void UpdateSceneViewAfterSignIn()
+        {
+            sceneView.OnSignedIn();
+            sceneView.EnableAndUpdate();
+        }
 
-            public void OnSignInAsNewUserButtonPressed()
-            {
-                sceneView.ShowSignOutConfirmationPopup();
-            }
+        public void OnSignInAsNewUserButtonPressed()
+        {
+            sceneView.ShowSignOutConfirmationPopup();
+        }
 
-            public void OnCancelButtonPressed()
+        public void OnCancelButtonPressed()
+        {
+            sceneView.CloseSignOutConfirmationPopup();
+        }
+
+        public async void OnProceedButtonPressed()
+        {
+            try
             {
                 sceneView.CloseSignOutConfirmationPopup();
+                AnalyticsManager.instance.SendActionButtonPressedEvent("SignInAsNewUser");
+
+                SignOut();
+                if (this == null) return;
+
+                await SignInAndLoadDataFromServices();
             }
-
-            public async void OnProceedButtonPressed()
+            catch (Exception e)
             {
-                try
-                {
-                    sceneView.CloseSignOutConfirmationPopup();
-                    AnalyticsManager.instance.SendActionButtonPressedEvent("SignInAsNewUser");
-
-                    SignOut();
-                    if (this == null) return;
-
-                    await SignInAndLoadDataFromServices();
-                }
-                catch (Exception e)
-                {
-                    Debug.LogException(e);
-                }
+                Debug.LogException(e);
             }
+        }
 
-            void SignOut()
+        void SignOut()
+        {
+            // Note that signing out here signs you out of this player ID across all the use case samples.
+            if (AuthenticationService.Instance.IsSignedIn)
             {
-                // Note that signing out here signs you out of this player ID across all the use case samples.
-                if (AuthenticationService.Instance.IsSignedIn)
-                {
-                    Debug.Log("Signing out current player...");
-                    CloudSaveManager.instance.ClearCachedData();
-                    RemoteConfigManager.instance.ClearCachedData();
-                    EconomyManager.instance.ClearCurrencyBalances();
+                Debug.Log("Signing out current player...");
+                CloudSaveManager.instance.ClearCachedData();
+                RemoteConfigManager.instance.ClearCachedData();
+                EconomyManager.instance.ClearCurrencyBalances();
 
-                    AuthenticationService.Instance.SignOut();
+                AuthenticationService.Instance.SignOut();
 
-                    // Because this use case wants to immediately sign back in as a new anonymous user, instead of
-                    // the same one that had been previously signed in we will clear the session token.
-                    AuthenticationService.Instance.ClearSessionToken();
-                    UpdateSceneViewAfterSignOut();
-                }
+                // Because this use case wants to immediately sign back in as a new anonymous user, instead of
+                // the same one that had been previously signed in we will clear the session token.
+                AuthenticationService.Instance.ClearSessionToken();
+                UpdateSceneViewAfterSignOut();
             }
+        }
 
-            void UpdateSceneViewAfterSignOut()
+        void UpdateSceneViewAfterSignOut()
+        {
+            sceneView.OnSignedOut();
+            sceneView.UpdateScene();
+        }
+
+        public async void OnGainXPButtonPressed()
+        {
+            try
             {
-                sceneView.OnSignedOut();
+                AnalyticsManager.instance.SendActionButtonPressedEvent("GainXP");
+
+                await CloudCodeManager.instance.CallGainXPAndLevelIfReadyEndpoint();
+                if (this == null) return;
+
                 sceneView.UpdateScene();
             }
-
-            public async void OnGainXPButtonPressed()
+            catch (Exception e)
             {
-                try
-                {
-                    AnalyticsManager.instance.SendActionButtonPressedEvent("GainXP");
+                Debug.LogException(e);
+            }
+        }
 
-                    await CloudCodeManager.instance.CallGainXPAndLevelIfReadyEndpoint();
-                    if (this == null) return;
+        void OpenLeveledUpPopup(string currencyId, long rewardQuantity)
+        {
+            sceneView.UpdateScene();
 
-                    sceneView.UpdateScene();
-                }
-                catch (Exception e)
-                {
-                    Debug.LogException(e);
-                }
+            string spriteAddress = default;
+
+            // Convert the currency ID (ex: "COIN") to Addressable address (ex: "Sprites/Currency/Coin")
+            if (RemoteConfigManager.instance.currencyDataDictionary.TryGetValue(currencyId, out var currencyData))
+            {
+                spriteAddress = currencyData.spriteAddress;
             }
 
-            void OpenLeveledUpPopup(string currencyId, long rewardQuantity)
-            {
-                sceneView.UpdateScene();
+            var rewards = new List<RewardDetail>();
+            rewards.Add(new RewardDetail { 
+                id = currencyId,
+                spriteAddress = spriteAddress, 
+                quantity = rewardQuantity 
+            });
 
-                string spriteAddress = default;
-
-                // Convert the currency ID (ex: "COIN") to Addressable address (ex: "Sprites/Currency/Coin")
-                if (RemoteConfigManager.instance.currencyDataDictionary.TryGetValue(currencyId, out var currencyData))
-                {
-                    spriteAddress = currencyData.spriteAddress;
-                }
-
-                var rewards = new List<RewardDetail>();
-                rewards.Add(new RewardDetail { 
-                    id = currencyId,
-                    spriteAddress = spriteAddress, 
-                    quantity = rewardQuantity 
-                });
-
-                sceneView.OpenLevelUpPopup(rewards);
-            }
+            sceneView.OpenLevelUpPopup(rewards);
         }
     }
 }

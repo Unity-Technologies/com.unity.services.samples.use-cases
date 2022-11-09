@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace UnityGamingServicesUseCases.Editor
+namespace Unity.Services.Samples.Editor
 {
     /// <remarks>
     /// Custom readme class based on the readme done in Boss Room sample. For more context, see:

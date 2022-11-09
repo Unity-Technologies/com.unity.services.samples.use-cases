@@ -73,11 +73,11 @@
       "dependencies": {}
     },
     "com.unity.addressables": {
-      "version": "1.20.5",
+      "version": "1.21.1",
       "depth": 0,
       "source": "registry",
       "dependencies": {
-        "com.unity.scriptablebuildpipeline": "1.20.2",
+        "com.unity.scriptablebuildpipeline": "1.21.0",
         "com.unity.modules.assetbundle": "1.0.0",
         "com.unity.modules.imageconversion": "1.0.0",
         "com.unity.modules.jsonserialize": "1.0.0",
@@ -140,7 +140,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.remote-config": {
-      "version": "3.1.3",
+      "version": "3.2.2",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -164,7 +164,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.scriptablebuildpipeline": {
-      "version": "1.20.2",
+      "version": "1.21.0",
       "depth": 1,
       "source": "registry",
       "dependencies": {},
@@ -181,22 +181,23 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.services.authentication": {
-      "version": "2.0.0",
+      "version": "2.3.1",
       "depth": 0,
       "source": "registry",
       "dependencies": {
         "com.unity.nuget.newtonsoft-json": "3.0.2",
-        "com.unity.services.core": "1.3.1",
-        "com.unity.modules.unitywebrequest": "1.0.0"
+        "com.unity.services.core": "1.4.3",
+        "com.unity.modules.unitywebrequest": "1.0.0",
+        "com.unity.ugui": "1.0.0"
       },
       "url": "https://packages.unity.com"
     },
     "com.unity.services.cloudcode": {
-      "version": "2.0.1",
+      "version": "2.1.2",
       "depth": 0,
       "source": "registry",
       "dependencies": {
-        "com.unity.services.authentication": "2.0.0",
+        "com.unity.services.authentication": "2.2.0",
         "com.unity.services.core": "1.4.0",
         "com.unity.modules.unitywebrequest": "1.0.0",
         "com.unity.nuget.newtonsoft-json": "3.0.2"
@@ -214,7 +215,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.services.core": {
-      "version": "1.4.0",
+      "version": "1.4.3",
       "depth": 1,
       "source": "registry",
       "dependencies": {
@@ -225,18 +226,17 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.services.economy": {
-      "version": "2.0.4",
+      "version": "3.0.0",
       "depth": 0,
       "source": "registry",
       "dependencies": {
         "com.unity.services.authentication": "2.0.0",
-        "com.unity.remote-config-runtime": "3.1.0",
         "com.unity.services.core": "1.4.0"
       },
       "url": "https://packages.unity.com"
     },
     "com.unity.services.mediation": {
-      "version": "1.0.4",
+      "version": "1.0.5",
       "depth": 0,
       "source": "registry",
       "dependencies": {

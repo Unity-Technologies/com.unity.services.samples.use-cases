@@ -103,9 +103,9 @@ To replicate this sample scene's setup on your own dashboard, you will need to:
 
 [Publish the following script](https://docs.unity.com/cloud-code/implementation.html#Writing_your_first_script) in the **LiveOps** dashboard:
 
-| **Script**                         | **Parameters**                                                                                               | **Description**                                    | **Location in project**                                                                                    |
-|------------------------------------| ------------------------------------------------------------------------------------------------------------ | -------------------------------------------------- |------------------------------------------------------------------------------------------------------------|
-| `RewardedAds_GrantLevelEndRewards` | `multiplier` (this optional integer indicates the base rewards multiplier, if any, to apply for bonus rewards) | Handles reward distribution for various scenarios. | `Assets/Use Case Samples/Rewarded Ads With Unity Mediation/Cloud Code/RewardedAds_GrantLevelEndRewards.js` |
+| **Script**                         | **Parameters**                                                                                                                    | **Description**                                    | **Location in project**                                                                                    |
+|------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------| -------------------------------------------------- |------------------------------------------------------------------------------------------------------------|
+| `RewardedAds_GrantLevelEndRewards` | `multiplier`<br><br>`NUMERIC`<br><br>Optional integer indicating the base rewards multiplier, if any, to apply for bonus rewards. | Handles reward distribution for various scenarios. | `Assets/Use Case Samples/Rewarded Ads With Unity Mediation/Cloud Code/RewardedAds_GrantLevelEndRewards.js` |
 
 **Note**: The Cloud Code scripts included in the Cloud Code folder are local copies because you cannot view the sample project's dashboard. Changes to these scripts do not affect the behavior of this sample because they are not automatically uploaded to the Cloud Code service.
 

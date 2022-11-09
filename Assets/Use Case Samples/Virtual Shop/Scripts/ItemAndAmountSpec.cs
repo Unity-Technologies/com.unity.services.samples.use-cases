@@ -1,23 +1,20 @@
 
-namespace UnityGamingServicesUseCases
+namespace Unity.Services.Samples.VirtualShop
 {
-    namespace VirtualShop
+    public struct ItemAndAmountSpec
     {
-        public struct ItemAndAmountSpec
+        public string id;
+        public int amount;
+
+        public ItemAndAmountSpec(string id, int amount)
         {
-            public string id;
-            public int amount;
+            this.id = id;
+            this.amount = amount;
+        }
 
-            public ItemAndAmountSpec(string id, int amount)
-            {
-                this.id = id;
-                this.amount = amount;
-            }
-
-            public override string ToString()
-            {
-                return $"{id}:{amount}";
-            }
+        public override string ToString()
+        {
+            return $"{id}:{amount}";
         }
     }
 }

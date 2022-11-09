@@ -5,16 +5,16 @@ using System.Threading;
 using UnityEditor;
 #endif
 
-namespace UnityGamingServicesUseCases
+namespace Unity.Services.Samples
 {
     // See Microsoft's CancellationTokenSource docs
     // (https://learn.microsoft.com/en-us/dotnet/api/system.threading.cancellationtokensource?view=net-6.0)
     // for more information about its purpose and functioning.
-    public class CancellationTokenHelper: IDisposable
+    public class CancellationTokenHelper : IDisposable
     {
         CancellationTokenSource m_CancellationTokenSource;
         bool m_Disposed;
-        
+
         public CancellationToken cancellationToken => m_CancellationTokenSource.Token;
 
         public CancellationTokenHelper()

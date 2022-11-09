@@ -1,42 +1,39 @@
 ﻿using UnityEngine;
 
-namespace UnityGamingServicesUseCases
+namespace Unity.Services.Samples.DailyRewards
 {
-    namespace DailyRewards
+    public class CalendarView : MonoBehaviour
     {
-        public class CalendarView : MonoBehaviour
+        CalendarDayView[] calendarDays;
+
+
+        void Awake()
         {
-            CalendarDayView[] calendarDays;
+            calendarDays = GetComponentsInChildren<CalendarDayView>();
 
-
-            void Awake()
-            {
-                calendarDays = GetComponentsInChildren<CalendarDayView>();
-
-                for (var dayOn = 0; dayOn < calendarDays.Length; dayOn++)
-                { 
-                    calendarDays[dayOn].SetDayIndex(dayOn + 1);
-                }
+            for (var dayOn = 0; dayOn < calendarDays.Length; dayOn++)
+            { 
+                calendarDays[dayOn].SetDayIndex(dayOn + 1);
             }
+        }
 
-            public void UpdateStatus(DailyRewardsEventManager eventManager)
+        public void UpdateStatus(DailyRewardsEventManager eventManager)
+        {
+            var daysClaimed = eventManager.daysClaimed;
+
+            for (var dayOn = 0; dayOn < calendarDays.Length; dayOn++)
             {
-                var daysClaimed = eventManager.daysClaimed;
+                var dayView = calendarDays[dayOn];
 
-                for (var dayOn = 0; dayOn < calendarDays.Length; dayOn++)
-                {
-                    var dayView = calendarDays[dayOn];
-
-                    dayView.UpdateStatus(eventManager);
-                }
+                dayView.UpdateStatus(eventManager);
             }
+        }
 
-            public void SetUnclaimable()
+        public void SetUnclaimable()
+        {
+            for (var dayOn = 0; dayOn < calendarDays.Length; dayOn++)
             {
-                for (var dayOn = 0; dayOn < calendarDays.Length; dayOn++)
-                {
-                    calendarDays[dayOn].SetUnclaimable();
-                }
+                calendarDays[dayOn].SetUnclaimable();
             }
         }
     }

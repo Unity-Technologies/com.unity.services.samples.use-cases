@@ -334,11 +334,12 @@ MonoBehaviour:
       - body: 'Parameters:'
         bodyFormat: 0
         bulletList:
-        - body: batch
+        - body: commands
           bodyFormat: 2
           bulletList:
           - An array of Command keys
-          - 'i.e. ''{"commands": ["COMMANDBATCH_DEFEAT_RED_ENEMY", "COMMANDBATCH_OPEN_CHEST",
+          - 'Type: JSON'
+          - 'Example: ''{"commands": ["COMMANDBATCH_DEFEAT_RED_ENEMY", "COMMANDBATCH_OPEN_CHEST",
             "COMMANDBATCH_ACHIEVE_BONUS_GOAL", "COMMANDBATCH_DEFEAT_BLUE_ENEMY",
             "COMMANDBATCH_OPEN_CHEST", "COMMANDBATCH_ACHIEVE_BONUS_GOAL", "COMMANDBATCH_GAME_OVER"]}'''
       - body: 'Script: "Assets/Use Case Samples/Command Batching/Cloud Code/CommandBatching_ProcessBatch.js"'

@@ -120,8 +120,8 @@ Alternatively, you can send only the ungrouped parameters (for example, buttonNa
 
 [Publish the following script](https://docs.unity.com/cloud-code/implementation.html#Writing_your_first_script) in the **LiveOps** dashboard:
 
-| **Script**                                    | **Parameters** | **Description**                                                                                                                   | Location in project                                                                    |
-|-----------------------------------------------|----------------|-----------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------|
+| **Script**                                    | **Parameters** | **Description**                                                                                                                   | Location in project                                                                                          |
+|-----------------------------------------------|----------------|-----------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------|
 | `ABTestLevelDifficulty_GainXPAndLevelIfReady` | None           | Increments the player's XP and checks to see if the cumulative XP exceeds the level-up threshold defined by their A/B test group. | `Assets/Use Case Samples/AB Test Level Difficulty/Cloud Code/ABTestLevelDifficulty_GainXPAndLevelIfReady.js` |
 
 **Note:** The Cloud Code scripts included in the Cloud Code folder are local copies because you cannot view the sample project's dashboard.

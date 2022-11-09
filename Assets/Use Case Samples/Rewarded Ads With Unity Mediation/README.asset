@@ -312,11 +312,15 @@ MonoBehaviour:
     - body: RewardedAds_GrantLevelEndRewards
       bodyFormat: 1
       bulletList:
-      - body: 'Parameters: `multiplier` - Optional. An int representing the amount
-          the base rewards should be multiplied with, if any. Not included if just
-          distributing base rewards.'
+      - body: 'Parameters:'
         bodyFormat: 0
-        bulletList: []
+        bulletList:
+        - body: '"multiplier"'
+          bodyFormat: 0
+          bulletList:
+          - 'Type: NUMERIC'
+          - 'Optional. An int representing the amount the base rewards should be
+              multiplied by, if any. Not included if just distributing base rewards.'
       - body: 'Script: "Assets/Use Case Samples/Rewarded Ads With Unity Mediation/Cloud
           Code/RewardedAds_GrantLevelEndRewards.js"'
         bodyFormat: 0

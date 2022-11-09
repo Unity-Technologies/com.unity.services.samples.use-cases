@@ -22,6 +22,8 @@ To view each sample in action, open the Start Here scene in the Assets directory
 
 _Note: This project is tied to a Unity Services Account that allows read-only testing in the Editor. The messages "Unable to link project to Unity Services" in Project Settings and "Unable to access Unity Services" in Build Settings are expected. Additionally, you will be unable to create a device build of this project._
 
+_Note: This project uses the Unity Mediation package, which requires [CocoaPods](https://cocoapods.org/) to be installed if building for iOS. If your project uses the Unity Mediation package, see that package's [documentation](https://docs.unity.com/mediation) on [requirements](https://docs.unity.com/mediation/SDKIntegrationUnityRequirements.html) and [troubleshooting](https://docs.unity.com/mediation/TroubleshootingIntegrationsiOS.html), before building for iOS._
+
 ## List of Samples
 
 - [A/B Test on Game Difficulty](Assets/Use%20Case%20Samples/AB%20Test%20Level%20Difficulty/README.md) - Segment players into multiple test groups in order to determine which variation of a specific variable is the most engaging to the players (in this case, the amount of XP required for leveling up).

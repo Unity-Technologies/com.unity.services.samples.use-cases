@@ -1,32 +1,29 @@
 using UnityEngine;
 
-namespace UnityGamingServicesUseCases
+namespace Unity.Services.Samples.CommandBatching
 {
-    namespace CommandBatching
+    public class OpenChestCommand : Command
     {
-        public class OpenChestCommand : Command
+        public new const string key = "COMMANDBATCH_OPEN_CHEST";
+
+        public override void Execute()
         {
-            public new const string key = "COMMANDBATCH_OPEN_CHEST";
+            CommandBatchSystem.instance.EnqueueCommand(this);
+            ProcessCommandLocally();
+        }
 
-            public override void Execute()
-            {
-                CommandBatchSystem.instance.EnqueueCommand(this);
-                ProcessCommandLocally();
-            }
+        public override string GetKey()
+        {
+            return key;
+        }
 
-            public override string GetKey()
-            {
-                return key;
-            }
-
-            void ProcessCommandLocally()
-            {
-                var rewards = RemoteConfigManager.instance.commandRewards[key];
-                Debug.Log("Processing Open Chest Command Locally");
-                DistributeRewardsLocally(rewards);
-                GameStateManager.instance.SetIsOpenChestValidMove(false);
-                GameStateManager.instance.SetIsAchieveBonusGoalValidMove(true);
-            }
+        void ProcessCommandLocally()
+        {
+            var rewards = RemoteConfigManager.instance.commandRewards[key];
+            Debug.Log("Processing Open Chest Command Locally");
+            DistributeRewardsLocally(rewards);
+            GameStateManager.instance.SetIsOpenChestValidMove(false);
+            GameStateManager.instance.SetIsAchieveBonusGoalValidMove(true);
         }
     }
 }

@@ -3,7 +3,7 @@
 using UnityEditor;
 using UnityEngine;
 
-namespace UnityGamingServicesUseCases.Editor
+namespace Unity.Services.Samples.Editor
 {
     [CustomEditor(typeof(Readme))]
     [InitializeOnLoad]

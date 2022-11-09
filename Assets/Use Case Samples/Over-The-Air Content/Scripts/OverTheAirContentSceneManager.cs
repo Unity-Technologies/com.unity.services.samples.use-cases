@@ -7,213 +7,211 @@ using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
-namespace UnityGamingServicesUseCases
+namespace Unity.Services.Samples.OverTheAirContent
 {
-    namespace OverTheAirContent
+    public class OverTheAirContentSceneManager : MonoBehaviour
     {
-        public class OverTheAirContentSceneManager : MonoBehaviour
+        public OverTheAirContentSampleView sceneView;
+
+        string m_DownloadedContentPrefabAddress;
+        GameObject m_DownloadedContentGameObject;
+        AsyncOperationHandle m_LoadPrefabHandle;
+        AsyncOperationHandle<GameObject> m_InstantiatePrefabHandle;
+
+        async void Start()
         {
-            public OverTheAirContentSampleView sceneView;
-
-            string m_DownloadedContentPrefabAddress;
-            GameObject m_DownloadedContentGameObject;
-            AsyncOperationHandle m_LoadPrefabHandle;
-            AsyncOperationHandle<GameObject> m_InstantiatePrefabHandle;
-
-            async void Start()
+            try
             {
-                try
-                {
-                    await InitializeUnityServices();
+                await InitializeUnityServices();
 
-                    // Check that scene has not been unloaded while processing async wait to prevent throw.
-                    if (this == null) return;
-
-                    await DownloadContentCatalog();
-                }
-                catch (Exception e)
-                {
-                    Debug.LogException(e);
-                }
-            }
-
-            async Task InitializeUnityServices()
-            {
-                await UnityServices.InitializeAsync();
+                // Check that scene has not been unloaded while processing async wait to prevent throw.
                 if (this == null) return;
 
-                Debug.Log("Services Initialized.");
+                await DownloadContentCatalog();
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+            }
+        }
 
-                if (!AuthenticationService.Instance.IsSignedIn)
-                {
-                    Debug.Log("Signing in...");
-                    await AuthenticationService.Instance.SignInAnonymouslyAsync();
-                    if (this == null) return;
-                }
-                Debug.Log($"Player id: {AuthenticationService.Instance.PlayerId}");
+        async Task InitializeUnityServices()
+        {
+            await UnityServices.InitializeAsync();
+            if (this == null) return;
 
-                await RemoteConfigManager.instance.FetchConfigs();
+            Debug.Log("Services Initialized.");
+
+            if (!AuthenticationService.Instance.IsSignedIn)
+            {
+                Debug.Log("Signing in...");
+                await AuthenticationService.Instance.SignInAnonymouslyAsync();
+                if (this == null) return;
+            }
+            Debug.Log($"Player id: {AuthenticationService.Instance.PlayerId}");
+
+            await RemoteConfigManager.instance.FetchConfigs();
+        }
+
+        async Task DownloadContentCatalog()
+        {
+            sceneView.TransitionToState(OverTheAirContentSampleView.ViewState.Initializing);
+
+            var remoteCatalogAddress = RemoteConfigManager.instance.cloudCatalogAddress;
+
+            var handle = Addressables.LoadContentCatalogAsync(remoteCatalogAddress, false);
+            await handle.Task;
+            if (this == null) return;
+
+            switch (handle.Status)
+            {
+                case AsyncOperationStatus.None:
+                    Debug.Log("Catalog Download: None");
+                    break;
+
+                case AsyncOperationStatus.Succeeded:
+                    Debug.Log("Catalog Download: Succeeded");
+
+                    sceneView.TransitionToState(OverTheAirContentSampleView.ViewState.SampleBegin);
+
+                    break;
+
+                case AsyncOperationStatus.Failed:
+                    Debug.Log("Catalog Download: Failed");
+                    Addressables.Release(handle);
+                    throw handle.OperationException;
+
+                default:
+                    Addressables.Release(handle);
+                    throw new ArgumentOutOfRangeException();
             }
 
-            async Task DownloadContentCatalog()
+            Addressables.Release(handle);
+        }
+
+        IEnumerator DownloadNewContent()
+        {
+            sceneView.UpdateProgressBarText("Downloading New Content");
+            sceneView.UpdateProgressBarCompletion(0f);
+
+            var newContentAddresses = RemoteConfigManager.instance.GetNewContentAddresses();
+
+            m_DownloadedContentPrefabAddress = newContentAddresses[0];
+
+            var cacheCheckHandle = Addressables.GetDownloadSizeAsync(newContentAddresses);
+            while (!cacheCheckHandle.IsDone)
             {
-                sceneView.TransitionToState(OverTheAirContentSampleView.ViewState.Initializing);
+                yield return null;
+            }
+            var downloadSize = cacheCheckHandle.Result;
 
-                var remoteCatalogAddress = RemoteConfigManager.instance.cloudCatalogAddress;
+            Addressables.Release(cacheCheckHandle);
 
-                var handle = Addressables.LoadContentCatalogAsync(remoteCatalogAddress, false);
-                await handle.Task;
-                if (this == null) return;
+            if (downloadSize > 0)
+            {
+                var dependenciesHandle = Addressables.DownloadDependenciesAsync(newContentAddresses, Addressables.MergeMode.UseFirst);
+                while (!dependenciesHandle.IsDone)
+                {
+                    yield return null;
+                    sceneView.UpdateProgressBarCompletion(dependenciesHandle.PercentComplete);
+                }
 
-                switch (handle.Status)
+                switch (dependenciesHandle.Status)
                 {
                     case AsyncOperationStatus.None:
-                        Debug.Log("Catalog Download: None");
+                        Debug.Log("Content Download Result: None");
                         break;
 
                     case AsyncOperationStatus.Succeeded:
-                        Debug.Log("Catalog Download: Succeeded");
-
-                        sceneView.TransitionToState(OverTheAirContentSampleView.ViewState.SampleBegin);
-
+                        Debug.Log("Content Download Result: Succeeded");
                         break;
 
                     case AsyncOperationStatus.Failed:
-                        Debug.Log("Catalog Download: Failed");
-                        Addressables.Release(handle);
-                        throw handle.OperationException;
+                        Debug.Log("Content Download Result: Failed");
+                        break;
 
                     default:
                         throw new ArgumentOutOfRangeException();
                 }
 
-                Addressables.Release(handle);
+                Addressables.Release(dependenciesHandle);
+
+                sceneView.downloadProgressLabel.text = "Download Complete";
+            }
+            else
+            {
+                sceneView.UpdateProgressBarCompletion(1f);
+
+                sceneView.downloadProgressLabel.text = "Using Cached Assets";
             }
 
-            IEnumerator DownloadNewContent()
+            sceneView.TransitionToState(OverTheAirContentSampleView.ViewState.LauncherDownloadComplete);
+        }
+
+        public void OnBeginButtonPressed()
+        {
+            sceneView.TransitionToState(OverTheAirContentSampleView.ViewState.LauncherBegin);
+
+            StartCoroutine(DownloadNewContent());
+        }
+
+        public async void OnPlayButtonPressed()
+        {
+            try
             {
-                sceneView.UpdateProgressBarText("Downloading New Content");
-                sceneView.UpdateProgressBarCompletion(0f);
+                sceneView.TransitionToState(OverTheAirContentSampleView.ViewState.LoadingDownloadedContent);
 
-                var newContentAddresses = RemoteConfigManager.instance.GetNewContentAddresses();
-
-                m_DownloadedContentPrefabAddress = newContentAddresses[0];
-
-                var cacheCheckHandle = Addressables.GetDownloadSizeAsync(newContentAddresses);
-                while (!cacheCheckHandle.IsDone)
-                {
-                    yield return null;
-                }
-                var downloadSize = cacheCheckHandle.Result;
-
-                Addressables.Release(cacheCheckHandle);
-
-                if (downloadSize > 0)
-                {
-                    var dependenciesHandle = Addressables.DownloadDependenciesAsync(newContentAddresses, Addressables.MergeMode.UseFirst);
-                    while (!dependenciesHandle.IsDone)
-                    {
-                        yield return null;
-                        sceneView.UpdateProgressBarCompletion(dependenciesHandle.PercentComplete);
-                    }
-
-                    switch (dependenciesHandle.Status)
-                    {
-                        case AsyncOperationStatus.None:
-                            Debug.Log("Content Download Result: None");
-                            break;
-
-                        case AsyncOperationStatus.Succeeded:
-                            Debug.Log("Content Download Result: Succeeded");
-                            break;
-
-                        case AsyncOperationStatus.Failed:
-                            Debug.Log("Content Download Result: Failed");
-                            break;
-
-                        default:
-                            throw new ArgumentOutOfRangeException();
-                    }
-
-                    Addressables.Release(dependenciesHandle);
-
-                    sceneView.downloadProgressLabel.text = "Download Complete";
-                }
-                else
-                {
-                    sceneView.UpdateProgressBarCompletion(1f);
-
-                    sceneView.downloadProgressLabel.text = "Using Cached Assets";
-                }
-
-                sceneView.TransitionToState(OverTheAirContentSampleView.ViewState.LauncherDownloadComplete);
+                await LoadDownloadedContentPrefab();
             }
-
-            public void OnBeginButtonPressed()
+            catch (Exception e)
             {
-                sceneView.TransitionToState(OverTheAirContentSampleView.ViewState.LauncherBegin);
-
-                StartCoroutine(DownloadNewContent());
+                Debug.LogException(e);
             }
+        }
 
-            public async void OnPlayButtonPressed()
+        async Task LoadDownloadedContentPrefab()
+        {
+            m_LoadPrefabHandle = Addressables.LoadAssetAsync<GameObject>(m_DownloadedContentPrefabAddress);
+            await m_LoadPrefabHandle.Task;
+            if (this == null) return;
+
+            m_InstantiatePrefabHandle = Addressables.InstantiateAsync(m_DownloadedContentPrefabAddress, sceneView.downloadedContentContainer);
+            await m_InstantiatePrefabHandle.Task;
+            if (this == null) return;
+
+            if (m_InstantiatePrefabHandle.Result != null)
             {
-                try
-                {
-                    sceneView.TransitionToState(OverTheAirContentSampleView.ViewState.LoadingDownloadedContent);
+                m_DownloadedContentGameObject = m_InstantiatePrefabHandle.Result;
 
-                    await LoadDownloadedContentPrefab();
-                }
-                catch (Exception e)
+                if (m_InstantiatePrefabHandle.Result.transform is RectTransform prefabRectTransform)
                 {
-                    Debug.LogException(e);
+                    prefabRectTransform.SetSiblingIndex(0);
                 }
             }
 
-            async Task LoadDownloadedContentPrefab()
+            sceneView.TransitionToState(OverTheAirContentSampleView.ViewState.SampleComplete);
+
+            Addressables.Release(m_LoadPrefabHandle);
+        }
+
+        public async void OnRestartSampleButtonPressed(bool clearCache)
+        {
+            try
             {
-                m_LoadPrefabHandle = Addressables.LoadAssetAsync<GameObject>(m_DownloadedContentPrefabAddress);
-                await m_LoadPrefabHandle.Task;
-                if (this == null) return;
+                Destroy(m_DownloadedContentGameObject);
 
-                m_InstantiatePrefabHandle = Addressables.InstantiateAsync(m_DownloadedContentPrefabAddress, sceneView.downloadedContentContainer);
-                await m_InstantiatePrefabHandle.Task;
-                if (this == null) return;
+                Addressables.Release(m_InstantiatePrefabHandle);
 
-                if (m_InstantiatePrefabHandle.Result != null)
+                if (clearCache)
                 {
-                    m_DownloadedContentGameObject = m_InstantiatePrefabHandle.Result;
-
-                    if (m_InstantiatePrefabHandle.Result.transform is RectTransform prefabRectTransform)
-                    {
-                        prefabRectTransform.SetSiblingIndex(0);
-                    }
+                    Caching.ClearCache();
                 }
 
-                sceneView.TransitionToState(OverTheAirContentSampleView.ViewState.SampleComplete);
-
-                Addressables.Release(m_LoadPrefabHandle);
+                await DownloadContentCatalog();
             }
-
-            public async void OnRestartSampleButtonPressed(bool clearCache)
+            catch (Exception e)
             {
-                try
-                {
-                    Destroy(m_DownloadedContentGameObject);
-
-                    Addressables.Release(m_InstantiatePrefabHandle);
-
-                    if (clearCache)
-                    {
-                        Caching.ClearCache();
-                    }
-
-                    await DownloadContentCatalog();
-                }
-                catch (Exception e)
-                {
-                    Debug.LogException(e);
-                }
+                Debug.LogException(e);
             }
         }
     }

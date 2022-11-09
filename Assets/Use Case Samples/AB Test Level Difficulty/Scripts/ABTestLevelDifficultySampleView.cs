@@ -3,132 +3,129 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UnityGamingServicesUseCases
+namespace Unity.Services.Samples.ABTestLevelDifficulty
 {
-    namespace ABTestLevelDifficulty
+    public class ABTestLevelDifficultySampleView : MonoBehaviour
     {
-        public class ABTestLevelDifficultySampleView : MonoBehaviour
+        public TextMeshProUGUI playerLevel;
+        public Slider progressBar;
+        public TextMeshProUGUI playerXPProgressText;
+
+        [Space]
+        public Button gainXPButton;
+        public TextMeshProUGUI xpUpdateToast;
+        public Animator xpUpdateToastAnimator;
+
+        [Space]
+        public Button signInAsNewPlayerButton;
+
+        [Space]
+        public TextMeshProUGUI abTestGroupText;
+
+        [Space]
+        public RewardPopupView rewardPopup;
+
+        [Space]
+        public MessagePopup signOutConfirmationPopup;
+
+        bool m_Enabled;
+        bool m_IsSignedIn;
+
+
+        void OnEnable()
         {
-            public TextMeshProUGUI playerLevel;
-            public Slider progressBar;
-            public TextMeshProUGUI playerXPProgressText;
+            StartSubscribe();
+        }
 
-            [Space]
-            public Button gainXPButton;
-            public TextMeshProUGUI xpUpdateToast;
-            public Animator xpUpdateToastAnimator;
+        void OnDisable()
+        {
+            StopSubscribe();
+        }
 
-            [Space]
-            public Button signInAsNewPlayerButton;
+        void StartSubscribe()
+        {
+            CloudCodeManager.xpIncreased += ShowXPUpdateToast;
+        }
 
-            [Space]
-            public TextMeshProUGUI abTestGroupText;
+        void StopSubscribe()
+        {
+            CloudCodeManager.xpIncreased -= ShowXPUpdateToast;
+        }
 
-            [Space]
-            public RewardPopupView rewardPopup;
+        public void UpdateScene()
+        {
+            UpdatePlayerABGroup();
+            UpdatePlayerLevel();
+            UpdateProgressBar();
+            UpdateButtons();
+        }
 
-            [Space]
-            public MessagePopup signOutConfirmationPopup;
+        void UpdatePlayerABGroup()
+        {
+            abTestGroupText.text = $"Group: {RemoteConfigManager.instance.abGroupName}";
+        }
 
-            bool m_Enabled;
-            bool m_IsSignedIn;
+        void UpdatePlayerLevel()
+        {
+            playerLevel.text = CloudSaveManager.instance.playerLevel.ToString();
+        }
 
+        void UpdateProgressBar()
+        {
+            progressBar.maxValue = RemoteConfigManager.instance.levelUpXPNeeded;
+            progressBar.value = CloudSaveManager.instance.playerXP;
+            playerXPProgressText.text = $"{CloudSaveManager.instance.playerXP}/{RemoteConfigManager.instance.levelUpXPNeeded}";
+        }
 
-            void OnEnable()
-            {
-                StartSubscribe();
-            }
+        void UpdateButtons()
+        {
+            gainXPButton.interactable = m_Enabled && m_IsSignedIn;
+            signInAsNewPlayerButton.interactable = m_Enabled;
+        }
 
-            void OnDisable()
-            {
-                StopSubscribe();
-            }
+        public void OnSignedIn()
+        {
+            m_IsSignedIn = true;
+        }
 
-            void StartSubscribe()
-            {
-                CloudCodeManager.xpIncreased += ShowXPUpdateToast;
-            }
+        public void OnSignedOut()
+        {
+            m_IsSignedIn = false;
+        }
 
-            void StopSubscribe()
-            {
-                CloudCodeManager.xpIncreased -= ShowXPUpdateToast;
-            }
+        public void EnableAndUpdate()
+        {
+            m_Enabled = true;
+            UpdateScene();
+        }
 
-            public void UpdateScene()
-            {
-                UpdatePlayerABGroup();
-                UpdatePlayerLevel();
-                UpdateProgressBar();
-                UpdateButtons();
-            }
+        public void ShowXPUpdateToast(int xpIncreaseAmount)
+        {
+            xpUpdateToast.text = $"+{xpIncreaseAmount} XP";
+            xpUpdateToast.gameObject.SetActive(true);
+            xpUpdateToastAnimator.SetTrigger("ToastPop");
+            Invoke(nameof(HideXPUpdateToast), 1f);
+        }
 
-            void UpdatePlayerABGroup()
-            {
-                abTestGroupText.text = $"Group: {RemoteConfigManager.instance.abGroupName}";
-            }
+        void HideXPUpdateToast()
+        {
+            xpUpdateToastAnimator.ResetTrigger("ToastPop");
+            xpUpdateToast.gameObject.SetActive(false);
+        }
 
-            void UpdatePlayerLevel()
-            {
-                playerLevel.text = CloudSaveManager.instance.playerLevel.ToString();
-            }
+        public void OpenLevelUpPopup(List<RewardDetail> rewards)
+        {
+            rewardPopup.Show(rewards);
+        }
 
-            void UpdateProgressBar()
-            {
-                progressBar.maxValue = RemoteConfigManager.instance.levelUpXPNeeded;
-                progressBar.value = CloudSaveManager.instance.playerXP;
-                playerXPProgressText.text = $"{CloudSaveManager.instance.playerXP}/{RemoteConfigManager.instance.levelUpXPNeeded}";
-            }
+        public void ShowSignOutConfirmationPopup()
+        {
+            signOutConfirmationPopup.gameObject.SetActive(true);
+        }
 
-            void UpdateButtons()
-            {
-                gainXPButton.interactable = m_Enabled && m_IsSignedIn;
-                signInAsNewPlayerButton.interactable = m_Enabled;
-            }
-
-            public void OnSignedIn()
-            {
-                m_IsSignedIn = true;
-            }
-
-            public void OnSignedOut()
-            {
-                m_IsSignedIn = false;
-            }
-
-            public void EnableAndUpdate()
-            {
-                m_Enabled = true;
-                UpdateScene();
-            }
-
-            public void ShowXPUpdateToast(int xpIncreaseAmount)
-            {
-                xpUpdateToast.text = $"+{xpIncreaseAmount} XP";
-                xpUpdateToast.gameObject.SetActive(true);
-                xpUpdateToastAnimator.SetTrigger("ToastPop");
-                Invoke(nameof(HideXPUpdateToast), 1f);
-            }
-
-            void HideXPUpdateToast()
-            {
-                xpUpdateToastAnimator.ResetTrigger("ToastPop");
-                xpUpdateToast.gameObject.SetActive(false);
-            }
-
-            public void OpenLevelUpPopup(List<RewardDetail> rewards)
-            {
-                rewardPopup.Show(rewards);
-            }
-
-            public void ShowSignOutConfirmationPopup()
-            {
-                signOutConfirmationPopup.gameObject.SetActive(true);
-            }
-
-            public void CloseSignOutConfirmationPopup()
-            {
-                signOutConfirmationPopup.Hide();
-            }
+        public void CloseSignOutConfirmationPopup()
+        {
+            signOutConfirmationPopup.Hide();
         }
     }
 }

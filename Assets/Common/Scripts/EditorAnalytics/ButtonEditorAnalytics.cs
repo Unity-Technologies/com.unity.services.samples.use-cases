@@ -10,7 +10,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UnityGamingServicesUseCases
+namespace Unity.Services.Samples
 {
     [RequireComponent(typeof(Button))]
     public class ButtonEditorAnalytics : MonoBehaviour

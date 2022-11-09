@@ -4,6 +4,28 @@ All notable changes to this project will be documented in this file.
 
 ​The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).​
 
+## [1.8.0] - 2022-11-09
+
+### Added
+* Added a Project Inbox feature to the Start Here scene that allows the UGS Use Cases Development team to send messages with updates about the project to our users.
+
+### Changed
+
+* Reformated namespaces to align with service namespaces and eliminate nested namespaces.
+* Added parameter types to all docs for Cloud Code scripts and improved overall table alignment in plain text editors.
+* Updated Unity Gaming Services packages and related packages to the latest stable packages released as of 2022-11-07.
+  * Addressables updated from `1.20.5` to `1.21.1`
+  * Authentication updated from `2.0.0` to `2.3.1`
+  * Cloud Code updated from `2.0.1` to `2.1.2`
+  * Economy updated from `2.0.4` to `3.0.0`
+    * Replaced usages of deprecated property `CustomData` with newer property `CustomDataDeserializable`.
+  * Mediation updated from `1.0.4` to `1.0.5`
+  * Remote Config updated from `3.1.3` to `3.2.2`
+
+## Fixed
+
+* Fixed an issue in the Battle Pass where if an Economy error (such as a rate limit error) was generated while trying to claim a tier, the Cloud Code script was not properly throwing the error, and the tier was marked as claimed even though the reward was not given.
+
 ## [1.7.0] - 2022-10-12
 
 ### Changed

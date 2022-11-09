@@ -5,201 +5,196 @@ using Unity.Services.Economy;
 using Unity.Services.Economy.Model;
 using UnityEngine;
 
-namespace UnityGamingServicesUseCases
+namespace Unity.Services.Samples.InGameMailbox
 {
-    namespace InGameMailbox
+    public class EconomyManager : MonoBehaviour
     {
-        public class EconomyManager : MonoBehaviour
+        public CurrencyHudView currencyHudView;
+        public InventoryHudView inventoryHudView;
+
+        public static EconomyManager instance { get; private set; }
+
+        public Dictionary<string, string> economySpriteAddresses { get; private set; } =
+            new Dictionary<string, string>();
+
+        // Dictionary of all Virtual Purchase transactions ids to lists of rewards.
+        public Dictionary<string, List<ItemAndAmountSpec>> virtualPurchaseTransactions { get; private set; } =
+            new Dictionary<string, List<ItemAndAmountSpec>>();
+
+        List<CurrencyDefinition> m_CurrencyDefinitions;
+        List<InventoryItemDefinition> m_InventoryItemDefinitions;
+        List<VirtualPurchaseDefinition> m_VirtualPurchaseDefinitions;
+
+        void Awake()
         {
-            public CurrencyHudView currencyHudView;
-            public InventoryHudView inventoryHudView;
-
-            public static EconomyManager instance { get; private set; }
-
-            public Dictionary<string, string> economySpriteAddresses { get; private set; } =
-                new Dictionary<string, string>();
-
-            // Dictionary of all Virtual Purchase transactions ids to lists of rewards.
-            public Dictionary<string, List<ItemAndAmountSpec>> virtualPurchaseTransactions { get; private set; } =
-                new Dictionary<string, List<ItemAndAmountSpec>>();
-
-            List<CurrencyDefinition> m_CurrencyDefinitions;
-            List<InventoryItemDefinition> m_InventoryItemDefinitions;
-            List<VirtualPurchaseDefinition> m_VirtualPurchaseDefinitions;
-
-            void Awake()
+            if (instance != null && instance != this)
             {
-                if (instance != null && instance != this)
-                {
-                    Destroy(this);
-                }
-                else
-                {
-                    instance = this;
-                }
+                Destroy(this);
             }
-
-            public async Task RefreshEconomyConfiguration()
+            else
             {
-                // Calling GetCurrenciesAsync (or GetInventoryItemsAsync, or GetVirtualPurchasesAsync, etc), in addition
-                // to returning the appropriate Economy configurations, will update the cached configuration list,
-                // including any new Currency, Inventory Item, or Purchases that have been published since the last
-                // time the player's configuration was cached.
-                // 
-                // This is important to do before hitting the Economy or Remote Config services for any other calls as
-                // both use the cached data list.
-                var getCurrenciesTask = EconomyService.Instance.Configuration.GetCurrenciesAsync();
-                var getInventoryItemsTask = EconomyService.Instance.Configuration.GetInventoryItemsAsync();
-                var getVirtualPurchasesTask = EconomyService.Instance.Configuration.GetVirtualPurchasesAsync();
-
-                await Task.WhenAll(getCurrenciesTask, getInventoryItemsTask, getVirtualPurchasesTask);
-
-                // Check that scene has not been unloaded while processing async wait to prevent throw.
-                if (this == null)
-                    return;
-
-                m_CurrencyDefinitions = getCurrenciesTask.Result;
-                m_InventoryItemDefinitions = getInventoryItemsTask.Result;
-                m_VirtualPurchaseDefinitions = getVirtualPurchasesTask.Result;
+                instance = this;
             }
+        }
 
-            public void InitializeEconomyLookups()
+        public async Task RefreshEconomyConfiguration()
+        {
+            // Calling GetCurrenciesAsync (or GetInventoryItemsAsync, or GetVirtualPurchasesAsync, etc), in addition
+            // to returning the appropriate Economy configurations, will update the cached configuration list,
+            // including any new Currency, Inventory Item, or Purchases that have been published since the last
+            // time the player's configuration was cached.
+            // 
+            // This is important to do before hitting the Economy or Remote Config services for any other calls as
+            // both use the cached data list.
+            var getCurrenciesTask = EconomyService.Instance.Configuration.GetCurrenciesAsync();
+            var getInventoryItemsTask = EconomyService.Instance.Configuration.GetInventoryItemsAsync();
+            var getVirtualPurchasesTask = EconomyService.Instance.Configuration.GetVirtualPurchasesAsync();
+
+            await Task.WhenAll(getCurrenciesTask, getInventoryItemsTask, getVirtualPurchasesTask);
+
+            // Check that scene has not been unloaded while processing async wait to prevent throw.
+            if (this == null)
+                return;
+
+            m_CurrencyDefinitions = getCurrenciesTask.Result;
+            m_InventoryItemDefinitions = getInventoryItemsTask.Result;
+            m_VirtualPurchaseDefinitions = getVirtualPurchasesTask.Result;
+        }
+
+        public void InitializeEconomyLookups()
+        {
+            InitializeEconomySpriteAddressLookup(m_CurrencyDefinitions, m_InventoryItemDefinitions);
+            InitializeVirtualPurchaseLookup();
+        }
+
+        void InitializeEconomySpriteAddressLookup(List<CurrencyDefinition> currencyDefinitions,
+            List<InventoryItemDefinition> inventoryItemDefinitions)
+        {
+            economySpriteAddresses.Clear();
+
+            if (currencyDefinitions != null)
             {
-                InitializeEconomySpriteAddressLookup(m_CurrencyDefinitions, m_InventoryItemDefinitions);
-                InitializeVirtualPurchaseLookup();
-            }
-
-            void InitializeEconomySpriteAddressLookup(List<CurrencyDefinition> currencyDefinitions,
-                List<InventoryItemDefinition> inventoryItemDefinitions)
-            {
-                economySpriteAddresses.Clear();
-
-                if (currencyDefinitions != null)
+                foreach (var currencyDefinition in currencyDefinitions)
                 {
-                    foreach (var currencyDefinition in currencyDefinitions)
+                    if (currencyDefinition.CustomDataDeserializable.GetAs<Dictionary<string, string>>() is { } customData
+                        && customData.TryGetValue("spriteAddress", out var spriteAddress))
                     {
-                        if (currencyDefinition.CustomData != null
-                            && currencyDefinition.CustomData.TryGetValue("spriteAddress", out var spriteAddressObject)
-                            && spriteAddressObject is string spriteAddress)
-                        {
-                            economySpriteAddresses.Add(currencyDefinition.Id, spriteAddress);
-                        }
-                    }
-                }
-
-                if (inventoryItemDefinitions != null)
-                {
-                    foreach (var inventoryItemDefinition in inventoryItemDefinitions)
-                    {
-                        if (inventoryItemDefinition.CustomData != null
-                            && inventoryItemDefinition.CustomData.TryGetValue("spriteAddress", out var spriteAddressObject)
-                            && spriteAddressObject is string spriteAddress)
-                        {
-                            economySpriteAddresses.Add(inventoryItemDefinition.Id, spriteAddress);
-                        }
+                        economySpriteAddresses.Add(currencyDefinition.Id, spriteAddress);
                     }
                 }
             }
 
-            void InitializeVirtualPurchaseLookup()
+            if (inventoryItemDefinitions != null)
             {
-                virtualPurchaseTransactions.Clear();
-
-                if (m_VirtualPurchaseDefinitions == null)
+                foreach (var inventoryItemDefinition in inventoryItemDefinitions)
                 {
-                    return;
-                }
-
-                foreach (var virtualPurchaseDefinition in m_VirtualPurchaseDefinitions)
-                {
-                    var rewards = ParseEconomyItems(virtualPurchaseDefinition.Rewards);
-                    virtualPurchaseTransactions[virtualPurchaseDefinition.Id] = rewards;
+                    if (inventoryItemDefinition.CustomDataDeserializable.GetAs<Dictionary<string, string>>() is { } customData
+                        && customData.TryGetValue("spriteAddress", out var spriteAddress))
+                    {
+                        economySpriteAddresses.Add(inventoryItemDefinition.Id, spriteAddress);
+                    }
                 }
             }
+        }
 
-            List<ItemAndAmountSpec> ParseEconomyItems(List<PurchaseItemQuantity> itemQuantities)
+        void InitializeVirtualPurchaseLookup()
+        {
+            virtualPurchaseTransactions.Clear();
+
+            if (m_VirtualPurchaseDefinitions == null)
             {
-                var itemsAndAmountsSpec = new List<ItemAndAmountSpec>();
-
-                foreach (var itemQuantity in itemQuantities)
-                {
-                    var id = itemQuantity.Item.GetReferencedConfigurationItem().Id;
-                    itemsAndAmountsSpec.Add(new ItemAndAmountSpec(id, itemQuantity.Amount));
-                }
-
-                return itemsAndAmountsSpec;
+                return;
             }
 
-            public async Task RefreshCurrencyBalances()
+            foreach (var virtualPurchaseDefinition in m_VirtualPurchaseDefinitions)
             {
-                GetBalancesResult balanceResult = null;
+                var rewards = ParseEconomyItems(virtualPurchaseDefinition.Rewards);
+                virtualPurchaseTransactions[virtualPurchaseDefinition.Id] = rewards;
+            }
+        }
 
-                try
-                {
-                    balanceResult = await GetEconomyBalances();
-                }
-                catch (EconomyRateLimitedException e)
-                {
-                    balanceResult = await Utils.RetryEconomyFunction(GetEconomyBalances, e.RetryAfter);
-                }
-                catch (Exception e)
-                {
-                    Debug.Log("Problem getting Economy currency balances:");
-                    Debug.LogException(e);
-                }
+        List<ItemAndAmountSpec> ParseEconomyItems(List<PurchaseItemQuantity> itemQuantities)
+        {
+            var itemsAndAmountsSpec = new List<ItemAndAmountSpec>();
 
-                // Check that scene has not been unloaded while processing async wait to prevent throw.
-                if (this == null)
-                    return;
-
-                currencyHudView.SetBalances(balanceResult);
+            foreach (var itemQuantity in itemQuantities)
+            {
+                var id = itemQuantity.Item.GetReferencedConfigurationItem().Id;
+                itemsAndAmountsSpec.Add(new ItemAndAmountSpec(id, itemQuantity.Amount));
             }
 
-            static Task<GetBalancesResult> GetEconomyBalances()
+            return itemsAndAmountsSpec;
+        }
+
+        public async Task RefreshCurrencyBalances()
+        {
+            GetBalancesResult balanceResult = null;
+
+            try
             {
-                var options = new GetBalancesOptions { ItemsPerFetch = 100 };
-                return EconomyService.Instance.PlayerBalances.GetBalancesAsync(options);
+                balanceResult = await GetEconomyBalances();
+            }
+            catch (EconomyRateLimitedException e)
+            {
+                balanceResult = await Utils.RetryEconomyFunction(GetEconomyBalances, e.RetryAfter);
+            }
+            catch (Exception e)
+            {
+                Debug.Log("Problem getting Economy currency balances:");
+                Debug.LogException(e);
             }
 
-            public async Task RefreshInventory()
+            // Check that scene has not been unloaded while processing async wait to prevent throw.
+            if (this == null)
+                return;
+
+            currencyHudView.SetBalances(balanceResult);
+        }
+
+        static Task<GetBalancesResult> GetEconomyBalances()
+        {
+            var options = new GetBalancesOptions { ItemsPerFetch = 100 };
+            return EconomyService.Instance.PlayerBalances.GetBalancesAsync(options);
+        }
+
+        public async Task RefreshInventory()
+        {
+            GetInventoryResult inventoryResult = null;
+
+            // empty the inventory view first
+            inventoryHudView.Refresh(default);
+
+            try
             {
-                GetInventoryResult inventoryResult = null;
-
-                // empty the inventory view first
-                inventoryHudView.Refresh(default);
-
-                try
-                {
-                    inventoryResult = await GetEconomyPlayerInventory();
-                }
-                catch (EconomyRateLimitedException e)
-                {
-                    inventoryResult = await Utils.RetryEconomyFunction(GetEconomyPlayerInventory, e.RetryAfter);
-                }
-                catch (Exception e)
-                {
-                    Debug.Log("Problem getting Economy inventory items:");
-                    Debug.LogException(e);
-                }
-
-                if (this == null)
-                    return;
-
-                inventoryHudView.Refresh(inventoryResult.PlayersInventoryItems);
+                inventoryResult = await GetEconomyPlayerInventory();
+            }
+            catch (EconomyRateLimitedException e)
+            {
+                inventoryResult = await Utils.RetryEconomyFunction(GetEconomyPlayerInventory, e.RetryAfter);
+            }
+            catch (Exception e)
+            {
+                Debug.Log("Problem getting Economy inventory items:");
+                Debug.LogException(e);
             }
 
-            static Task<GetInventoryResult> GetEconomyPlayerInventory()
-            {
-                var options = new GetInventoryOptions { ItemsPerFetch = 100 };
-                return EconomyService.Instance.PlayerInventory.GetInventoryAsync(options);
-            }
+            if (this == null)
+                return;
 
-            void OnDestroy()
+            inventoryHudView.Refresh(inventoryResult.PlayersInventoryItems);
+        }
+
+        static Task<GetInventoryResult> GetEconomyPlayerInventory()
+        {
+            var options = new GetInventoryOptions { ItemsPerFetch = 100 };
+            return EconomyService.Instance.PlayerInventory.GetInventoryAsync(options);
+        }
+
+        void OnDestroy()
+        {
+            if (instance == this)
             {
-                if (instance == this)
-                {
-                    instance = null;
-                }
+                instance = null;
             }
         }
     }

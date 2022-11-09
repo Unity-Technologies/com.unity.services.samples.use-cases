@@ -60,6 +60,18 @@ MonoBehaviour:
     bulletList: []
     linkList: []
   - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 'Note: This project uses the Unity Mediation package, which requires
+      CocoaPods to be installed if building for iOS. If
+      your project uses the Unity Mediation package, see
+      that package''s documentation on Requirements and Troubleshooting
+      , before building for iOS.'
+    bulletList: []
+    linkList: []
+  - subHeader1: 
     subHeader2: List of Samples
     subHeader3: 
     body: 
@@ -111,8 +123,8 @@ MonoBehaviour:
     - body: Idle Clicker Game
       bodyFormat: 1
       bulletList:
-      - body: Update server authoritative game state in real time, similar to idle clicker
-          and social games with a merging mechanic and a generic unlock manager.
+      - body: Update server authoritative game state in real time, similar to idle
+          clicker and social games with a merging mechanic and a generic unlock manager.
         bodyFormat: 0
         bulletList: []
       linkList: []
