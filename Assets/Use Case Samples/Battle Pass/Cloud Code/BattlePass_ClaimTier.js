@@ -1,5 +1,5 @@
 // This file is an inactive copy of what is published on the Cloud Code server for this sample, so changes made to
-// this file will not have any effect locally. Changes to Cloud Code scripts are normally done directly in the 
+// this file will not have any effect locally. Changes to Cloud Code scripts are normally done directly in the
 // Unity Dashboard.
 
 const _ = require("lodash-4.17");
@@ -31,8 +31,6 @@ const cloudSaveKeyBattlePassPurchasedSeason = "BATTLE_PASS_PURCHASED_SEASON";
 
 module.exports = async ({ params, context, logger }) => {
     try {
-        const claimTierKey = "BATTLE_PASS_TIER_" + (params.tierIndex + 1);
-
         const { projectId, environmentId, playerId, accessToken } = context;
         const cloudSaveApi = new DataApi({ accessToken });
         const remoteConfigApi = new SettingsApi();
@@ -44,7 +42,7 @@ module.exports = async ({ params, context, logger }) => {
 
         let returnObject = {};
 
-        const remoteConfigData = await getRemoteConfigData(remoteConfigApi, projectId, environmentId, playerId, timestampMinutes, claimTierKey);
+        const remoteConfigData = await getRemoteConfigData(remoteConfigApi, projectId, environmentId, playerId, timestampMinutes);
 
         let playerState = await getCloudSaveData(cloudSaveApi, projectId, playerId);
 
@@ -54,7 +52,7 @@ module.exports = async ({ params, context, logger }) => {
 
         validateClaim(playerState, params.tierIndex);
 
-        returnObject.grantedRewards = getRewardsFromRemoteConfigData(remoteConfigData, playerState, claimTierKey);
+        returnObject.grantedRewards = getRewardsFromRemoteConfigData(remoteConfigData, playerState, params.tierIndex);
 
         await grantRewards(economyCurrencyApi, economyInventoryApi, projectId, playerId, returnObject.grantedRewards);
 
@@ -76,11 +74,11 @@ function getTimestampMinutes(timestamp) {
     return ("0" + date.getMinutes()).slice(-2);
 }
 
-async function getRemoteConfigData(remoteConfigApi, projectId, environmentId, playerId, timestampMinutes, claimTierKey) {
+async function getRemoteConfigData(remoteConfigApi, projectId, environmentId, playerId, timestampMinutes) {
     // get the current season configuration
     const result = await remoteConfigApi.assignSettings({
         projectId,
-        environmentId, 
+        environmentId,
         "userId": playerId,
         // associate the current timestamp with the user in Remote Config to affect which season Game Override we get
         "attributes": {
@@ -90,7 +88,7 @@ async function getRemoteConfigData(remoteConfigApi, projectId, environmentId, pl
                 "timestampMinutes": timestampMinutes
             },
         },
-        "key": ["EVENT_KEY", claimTierKey]
+        "key": ["EVENT_KEY", "BATTLE_PASS_REWARDS_FREE", "BATTLE_PASS_REWARDS_PREMIUM"]
     });
 
     // the returned configuration contains all the tier rewards for the current season
@@ -144,12 +142,12 @@ function shouldResetBattlePassProgress(remoteConfigData, playerState, timestamp)
         return true;
     }
 
-    // Because the key of the season that was active the last time the event was completed is the same as the 
-    // current season's key, we now need to check whether the timestamp of the last time the event was completed 
+    // Because the key of the season that was active the last time the event was completed is the same as the
+    // current season's key, we now need to check whether the timestamp of the last time the event was completed
     // is so old that it couldn't possibly be from the current iteration of this season.
     //
     // We do these cyclical seasons for ease of demonstration in the sample project, however in a real world
-    // implementation (where seasonal events last longer than a few minutes) you would likely create a new 
+    // implementation (where seasonal events last longer than a few minutes) you would likely create a new
     // override in remote config each time an event period was starting.
     const currentEventDurationMinutes = remoteConfigData.EVENT_TOTAL_DURATION_MINUTES;
     const millisecondsPerMinute = 60000;
@@ -178,23 +176,20 @@ function validateClaim(playerState, tierToClaimArrayIndex) {
     }
 }
 
-function getRewardsFromRemoteConfigData(remoteConfigData, playerState, claimTierKey) {
+function getRewardsFromRemoteConfigData(remoteConfigData, playerState, claimTierIndex) {
     let returnRewards = [];
 
-    const tierRewards = remoteConfigData[claimTierKey];
+    const freeReward = remoteConfigData["BATTLE_PASS_REWARDS_FREE"][claimTierIndex];
+    const premiumReward = remoteConfigData["BATTLE_PASS_REWARDS_PREMIUM"][claimTierIndex];
 
-    if (tierRewards != null) {
-        if (tierRewards.reward != null) {
-            returnRewards.push(tierRewards.reward);
-        }
+    if (freeReward !== null) {
+        returnRewards.push(freeReward);
+    }
 
-        // Does the current player own the current Battle Pass?
-        // By this point in the code, the BattlePass would have been reset if it was too old.
-        const ownsBattlePass = playerState.battlePassPurchasedSeason === remoteConfigData.EVENT_KEY;
+    const ownsBattlePass = playerState.battlePassPurchasedSeason === remoteConfigData.EVENT_KEY;
 
-        if (ownsBattlePass && tierRewards.battlePassReward != null) {
-            returnRewards.push(tierRewards.battlePassReward);
-        }
+    if (ownsBattlePass && premiumReward !== null) {
+        returnRewards.push(premiumReward);
     }
 
     return returnRewards;

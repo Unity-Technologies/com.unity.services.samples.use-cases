@@ -1,5 +1,5 @@
 // This file is an inactive copy of what is published on the Cloud Code server for this sample, so changes made to
-// this file will not have any effect locally. Changes to Cloud Code scripts are normally done directly in the 
+// this file will not have any effect locally. Changes to Cloud Code scripts are normally done directly in the
 // Unity Dashboard.
 
 const _ = require("lodash-4.17");
@@ -74,7 +74,7 @@ async function getRemoteConfigData(remoteConfigApi, projectId, environmentId, pl
     // get the current season configuration
     const result = await remoteConfigApi.assignSettings({
         projectId,
-        environmentId, 
+        environmentId,
         "userId": playerId,
         // associate the current timestamp with the user in Remote Config to affect which season Game Override we get
         "attributes": {
@@ -137,12 +137,12 @@ function shouldResetBattlePassProgress(remoteConfigData, playerState, timestamp)
         return true;
     }
 
-    // Because the key of the season that was active the last time the event was completed is the same as the 
-    // current season's key, we now need to check whether the timestamp of the last time the event was completed 
+    // Because the key of the season that was active the last time the event was completed is the same as the
+    // current season's key, we now need to check whether the timestamp of the last time the event was completed
     // is so old that it couldn't possibly be from the current iteration of this season.
     //
     // We do these cyclical seasons for ease of demonstration in the sample project, however in a real world
-    // implementation (where seasonal events last longer than a few minutes) you would likely create a new 
+    // implementation (where seasonal events last longer than a few minutes) you would likely create a new
     // override in remote config each time an event period was starting.
     const currentEventDurationMinutes = remoteConfigData.EVENT_TOTAL_DURATION_MINUTES;
     const millisecondsPerMinute = 60000;
@@ -186,7 +186,7 @@ function getHighestNonLockedTier(playerState) {
     // Loop backwards through the tier states to find the highest one that's not locked.
 
     for (let i = playerState.battlePassSeasonTierStates.length - 1; i >= 0; i--) {
-        if (playerState.battlePassSeasonTierStates[i] != tierState.Locked) {
+        if (playerState.battlePassSeasonTierStates[i] !== tierState.Locked) {
             return i;
         }
     }

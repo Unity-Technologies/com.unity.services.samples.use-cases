@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 ​The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).​
 
+## [1.8.1] - 2023-01-20
+
+### Fixed
+
+* The BattlePass_ClaimTier.js, BattlePass_GainSeasonXP.js, and BattlePass_PurchaseBattlePass.js Cloud Code sample scripts were outdated and have now been updated to work with the latest backend data model described in the Battle Pass README.md file.
+* The Battle Pass README.md file now includes the required "service" fields in the examples for defining rewards in the Game Overrides section.
+
 ## [1.8.0] - 2022-11-09
 
 ### Added
