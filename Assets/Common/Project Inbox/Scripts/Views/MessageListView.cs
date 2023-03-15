@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,11 +7,15 @@ namespace Unity.Services.Samples.ProjectInbox
 {
     public class MessageListView : MonoBehaviour
     {
-        [SerializeField] MessagePreviewView m_MessagePreviewPrefab;
-        [SerializeField] Transform m_MessageListContainer;
+        [SerializeField]
+        MessagePreviewView messagePreviewPrefab;
+
+        [SerializeField]
+        Transform messageListContainer;
 
         [Header("Assign In Scene")]
-        [SerializeField] ProjectInboxManager m_ProjectInboxManager;
+        [SerializeField]
+        ProjectInboxManager projectInboxManager;
 
         Dictionary<string, (GameObject gameObject, Button button)> m_MessagePreviews =
             new Dictionary<string, (GameObject, Button)>();
@@ -18,7 +23,7 @@ namespace Unity.Services.Samples.ProjectInbox
         string m_SelectedMessageId;
         MessagePreviewView m_SelectedMessagePreviewView;
 
-        private void Awake()
+        void Awake()
         {
             InitializeMessagePreviews();
         }
@@ -35,8 +40,8 @@ namespace Unity.Services.Samples.ProjectInbox
                 var inboxMessage = inboxMessages[index];
                 var isCurrentlySelected = string.Equals(inboxMessage.messageId, m_SelectedMessageId);
 
-                var view = Instantiate(m_MessagePreviewPrefab, m_MessageListContainer);
-                view.SetData(inboxMessage, isCurrentlySelected, m_ProjectInboxManager);
+                var view = Instantiate(messagePreviewPrefab, messageListContainer);
+                view.SetData(inboxMessage, isCurrentlySelected, projectInboxManager);
 
                 var messagePreviewGameObject = view.gameObject;
                 var button = messagePreviewGameObject.GetComponent<Button>();
@@ -47,11 +52,11 @@ namespace Unity.Services.Samples.ProjectInbox
 
         void ClearMessageListContainer()
         {
-            foreach (var messagePreview in m_MessagePreviews.Values) 
+            foreach (var messagePreview in m_MessagePreviews.Values)
             {
                 Destroy(messagePreview.gameObject);
             }
-            
+
             m_MessagePreviews.Clear();
         }
 

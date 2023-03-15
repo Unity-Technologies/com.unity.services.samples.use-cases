@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,7 +13,6 @@ namespace Unity.Services.Samples.IdleClickerGame
         // Unlock counters based on key values.
         // Note that we use strings as keys so the Unlock Manager could support any arbitrary accomplishments.
         Dictionary<string, int> m_UnlockCounters;
-
 
         void Awake()
         {
@@ -30,8 +30,9 @@ namespace Unity.Services.Samples.IdleClickerGame
         {
             if (unlockCounters is null)
             {
-                throw new System.ArgumentNullException("SetUnlockCounters called with null dictionary.");
+                throw new ArgumentNullException("SetUnlockCounters called with null dictionary.");
             }
+
             m_UnlockCounters = unlockCounters;
         }
 
@@ -51,8 +52,9 @@ namespace Unity.Services.Samples.IdleClickerGame
         {
             if (m_UnlockCounters is null)
             {
-                throw new System.InvalidOperationException("Unlock Manager not ready. Be sure to call SetUnlockCounters before checking unlock status.");
+                throw new InvalidOperationException("Unlock Manager not ready. Be sure to call SetUnlockCounters before checking unlock status.");
             }
+
             if (!m_UnlockCounters.TryGetValue(key, out int count))
             {
                 throw new KeyNotFoundException($"Unlock Manager does not have a value for '{key}'");

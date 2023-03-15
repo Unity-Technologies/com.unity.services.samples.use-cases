@@ -81,7 +81,7 @@ namespace Unity.Services.Samples.SeasonalEvents
             try
             {
                 return await CloudCodeService.Instance.CallEndpointAsync<long>(
-                    "SeasonalEvents_GetServerTime", 
+                    "SeasonalEvents_GetServerTime",
                     new Dictionary<string, object>());
             }
             catch (CloudCodeException e)
@@ -102,7 +102,7 @@ namespace Unity.Services.Samples.SeasonalEvents
             if (e is CloudCodeRateLimitedException cloudCodeRateLimitedException)
             {
                 Debug.Log("Cloud Code rate limit has been exceeded. " +
-                            $"Wait {cloudCodeRateLimitedException.RetryAfter} seconds and try again.");
+                    $"Wait {cloudCodeRateLimitedException.RetryAfter} seconds and try again.");
                 return;
             }
 
@@ -155,34 +155,34 @@ namespace Unity.Services.Samples.SeasonalEvents
             {
                 case k_InvalidRewardDistributionAttemptScriptStatusCode:
                     Debug.Log("No rewards were granted for completing the challenge: " +
-                                $"{cloudCodeCustomError.message}");
+                        $"{cloudCodeCustomError.message}");
                     break;
 
                 case k_HttpBadRequestStatusCode:
-                    Debug.Log("A bad server request occurred during Cloud Code script execution: " + 
-                                $"{cloudCodeCustomError.name}: {cloudCodeCustomError.message} : " +
-                                $"{cloudCodeCustomError.details[0]}");
+                    Debug.Log("A bad server request occurred during Cloud Code script execution: " +
+                        $"{cloudCodeCustomError.name}: {cloudCodeCustomError.message} : " +
+                        $"{cloudCodeCustomError.details[0]}");
                     break;
 
                 case k_HttpTooManyRequestsStatusCode:
                     Debug.Log($"Rate Limit has been exceeded. Wait {cloudCodeCustomError.retryAfter} " +
-                                $"seconds and try again.");
+                        "seconds and try again.");
                     break;
 
                 case k_GenericCloudCodeScriptStatusCode:
                     Debug.Log("A problem occured while trying to grant seasonal rewards: "
-                                + cloudCodeCustomError.message);
+                        + cloudCodeCustomError.message);
                     break;
 
                 case k_UnexpectedFormatCustomStatusCode:
-                    Debug.Log($"Cloud Code returned an Unprocessable Entity exception, " +
-                                $"but it could not be parsed: { cloudCodeCustomError.message }. " +
-                                $"Original error: { cloudCodeCustomError.InnerException?.Message }");
+                    Debug.Log("Cloud Code returned an Unprocessable Entity exception, " +
+                        $"but it could not be parsed: {cloudCodeCustomError.message}. " +
+                        $"Original error: {cloudCodeCustomError.InnerException?.Message}");
                     break;
 
                 default:
                     Debug.Log($"Cloud code returned error: {cloudCodeCustomError.status}: " +
-                                $"{cloudCodeCustomError.name}: {cloudCodeCustomError.message}");
+                        $"{cloudCodeCustomError.name}: {cloudCodeCustomError.message}");
                     break;
             }
         }
@@ -217,8 +217,9 @@ namespace Unity.Services.Samples.SeasonalEvents
             public string retryAfter;
             public string[] details;
 
-            public CloudCodeCustomError(string name, int status, string message = null, 
-                Exception innerException = null) : base(message, innerException)
+            public CloudCodeCustomError(string name, int status, string message = null,
+                Exception innerException = null)
+                : base(message, innerException)
             {
                 this.name = name;
                 this.status = status;

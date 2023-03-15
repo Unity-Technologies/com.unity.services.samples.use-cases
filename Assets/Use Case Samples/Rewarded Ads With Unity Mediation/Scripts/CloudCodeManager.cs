@@ -62,7 +62,7 @@ namespace Unity.Services.Samples.RewardedAds
 
                     result = await CloudCodeService.Instance.CallEndpointAsync<GrantLevelEndRewardsResult>(
                         "RewardedAds_GrantLevelEndRewards",
-                        new Dictionary<string, object>{{ "multiplier", (int) multiplier }});
+                        new Dictionary<string, object> { { "multiplier", (int)multiplier } });
                 }
 
                 // Check that scene has not been unloaded while processing async wait to prevent throw.
@@ -90,7 +90,7 @@ namespace Unity.Services.Samples.RewardedAds
             if (e is CloudCodeRateLimitedException cloudCodeRateLimitedException)
             {
                 Debug.Log("Cloud Code rate limit has been exceeded. " +
-                            $"Wait {cloudCodeRateLimitedException.RetryAfter} seconds and try again.");
+                    $"Wait {cloudCodeRateLimitedException.RetryAfter} seconds and try again.");
                 return;
             }
 
@@ -144,29 +144,29 @@ namespace Unity.Services.Samples.RewardedAds
             {
                 case k_InvalidRewardGrantScriptStatusCode:
                     Debug.Log("Reward not granted due to an invalid operation: " +
-                                $"{cloudCodeCustomError.message}");
+                        $"{cloudCodeCustomError.message}");
                     break;
 
                 case k_HttpBadRequestStatusCode:
-                    Debug.Log("A bad server request occurred during Cloud Code script execution: " + 
-                                $"{cloudCodeCustomError.name}: {cloudCodeCustomError.message} : " +
-                                $"{cloudCodeCustomError.details[0]}");
+                    Debug.Log("A bad server request occurred during Cloud Code script execution: " +
+                        $"{cloudCodeCustomError.name}: {cloudCodeCustomError.message} : " +
+                        $"{cloudCodeCustomError.details[0]}");
                     break;
 
                 case k_HttpTooManyRequestsStatusCode:
                     Debug.Log($"Rate Limit has been exceeded. Wait {cloudCodeCustomError.retryAfter} " +
-                                $"seconds and try again.");
+                        "seconds and try again.");
                     break;
 
                 case k_UnexpectedFormatCustomStatusCode:
-                    Debug.Log($"Cloud Code returned an Unprocessable Entity exception, " +
-                                $"but it could not be parsed: { cloudCodeCustomError.message }. " +
-                                $"Original error: { cloudCodeCustomError.InnerException?.Message }");
+                    Debug.Log("Cloud Code returned an Unprocessable Entity exception, " +
+                        $"but it could not be parsed: {cloudCodeCustomError.message}. " +
+                        $"Original error: {cloudCodeCustomError.InnerException?.Message}");
                     break;
 
                 default:
                     Debug.Log($"Cloud code returned error: {cloudCodeCustomError.status}: " +
-                                $"{cloudCodeCustomError.name}: {cloudCodeCustomError.message}");
+                        $"{cloudCodeCustomError.name}: {cloudCodeCustomError.message}");
                     break;
             }
         }
@@ -193,8 +193,9 @@ namespace Unity.Services.Samples.RewardedAds
             public string retryAfter;
             public string[] details;
 
-            public CloudCodeCustomError(string name, int status, string message = null, 
-                Exception innerException = null) : base(message, innerException)
+            public CloudCodeCustomError(string name, int status, string message = null,
+                Exception innerException = null)
+                : base(message, innerException)
             {
                 this.name = name;
                 this.status = status;

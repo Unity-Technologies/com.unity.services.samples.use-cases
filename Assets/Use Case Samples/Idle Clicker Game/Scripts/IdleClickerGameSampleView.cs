@@ -35,13 +35,12 @@ namespace Unity.Services.Samples.IdleClickerGame
 
         public bool didDrag { get; private set; }
 
-        bool m_EnabledFlag = false;
+        bool m_EnabledFlag;
         readonly GridEntity[,] m_GridEntity = new GridEntity[k_PlayfieldSize, k_PlayfieldSize];
 
         GridEntity m_CurrentGridEntity;
         GridEntity m_DragGridEntity;
         GameObject m_DragObject;
-
 
         public void Update()
         {

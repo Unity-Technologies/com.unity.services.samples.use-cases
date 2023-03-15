@@ -15,7 +15,6 @@ namespace Unity.Services.Samples.DailyRewards
 
         DailyRewardsEventManager eventManager;
 
-
         void Awake()
         {
             eventManager = GetComponent<DailyRewardsEventManager>();
@@ -41,7 +40,7 @@ namespace Unity.Services.Samples.DailyRewards
                 // Economy configuration should be refreshed every time the app initializes.
                 // Doing so updates the cached configuration data and initializes for this player any items or
                 // currencies that were recently published.
-                // 
+                //
                 // It's important to do this update before making any other calls to the Economy or Remote Config
                 // APIs as both use the cached data list. (Though it wouldn't be necessary to do if only using Remote
                 // Config in your project and not Economy.)
@@ -51,6 +50,7 @@ namespace Unity.Services.Samples.DailyRewards
                 await Task.WhenAll(
                     EconomyManager.instance.FetchCurrencySprites(),
                     EconomyManager.instance.RefreshCurrencyBalances(),
+
                     // This method ultimately calls a Cloud Code script that makes Remote Config calls, so must
                     // happen after RefreshEconomyConfiguration.
                     eventManager.RefreshDailyRewardsEventStatus()
@@ -144,7 +144,7 @@ namespace Unity.Services.Samples.DailyRewards
                 }
 
                 ShowStatus();
-                 
+
                 sceneView.OpenEventWindow();
             }
             catch (Exception e)

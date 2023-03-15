@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,20 +7,27 @@ namespace Unity.Services.Samples.ProjectInbox
 {
     public class InboxButtonView : MonoBehaviour
     {
-        [SerializeField] Button m_InboxButton;
-        [SerializeField] Image m_MessagesCallout;
-        [SerializeField] Image m_InboxCountIndicator;
-        [SerializeField] TextMeshProUGUI m_InboxCountText;
+        [SerializeField]
+        Button inboxButton;
+
+        [SerializeField]
+        Image messagesCallout;
+
+        [SerializeField]
+        Image inboxCountIndicator;
+
+        [SerializeField]
+        TextMeshProUGUI inboxCountText;
 
         void Awake()
         {
             HideNewMessageAlerts();
-            m_InboxButton.interactable = false;
+            inboxButton.interactable = false;
         }
 
         public void SetInteractable(bool isInteractable)
         {
-            m_InboxButton.interactable = isInteractable;
+            inboxButton.interactable = isInteractable;
         }
 
         public void UpdateView(int unreadMessageCount)
@@ -36,15 +44,15 @@ namespace Unity.Services.Samples.ProjectInbox
 
         void ShowNewMessageAlerts(int messageCount)
         {
-            m_InboxCountText.text = messageCount.ToString();
-            m_InboxCountIndicator.gameObject.SetActive(true);
-            m_MessagesCallout.gameObject.SetActive(true);
+            inboxCountText.text = messageCount.ToString();
+            inboxCountIndicator.gameObject.SetActive(true);
+            messagesCallout.gameObject.SetActive(true);
         }
 
         void HideNewMessageAlerts()
         {
-            m_InboxCountIndicator.gameObject.SetActive(false);
-            m_MessagesCallout.gameObject.SetActive(false);
+            inboxCountIndicator.gameObject.SetActive(false);
+            messagesCallout.gameObject.SetActive(false);
         }
     }
 }

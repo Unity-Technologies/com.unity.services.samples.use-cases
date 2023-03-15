@@ -159,19 +159,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &8570322065809076148
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4211456958446304464}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 06b0a11160ab444328f4c66e07c105dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  buttonName: ProjectInbox_DeleteOpenMessageButton
 --- !u!1 &5228395875930822050
 GameObject:
   m_ObjectHideFlags: 0
@@ -921,12 +908,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58b19abce7f14254bba5020dc453f39e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Title: {fileID: 8352435685544248246}
-  m_Content: {fileID: 2828395947203187135}
-  m_MessageImage: {fileID: 8275304281081621202}
-  m_ContentScrollRect: {fileID: 8320917034878461445}
-  m_ProjectInboxManager: {fileID: 0}
-  m_SceneCamera: {fileID: 0}
+  title: {fileID: 8352435685544248246}
+  content: {fileID: 2828395947203187135}
+  messageImage: {fileID: 8275304281081621202}
+  contentScrollRect: {fileID: 8320917034878461445}
+  projectInboxManager: {fileID: 0}
+  sceneCamera: {fileID: 0}
 --- !u!1 &8352435686645553609
 GameObject:
   m_ObjectHideFlags: 0
@@ -1205,6 +1192,19 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2256864359564870795, guid: 3406cef7d93b04f96a698ea5492f0a94, type: 3}
   m_PrefabInstance: {fileID: 2676237583466592344}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &8570322065809076148
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4211456958446304464}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06b0a11160ab444328f4c66e07c105dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonName: ProjectInbox_DeleteOpenMessageButton
 --- !u!1001 &6625859270734676597
 PrefabInstance:
   m_ObjectHideFlags: 0

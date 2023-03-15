@@ -19,8 +19,8 @@ namespace Unity.Services.Samples.IdleClickerGame
         public override string ToString()
         {
             var unlockCountersStr = string.Join(",", unlockCounters.Select(kv => $"{kv.Key}={kv.Value}"));
-            return $"timestamp:{timestamp}, " + 
-                $"currencyBalance:{currencyBalance}, " + 
+            return $"timestamp:{timestamp}, " +
+                $"currencyBalance:{currencyBalance}, " +
                 $"wells_level1:[{string.Join(",", wells_level1)}], " +
                 $"wells_level2:[{string.Join(",", wells_level2)}], " +
                 $"wells_level3:[{string.Join(",", wells_level3)}], " +

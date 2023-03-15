@@ -27,7 +27,6 @@ namespace Unity.Services.Samples.CloudAIMiniGame
 
         public static CloudCodeManager instance { get; private set; }
 
-
         void Awake()
         {
             if (instance != null && instance != this)
@@ -47,7 +46,6 @@ namespace Unity.Services.Samples.CloudAIMiniGame
                 instance = null;
             }
         }
-
 
         public async Task<UpdatedState> CallGetStateEndpoint()
         {
@@ -74,7 +72,7 @@ namespace Unity.Services.Samples.CloudAIMiniGame
             {
                 var updatedState = await CloudCodeService.Instance.CallEndpointAsync<UpdatedState>(
                     "CloudAiMiniGame_ValidatePlayerMoveAndRespond",
-                    new Dictionary<string, object>{{ "coord", coord }});
+                    new Dictionary<string, object> { { "coord", coord } });
 
                 return updatedState;
             }
@@ -111,7 +109,7 @@ namespace Unity.Services.Samples.CloudAIMiniGame
             if (e is CloudCodeRateLimitedException cloudCodeRateLimitedException)
             {
                 Debug.Log("Cloud Code rate limit has been exceeded. " +
-                            $"Wait {cloudCodeRateLimitedException.RetryAfter} seconds and try again.");
+                    $"Wait {cloudCodeRateLimitedException.RetryAfter} seconds and try again.");
                 return;
             }
 
@@ -165,13 +163,13 @@ namespace Unity.Services.Samples.CloudAIMiniGame
             {
                 case k_HttpBadRequestStatusCode:
                     Debug.Log("A bad server request occurred during Cloud Code script execution: " +
-                                $"{cloudCodeCustomError.name}: {cloudCodeCustomError.message} : " +
-                                $"{cloudCodeCustomError.details[0]}");
+                        $"{cloudCodeCustomError.name}: {cloudCodeCustomError.message} : " +
+                        $"{cloudCodeCustomError.details[0]}");
                     break;
 
                 case k_HttpTooManyRequestsStatusCode:
                     Debug.Log($"Rate Limit has been exceeded. Wait {cloudCodeCustomError.retryAfter} " +
-                                $"seconds and try again.");
+                        "seconds and try again.");
                     break;
 
                 case k_GenericCloudCodeScriptStatusCode:
@@ -187,14 +185,14 @@ namespace Unity.Services.Samples.CloudAIMiniGame
                     break;
 
                 case k_UnexpectedFormatCustomStatusCode:
-                    Debug.Log($"Cloud Code returned an Unprocessable Entity exception, " +
-                                $"but it could not be parsed: { cloudCodeCustomError.message }. " +
-                                $"Original error: { cloudCodeCustomError.InnerException?.Message }");
+                    Debug.Log("Cloud Code returned an Unprocessable Entity exception, " +
+                        $"but it could not be parsed: {cloudCodeCustomError.message}. " +
+                        $"Original error: {cloudCodeCustomError.InnerException?.Message}");
                     break;
 
                 default:
                     Debug.Log($"Cloud code returned error: {cloudCodeCustomError.status}: " +
-                                $"{cloudCodeCustomError.name}: {cloudCodeCustomError.message}");
+                        $"{cloudCodeCustomError.name}: {cloudCodeCustomError.message}");
                     break;
             }
         }
@@ -207,8 +205,9 @@ namespace Unity.Services.Samples.CloudAIMiniGame
             public string retryAfter;
             public string[] details;
 
-            public CloudCodeCustomError(string name, int status, string message = null, 
-                Exception innerException = null) : base(message, innerException)
+            public CloudCodeCustomError(string name, int status, string message = null,
+                Exception innerException = null)
+                : base(message, innerException)
             {
                 this.name = name;
                 this.status = status;

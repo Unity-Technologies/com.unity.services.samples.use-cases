@@ -15,7 +15,6 @@ namespace Unity.Services.Samples.StarterPack
 
         const string k_StarterPackCloudSaveKey = "STARTER_PACK_STATUS";
 
-
         async void Start()
         {
             try
@@ -36,7 +35,7 @@ namespace Unity.Services.Samples.StarterPack
                 // Economy configuration should be refreshed every time the app initializes.
                 // Doing so updates the cached configuration data and initializes for this player any items or
                 // currencies that were recently published.
-                // 
+                //
                 // It's important to do this update before making any other calls to the Economy or Remote Config
                 // APIs as both use the cached data list. (Though it wouldn't be necessary to do if only using Remote
                 // Config in your project and not Economy.)
@@ -63,7 +62,7 @@ namespace Unity.Services.Samples.StarterPack
         public async void OnBuyButtonPressed()
         {
             try
-            { 
+            {
                 StarterPackSampleView.instance.SetInteractable(false);
 
                 await CloudCodeManager.instance.CallPurchaseStarterPackEndpoint();
@@ -89,7 +88,7 @@ namespace Unity.Services.Samples.StarterPack
         public async void OnGiveTenGemsButtonPressed()
         {
             try
-            { 
+            {
                 StarterPackSampleView.instance.SetInteractable(false);
 
                 var balanceResponse = await EconomyService.Instance.PlayerBalances.IncrementBalanceAsync("GEM", 10);

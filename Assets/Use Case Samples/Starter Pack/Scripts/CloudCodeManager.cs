@@ -21,7 +21,7 @@ namespace Unity.Services.Samples.StarterPack
         // Custom status codes
         const int k_UnexpectedFormatCustomStatusCode = int.MinValue;
         const int k_VirtualPurchaseFailedStatusCode = 2;
-            
+
         // Unity Gaming Services status codes via Cloud Code
         const int k_EconomyPurchaseCostsNotMetStatusCode = 10504;
         const int k_EconomyValidationExceptionStatusCode = 1007;
@@ -73,7 +73,7 @@ namespace Unity.Services.Samples.StarterPack
             if (e is CloudCodeRateLimitedException cloudCodeRateLimitedException)
             {
                 Debug.Log("Cloud Code rate limit has been exceeded. " +
-                            $"Wait {cloudCodeRateLimitedException.RetryAfter} seconds and try again.");
+                    $"Wait {cloudCodeRateLimitedException.RetryAfter} seconds and try again.");
                 return;
             }
 
@@ -129,36 +129,36 @@ namespace Unity.Services.Samples.StarterPack
 
                 case k_VirtualPurchaseFailedStatusCode:
                     Debug.Log($"The purchase could not be completed: {cloudCodeCustomError.name}: " +
-                                $"{cloudCodeCustomError.message}");
+                        $"{cloudCodeCustomError.message}");
                     break;
 
                 case k_EconomyValidationExceptionStatusCode:
                 case k_HttpBadRequestStatusCode:
-                    Debug.Log("A bad server request occurred during Cloud Code script execution: " + 
-                                $"{cloudCodeCustomError.name}: {cloudCodeCustomError.message} : " +
-                                $"{cloudCodeCustomError.details[0]}");
+                    Debug.Log("A bad server request occurred during Cloud Code script execution: " +
+                        $"{cloudCodeCustomError.name}: {cloudCodeCustomError.message} : " +
+                        $"{cloudCodeCustomError.details[0]}");
                     break;
 
                 case k_RateLimitExceptionStatusCode:
                     // With this status code, message will include which service triggered this rate limit.
                     Debug.Log($"{cloudCodeCustomError.message}. Wait {cloudCodeCustomError.retryAfter} " +
-                                $"seconds and try again.");
+                        "seconds and try again.");
                     break;
 
                 case k_HttpTooManyRequestsStatusCode:
                     Debug.Log($"Rate Limit has been exceeded. Wait {cloudCodeCustomError.retryAfter} " +
-                                $"seconds and try again.");
+                        "seconds and try again.");
                     break;
 
                 case k_UnexpectedFormatCustomStatusCode:
-                    Debug.Log($"Cloud Code returned an Unprocessable Entity exception, " +
-                                $"but it could not be parsed: { cloudCodeCustomError.message }. " +
-                                $"Original error: { cloudCodeCustomError.InnerException?.Message }");
+                    Debug.Log("Cloud Code returned an Unprocessable Entity exception, " +
+                        $"but it could not be parsed: {cloudCodeCustomError.message}. " +
+                        $"Original error: {cloudCodeCustomError.InnerException?.Message}");
                     break;
 
                 default:
                     Debug.Log($"Cloud code returned error: {cloudCodeCustomError.status}: " +
-                                $"{cloudCodeCustomError.name}: {cloudCodeCustomError.message}");
+                        $"{cloudCodeCustomError.name}: {cloudCodeCustomError.message}");
                     break;
             }
         }
@@ -171,8 +171,9 @@ namespace Unity.Services.Samples.StarterPack
             public string retryAfter;
             public string[] details;
 
-            public CloudCodeCustomError(string name, int status, string message = null, 
-                Exception innerException = null) : base(message, innerException)
+            public CloudCodeCustomError(string name, int status, string message = null,
+                Exception innerException = null)
+                : base(message, innerException)
             {
                 this.name = name;
                 this.status = status;

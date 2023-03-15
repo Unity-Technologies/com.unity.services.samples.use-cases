@@ -55,7 +55,7 @@ namespace Unity.Services.Samples.InGameMailbox
                 var dayFormat = "m";
                 var timeFormat = "t";
                 m_Expiration = $"Expires on {expiration.ToString(dayFormat, culture)} " +
-                                $"at {expiration.ToString(timeFormat, culture)}";
+                    $"at {expiration.ToString(timeFormat, culture)}";
             }
             else
             {

@@ -40,9 +40,11 @@ To replicate this use case, you need the following [Unity packages](https://docs
 
 | **Package**                                                                           | **Role**                                                                                                                                                   |
 |---------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [Cloud Code](https://docs.unity.com/cloud-code/implementation.html#SDK_installation)  | Accesses the cooldown status, picks and grants random currency and inventory items through the Economy server, and then returns the result of the reward.  |
-| [Cloud Save](https://docs.unity.com/cloud-save/implementation.html#SDK-installation)  | Stores and retrieves the last granted reward time to allow cooldown values to persist between sessions.                                                    |
-| [Economy](https://docs.unity.com/economy/SDK-installation.html)                       | Retrieves the starting and updated currency balances at runtime.                                                                                           |
+| [Authentication](https://docs.unity.com/authentication/IntroUnityAuthentication.html) | Automatically signs in the player as an anonymous user to keep track of their data server-side.                                                            |
+| [Cloud Code](https://docs.unity.com/cloud-code/implementation.html)                   | Accesses the cooldown status, picks and grants random currency and inventory items through the Economy server, and then returns the result of the reward.  |
+| [Cloud Save](https://docs.unity.com/cloud-save/index.html#Implementation)             | Stores and retrieves the last granted reward time to allow cooldown values to persist between sessions.                                                    |
+| [Economy](https://docs.unity.com/economy/implementation.html)                         | Retrieves the starting and updated currency balances at runtime.                                                                                           |
+
 To use these services in your game, activate each service for your Organization and project in the [Unity Dashboard](https://dashboard.unity3d.com/).
 
 

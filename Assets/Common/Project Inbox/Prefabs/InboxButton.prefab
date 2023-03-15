@@ -76,22 +76,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &2361792280780524619
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1922193173565503278}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 65b603e7ad3c447cb60593522e350e1a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_InboxButton: {fileID: 1922193173565503276}
-  m_MessagesCallout: {fileID: 2395781570748665219}
-  m_InboxCountIndicator: {fileID: 339805790077684923}
-  m_InboxCountText: {fileID: 2826155961769350747}
 --- !u!1 &2059251685009821344
 GameObject:
   m_ObjectHideFlags: 0
@@ -558,3 +542,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2361792280780524619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1922193173565503278}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65b603e7ad3c447cb60593522e350e1a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inboxButton: {fileID: 1922193173565503276}
+  messagesCallout: {fileID: 2395781570748665219}
+  inboxCountIndicator: {fileID: 339805790077684923}
+  inboxCountText: {fileID: 2826155961769350747}
+--- !u!114 &285610968032154330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1922193173565503278}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06b0a11160ab444328f4c66e07c105dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonName: ProjectInbox_OpenInboxButton

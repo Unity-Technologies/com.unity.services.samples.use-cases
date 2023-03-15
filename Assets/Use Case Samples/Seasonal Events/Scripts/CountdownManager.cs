@@ -8,8 +8,8 @@ namespace Unity.Services.Samples.SeasonalEvents
     {
         public SeasonalEventsSampleView sceneView;
 
-        int m_CurrentTimeMinutes = 0;
-        int m_CurrentTimeSeconds = 0;
+        int m_CurrentTimeMinutes;
+        int m_CurrentTimeSeconds;
 
         void Start()
         {
@@ -47,7 +47,7 @@ namespace Unity.Services.Samples.SeasonalEvents
             // 0 is used as the default value for activeEventEndTime in RemoteConfigManager.
             // Note that no actual game overrides have an end time of 0.
             return UnityServices.State == ServicesInitializationState.Initialized &&
-                    RemoteConfigManager.instance.activeEventEndTime != 0;
+                RemoteConfigManager.instance.activeEventEndTime != 0;
         }
 
         void SetBlankCountdownText()

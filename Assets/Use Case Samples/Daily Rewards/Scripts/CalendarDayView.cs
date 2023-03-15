@@ -1,5 +1,5 @@
-﻿using TMPro;
-using System.Collections.Generic;
+﻿using System;
+using TMPro;
 
 namespace Unity.Services.Samples.DailyRewards
 {
@@ -7,11 +7,10 @@ namespace Unity.Services.Samples.DailyRewards
     {
         public TextMeshProUGUI dayText;
 
-
         public void SetDayIndex(int dayIndex)
         {
             this.dayIndex = dayIndex;
-                
+
             dayText.text = $"Day {dayIndex}";
         }
 

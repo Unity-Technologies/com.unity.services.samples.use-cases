@@ -65,9 +65,8 @@ MonoBehaviour:
     body: 
     bodyFormat: 0
     boxCallout: 'Note: This project uses the Unity Mediation package, which requires
-      CocoaPods to be installed if building for iOS. If
-      your project uses the Unity Mediation package, see
-      that package''s documentation on Requirements and Troubleshooting
+      CocoaPods to be installed if building for iOS. If your project uses the Unity
+      Mediation package, see that package''s documentation on Requirements and Troubleshooting
       , before building for iOS.'
     bulletList: []
     linkList: []
@@ -175,6 +174,14 @@ MonoBehaviour:
         bodyFormat: 0
         bulletList: []
       linkList: []
+    - body: Serverless Multiplayer Game
+      bodyFormat: 1
+      bulletList:
+      - body: Demonstrates how to utilize game lobbies and compete in a simple,
+          serverless, real-time arena-style game where players collect coins for points.
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
     - body: Starter Packs
       bodyFormat: 1
       bulletList:
@@ -239,9 +246,30 @@ MonoBehaviour:
   - subHeader1: 
     subHeader2: 
     subHeader3: 
-    body: If you have feedback or would like us to demonstrate a new use-case with
-      a sample, please let us know in the Unity Gaming Services Forum. We even have
-      a helpful tag to filter by!
+    body: "Your opinion matters to us, and we would like to hear from you so we can
+      provide you with the best learning material that\u2019ll help you become a
+      Unity Gaming Services expert in no time."
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: You can let us know how we're doing by filling out the anonymous, short
+      survey linked below - it should take less than a minute to fill out!
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList:
+    - linkText: Short Survey
+      url: https://unitysoftware.co1.qualtrics.com/jfe/form/SV_eE6DomzzTS5YO6a
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: Alternatively, you can reach us for questions, or to offer feedback or
+      ideas for new sample use cases in the Unity Gaming Services Forum - we even
+      have a helpful tag to filter by!
     bodyFormat: 0
     boxCallout: 
     bulletList: []
@@ -253,9 +281,8 @@ MonoBehaviour:
   - subHeader1: 
     subHeader2: 
     subHeader3: 
-    body: Additionally, you can submit feedback directly from the samples project
-      by using the feedback button in the bottom left corner of each scene during
-      Play Mode.
+    body: Also, while in Play Mode, you can submit anonymous feedback by using the
+      feedback button in the bottom left corner of each scene.
     bodyFormat: 0
     boxCallout: 
     bulletList: []

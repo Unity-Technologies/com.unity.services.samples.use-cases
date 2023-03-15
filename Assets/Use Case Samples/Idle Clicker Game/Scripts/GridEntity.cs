@@ -27,7 +27,8 @@ namespace Unity.Services.Samples.IdleClickerGame
         Animator m_PurchaseAnimator;
         Animator m_GenerateAnimator;
 
-        static readonly GridContents[] k_WellLevelToGridContents = {
+        static readonly GridContents[] k_WellLevelToGridContents =
+        {
             GridContents.Well_Level1,
             GridContents.Well_Level2,
             GridContents.Well_Level3,
@@ -46,7 +47,7 @@ namespace Unity.Services.Samples.IdleClickerGame
             Well_Level4
         }
 
-        static public GridContents WellLevelToGridContents(int wellLevel)
+        public static GridContents WellLevelToGridContents(int wellLevel)
         {
             return k_WellLevelToGridContents[wellLevel];
         }
@@ -97,7 +98,7 @@ namespace Unity.Services.Samples.IdleClickerGame
             }
         }
 
-        async public void OnButtonPressed()
+        public async void OnButtonPressed()
         {
             try
             {
@@ -116,7 +117,7 @@ namespace Unity.Services.Samples.IdleClickerGame
 
         public void SetGridContents(GridContents gridContents)
         {
-            this.buttonState = gridContents;
+            buttonState = gridContents;
 
             obstacle.SetActive(gridContents == GridContents.Obstacle);
 
@@ -175,4 +176,3 @@ namespace Unity.Services.Samples.IdleClickerGame
         }
     }
 }
-

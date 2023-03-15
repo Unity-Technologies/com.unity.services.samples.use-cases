@@ -39,10 +39,11 @@ When you click the **Open Loot Box** button, you receive a random amount of rewa
 
 To replicate this use case, you need the following [Unity packages](https://docs.unity3d.com/Manual/Packages.html) in your project:
 
-| **Package**                                     | **Role**                                                                                             |
-| ----------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| [Cloud Code](https://docs.unity.com/Cloud-Code) | Picks and grants random currency for the loot box through the Economy server and returns the result. |
-| [Economy](https://docs.unity.com/Economy)       | Retrieves the starting and updated currency balances at runtime.                                     |
+| **Package**                                                                           | **Role**                                                                                             |
+|---------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------|
+| [Authentication](https://docs.unity.com/authentication/IntroUnityAuthentication.html) | Automatically signs in the player as an anonymous user to keep track of their data server-side.      |
+| [Cloud Code](https://docs.unity.com/cloud-code/implementation.html)                   | Picks and grants random currency for the loot box through the Economy server and returns the result. |
+| [Economy](https://docs.unity.com/economy/implementation.html)                         | Retrieves the starting and updated currency balances at runtime.                                     |
 
 To use these services in your game, activate each service for your Organization and project in the [Unity Dashboard](https://dashboard.unity3d.com/).
 
@@ -59,9 +60,9 @@ To replicate this sample scene's setup on your own dashboard, you need to:
 
 [Publish the following script](https://docs.unity.com/cloud-code/implementation.html#Writing_your_first_script) in the **LiveOps** dashboard:
 
-| **Script**                       | **Parameters** | **Description**                                                                                                                                  | **Location in project**                                                          |
-|----------------------------------| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |----------------------------------------------------------------------------------|
-| `LootBoxes_GrantRandomCurrency`  | None           | Picks a random quantity of a random currency from an internal list to reward the user, grants it on the Economy service, and returns the result. | `Assets/Use Case Samples/Loot Boxes/Cloud Code/LootBoxes_GrantRandomCurrency.js` |
+| **Script**                      | **Parameters** | **Description**                                                                                                                                  | **Location in project**                                                          |
+|---------------------------------|----------------|--------------------------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------|
+| `LootBoxes_GrantRandomCurrency` | None           | Picks a random quantity of a random currency from an internal list to reward the user, grants it on the Economy service, and returns the result. | `Assets/Use Case Samples/Loot Boxes/Cloud Code/LootBoxes_GrantRandomCurrency.js` |
 
 
 
@@ -72,9 +73,9 @@ To replicate this sample scene's setup on your own dashboard, you need to:
 
 [Configure the following resources](https://docs.unity.com/economy/) in the **LiveOps** dashboard:
 
-| **Resource type** | **Resource name** | **ID**   | **Description**              |
-| ----------------- | ----------------- |----------| ---------------------------- |
-| Currency          | Coin              | `COIN`   | A potential loot box reward. |
-| Currency          | Gem               | `GEM`    | A potential loot box reward. |
-| Currency          | Pearl             | `PEARL`  | A potential loot box reward. |
-| Currency          | Star              | `STAR`   | A potential loot box reward. |
+| **Resource type** | **Resource name** | **ID**  | **Description**              |
+|-------------------|-------------------|---------|------------------------------|
+| Currency          | Coin              | `COIN`  | A potential loot box reward. |
+| Currency          | Gem               | `GEM`   | A potential loot box reward. |
+| Currency          | Pearl             | `PEARL` | A potential loot box reward. |
+| Currency          | Star              | `STAR`  | A potential loot box reward. |

@@ -51,9 +51,6 @@ The **Play Challenge** button is an abstraction for gameplay that the player mig
 
 You can only play the challenge once per active event, so after the Cloud Code script distributes rewards, it saves the current event name and timestamp to Cloud Save. The client uses this information to determine whether the current event has already been played, and if it has, to disable the **Play Challenge** button.
 
-Additionally, Analytics custom events are sent each time the scene loads (`SceneOpened`), whenever a button is pressed (`ActionButtonPressed`), and when the back button in the scene is pressed.
-
-
 ## Setup
 
 
@@ -61,15 +58,17 @@ Additionally, Analytics custom events are sent each time the scene loads (`Scene
 
 To replicate this use case, you need the following [Unity packages](https://docs.unity3d.com/Manual/Packages.html) in your project:
 
-| **Package**                                                                     | **Role**                                                                                                                                                                                                                                                                 |
-| ------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| [Addressables](https://docs.unity3d.com/Packages/com.unity.addressables@latest) | Allows asset retrieval by address. Wherever the asset resides (local or remote), the system will locate it and its dependencies and then return it. In this sample, it retrieves event-specific images and prefabs based on information from Remote Config.              |
-| [Analytics](https://docs.unity.com/Analytics)                                   | Sends events to track a player's in-game interactions, retention, and other information that you can use to analyze and improve the game experience.                                                                                                                     |
-| [Authentication](https://docs.unity.com/Authentication)                         | Automatically signs in the user anonymously to keep track of their data on the server side.                                                                                                                                                                              |
-| [Cloud Code](https://docs.unity.com//cloud-code/Content/implementation.htm)     | Contains important validation logic on the server side. In this sample, it distributes rewards for the event challenge. It also independently verifies the timestamp at the time of reward distribution on the server-side to confirm which event rewards to distribute. |
-| [Cloud Save](https://docs.unity.com/cloud-save/implementation.htm)              | Stores a flag for whether the current challenge has already been played, to prevent the player from participating multiple times.                                                                                                                                        |
-| [Economy](https://docs.unity.com/economy/Content/implementation.htm)            | Retrieves the player's starting and updated currency balances at runtime.                                                                                                                                                                                                |
-| [Remote Config](https://docs.unity.com/remote-config)                           | Provides key-value pairs that can be changed server-side, either manually or based on specific Game Overrides. In this sample, the Game Overrides feature contains four seasonal events and returns different values for certain keys based on the active Game Override. |
+| **Package**                                                                                                            | **Role**                                                                                                                                                                                                                                                                 |
+|------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [Addressables](https://docs.unity3d.com/Packages/com.unity.addressables@latest)                                        | Allows asset retrieval by address. Wherever the asset resides (local or remote), the system will locate it and its dependencies and then return it. In this sample, it retrieves event-specific images and prefabs based on information from Remote Config.              |
+| [Authentication](https://docs.unity.com/authentication/IntroUnityAuthentication.html)                                  | Automatically signs in the user anonymously to keep track of their data on the server side.                                                                                                                                                                              |
+| [Cloud Code](https://docs.unity.com/cloud-code/implementation.html)                                                    | Contains important validation logic on the server side. In this sample, it distributes rewards for the event challenge. It also independently verifies the timestamp at the time of reward distribution on the server-side to confirm which event rewards to distribute. |
+| [Cloud Save](https://docs.unity.com/cloud-save/index.html#Implementation)                                              | Stores a flag for whether the current challenge has already been played, to prevent the player from participating multiple times.                                                                                                                                        |
+| [Economy](https://docs.unity.com/economy/implementation.html)                                                          | Retrieves the player's starting and updated currency balances at runtime.                                                                                                                                                                                                |
+| [Game Overrides](https://docs.unity3d.com/Packages/com.unity.remote-config@3.2/manual/GameOverridesAndSettings.html)\* | Maintains the four seasonal events and returns different values for certain keys based on which Game Override is deemed active.                                                                                                                                          |                                                                                                                                                                                                                                                                      |
+| [Remote Config](https://docs.unity3d.com/Packages/com.unity.remote-config@latest)                                      | Provides key-value pairs that can be changed server-side, either manually or based on specific Game Overrides.                                                                                                                                                           |
+
+\* Note that though it is listed as a package and requires separate dashboard configuration, Game Overrides doesn't actually have an SDK to install from Package Manager. It is a server side offering that affects values returned from other services, like Remote Config.
 
 To use these services in your game, activate each service for your Organization and project in the [Unity Dashboard](https://dashboard.unity3d.com/).
 
@@ -78,46 +77,15 @@ To use these services in your game, activate each service for your Organization 
 
 To replicate this sample scene's setup on your own dashboard, you need to:
 
-- Configure custom Analytics events and parameters.
 - Publish a script in Cloud Code.
 - Create four Currencies for the Economy service.
 - Configure Remote Config values and Game Overrides.
 
 
-#### Analytics
-
-The Analytics custom events configuration contains a long list of potential parameters that are sent with some of the events. This extended list allows for a more flexible analysis of different parameter groupings in the **Data Explorer** on the [Analytics dashboard](https://dashboard.unity3d.com/analytics). Alternatively, you could send only the ungrouped parameters (for example, `buttonName` or `sceneName`), and perform any kind of grouped analysis by using the Data Export feature within the Data Explorer on the dashboard.
-
-**Important**: This sample demonstrates the code that is needed to trigger Analytics events. However, additional code might be necessary to meet legal requirements such as GDPR, CCPA, and PIPL. For more information, see the documentation on [managing data privacy](https://docs.unity.com/analytics/ManagingDataPrivacy.html).
-
-[Configure the following custom Analytics events](https://docs.unity.com/analytics/EventManager.html#Custom_Events):
-
-| **Event name**        | **Description**                                                                                                                                                                  | **Custom parameters**                                                                                                                                                                  |
-|-----------------------| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `SceneOpened`         | Sent each time the scene loads.                                                                                                                                                  | <li>sceneName                                                                                                                                                                          |
-| `ActionButtonPressed` | Sent for each button press in the scene.                                                                                                                                         | <li>buttonName</li><li>sceneName</li><li>remoteConfigActiveEvent</li><li>buttonNameBySceneName</li><li>buttonNameByRemoteConfigEvent</li><li>buttonNameBySceneNameAndRemoteConfigEvent |
-| `SceneSessionLength`  | Sent to indicate the time spent in the scene (measured as the length of time between whenAnalyticsManager.Start() triggers and the player presses the back button in the scene). | </li><li>timeRange</li><li>sceneName</li><li>remoteConfigActiveEvent</li><li>timeRangeBySceneName</li><li>timeRangeByRemoteConfigEvent</li><li>timeRangeBySceneNameAndABGroup          |
-
-Configure the following custom parameters to support your custom events:
-
-| **Parameter name**                          | **Type** | **Description**                                                                                                                                                                                        |
-|---------------------------------------------| -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `buttonName`                                | STRING   | The name of the button that has been pressed.                                                                                                                                                          |
-| `buttonNameByRemoteConfigEvent`             | STRING   | Formatted string grouping button name with Remote Config active event. Uses the format: "Button Name - Event Key".                                                                                     |
-| `buttonNameBySceneName`                     | STRING   | Formatted string grouping button name with scene name. Uses the format: "Button Name - Scene Name".                                                                                                    |
-| `buttonNameBySceneNameAndRemoteConfigEvent` | STRING   | Formatted string grouping button name with scene name and Remote Config active event. Uses the format: "Button Name - Scene Name - Event Key".                                                         |
-| `remoteConfigActiveEvent`                   | STRING   | The active event as defined in and determined by Remote Config.                                                                                                                                        |
-| `sceneName`                                 | STRING   | The name of the scene where the event was triggered.                                                                                                                                                   |
-| `timeRange`                                 | STRING   | A range of time spent in the scene where the event was triggered.                                                                                                                                      |
-| `timeRangeByRemoteConfigEvent`              | STRING   | Formatted string grouping time range with the active Remote Config Event at the time the event was sent. Uses the format: "Time Range - Event Key".                                                    |
-| `timeRangeBySceneName`                      | STRING   | Formatted string grouping time range with the name of the scene where the time was spent. Uses the format: "Time Range - Scene Name".                                                                  |
-| `timeRangeBySceneNameAndRemoteConfigEvent`  | STRING   | Formatted string grouping time range with the scene name and the Remote Config event that was active at the time the analytics event was sent. Uses the format: "Time Range - Scene Name - Event Key". |
-
-
 #### Cloud Code
 
 | **Script**         | **Parameters** | **Description**                                                                                       | **Location**                                                                            |
-|--------------------| -------------- | ----------------------------------------------------------------------------------------------------- |-----------------------------------------------------------------------------------------|
+|--------------------|----------------|-------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------|
 | `GrantEventReward` | None           | Verifies and distributes event rewards.                                                               | `Assets/Use Case Samples/Seasonal Events/Cloud Code/SeasonalEvents_GrantEventReward.js` |
 | `GetServerTime`    | None           | Retrieves the current timestamp from the server in order to base the UI on server-authoritative time. | `Assets/Use Case Samples/Seasonal Events/Cloud Code/SeasonalEvents_GetServerTime.js`    |
 
@@ -127,7 +95,7 @@ Configure the following custom parameters to support your custom events:
 #### Economy
 
 | **Resource type** | **Resource name** | **ID**  | **Description**                                                |
-| ----------------- | ----------------- |---------| -------------------------------------------------------------- |
+|-------------------|-------------------|---------|----------------------------------------------------------------|
 | Currency          | Coin              | `COIN`  | A challenge reward during the fall, winter, and spring events. |
 | Currency          | Gem               | `GEM`   | A challenge reward during the winter and summer events.        |
 | Currency          | Pearl             | `PEARL` | A challenge reward during the fall and summer events.          |
@@ -139,7 +107,7 @@ Configure the following custom parameters to support your custom events:
 [Set up the following config values](https://docs.unity.com/remote-config/HowDoesRemoteConfigWork.html) in the **LiveOps** dashboard:
 
 | **Value**                          | **Type** | **Description**                                                                                                                     | **Value**                                                                                        |
-|------------------------------------| -------- | ----------------------------------------------------------------------------------------------------------------------------------- |--------------------------------------------------------------------------------------------------|
+|------------------------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------|
 | `EVENT_NAME`                       | string   | The name of the event to display in the scene.                                                                                      | `""`                                                                                             |
 | `EVENT_KEY`                        | string   | The key that is used to look up event-specific values, such as the addresses for specific images.                                   | `""`                                                                                             |
 | `EVENT_END_TIME`                   | int      | The last digit that matches the Audience JEXL statement, or the last digit of the latest timestamp that would return this Campaign. | `0`                                                                                              |

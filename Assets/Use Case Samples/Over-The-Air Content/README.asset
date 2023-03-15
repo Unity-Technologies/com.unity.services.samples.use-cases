@@ -118,22 +118,22 @@ MonoBehaviour:
     - linkText: Addressables
       url: https://docs.unity3d.com/Packages/com.unity.addressables@latest
     - linkText: Authentication
-      url: https://docs.unity.com/authentication/Content/InstallAndConfigureSDK.htm
+      url: https://docs.unity.com/authentication/IntroUnityAuthentication.html
+    - linkText: Cloud Content Delivery (CCD)
+      url: https://docs.unity.com/ccd/UnityCCD.html
     - linkText: Remote Config
-      url: https://docs.unity3d.com/Packages/com.unity.remote-config@2.0/manual/ConfiguringYourProject.html
+      url: https://docs.unity3d.com/Packages/com.unity.remote-config@latest
   - subHeader1: 
     subHeader2: 
     subHeader3: 
-    body: This sample uses Cloud Content Delivery (CCD) to host the downloaded new
-      content. There's no need to install the CCD SDK in order to recreate this sample,
-      as we're only using it for hosting the content asset bundle, which gets downloaded
-      using the Addressables SDK.
+    body: 
     bodyFormat: 0
-    boxCallout: 
+    boxCallout: 'Note that though it is listed as a package and requires separate
+      dashboard configuration, the Cloud Content Delivery package doesn''t need to
+      be installed in your project. It hosts the content asset bundle, but Addressables
+      is used to download the content in the project. '
     bulletList: []
-    linkList:
-    - linkText: Cloud Content Delivery (CCD)
-      url: https://docs.unity.com/ccd/UnityCCD.html
+    linkList: []
   - subHeader1: 
     subHeader2: 
     subHeader3: 

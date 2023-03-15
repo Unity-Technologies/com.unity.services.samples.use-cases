@@ -1,5 +1,6 @@
 #if UNITY_EDITOR
 
+using System;
 using UnityEditor;
 using UnityEngine;
 
@@ -22,14 +23,29 @@ namespace Unity.Services.Samples.Editor
         const string k_ShowedReadmeSessionStateName = "ReadmeEditor.showedReadme";
         const string k_DefaultReadmeLabel = "StartHereReadme";
 
-        [SerializeField] GUIStyle m_BodyStyle;
-        [SerializeField] GUIStyle m_HeaderTitleStyle;
-        [SerializeField] GUIStyle m_SubHeader1Style;
-        [SerializeField] GUIStyle m_SubHeader2Style;
-        [SerializeField] GUIStyle m_SubHeader3Style;
-        [SerializeField] GUIStyle m_BoldStyle;
-        [SerializeField] GUIStyle m_ItalicsStyle;
-        [SerializeField] GUIStyle m_LinkStyle;
+        [SerializeField]
+        GUIStyle bodyStyle;
+
+        [SerializeField]
+        GUIStyle headerTitleStyle;
+
+        [SerializeField]
+        GUIStyle subHeader1Style;
+
+        [SerializeField]
+        GUIStyle subHeader2Style;
+
+        [SerializeField]
+        GUIStyle subHeader3Style;
+
+        [SerializeField]
+        GUIStyle boldStyle;
+
+        [SerializeField]
+        GUIStyle italicsStyle;
+
+        [SerializeField]
+        GUIStyle linkStyle;
 
         void OnEnable()
         {
@@ -57,7 +73,7 @@ namespace Unity.Services.Samples.Editor
             if (ids.Length > 0)
             {
                 var readmeObject = AssetDatabase.LoadMainAssetAtPath(AssetDatabase.GUIDToAssetPath(ids[0]));
-                Selection.objects = new [] { readmeObject };
+                Selection.objects = new[] { readmeObject };
             }
             else
             {
@@ -72,46 +88,46 @@ namespace Unity.Services.Samples.Editor
                 return;
             }
 
-            m_BodyStyle = new GUIStyle(EditorStyles.label)
+            bodyStyle = new GUIStyle(EditorStyles.label)
             {
                 wordWrap = true,
                 fontSize = 14
             };
 
-            m_HeaderTitleStyle = new GUIStyle(m_BodyStyle)
+            headerTitleStyle = new GUIStyle(bodyStyle)
             {
                 fontSize = 26
             };
 
-            m_SubHeader1Style = new GUIStyle(m_BodyStyle)
+            subHeader1Style = new GUIStyle(bodyStyle)
             {
                 fontSize = 20,
                 fontStyle = FontStyle.Bold
             };
 
-            m_SubHeader2Style = new GUIStyle(m_BodyStyle)
+            subHeader2Style = new GUIStyle(bodyStyle)
             {
                 fontSize = 18,
                 fontStyle = FontStyle.Bold
             };
 
-            m_SubHeader3Style = new GUIStyle(m_BodyStyle)
+            subHeader3Style = new GUIStyle(bodyStyle)
             {
                 fontSize = 16,
                 fontStyle = FontStyle.Italic
             };
 
-            m_BoldStyle = new GUIStyle(m_BodyStyle)
+            boldStyle = new GUIStyle(bodyStyle)
             {
                 fontStyle = FontStyle.Bold
             };
 
-            m_ItalicsStyle = new GUIStyle(m_BodyStyle)
+            italicsStyle = new GUIStyle(bodyStyle)
             {
                 fontStyle = FontStyle.Italic
             };
 
-            m_LinkStyle = new GUIStyle(EditorStyles.linkLabel)
+            linkStyle = new GUIStyle(EditorStyles.linkLabel)
             {
                 fontSize = 14
             };
@@ -139,7 +155,8 @@ namespace Unity.Services.Samples.Editor
                 {
                     GUILayout.Label(icon, GUILayout.Width(iconWidth), GUILayout.Height(iconWidth));
                 }
-                GUILayout.Label(title, m_HeaderTitleStyle);
+
+                GUILayout.Label(title, headerTitleStyle);
             }
         }
 
@@ -156,17 +173,17 @@ namespace Unity.Services.Samples.Editor
             {
                 if (!string.IsNullOrEmpty(section.subHeader1))
                 {
-                    DisplayFormattedHeaderText(section.subHeader1, m_SubHeader1Style);
+                    DisplayFormattedHeaderText(section.subHeader1, subHeader1Style);
                 }
 
                 if (!string.IsNullOrEmpty(section.subHeader2))
                 {
-                    DisplayFormattedHeaderText(section.subHeader2, m_SubHeader2Style);
+                    DisplayFormattedHeaderText(section.subHeader2, subHeader2Style);
                 }
 
                 if (!string.IsNullOrEmpty(section.subHeader3))
                 {
-                    DisplayFormattedHeaderText(section.subHeader3, m_SubHeader3Style);
+                    DisplayFormattedHeaderText(section.subHeader3, subHeader3Style);
                 }
 
                 if (!string.IsNullOrEmpty(section.body))
@@ -193,7 +210,7 @@ namespace Unity.Services.Samples.Editor
             }
         }
 
-        void DisplayFormattedHeaderText(string headerText, GUIStyle style)
+        static void DisplayFormattedHeaderText(string headerText, GUIStyle style)
         {
             GUILayout.Label(headerText, style);
             GUILayout.Space(k_HeaderSpacer);
@@ -204,7 +221,7 @@ namespace Unity.Services.Samples.Editor
             GUILayout.Label(text, GetStyle(format));
         }
 
-        void DisplayFormattedBoxCallout(string text)
+        static void DisplayFormattedBoxCallout(string text)
         {
             EditorGUILayout.HelpBox(text, MessageType.Info);
         }
@@ -302,15 +319,16 @@ namespace Unity.Services.Samples.Editor
             {
                 EditorGUILayout.PrefixLabel("*");
 
-                if (GUILayout.Button(text, m_LinkStyle))
+                if (GUILayout.Button(text, linkStyle))
                 {
                     Application.OpenURL(url);
                 }
             }
+
             GUILayout.Space(k_BulletItemSpacer);
         }
 
-        float StartListFormatting(float labelWidth)
+        static float StartListFormatting(float labelWidth)
         {
             EditorGUI.indentLevel++;
             var previousLabelWidth = EditorGUIUtility.labelWidth;
@@ -318,7 +336,7 @@ namespace Unity.Services.Samples.Editor
             return previousLabelWidth;
         }
 
-        void EndListFormatting(float previousLabelWidth)
+        static void EndListFormatting(float previousLabelWidth)
         {
             EditorGUIUtility.labelWidth = previousLabelWidth;
             EditorGUI.indentLevel--;
@@ -328,9 +346,9 @@ namespace Unity.Services.Samples.Editor
         {
             return format switch
             {
-                Readme.FontFormat.Bold => m_BoldStyle,
-                Readme.FontFormat.Italic => m_ItalicsStyle,
-                _ => m_BodyStyle
+                Readme.FontFormat.Bold => boldStyle,
+                Readme.FontFormat.Italic => italicsStyle,
+                _ => bodyStyle
             };
         }
     }

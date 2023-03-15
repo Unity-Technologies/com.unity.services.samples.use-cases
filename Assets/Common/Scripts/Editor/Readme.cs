@@ -4,8 +4,8 @@ using UnityEngine;
 namespace Unity.Services.Samples.Editor
 {
     /// <remarks>
-    /// Custom readme class based on the readme done in Boss Room sample. For more context, see:
-    /// https://github.com/Unity-Technologies/com.unity.multiplayer.samples.coop/tree/main/Assets/BossRoom/Scripts/Editor/Readme
+    ///     Custom readme class based on the readme done in Boss Room sample. For more context, see:
+    ///     https://github.com/Unity-Technologies/com.unity.multiplayer.samples.coop/tree/main/Assets/BossRoom/Scripts/Editor/Readme
     /// </remarks>
     [CreateAssetMenu]
     public class Readme : ScriptableObject
@@ -19,7 +19,7 @@ namespace Unity.Services.Samples.Editor
             public string title;
             public Texture2D icon;
         }
-        
+
         [Serializable]
         public class Section
         {
@@ -41,7 +41,7 @@ namespace Unity.Services.Samples.Editor
             public BulletItemLevel2[] bulletList;
             public LinkListItem[] linkList;
         }
-        
+
         [Serializable]
         public class BulletItemLevel2
         {
@@ -49,7 +49,7 @@ namespace Unity.Services.Samples.Editor
             public FontFormat bodyFormat;
             public BulletItemLevel3[] bulletList;
         }
-        
+
         [Serializable]
         public class BulletItemLevel3
         {

@@ -11,47 +11,47 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bfbabd22c62c640a6ba459d46825055b, type: 3}
   m_Name: README
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier:
   header:
     title: Seasonal Events README
     icon: {fileID: 2800000, guid: 83f0684dab5534e2492f651aaaf4a151, type: 3}
   sections:
   - subHeader1: Intro
-    subHeader2: 
-    subHeader3: 
+    subHeader2:
+    subHeader3:
     body: Seasonal events can increase game sessions and overall interest in a game,
       as they give existing players new and fun content throughout the year to look
       forward to and can entice new players to begin playing.
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
     body: 'This sample shows how you can set up seasonal events (fall, winter, spring,
       summer) for players in your game with a countdown indicating how much time
       is left in the current event, the currency rewards that can be won during the
       event, and a "Play Challenge" button that, when clicked, opens a popup where
       players can collect their rewards for "winning" the challenge. '
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
     body: "Clicking the \"Collect Rewards\" button in the popup will add the rewards
       to a player\u2019s wallet balance, as seen in the currency HUD at the top of
       the scene. Once the countdown on the main screen hits 0, the scene will automatically
       change to the next event. "
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList: []
   - subHeader1: Implementation Overview
-    subHeader2: 
-    subHeader3: 
+    subHeader2:
+    subHeader3:
     body: When this scene first loads, it will initialize Unity Services and sign
       the player in anonymously using Authentication. This can be seen in the SeasonalEventsSceneManager
       script. Once Unity Services completes initialization, we call the GetServerTime
@@ -61,24 +61,24 @@ MonoBehaviour:
       name, the potential rewards for completing the event challenge, and the themed
       background image and play buttons.
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
     body: 'Remote Config also tells us when the event ends, which is used in the
       CountdownManager for determining and displaying how much time is left in the
       current event. When that time runs out, it triggers a new call to Remote Config,
       to get the updated values for the next event. '
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
-    body: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
+    body:
     bodyFormat: 0
     boxCallout: "Note: This sample determines which Game Override data should be
       returned based on the last digit of the number of minutes in the current server
@@ -89,9 +89,9 @@ MonoBehaviour:
       implementations can be a bit different."
     bulletList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
     body: 'When a player clicks "Play Challenge", followed by "Collect Rewards" it
       initiates a call to the Cloud Code script "Grant Event Reward". This script
       calls Remote Config to determine which rewards should be distributed (this
@@ -104,13 +104,13 @@ MonoBehaviour:
       season''s challenge has already been played, and if it has, to disable the
       "Play Challenge" button. '
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
-    body: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
+    body:
     bodyFormat: 0
     boxCallout: Note that the "Play" button on the left is not interactable, and
       is just added to demonstrate how a game might have gameplay in one area of
@@ -120,18 +120,21 @@ MonoBehaviour:
     bulletList: []
     linkList: []
   - subHeader1: Packages Required
-    subHeader2: 
-    subHeader3: 
-    body: 
+    subHeader2:
+    subHeader3:
+    body:
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList:
-    - body: 'Authentication: Automatically signs in the user anonymously to keep
-        track of their data on the server side. '
+    - body: 'Addressables: Allows developers to ask for an asset via its address.
+        Wherever the asset resides (local or remote), the system will locate it and
+        its dependencies, then return it. Here we use it to look up event specific
+        images and prefabs based on the information we receive from Remote Config. '
       bodyFormat: 0
       bulletList: []
       linkList: []
-    - body: 'Economy: Keeps track of the player''s currencies. '
+    - body: 'Authentication: Automatically signs in the user anonymously to keep
+        track of their data on the server side. '
       bodyFormat: 0
       bulletList: []
       linkList: []
@@ -143,67 +146,79 @@ MonoBehaviour:
       bodyFormat: 0
       bulletList: []
       linkList: []
-    - body: 'Remote Config: Provides key-value pairs where the value that is mapped
-        to a given key can be changed on the server-side, either manually or based
-        on specific Game Overrides. In this sample, we use the Game Overrides feature
-        to create the four seasonal events and return different values for certain
-        keys based on the Game Override.'
-      bodyFormat: 0
-      bulletList: []
-      linkList: []
-    - body: 'Addressables: Allows developers to ask for an asset via its address.
-        Wherever the asset resides (local or remote), the system will locate it and
-        its dependencies, then return it. Here we use it to look up event specific
-        images and prefabs based on the information we receive from Remote Config. '
-      bodyFormat: 0
-      bulletList: []
-      linkList: []
     - body: 'Cloud Save: Stores if the current season''s challenge has already been
         played to prevent the user from playing the same season''s challenge multiple
         times.'
       bodyFormat: 0
       bulletList: []
       linkList: []
+    - body: 'Economy: Keeps track of the player''s currencies. '
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: 'Game Overrides: Maintains the four seasonal events and returns different
+        values for certain keys based on which Game Override is deemed active.'
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: 'Remote Config: Provides key-value pairs that can be changed server-side,
+        either manually or based on specific Game Overrides.'
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
     body: See the package docs to learn how to install and configure these SDKs in
       your project.
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList:
-    - linkText: Authentication
-      url: https://docs.unity.com/authentication/Content/InstallAndConfigureSDK.htm
-    - linkText: Economy
-      url: https://docs.unity.com/economy/Content/implementation.htm?tocpath=Implementation%7C_____0
-    - linkText: Cloud Code
-      url: https://docs.unity.com//cloud-code/Content/implementation.htm?tocpath=Implementation%7C_____0#SDK_installation
-    - linkText: Remote Config
-      url: https://docs.unity3d.com/Packages/com.unity.remote-config@2.0/manual/ConfiguringYourProject.html
     - linkText: Addressables
       url: https://docs.unity3d.com/Packages/com.unity.addressables@latest
+    - linkText: Authentication
+      url: https://docs.unity.com/authentication/IntroUnityAuthentication.html
+    - linkText: Cloud Code
+      url: https://docs.unity.com/cloud-code/implementation.html
     - linkText: Cloud Save
-      url: https://docs.unity.com/cloud-save/implementation.htm
+      url: https://docs.unity.com/cloud-save/index.html#Implementation
+    - linkText: Economy
+      url: https://docs.unity.com/economy/implementation.html
+    - linkText: Game Overrides
+      url: https://docs.unity3d.com/Packages/com.unity.remote-config@3.2/manual/GameOverridesAndSettings.html
+    - linkText: Remote Config
+      url: https://docs.unity3d.com/Packages/com.unity.remote-config@latest
+  - subHeader1:
+    subHeader2:
+    subHeader3:
+    body:
+    bodyFormat: 0
+    boxCallout: 'Note that though it is listed as a package and requires separate
+      dashboard configuration, Game Overrides doesn''t actually have an SDK to install
+      from Package Manager. It is a server side offering that affects values returned
+      from other services, like Remote Config. '
+    bulletList: []
+    linkList: []
   - subHeader1: Dashboard Setup
-    subHeader2: 
-    subHeader3: 
+    subHeader2:
+    subHeader3:
     body: 'To use Economy, Remote Config, and Cloud Code services in your game, activate
       each service for your organization and project in the Unity Dashboard. To duplicate
       this sample scene''s setup on your own dashboard, you''ll need a few currencies
       in the Economy setup, some Config Values and Game Overrides set up in Remote
       Config, and a script published in Cloud Code: '
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList: []
-  - subHeader1: 
+  - subHeader1:
     subHeader2: Economy Items
-    subHeader3: 
-    body: 
+    subHeader3:
+    body:
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList:
     - body: Coin
       bodyFormat: 1
@@ -246,12 +261,12 @@ MonoBehaviour:
         bulletList: []
       linkList: []
     linkList: []
-  - subHeader1: 
+  - subHeader1:
     subHeader2: Remote Config
     subHeader3: Config Values
-    body: 
+    body:
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList:
     - body: EVENT_NAME
       bodyFormat: 1
@@ -323,12 +338,12 @@ MonoBehaviour:
         bulletList: []
       linkList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
+  - subHeader1:
+    subHeader2:
     subHeader3: Game Overrides
-    body: 
+    body:
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList:
     - body: Fall Event
       bodyFormat: 1
@@ -483,12 +498,12 @@ MonoBehaviour:
           bulletList: []
       linkList: []
     linkList: []
-  - subHeader1: 
+  - subHeader1:
     subHeader2: Cloud Code Scripts
-    subHeader3: 
-    body: 
+    subHeader3:
+    body:
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList:
     - body: 'SeasonalEvents_GetServerTime:'
       bodyFormat: 1
@@ -501,12 +516,12 @@ MonoBehaviour:
         bulletList: []
       linkList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
-    body: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
+    body:
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList:
     - body: 'SeasonalEvents_GrantEventReward:'
       bodyFormat: 1
@@ -519,10 +534,10 @@ MonoBehaviour:
         bulletList: []
       linkList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
-    body: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
+    body:
     bodyFormat: 0
     boxCallout: 'Note: The Cloud Code scripts included in the "Cloud Code" folder
       are just local copies, since you can''t see the sample''s dashboard. Changes

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Unity.Services.Samples.CommandBatching
@@ -9,8 +10,8 @@ namespace Unity.Services.Samples.CommandBatching
         public bool isOpenChestValidMove { get; private set; }
         public bool isAchieveBonusGoalValidMove { get; private set; }
         public int turnsRemaining = k_TotalTurnCount;
-        public int xp = 0;
-        public int goalsAchieved = 0;
+        public int xp;
+        public int goalsAchieved;
 
         const int k_TotalTurnCount = 6;
 
@@ -31,7 +32,7 @@ namespace Unity.Services.Samples.CommandBatching
             turnsRemaining = k_TotalTurnCount;
             xp = CloudSaveManager.instance.GetCachedXP();
             goalsAchieved = CloudSaveManager.instance.GetCachedGoalsAchieved();
-                
+
             SetIsOpenChestValidMove(false);
             SetIsAchieveBonusGoalValidMove(false);
         }
@@ -45,7 +46,7 @@ namespace Unity.Services.Samples.CommandBatching
         {
             isAchieveBonusGoalValidMove = valid;
         }
-            
+
         public bool ConsumeTurnIfAnyAvailable()
         {
             if (turnsRemaining <= 0)

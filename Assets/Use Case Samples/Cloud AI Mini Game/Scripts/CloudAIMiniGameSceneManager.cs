@@ -15,7 +15,6 @@ namespace Unity.Services.Samples.CloudAIMiniGame
 
         UpdatedState m_UpdatedState;
 
-
         async void Start()
         {
             try
@@ -36,7 +35,7 @@ namespace Unity.Services.Samples.CloudAIMiniGame
                 // Economy configuration should be refreshed every time the app initializes.
                 // Doing so updates the cached configuration data and initializes for this player any items or
                 // currencies that were recently published.
-                // 
+                //
                 // It's important to do this update before making any other calls to the Economy or Remote Config
                 // APIs as both use the cached data list. (Though it wouldn't be necessary to do if only using Remote
                 // Config in your project and not Economy.)
@@ -103,7 +102,7 @@ namespace Unity.Services.Samples.CloudAIMiniGame
             finally
             {
                 if (this != null)
-                { 
+                {
                     sceneView.ShowInProgress(coord, false);
                     sceneView.SetInteractable();
                 }

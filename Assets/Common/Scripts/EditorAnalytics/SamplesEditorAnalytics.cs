@@ -62,7 +62,7 @@ namespace Unity.Services.Samples
         const string k_ProjectInboxMessageReceivedEvent = k_Prefix + "InboxMessageReceived";
         const int k_ProjectInboxMessageReceivedEventVersion = 2;
         const string k_ProjectInboxMessageOpenedEvent = k_Prefix + "InboxMessageOpened";
-        const int k_ProjectInboxMessageOpenedEventVersion = 1;        
+        const int k_ProjectInboxMessageOpenedEventVersion = 1;
 
         static string m_CurrentSceneName;
         static DateTime m_CurrentSceneSessionCheckpoint;
@@ -122,14 +122,14 @@ namespace Unity.Services.Samples
                 k_MaxItems,
                 k_VendorKey,
                 k_SceneTotalSessionLengthEventVersion);
-            
+
             EditorAnalytics.RegisterEventWithLimit(
                 k_ProjectInboxMessageReceivedEvent,
                 k_MaxEventsPerHour,
                 k_MaxItems,
                 k_VendorKey,
                 k_ProjectInboxMessageReceivedEventVersion);
-            
+
             EditorAnalytics.RegisterEventWithLimit(
                 k_ProjectInboxMessageOpenedEvent,
                 k_MaxEventsPerHour,
@@ -145,7 +145,7 @@ namespace Unity.Services.Samples
                 new PlayModeButtonPressedData { buttonName = buttonName },
                 k_ButtonPressedInPlayModeEventVersion);
         }
-        
+
         public static void SendProjectInboxMessageReceivedEvent(string messageId, List<string> playerIds)
         {
             EditorAnalytics.SendEventWithLimit(
@@ -153,7 +153,7 @@ namespace Unity.Services.Samples
                 new ProjectInboxMessageData { messageId = messageId, playerIds = playerIds },
                 k_ProjectInboxMessageReceivedEventVersion);
         }
-        
+
         public static void SendProjectInboxMessageOpenedEvent(string messageId, List<string> playerIds)
         {
             EditorAnalytics.SendEventWithLimit(

@@ -10,8 +10,8 @@ namespace Unity.Services.Samples
         {
             if (retryAfterSeconds > 60)
             {
-                Debug.Log($"Economy returned a rate limit exception with an extended Retry After time " +
-                          $"of {retryAfterSeconds} seconds. Suggest manually retrying at a later time.");
+                Debug.Log("Economy returned a rate limit exception with an extended Retry After time " +
+                    $"of {retryAfterSeconds} seconds. Suggest manually retrying at a later time.");
                 return default;
             }
 

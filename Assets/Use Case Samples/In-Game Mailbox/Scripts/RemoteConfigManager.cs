@@ -90,13 +90,13 @@ namespace Unity.Services.Samples.InGameMailbox
         List<InboxMessage> GetNextMessagesFromStartLocation(int startLocation, int numberOfMessages)
         {
             var newMessages = new List<InboxMessage>();
-                
+
             for (var i = startLocation; i < m_OrderedMessageIds.Count; i++)
             {
                 if (numberOfMessages > 0)
                 {
                     var message = FetchMessage(m_OrderedMessageIds[i]);
-                        
+
                     // Some message values will be blank if the player does not fall into a targeted audience.
                     // We want to filter those messages out when downloading a specific number of messages.
                     if (MessageIsValid(message))
@@ -131,7 +131,7 @@ namespace Unity.Services.Samples.InGameMailbox
                 ? new InboxMessage()
                 : new InboxMessage(messageId, message);
         }
-            
+
         bool MessageIsValid(InboxMessage inboxMessage)
         {
             var message = inboxMessage.messageInfo;
@@ -167,9 +167,7 @@ namespace Unity.Services.Samples.InGameMailbox
         // passed to Remote Config's FetchConfigs call. Candidates for what you can pass in the AppAttributes
         // struct could be things like what level the player is on, or what version of the app is installed.
         // The candidates are completely customizable.
-        struct AppAttributes
-        {
-        }
+        struct AppAttributes { }
 
         public enum SampleAudience
         {

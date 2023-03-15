@@ -66,15 +66,19 @@ MonoBehaviour:
     - body: Initialize Unity Services
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: Get currency balances from Economy
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: Get turn count data from Cloud Save
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: Load the first ad from Unity Mediation
       bodyFormat: 0
       bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: Level Ended Popup
@@ -88,12 +92,15 @@ MonoBehaviour:
     - body: Gamified Rewarded Ad option
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: Standard Rewarded Ad option
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: Collect Level End Rewards only (no rewarded ad option)
       bodyFormat: 0
       bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: 
@@ -194,22 +201,31 @@ MonoBehaviour:
     bodyFormat: 0
     boxCallout: 
     bulletList:
-    - body: 'Mediation: Shows the Rewarded Ad.'
+    - body: 'Authentication: Automatically signs in the player as an anonymous user
+        to keep track of their data server-side.'
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: 'Cloud Code: Validates and distributes the level end and rewarded ad
         watched rewards.'
       bodyFormat: 0
       bulletList: []
-    - body: 'Economy: Maintains the balance for the currency being rewarded for level
-        end.'
-      bodyFormat: 0
-      bulletList: []
+      linkList: []
     - body: 'Cloud Save: Tracks information needed for validating appropriate level
         end reward distribution, including how many times a level has been completed,
         and the time the last time the rewards were distributed.'
       bodyFormat: 0
       bulletList: []
+      linkList: []
+    - body: 'Economy: Maintains the balance for the currency being rewarded for level
+        end.'
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: 'Mediation: Shows the Rewarded Ad.'
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: 
@@ -220,14 +236,16 @@ MonoBehaviour:
     boxCallout: 
     bulletList: []
     linkList:
+    - linkText: Authentication
+      url: https://docs.unity.com/authentication/IntroUnityAuthentication.html
+    - linkText: Cloud Code
+      url: https://docs.unity.com/cloud-code/implementation.html
+    - linkText: Cloud Save
+      url: https://docs.unity.com/cloud-save/index.html#Implementation
+    - linkText: Economy
+      url: https://docs.unity.com/economy/implementation.html
     - linkText: Mediation
       url: https://docs.unity.com/mediation/MediationSetupChecklist.html
-    - linkText: Cloud Code
-      url: https://docs.unity.com//cloud-code/Content/implementation.htm?tocpath=Implementation%7C_____0#SDK_installation
-    - linkText: Economy
-      url: https://docs.unity.com/economy/Content/implementation.htm?tocpath=Implementation%7C_____0
-    - linkText: Cloud Save
-      url: https://docs.unity.com/cloud-save/Content/index.htm#Implementation
   - subHeader1: Dashboard Setup
     subHeader2: 
     subHeader3: 
@@ -264,6 +282,7 @@ MonoBehaviour:
         - body: 'Allow Skip: After 5 seconds'
           bodyFormat: 0
           bulletList: []
+      linkList: []
     - body: RewardedAds_iOS
       bodyFormat: 1
       bulletList:
@@ -283,6 +302,7 @@ MonoBehaviour:
         - body: 'Allow Skip: After 5 seconds'
           bodyFormat: 0
           bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: Economy Items
@@ -301,6 +321,7 @@ MonoBehaviour:
       - body: 'ID: "GEM"'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: Cloud Code Scripts
@@ -319,12 +340,13 @@ MonoBehaviour:
           bodyFormat: 0
           bulletList:
           - 'Type: NUMERIC'
-          - 'Optional. An int representing the amount the base rewards should be
-              multiplied by, if any. Not included if just distributing base rewards.'
+          - Optional. An int representing the amount the base rewards should be multiplied
+            by, if any. Not included if just distributing base rewards.
       - body: 'Script: "Assets/Use Case Samples/Rewarded Ads With Unity Mediation/Cloud
           Code/RewardedAds_GrantLevelEndRewards.js"'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: 

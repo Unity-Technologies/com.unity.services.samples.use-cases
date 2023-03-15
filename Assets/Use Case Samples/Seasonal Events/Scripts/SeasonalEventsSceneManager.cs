@@ -14,12 +14,11 @@ namespace Unity.Services.Samples.SeasonalEvents
         public SeasonalEventsSampleView sceneView;
         public CountdownManager countdownManager;
 
-        bool m_Updating = false;
+        bool m_Updating;
 
         AsyncOperationHandle<IList<Sprite>> m_BackgroundImageHandle;
         AsyncOperationHandle<IList<GameObject>> m_PlayButtonPrefabHandle;
         AsyncOperationHandle<IList<GameObject>> m_PlayChallengeButtonPrefabHandle;
-
 
         async void Start()
         {
@@ -43,7 +42,7 @@ namespace Unity.Services.Samples.SeasonalEvents
 
                 // Check that scene has not been unloaded while processing async wait to prevent throw.
                 if (this == null) return;
-                    
+
                 Debug.Log("Services Initialized.");
 
                 if (!AuthenticationService.Instance.IsSignedIn)
@@ -52,12 +51,13 @@ namespace Unity.Services.Samples.SeasonalEvents
                     await AuthenticationService.Instance.SignInAnonymouslyAsync();
                     if (this == null) return;
                 }
+
                 Debug.Log($"Player id: {AuthenticationService.Instance.PlayerId}");
 
                 // Economy configuration should be refreshed every time the app initializes.
                 // Doing so updates the cached configuration data and initializes for this player any items or
                 // currencies that were recently published.
-                // 
+                //
                 // It's important to do this update before making any other calls to the Economy or Remote Config
                 // APIs as both use the cached data list. (Though it wouldn't be necessary to do if only using Remote
                 // Config in your project and not Economy.)
@@ -119,9 +119,9 @@ namespace Unity.Services.Samples.SeasonalEvents
             sceneView.SetInteractable();
         }
 
-        private bool IsPlayingChallengeAllowed()
+        bool IsPlayingChallengeAllowed()
         {
-            // If you'd like to leave the PlayChallenge button enabled, in order to test the Cloud Code script's 
+            // If you'd like to leave the PlayChallenge button enabled, in order to test the Cloud Code script's
             // distribution protections, uncomment the next line:
             // return true;
 
@@ -136,17 +136,17 @@ namespace Unity.Services.Samples.SeasonalEvents
             return IsLastCompletedEventTimestampOld();
         }
 
-        private bool IsLastCompletedEventKeyDifferentFromActiveEvent()
+        bool IsLastCompletedEventKeyDifferentFromActiveEvent()
         {
             return !string.Equals(
                 CloudSaveManager.instance.GetLastCompletedActiveEvent(),
                 RemoteConfigManager.instance.activeEventKey);
         }
 
-        private bool IsLastCompletedEventTimestampOld()
+        bool IsLastCompletedEventTimestampOld()
         {
             // Determine the approximate utc time on the server.
-            // Note: We need to use the server time to ensure we are showing/claiming the correct season in case the 
+            // Note: We need to use the server time to ensure we are showing/claiming the correct season in case the
             //       client's clock is off for any reason.
             var currentTime = ServerTimeHelper.UtcNow;
             var eventDuration = new TimeSpan(0, RemoteConfigManager.instance.activeEventDurationMinutes, 0);
@@ -198,24 +198,24 @@ namespace Unity.Services.Samples.SeasonalEvents
         async Task LoadSeasonalAddressables()
         {
             m_BackgroundImageHandle = Addressables.LoadAssetsAsync<Sprite>(
-                new List<string>{ RemoteConfigManager.instance.activeEventKey, "Sprites/BackgroundImage" },
+                new List<string> { RemoteConfigManager.instance.activeEventKey, "Sprites/BackgroundImage" },
                 LoadSeasonalBackgroundImage,
                 Addressables.MergeMode.Intersection
             );
             m_PlayButtonPrefabHandle = Addressables.LoadAssetsAsync<GameObject>(
-                new List<string>{ RemoteConfigManager.instance.activeEventKey, "Prefabs/PlayButton" },
+                new List<string> { RemoteConfigManager.instance.activeEventKey, "Prefabs/PlayButton" },
                 LoadSeasonalPlayButton,
                 Addressables.MergeMode.Intersection
             );
             m_PlayChallengeButtonPrefabHandle = Addressables.LoadAssetsAsync<GameObject>(
-                new List<string>{ RemoteConfigManager.instance.activeEventKey, "Prefabs/PlayChallengeButton" },
+                new List<string> { RemoteConfigManager.instance.activeEventKey, "Prefabs/PlayChallengeButton" },
                 LoadSeasonalPlayChallengeButton,
                 Addressables.MergeMode.Intersection
             );
 
-            await Task.WhenAll(m_BackgroundImageHandle.Task, 
-                    m_PlayButtonPrefabHandle.Task, 
-                    m_PlayChallengeButtonPrefabHandle.Task);
+            await Task.WhenAll(m_BackgroundImageHandle.Task,
+                m_PlayButtonPrefabHandle.Task,
+                m_PlayChallengeButtonPrefabHandle.Task);
         }
 
         void LoadSeasonalBackgroundImage(Sprite backgroundImage)

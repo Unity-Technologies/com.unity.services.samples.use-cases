@@ -17,7 +17,7 @@ namespace Unity.Services.Samples.BattlePass
 
         public CanvasGroup rewardCanvasGroup;
         public float lockedTierOpacity;
-            
+
         public GameObject normalRewardPanel;
         public RewardItemView normalRewardItemView;
         public GameObject normalRewardLockIcon;
@@ -41,7 +41,7 @@ namespace Unity.Services.Samples.BattlePass
             m_TierButton = GetComponent<Button>();
 
             // ensure a clean startup state
-                
+
             rewardCanvasGroup.alpha = lockedTierOpacity;
 
             normalRewardItemView.icon.sprite = null;

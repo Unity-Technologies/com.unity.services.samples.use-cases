@@ -7,7 +7,8 @@ namespace Unity.Services.Samples.BattlePass
     {
         public CloudCodeException cloudCodeException { get; private set; }
 
-        public CloudCodeResultUnavailableException(CloudCodeException cloudCodeException, string message = null) : base(message)
+        public CloudCodeResultUnavailableException(CloudCodeException cloudCodeException, string message = null)
+            : base(message)
         {
             this.cloudCodeException = cloudCodeException;
         }

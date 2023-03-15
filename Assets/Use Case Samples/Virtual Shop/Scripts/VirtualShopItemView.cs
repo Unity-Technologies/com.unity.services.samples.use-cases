@@ -20,7 +20,7 @@ namespace Unity.Services.Samples.VirtualShop
         VirtualShopSceneManager m_VirtualShopSceneManager;
         VirtualShopItem m_VirtualShopItem;
 
-        public void Initialize(VirtualShopSceneManager virtualShopSceneManager, VirtualShopItem virtualShopItem, 
+        public void Initialize(VirtualShopSceneManager virtualShopSceneManager, VirtualShopItem virtualShopItem,
             AddressablesManager addressablesManager)
         {
             m_VirtualShopSceneManager = virtualShopSceneManager;
@@ -45,6 +45,7 @@ namespace Unity.Services.Samples.VirtualShop
                 {
                     throw new KeyNotFoundException($"Preloaded sprite not found for {virtualShopItem.badgeIconAddress}");
                 }
+
                 badgeIcon.sprite = sprite;
                 badgeIcon.enabled = true;
 

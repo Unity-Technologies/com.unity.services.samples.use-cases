@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Unity.Services.Economy.Model;
 using UnityEngine;
@@ -8,7 +9,6 @@ namespace Unity.Services.Samples
     {
         public GameObject inventoryItemPrefab;
         public Transform itemListParentTransform;
-
 
         public void Refresh(List<PlayersInventoryItem> playersInventoryItems)
         {

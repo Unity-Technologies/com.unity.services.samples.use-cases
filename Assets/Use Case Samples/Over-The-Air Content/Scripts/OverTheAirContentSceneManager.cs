@@ -48,6 +48,7 @@ namespace Unity.Services.Samples.OverTheAirContent
                 await AuthenticationService.Instance.SignInAnonymouslyAsync();
                 if (this == null) return;
             }
+
             Debug.Log($"Player id: {AuthenticationService.Instance.PlayerId}");
 
             await RemoteConfigManager.instance.FetchConfigs();
@@ -103,6 +104,7 @@ namespace Unity.Services.Samples.OverTheAirContent
             {
                 yield return null;
             }
+
             var downloadSize = cacheCheckHandle.Result;
 
             Addressables.Release(cacheCheckHandle);

@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using System;
+using TMPro;
 using UnityEngine;
 
 namespace Unity.Services.Samples.DailyRewards
@@ -6,7 +7,7 @@ namespace Unity.Services.Samples.DailyRewards
     public class DailyRewardsSampleView : MonoBehaviour
     {
         public Canvas dailyRewardsWindowCanvas;
-            
+
         public GameObject endedEventGameObject;
 
         public TextMeshProUGUI daysLeftText;
@@ -15,7 +16,6 @@ namespace Unity.Services.Samples.DailyRewards
 
         public CalendarView calendar;
         public BonusDayView bonusDay;
-
 
         public void UpdateStatus(DailyRewardsEventManager eventManager)
         {
@@ -49,7 +49,7 @@ namespace Unity.Services.Samples.DailyRewards
                 }
             }
         }
-            
+
         public void OpenEventWindow()
         {
             dailyRewardsWindowCanvas.enabled = true;

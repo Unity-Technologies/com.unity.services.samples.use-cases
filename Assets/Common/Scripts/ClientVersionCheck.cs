@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using Unity.Services.RemoteConfig;
+using UnityEditor;
 using UnityEngine;
 
 namespace Unity.Services.Samples
@@ -43,8 +44,6 @@ namespace Unity.Services.Samples
 
         async Task GetConfigs()
         {
-            RemoteConfigService.Instance.SetCustomUserID(AuthenticationService.Instance.PlayerId);
-
             await RemoteConfigService.Instance.FetchConfigsAsync(new UserAttributes(), new AppAttributes());
 
             // Check that scene has not been unloaded while processing async wait to prevent throw.
@@ -54,7 +53,7 @@ namespace Unity.Services.Samples
             var clientVersionMinimumRaw = RemoteConfigService.Instance.appConfig.GetString("CLIENT_VERSION_MIN");
             var clientVersionLatestRaw = RemoteConfigService.Instance.appConfig.GetString("CLIENT_VERSION_LATEST");
 
-            if (!string.IsNullOrEmpty(clientVersionMinimumRaw) 
+            if (!string.IsNullOrEmpty(clientVersionMinimumRaw)
                 && !string.IsNullOrEmpty(clientVersionLatestRaw))
             {
                 var clientVersionMinimum = new Version(clientVersionMinimumRaw);
@@ -65,8 +64,8 @@ namespace Unity.Services.Samples
                     Debug.LogError(k_NewerMinimumVersionMessage);
 
 #if UNITY_EDITOR
-                    UnityEditor.EditorApplication.isPlaying = false;
-                    UnityEditor.EditorUtility.DisplayDialog(k_NewerMinimumVersionTitle,
+                    EditorApplication.isPlaying = false;
+                    EditorUtility.DisplayDialog(k_NewerMinimumVersionTitle,
                         k_NewerMinimumVersionMessage, "Okay");
 #else
                     Application.Quit();
@@ -82,6 +81,7 @@ namespace Unity.Services.Samples
         }
 
         struct UserAttributes { }
+
         struct AppAttributes { }
     }
 }

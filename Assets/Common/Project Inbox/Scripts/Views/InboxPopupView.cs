@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -5,8 +6,11 @@ namespace Unity.Services.Samples.ProjectInbox
 {
     public class InboxPopupView : MonoBehaviour
     {
-        [SerializeField] MessageListView m_MessageListView;
-        [SerializeField] GameObject m_LoadingSpinner;
+        [SerializeField]
+        MessageListView messageListView;
+
+        [SerializeField]
+        GameObject loadingSpinner;
 
         public void Show()
         {
@@ -20,24 +24,24 @@ namespace Unity.Services.Samples.ProjectInbox
 
         public void ShowUpdatingState()
         {
-            m_MessageListView.SetInteractable(false);
+            messageListView.SetInteractable(false);
             StartLoadingSpinner();
         }
 
         public void HideUpdatingState()
         {
             StartCoroutine(StopLoadingSpinner());
-            m_MessageListView.SetInteractable(true);
+            messageListView.SetInteractable(true);
         }
 
         void StartLoadingSpinner()
         {
-            if (m_LoadingSpinner == null)
+            if (loadingSpinner == null)
             {
                 return;
             }
 
-            m_LoadingSpinner.SetActive(true);
+            loadingSpinner.SetActive(true);
         }
 
         IEnumerator StopLoadingSpinner()
@@ -46,9 +50,9 @@ namespace Unity.Services.Samples.ProjectInbox
             // long enough that it is still visible to the user. So we'll delay the stopping for one second.
             yield return new WaitForSeconds(1);
 
-            if (m_LoadingSpinner != null)
+            if (loadingSpinner != null)
             {
-                m_LoadingSpinner.SetActive(false);
+                loadingSpinner.SetActive(false);
             }
         }
     }

@@ -74,7 +74,7 @@ namespace Unity.Services.Samples.RewardedAds
             else
             {
                 Debug.Log("Mediation is having trouble loading ads. " +
-                            "Too many unsuccessful attempts have been made.");
+                    "Too many unsuccessful attempts have been made.");
             }
         }
 
@@ -82,7 +82,7 @@ namespace Unity.Services.Samples.RewardedAds
         {
             // The isAdReady flag will signal to the view that it can show a watch rewarded ad button.
             isAdReady = true;
-                
+
             // Resetting m_AdLoadAttempts since an ad was successfully loaded.
             m_AdLoadAttempts = 0;
         }
@@ -96,12 +96,12 @@ namespace Unity.Services.Samples.RewardedAds
             {
                 case LoadError.SdkNotInitialized:
                     Debug.Log("Mediation SDK failed to initialize properly. " +
-                                $"Unity Services State: {UnityServices.State}");
+                        $"Unity Services State: {UnityServices.State}");
                     break;
 
                 case LoadError.NetworkError:
                     Debug.Log("A network error is preventing mediation from loading ads. Retrying. " +
-                                $"Error Message: {args.Message}");
+                        $"Error Message: {args.Message}");
                     LoadAdIfNotTooManyAttempts();
                     break;
 
@@ -113,7 +113,7 @@ namespace Unity.Services.Samples.RewardedAds
                 case LoadError.Unknown:
                 default:
                     Debug.Log("An unknown error occurred while attempting to load an ad. Retrying. " +
-                                $"Error Message: {args.Message}");
+                        $"Error Message: {args.Message}");
                     LoadAdIfNotTooManyAttempts();
                     break;
             }
@@ -143,24 +143,24 @@ namespace Unity.Services.Samples.RewardedAds
             {
                 case ShowError.AdNotLoaded:
                     Debug.Log("There was a problem showing the loaded ad. " +
-                                "Loading a new one, please try again.");
+                        "Loading a new one, please try again.");
                     LoadAdIfNotTooManyAttempts();
                     break;
 
                 case ShowError.AdNetworkError:
                     Debug.Log("There is a problem with the network providing this ad. " +
-                                $"Error Message: {args.Message}");
+                        $"Error Message: {args.Message}");
                     break;
 
                 case ShowError.InvalidActivity:
                     Debug.Log("Invalid activity detected when trying to show ad. " +
-                                $"Error Message: {args.Message}");
+                        $"Error Message: {args.Message}");
                     break;
 
                 case ShowError.Unknown:
                 default:
-                    Debug.Log("An unknown error occurred when trying to show your ad. " + 
-                                $"Error Message: {args.Message}");
+                    Debug.Log("An unknown error occurred when trying to show your ad. " +
+                        $"Error Message: {args.Message}");
                     break;
             }
         }

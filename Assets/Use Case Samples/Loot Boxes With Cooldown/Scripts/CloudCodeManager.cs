@@ -24,7 +24,6 @@ namespace Unity.Services.Samples.LootBoxesWithCooldown
 
         public static CloudCodeManager instance { get; private set; }
 
-
         void Awake()
         {
             if (instance != null && instance != this)
@@ -103,7 +102,7 @@ namespace Unity.Services.Samples.LootBoxesWithCooldown
             if (e is CloudCodeRateLimitedException cloudCodeRateLimitedException)
             {
                 Debug.Log("Cloud Code rate limit has been exceeded. " +
-                            $"Wait {cloudCodeRateLimitedException.RetryAfter} seconds and try again.");
+                    $"Wait {cloudCodeRateLimitedException.RetryAfter} seconds and try again.");
                 return;
             }
 
@@ -156,25 +155,25 @@ namespace Unity.Services.Samples.LootBoxesWithCooldown
             switch (cloudCodeCustomError.status)
             {
                 case k_HttpBadRequestStatusCode:
-                    Debug.Log("A bad server request occurred during Cloud Code script execution: " + 
-                                $"{cloudCodeCustomError.name}: {cloudCodeCustomError.message} : " +
-                                $"{cloudCodeCustomError.details[0]}");
+                    Debug.Log("A bad server request occurred during Cloud Code script execution: " +
+                        $"{cloudCodeCustomError.name}: {cloudCodeCustomError.message} : " +
+                        $"{cloudCodeCustomError.details[0]}");
                     break;
 
                 case k_HttpTooManyRequestsStatusCode:
                     Debug.Log($"Rate Limit has been exceeded. Wait {cloudCodeCustomError.retryAfter} " +
-                                $"seconds and try again.");
+                        "seconds and try again.");
                     break;
 
                 case k_UnexpectedFormatCustomStatusCode:
-                    Debug.Log($"Cloud Code returned an Unprocessable Entity exception, " +
-                                $"but it could not be parsed: { cloudCodeCustomError.message }. " +
-                                $"Original error: { cloudCodeCustomError.InnerException?.Message }");
+                    Debug.Log("Cloud Code returned an Unprocessable Entity exception, " +
+                        $"but it could not be parsed: {cloudCodeCustomError.message}. " +
+                        $"Original error: {cloudCodeCustomError.InnerException?.Message}");
                     break;
 
                 default:
                     Debug.Log($"Cloud code returned error: {cloudCodeCustomError.status}: " +
-                                $"{cloudCodeCustomError.name}: {cloudCodeCustomError.message}");
+                        $"{cloudCodeCustomError.name}: {cloudCodeCustomError.message}");
                     break;
             }
         }
@@ -238,8 +237,9 @@ namespace Unity.Services.Samples.LootBoxesWithCooldown
             public string retryAfter;
             public string[] details;
 
-            public CloudCodeCustomError(string name, int status, string message = null, 
-                Exception innerException = null) : base(message, innerException)
+            public CloudCodeCustomError(string name, int status, string message = null,
+                Exception innerException = null)
+                : base(message, innerException)
             {
                 this.name = name;
                 this.status = status;

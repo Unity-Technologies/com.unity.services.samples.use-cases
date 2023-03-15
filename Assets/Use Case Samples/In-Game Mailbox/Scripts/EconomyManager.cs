@@ -39,26 +39,17 @@ namespace Unity.Services.Samples.InGameMailbox
 
         public async Task RefreshEconomyConfiguration()
         {
-            // Calling GetCurrenciesAsync (or GetInventoryItemsAsync, or GetVirtualPurchasesAsync, etc), in addition
-            // to returning the appropriate Economy configurations, will update the cached configuration list,
+            // Calling SyncConfigurationAsync(), will update the cached configuration list,
             // including any new Currency, Inventory Item, or Purchases that have been published since the last
             // time the player's configuration was cached.
-            // 
-            // This is important to do before hitting the Economy or Remote Config services for any other calls as
-            // both use the cached data list.
-            var getCurrenciesTask = EconomyService.Instance.Configuration.GetCurrenciesAsync();
-            var getInventoryItemsTask = EconomyService.Instance.Configuration.GetInventoryItemsAsync();
-            var getVirtualPurchasesTask = EconomyService.Instance.Configuration.GetVirtualPurchasesAsync();
-
-            await Task.WhenAll(getCurrenciesTask, getInventoryItemsTask, getVirtualPurchasesTask);
+            await EconomyService.Instance.Configuration.SyncConfigurationAsync();
 
             // Check that scene has not been unloaded while processing async wait to prevent throw.
-            if (this == null)
-                return;
+            if (this == null) return;
 
-            m_CurrencyDefinitions = getCurrenciesTask.Result;
-            m_InventoryItemDefinitions = getInventoryItemsTask.Result;
-            m_VirtualPurchaseDefinitions = getVirtualPurchasesTask.Result;
+            m_CurrencyDefinitions = EconomyService.Instance.Configuration.GetCurrencies();
+            m_InventoryItemDefinitions = EconomyService.Instance.Configuration.GetInventoryItems();
+            m_VirtualPurchaseDefinitions = EconomyService.Instance.Configuration.GetVirtualPurchases();
         }
 
         public void InitializeEconomyLookups()

@@ -65,6 +65,7 @@ namespace Unity.Services.Samples.ProjectInbox
 
             var inboxStateJson = JsonUtility.ToJson(s_SavedProjectInboxState);
             PlayerPrefs.SetString(k_InboxStateKey, inboxStateJson);
+            PlayerPrefs.Save();
         }
 
         public static void AddNewPlayerId(string playerId)
@@ -74,13 +75,14 @@ namespace Unity.Services.Samples.ProjectInbox
                 playerIdsLocalCache.Add(playerId);
             }
 
-            var pastPlayerIds = new PastPlayerIds()
+            var pastPlayerIds = new PastPlayerIds
             {
                 playerIds = playerIdsLocalCache
             };
 
             var playerIdsJson = JsonUtility.ToJson(pastPlayerIds);
             PlayerPrefs.SetString(k_PastPlayerIdsKey, playerIdsJson);
+            PlayerPrefs.Save();
         }
 
         public struct ProjectInboxState

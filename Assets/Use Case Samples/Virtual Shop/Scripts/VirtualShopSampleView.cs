@@ -51,7 +51,7 @@ namespace Unity.Services.Samples.VirtualShop
         {
             foreach (var kvp in virtualShopCategories)
             {
-                var categoryButtonGameObject = Instantiate(categoryButtonPrefab.gameObject, 
+                var categoryButtonGameObject = Instantiate(categoryButtonPrefab.gameObject,
                     categoryButtonsContainerGroup.transform);
                 var categoryButton = categoryButtonGameObject.GetComponent<CategoryButton>();
                 categoryButton.Initialize(virtualShopSceneManager, kvp.Value.id);
@@ -82,7 +82,7 @@ namespace Unity.Services.Samples.VirtualShop
 
             foreach (var virtualShopItem in virtualShopCategory.virtualShopItems)
             {
-                var virtualShopItemGameObject = Instantiate(virtualShopItemPrefab.gameObject, 
+                var virtualShopItemGameObject = Instantiate(virtualShopItemPrefab.gameObject,
                     itemsContainer.transform);
                 virtualShopItemGameObject.GetComponent<VirtualShopItemView>().Initialize(
                     virtualShopSceneManager, virtualShopItem, AddressablesManager.instance);

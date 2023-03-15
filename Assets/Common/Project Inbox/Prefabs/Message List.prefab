@@ -58,9 +58,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77c4d9e736e64d949860b8901751f8db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_MessagePreviewPrefab: {fileID: 473486040087142668, guid: 43d230ce1022f4d178beb799b6138837, type: 3}
-  m_MessageListContainer: {fileID: 4601602760160442959}
-  m_ProjectInboxManager: {fileID: 0}
+  messagePreviewPrefab: {fileID: 473486040087142668, guid: 43d230ce1022f4d178beb799b6138837, type: 3}
+  messageListContainer: {fileID: 4601602760160442959}
+  projectInboxManager: {fileID: 0}
 --- !u!1 &4601602759727398763
 GameObject:
   m_ObjectHideFlags: 0

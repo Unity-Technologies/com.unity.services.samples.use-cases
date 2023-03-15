@@ -13,13 +13,12 @@ namespace Unity.Services.Samples.CloudAIMiniGame
 
         Button m_Button;
         GridContents m_ButtonState = GridContents.Empty;
-        bool m_IsPointerHovering = false;
+        bool m_IsPointerHovering;
 
         GameObject m_PieceAiImage;
         GameObject m_PiecePlayerImage;
         GameObject m_UiHighlightImage;
         GameObject m_InProgressImage;
-
 
         public enum GridContents
         {
@@ -27,7 +26,6 @@ namespace Unity.Services.Samples.CloudAIMiniGame
             AiPiece,
             PlayerPiece
         }
-
 
         void Start()
         {
@@ -59,7 +57,7 @@ namespace Unity.Services.Samples.CloudAIMiniGame
             m_UiHighlightImage.SetActive(m_IsPointerHovering && isInteractable);
         }
 
-        async public void OnButtonPressed()
+        public async void OnButtonPressed()
         {
             try
             {
@@ -78,7 +76,7 @@ namespace Unity.Services.Samples.CloudAIMiniGame
 
         public void SetGridContents(GridContents gridContents)
         {
-            this.m_ButtonState = gridContents;
+            m_ButtonState = gridContents;
 
             m_PieceAiImage.SetActive(gridContents == GridContents.AiPiece);
             m_PiecePlayerImage.SetActive(gridContents == GridContents.PlayerPiece);

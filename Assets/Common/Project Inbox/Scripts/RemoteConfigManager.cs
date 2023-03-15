@@ -9,7 +9,7 @@ namespace Unity.Services.Samples.ProjectInbox
     public static class RemoteConfigManager
     {
         public static int maxInboxCount { get; private set; }
-        
+
         public static string ccdContentUrl { get; private set; }
 
         static List<string> s_OrderedMessageIds;
@@ -114,9 +114,7 @@ namespace Unity.Services.Samples.ProjectInbox
             return true;
         }
 
-        struct UserAttributes
-        {
-        }
+        struct UserAttributes { }
 
         struct AppAttributes
         {

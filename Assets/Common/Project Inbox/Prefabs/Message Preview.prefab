@@ -828,13 +828,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 75f04ee6e6fc0494ab41ff09e62781cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_TitleText: {fileID: 5668743287286364090}
-  m_ExpirationText: {fileID: 5668743286535736660}
-  m_SelectorButton: {fileID: 4273952141350935065}
-  m_MessageUnreadIndicator: {fileID: 7247821819851629708}
-  m_SelectedBackground: {fileID: 5795337904056897598}
-  m_ReadBackground: {fileID: 5378426299015979901}
-  m_UnreadBackground: {fileID: 7580717740569852746}
+  titleText: {fileID: 5668743287286364090}
+  expirationText: {fileID: 5668743286535736660}
+  selectorButton: {fileID: 4273952141350935065}
+  messageUnreadIndicator: {fileID: 7247821819851629708}
+  selectedBackground: {fileID: 5795337904056897598}
+  readBackground: {fileID: 5378426299015979901}
+  unreadBackground: {fileID: 7580717740569852746}
 --- !u!114 &2520803141784195510
 MonoBehaviour:
   m_ObjectHideFlags: 0

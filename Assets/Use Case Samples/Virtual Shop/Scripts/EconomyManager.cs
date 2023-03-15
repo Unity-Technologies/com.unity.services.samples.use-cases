@@ -19,7 +19,10 @@ namespace Unity.Services.Samples.VirtualShop
         // Dictionary of all Virtual Purchase transactions ids to lists of costs & rewards.
         public Dictionary<string, (List<ItemAndAmountSpec> costs, List<ItemAndAmountSpec> rewards)>
             virtualPurchaseTransactions
-        { get; private set; }
+        {
+            get;
+            private set;
+        }
 
         public List<CurrencyDefinition> currencyDefinitions { get; private set; }
         public List<InventoryItemDefinition> inventoryItemDefinitions { get; private set; }
@@ -43,31 +46,24 @@ namespace Unity.Services.Samples.VirtualShop
             if (instance == this)
             {
                 instance = null;
+
             }
         }
 
         public async Task RefreshEconomyConfiguration()
         {
-            // Calling GetCurrenciesAsync (or GetInventoryItemsAsync, or GetVirtualPurchasesAsync, etc), in addition
-            // to returning the appropriate Economy configurations, will update the cached configuration list,
+            // Calling SyncConfigurationAsync(), will update the cached configuration list,
             // including any new Currency, Inventory Item, or Purchases that have been published since the last
             // time the player's configuration was cached.
-            // 
-            // This is important to do before hitting the Economy or Remote Config services for any other calls as
-            // both use the cached data list.
-            var getCurrenciesTask = EconomyService.Instance.Configuration.GetCurrenciesAsync();
-            var getInventoryItemsTask = EconomyService.Instance.Configuration.GetInventoryItemsAsync();
-            var getVirtualPurchasesTask = EconomyService.Instance.Configuration.GetVirtualPurchasesAsync();
-
-            await Task.WhenAll(getCurrenciesTask, getInventoryItemsTask, getVirtualPurchasesTask);
+            await EconomyService.Instance.Configuration.SyncConfigurationAsync();
 
             // Check that scene has not been unloaded while processing async wait to prevent throw.
             if (this == null)
                 return;
 
-            currencyDefinitions = getCurrenciesTask.Result;
-            inventoryItemDefinitions = getInventoryItemsTask.Result;
-            m_VirtualPurchaseDefinitions = getVirtualPurchasesTask.Result;
+            currencyDefinitions = EconomyService.Instance.Configuration.GetCurrencies();
+            inventoryItemDefinitions = EconomyService.Instance.Configuration.GetInventoryItems();
+            m_VirtualPurchaseDefinitions = EconomyService.Instance.Configuration.GetVirtualPurchases();
         }
 
         public async Task RefreshCurrencyBalances()
@@ -173,7 +169,7 @@ namespace Unity.Services.Samples.VirtualShop
                 return await EconomyService.Instance.Purchases.MakeVirtualPurchaseAsync(virtualPurchaseId);
             }
             catch (EconomyException e)
-            when (e.ErrorCode == k_EconomyPurchaseCostsNotMetStatusCode)
+                when (e.ErrorCode == k_EconomyPurchaseCostsNotMetStatusCode)
             {
                 // Rethrow purchase-cost-not-met exception to be handled by shops manager.
                 throw;

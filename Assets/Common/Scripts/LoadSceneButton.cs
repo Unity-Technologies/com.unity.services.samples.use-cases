@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -34,21 +35,21 @@ namespace Unity.Services.Samples
             LoadScene();
             SelectReadmeFileOnProjectWindow();
         }
-        
-        void LoadScene()
+
+        protected void LoadScene()
         {
             if (!string.IsNullOrEmpty(sceneName))
             {
                 SceneManager.LoadScene(sceneName);
             }
         }
-        
-        void SelectReadmeFileOnProjectWindow()
+
+        protected void SelectReadmeFileOnProjectWindow()
         {
 #if UNITY_EDITOR
             if (!(readmeFile is null))
             {
-                Selection.objects = new Object[] {readmeFile};   
+                Selection.objects = new[] { readmeFile };
             }
 #endif
         }

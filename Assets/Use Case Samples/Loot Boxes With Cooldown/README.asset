@@ -19,10 +19,10 @@ MonoBehaviour:
   - subHeader1: Intro
     subHeader2: 
     subHeader3: 
-    body: 'Loot Boxes With Cooldown permits granting currencies and inventory items
+    body: Loot Boxes With Cooldown permits granting currencies and inventory items
       to players at timed intervals as a strategy to boost player retention and 
       interest over time. Loot Boxes are a great way to make players feel engaged
-      and motivated to keep playing and get rewarded for it.'
+      and motivated to keep playing and get rewarded for it.
     bodyFormat: 0
     boxCallout: 
     bulletList: []
@@ -30,11 +30,11 @@ MonoBehaviour:
   - subHeader1: 
     subHeader2: 
     subHeader3: 
-    body: 'This sample shows how to set up a random Loot Box in your game, or, in
+    body: This sample shows how to set up a random Loot Box in your game, or, in
       other words, how to grant players timed rewards consisting of multiple, random
       currencies and inventory items. This sample covers the case where, after a
       player claims a Loot Box, they must wait a pre-set amount of time before claiming
-      another.'
+      another.
     bodyFormat: 0
     boxCallout: 
     bulletList: []
@@ -62,13 +62,16 @@ MonoBehaviour:
     - body: A flag if the claim button should be enabled
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: The current cooldown in seconds
       bodyFormat: 0
       bulletList: []
+      linkList: []
     - body: The default cooldown needed to reset the timer locally when a reward
         is claimed
       bodyFormat: 0
       bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: 
@@ -89,18 +92,26 @@ MonoBehaviour:
     bodyFormat: 0
     boxCallout: 
     bulletList:
-    - body: 'Economy: Retrieves the starting and updated currency balances at runtime.'
+    - body: 'Authentication: Automatically signs in the player as an anonymous user
+        to keep track of their data server-side.'
       bodyFormat: 0
       bulletList: []
-    - body: 'Cloud Save: Stores and retrieves the last grant time to allow cooldown
-        values to persist between sessions.'
-      bodyFormat: 0
-      bulletList: []
+      linkList: []
     - body: 'Cloud Code: Accesses the cooldown status, picks and grants random currency
         and inventory items through the Economy server, and returns the result of
         the reward.'
       bodyFormat: 0
       bulletList: []
+      linkList: []
+    - body: 'Cloud Save: Stores and retrieves the last grant time to allow cooldown
+        values to persist between sessions.'
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: 'Economy: Retrieves the starting and updated currency balances at runtime.'
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: 
@@ -111,12 +122,14 @@ MonoBehaviour:
     boxCallout: 
     bulletList: []
     linkList:
-    - linkText: Economy
-      url: https://docs.unity.com/Economy
-    - linkText: Cloud Save
-      url: https://docs.unity.com/Cloud-Save
+    - linkText: Authentication
+      url: https://docs.unity.com/authentication/IntroUnityAuthentication.html
     - linkText: Cloud Code
-      url: https://docs.unity.com/Cloud-Code
+      url: https://docs.unity.com/cloud-code/implementation.html
+    - linkText: Cloud Save
+      url: https://docs.unity.com/cloud-save/index.html#Implementation
+    - linkText: Economy
+      url: https://docs.unity.com/economy/implementation.html
   - subHeader1: Dashboard Setup
     subHeader2: 
     subHeader3: 
@@ -144,6 +157,7 @@ MonoBehaviour:
       - body: 'ID: "COIN"'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: Gem
       bodyFormat: 1
       bulletList:
@@ -153,6 +167,7 @@ MonoBehaviour:
       - body: 'ID: "GEM"'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: Pearl
       bodyFormat: 1
       bulletList:
@@ -162,6 +177,7 @@ MonoBehaviour:
       - body: 'ID: "PEARL"'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: Star
       bodyFormat: 1
       bulletList:
@@ -171,6 +187,7 @@ MonoBehaviour:
       - body: 'ID: "STAR"'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: Sword
       bodyFormat: 1
       bulletList:
@@ -180,6 +197,7 @@ MonoBehaviour:
       - body: 'ID: "SWORD"'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: Shield
       bodyFormat: 1
       bulletList:
@@ -189,6 +207,7 @@ MonoBehaviour:
       - body: 'ID: "SHIELD"'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: Cloud Code Scripts
@@ -206,6 +225,7 @@ MonoBehaviour:
       - body: 'Script: "Assets/Use Case Samples/Loot Boxes With Cooldown/Cloud Code/LootBoxesWithCooldown_GetStatus.js"'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     - body: 'LootBoxesWithCooldown_Claim:'
       bodyFormat: 1
       bulletList:
@@ -215,6 +235,7 @@ MonoBehaviour:
       - body: 'Script: "Assets/Use Case Samples/Loot Boxes With Cooldown/Cloud Code/LootBoxesWithCooldown_Claim.js"'
         bodyFormat: 0
         bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: 

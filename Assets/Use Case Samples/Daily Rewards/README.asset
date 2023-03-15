@@ -19,10 +19,10 @@ MonoBehaviour:
   - subHeader1: Intro
     subHeader2: 
     subHeader3: 
-    body: 'The Daily Reward (Monthly) Calendar is a prevalent feature in connected
+    body: The Daily Reward (Monthly) Calendar is a prevalent feature in connected
       games. Whether it is presented in a weekly or monthly calendar, with or without
       completion streaks, Daily Rewards are present in games across all genre to
-      boost retention.'
+      boost retention.
     bodyFormat: 0
     boxCallout: 
     bulletList: []
@@ -168,12 +168,12 @@ MonoBehaviour:
     bodyFormat: 0
     boxCallout: 
     bulletList:
-    - body: 'Authentication: Automatically signs in the user anonymously to keep
-        track of their data on the server side.'
+    - body: 'Addressables: Allows asset retrieval by address. '
       bodyFormat: 0
       bulletList: []
       linkList: []
-    - body: 'Economy: Retrieves the starting and updated currency balances at runtime.'
+    - body: 'Authentication: Automatically signs in the user anonymously to keep
+        track of their data on the server side.'
       bodyFormat: 0
       bulletList: []
       linkList: []
@@ -184,17 +184,17 @@ MonoBehaviour:
       bodyFormat: 0
       bulletList: []
       linkList: []
-    - body: 'Remote Config: Defines parameters for the Daily Rewards event including
-        rewards granted on each day, day duration, number of days, etc. '
-      bodyFormat: 0
-      bulletList: []
-      linkList: []
-    - body: 'Addressables: Allows asset retrieval by address. '
-      bodyFormat: 0
-      bulletList: []
-      linkList: []
     - body: 'Cloud Save: Stores and retrieves the event status such as start epoch
         time, days claimed, etc. '
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: 'Economy: Retrieves the starting and updated currency balances at runtime.'
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: 'Remote Config: Defines parameters for the Daily Rewards event including
+        rewards granted on each day, day duration, number of days, etc. '
       bodyFormat: 0
       bulletList: []
       linkList: []
@@ -208,18 +208,18 @@ MonoBehaviour:
     boxCallout: 
     bulletList: []
     linkList:
-    - linkText: Authentication
-      url: https://docs.unity.com/authentication/Content/InstallAndConfigureSDK.htm
-    - linkText: Economy
-      url: https://docs.unity.com/economy/Content/implementation.htm?tocpath=Implementation%7C_____0
-    - linkText: Cloud Code
-      url: https://docs.unity.com//cloud-code/Content/implementation.htm?tocpath=Implementation%7C_____0#SDK_installation
-    - linkText: Remote Config
-      url: https://docs.unity3d.com/Packages/com.unity.remote-config@2.0/manual/ConfiguringYourProject.html
     - linkText: Addressables
       url: https://docs.unity3d.com/Packages/com.unity.addressables@latest
+    - linkText: Authentication
+      url: https://docs.unity.com/authentication/IntroUnityAuthentication.html
+    - linkText: Cloud Code
+      url: https://docs.unity.com/cloud-code/implementation.html
     - linkText: Cloud Save
-      url: https://docs.unity.com/cloud-save/implementation.htm
+      url: https://docs.unity.com/cloud-save/index.html#Implementation
+    - linkText: Economy
+      url: https://docs.unity.com/economy/implementation.html
+    - linkText: Remote Config
+      url: https://docs.unity3d.com/Packages/com.unity.remote-config@latest
   - subHeader1: Dashboard setup
     subHeader2: 
     subHeader3: 

@@ -1,0 +1,515 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bfbabd22c62c640a6ba459d46825055b, type: 3}
+  m_Name: README
+  m_EditorClassIdentifier: 
+  header:
+    title: Serverless Multiplayer Game Readme
+    icon: {fileID: 2800000, guid: 83f0684dab5534e2492f651aaaf4a151, type: 3}
+  sections:
+  - subHeader1: Intro
+    subHeader2: 
+    subHeader3: 
+    body: 'Multiplayer games are a popular game mechanic that allow multiple players
+      to interact and play games together. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'This sample demonstrates how to create or join a Lobby Service game lobby
+      and compete in a simple arena-style game where players collect coins for points. '
+    bodyFormat: 0
+    boxCallout: 'Important: Unless you are testing the serverless multiplayer game
+      sample on different devices you must set each instance to a different profile
+      using the profile switcher drop-down at the top of the screen. See Set up computer
+      to test multiplayer for explanation and additional details.'
+    bulletList: []
+    linkList: []
+  - subHeader1: Overview
+    subHeader2: 
+    subHeader3: 
+    body: 'To see this use case in action:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: 'In the Unity Editor Project window, select Assets > Use Case Samples
+        > Serverless Multiplayer Game. '
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: 'Double-click ServerlessMultiplayerGameSample.unity to open the main
+        sample scene. '
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: 'Enter Play Mode to interact with the use case. '
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'As you interact with the sample, the use case progresses through the following
+      three scenes: '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: 'The ServerlessMultiplayerGameSample scene, the initial scene where players
+        can choose to start or join a lobby. '
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: 'The Lobby scene, which shows the current lobby and its players and where
+        players can indicate readiness to start the game. '
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: 'The Game scene, where players move about in real time and collect coins. '
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'During the course of the sample, players can perform the following actions: '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: 'Randomize their names. '
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: 'Create public and private lobbies for others to join. '
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: 'Join lobbies either from a list of public lobbies or by entering a secret
+        key to join private ones. '
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: 'View other players in the lobby. '
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: 'Signal they are ready to start the game. '
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: 'Play a multiplayer game using Relay Service and Netcode for GameObjects
+        (NGO) to facilitate player movement and collect coins for points. '
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: 'View information such as winners, scores, and personal high stats at
+        the end of the game. '
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: Initialization
+    subHeader3: 
+    body: 'When the scene loads, the following initialization steps occur:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: 'Sample-related managers are set to DontDestroyOnLoad so they can remain
+        intact in all scenes of the sample. '
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: 'The Profanity Manager is initialized, causing all valid player names
+        and lobby words to be propagated to the allow list so only permitted words
+        will be presented to the player. '
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: 'UGS is initialized and the player signed in with the correct profile
+        name. '
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: 'Remote Config is read to configure coin spawning, game duration, etc. '
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: 'The main menu is shown so the player can choose to host or join a game,
+        randomize his/her name, change UGS profile name to use, etc. '
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: Functionality
+    subHeader3: Set up computer to test multiplayer
+    body: 'You must be able to play multiple instances of this sample to test this
+      use case. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'The following are some techniques to facilitate multiplayer testing:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: 'Clone the repository again (or copy the project folder) to another folder.
+        You can then open both/all instances in the Unity Editor simultaneously and
+        enter Play Mode in each instance to test the sample. '
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: 'Use ParrelSync to clone the project. This is the preferred method because
+        changes made to the base project automatically propagate to all clones for
+        testing. Note that this is not a Unity product so we recommend reviewing
+        the documentation and license agreement before using.  '
+      bodyFormat: 0
+      bulletList: []
+      linkList:
+      - linkText: ParrelSync
+        url: https://github.com/VeriorPies/ParrelSync
+    - body: 'Install the sample on multiple physical devices. '
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 'Important: If you choose to use either of the first two options
+      listed above, ensure that each instance is signed in to UGS with a different
+      anonymous ID. Do this by changing the Profile ID on the main scene to a different
+      profile (the scene defaults to the last profile used or Profile-1 by default).
+      Changing this profile selection signs you in to a different Authentication
+      service profile which simulates having multiple accounts on a single device.
+      Note that the profile switcher only works on the main scene; once you leave
+      to create or join a lobby, the choice is locked in and you cannot change it
+      until you return to the main scene.'
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: Scenes
+    body: 'This use case contains multiple scenes to divide the sample into smaller
+      pieces, allowing developers to only review the implementation they''re interested
+      in learning. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 'Note: Always begin Play Mode with the ServerlessMultiplayerGameSample
+      scene, which changes to the other scenes as needed. '
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: ServerlessMultiplayerGameSample scene
+    body: 'The sample begins with the ServerlessMultiplayerGameSample scene where
+      players can choose to start or join a lobby, randomize their player name, and,
+      if creating a lobby, randomize the lobby name, and adjust setup parameters
+      such as max players or public/private flag. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'The player remains in this scene until a lobby is either created or joined,
+      both of which causing play to progress to the Lobby scene. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'Once a game ends or the player leaves the Lobby scene, they return to
+      this scene. If the player just finished playing a game, the results screen
+      displays the outcome along with the current player''s stats. Closing the results
+      screen returns the player to the main menu so another lobby can be created/joined
+      to start a new game. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: Lobby scene
+    body: 'Once a lobby has been created or joined on the ServerlessMultiplayerGameSample
+      scene, the sample opens the Lobby scene, which shows the contents of the current
+      lobby, and permits players to signal ready or leave. Additionally, the host
+      has the option to remove players from the lobby. All players are required to
+      signal they are ready before a game can begin. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'Players remain in this scene until all players are ready (play proceeds
+      to Game scene), or the player leaves the lobby and returns to the ServerlessMultiplayerGameSample
+      scene. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: Game scene
+    body: 'After a minimum of two players have joined the lobby and all players have
+      signaled ready, the Game scene launches, where an immediate countdown from
+      three begins. Once complete, players can move and collect coins, which are
+      spawned individually or in clusters (based on the Remote Config configuration).
+      Once players can move, the game timer begins counting down and the game ends
+      once the game timer expires. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'When the game ends due to the game timer expiring, players automatically
+      return to the ServerlessMultiplayerGameSample scene, where the game results
+      as well as each player''s personal stats appear. Once that results screen closes,
+      the main menu reappears (still in the ServerlessMultiplayerGameSample) and
+      another lobby can be created or joined. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: Notable manager classes
+    body: "This use case has a few notable manager classes that facilitate different
+      aspects of the sample. The ProfanityManager class ensures that user generated
+      strings don't contain offensive language, while the GameManager class processes
+      requests from players, controls gameplay, and updates clients\u2019 state based
+      on game events. "
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: Profanity Manager
+    body: 'This sample implements a Profanity Manager to ensure that the player and
+      lobby names created by one player, but visible to all players, do not include
+      any offensive language. The ProfanityManager class uses an allowlist to validate
+      the strings that the client receives from the Lobby Service. This validation
+      ensures that even if one player hacks the system to submit an offensive string,
+      any other players who receive that lobby name or username would not be able
+      to see the invalid string. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'Note that using an allowlist for input such as usernames can be limiting,
+      since it is difficult to make such a list exhaustive. In this case, you could
+      instead use a blocklist to filter out the specific words deemed inappropriate. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: You can find the ProfanityManager class in Serverless Multiplayer Game/Scripts/Menu/ProfanityManager.cs,
+      and the strings included in the player and lobby names allowlists are in Serverless
+      Multiplayer Game/Scripts/Menu/PlayerNameManager.cs and Serverless Multiplayer
+      Game/Scripts/Menu/LobbyNameManager.cs, respectively.
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'If you wanted to use a refactored version of the Profanity Manager, replace
+      the ProfanityManager.IsValidPlayerName and ProfanityManager.IsValidLobbyName
+      methods with your own implementation. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: Game Network Manager
+    body: 'Being a multiplayer game, this sample requires a Game Network Manager
+      to facilitate game communication between players. The Game Network Manager
+      is instantiated on the host when the Game scene is first loaded due to the
+      existence of a GameSceneManager in the scene. This Game Network Manager instantiates
+      the Game Network Manager in its Start() method. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: The Game Network Manager handles things such as
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: 'Starting the host/client '
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: 'Creating player avatars for all players '
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: 'Coordinating countdowns and game timers '
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: 'Allowing players to move to collect coins once countdown is complete '
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: 'Communicating with other managers when needed, such as when scoring '
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: 'Coordinating game over by propagating the final score and waiting for
+        all players to acknowledge receipt '
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: 'Issuing request that all players return to main menu '
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'As mentioned above, the Game Network Manager is instantiated at runtime
+      so it can be properly configured on the host using NetworkObject.SpawnWithOwnership.
+      Thus, the host has control of the Game Network Manager, and all clients are
+      able to interact with it as needed to facilitate gameplay. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'The GameNetworkManager class can be found at Serverless Multiplayer Game/Scripts/Game/GameNetworkManager.cs. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: Setup
+    subHeader2: Requirements
+    subHeader3: 
+    body: 'To replicate this use case, you need the following Unity packages in your
+      project: '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList:
+    - linkText: Authentication
+      url: https://docs.unity.com/authentication/IntroUnityAuthentication.html
+    - linkText: Cloud Save
+      url: https://docs.unity.com/cloud-save/index.html#Implementation
+    - linkText: Lobby
+      url: https://docs.unity.com/lobby/en/manual/lobby-sdk-installation
+    - linkText: Netcode for GameObjects
+      url: https://docs-multiplayer.unity3d.com/netcode/current/installation/install
+    - linkText: Relay
+      url: https://docs.unity.com/relay/en/manual/get-started
+    - linkText: Remote Config
+      url: https://docs.unity3d.com/Packages/com.unity.remote-config@latest
+  - subHeader1: 
+    subHeader2: Cloud Save
+    subHeader3: 
+    body: 'This sample uses Cloud Save to store each player''s lifetime stats, which
+      include name, win count, total game count and high scores. Note that using
+      different profiles results in each having separate UGS data, so each player
+      sees different stats. '
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: An example of the Cloud Save data saved for an individual player profile
+      can be found in Readme.md.
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: Dashboard Setup
+    subHeader3: 
+    body: 'To replicate this sample scene''s setup on your own dashboard, you need
+      to:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: Configure values for the Remote Config service.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: Remote Config
+    body: 'Set up the following config value in the LiveOps dashboard:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: MULTIPLAYER_GAME_SETTINGS
+      bodyFormat: 1
+      bulletList:
+      - body: List of game settings for all possible games, based on the number of
+          players in the game.
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Type: json'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Value: See markdown README for details'
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    linkList: []

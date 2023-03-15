@@ -29,8 +29,8 @@ MonoBehaviour:
   - subHeader1: 
     subHeader2: 
     subHeader3: 
-    body: 'This sample shows how to create a one-time deal Starter Pack in your game
-      that a player can purchase with in-game currency.'
+    body: This sample shows how to create a one-time deal Starter Pack in your game
+      that a player can purchase with in-game currency.
     bodyFormat: 0
     boxCallout: 
     bulletList: []
@@ -99,16 +99,16 @@ MonoBehaviour:
       bodyFormat: 0
       bulletList: []
       linkList: []
-    - body: 'Economy: Keeps track of the player''s currencies and inventory. '
-      bodyFormat: 0
-      bulletList: []
-      linkList: []
     - body: 'Cloud Code: Keeps important validation logic on the server side. '
       bodyFormat: 0
       bulletList: []
       linkList: []
     - body: 'Cloud Save: We store small pieces of special information in Cloud Save,
         such as a flag that says this user did already claim their Starter Pack. '
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: 'Economy: Keeps track of the player''s currencies and inventory. '
       bodyFormat: 0
       bulletList: []
       linkList: []
@@ -123,13 +123,13 @@ MonoBehaviour:
     bulletList: []
     linkList:
     - linkText: Authentication
-      url: http://documentation.cloud.unity3d.com/en/articles/5385907-unity-authentication-anonymous-sign-in-guide
-    - linkText: Economy
-      url: https://docs.unity.com/economy
+      url: https://docs.unity.com/authentication/IntroUnityAuthentication.html
     - linkText: Cloud Code
-      url: https://docs.unity.com/cloud-code
+      url: https://docs.unity.com/cloud-code/implementation.html
     - linkText: Cloud Save
-      url: https://docs.unity.com/cloud-save
+      url: https://docs.unity.com/cloud-save/index.html#Implementation
+    - linkText: Economy
+      url: https://docs.unity.com/economy/implementation.html
   - subHeader1: Dashboard Setup
     subHeader2: 
     subHeader3: 
