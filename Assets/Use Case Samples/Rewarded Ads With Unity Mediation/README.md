@@ -80,12 +80,13 @@ In this scenario, the LEVEL COMPLETE! popup prompts you to collect the standard 
 
 To replicate this use case, you need the following [Unity packages](https://docs.unity3d.com/Manual/Packages.html) in your project:
 
-| **Package**                                                                 | **Role**                                                                                                                                                                               |
-| --------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [Cloud Code](https://docs.unity.com//cloud-code/Content/implementation.htm) | Validates and distributes the level-end and bonus rewards.                                                                                                                             |
-| [Cloud Save](https://docs.unity.com/cloud-save/implementation.htm)          | Tracks the information needed for validating appropriate level-end reward distribution, including how many levels have been completed and the last time that rewards were distributed. |
-| [Economy](https://docs.unity.com/economy/Content/implementation.htm)        | Retrieves the player's starting and updated currency balances at runtime.                                                                                                              |
-| [Unity Mediation](https://docs.unity.com/mediation/)                        | Loads and shows the ad, and provides callbacks to indicate if bonus rewards should be distributed.                                                                                     |
+| **Package**                                                                                 | **Role**                                                                                                                                                                               |
+|---------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [Authentication](https://docs.unity.com/authentication/IntroUnityAuthentication.html)       | Automatically signs in the player as an anonymous user to keep track of their data server-side.                                                                                        |
+| [Cloud Code](https://docs.unity.com/cloud-code/implementation.html)                         | Validates and distributes the level-end and bonus rewards.                                                                                                                             |
+| [Cloud Save](https://docs.unity.com/cloud-save/index.html#Implementation)                   | Tracks the information needed for validating appropriate level-end reward distribution, including how many levels have been completed and the last time that rewards were distributed. |
+| [Economy](https://docs.unity.com/economy/implementation.html)                               | Retrieves the player's starting and updated currency balances at runtime.                                                                                                              |
+| [Unity Mediation](https://docs.unity.com/mediation/MediationSetupChecklist.html)            | Loads and shows the ad, and provides callbacks to indicate if bonus rewards should be distributed.                                                                                     |
 
 To use these services in your game, activate each service for your Organization and project in the [Unity Dashboard](https://dashboard.unity3d.com/).
 
@@ -104,7 +105,7 @@ To replicate this sample scene's setup on your own dashboard, you will need to:
 [Publish the following script](https://docs.unity.com/cloud-code/implementation.html#Writing_your_first_script) in the **LiveOps** dashboard:
 
 | **Script**                         | **Parameters**                                                                                                                    | **Description**                                    | **Location in project**                                                                                    |
-|------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------| -------------------------------------------------- |------------------------------------------------------------------------------------------------------------|
+|------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------|----------------------------------------------------|------------------------------------------------------------------------------------------------------------|
 | `RewardedAds_GrantLevelEndRewards` | `multiplier`<br><br>`NUMERIC`<br><br>Optional integer indicating the base rewards multiplier, if any, to apply for bonus rewards. | Handles reward distribution for various scenarios. | `Assets/Use Case Samples/Rewarded Ads With Unity Mediation/Cloud Code/RewardedAds_GrantLevelEndRewards.js` |
 
 **Note**: The Cloud Code scripts included in the Cloud Code folder are local copies because you cannot view the sample project's dashboard. Changes to these scripts do not affect the behavior of this sample because they are not automatically uploaded to the Cloud Code service.
@@ -114,9 +115,9 @@ To replicate this sample scene's setup on your own dashboard, you will need to:
 
 [Configure the following resource](https://docs.unity.com/economy/) in the **LiveOps** dashboard:
 
-| **Resource type** | **Resource name** | **ID**  | **Description**                                                    |
-| ----------------- | ----------------- |---------| ------------------------------------------------------------------ |
-| Currency          | Gem               | `GEM`   | In this example, Gems are the reward incentive for watching an ad. |
+| **Resource type** | **Resource name**  | **ID**  | **Description**                                                    |
+|-------------------|--------------------|---------|--------------------------------------------------------------------|
+| Currency          | Gem                | `GEM`   | In this example, Gems are the reward incentive for watching an ad. |
 
 
 #### Unity Mediation
@@ -124,7 +125,7 @@ To replicate this sample scene's setup on your own dashboard, you will need to:
 Ad Units represent surfacing areas in your game for players to see ad content. [Create the following Ad Units](https://docs.unity.com/monetization-dashboard/AdUnits.html#CreatingAdUnits) for each mobile platform in the **Monetization** dashboard:
 
 | **Ad Unit name**    | **Platform** | **Ad format** | **Allow skip**\* |
-| ------------------- | ------------ | ------------- | ---------------- |
+|---------------------|--------------|---------------|------------------|
 | RewardedAds_Android | Android      | Rewarded      | After 5 seconds  |
 | RewardedAds_iOS     | iOS          | Rewarded      | After 5 seconds  |
 

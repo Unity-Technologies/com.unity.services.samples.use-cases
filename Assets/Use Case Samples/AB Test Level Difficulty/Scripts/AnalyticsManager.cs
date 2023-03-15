@@ -59,7 +59,7 @@ namespace Unity.Services.Samples.ABTestLevelDifficulty
                 { "buttonNameByABGroup", $"{buttonName} - {RemoteConfigManager.instance.abGroupName} ({RemoteConfigManager.instance.abTestID})" },
                 { "buttonNameBySceneNameAndABGroup", $"{buttonName} - {k_SceneName} - {RemoteConfigManager.instance.abGroupName} ({RemoteConfigManager.instance.abTestID})" }
             };
-                
+
             AnalyticsService.Instance.CustomData("ActionButtonPressed", actionButtonPressedParameters);
         }
 
@@ -67,7 +67,7 @@ namespace Unity.Services.Samples.ABTestLevelDifficulty
         public void SendSessionLengthEvent()
         {
             var timeRange = Utils.GetElapsedTimeRange(m_SessionStartTime);
-                
+
             Dictionary<string, object> sceneSessionLengthParameters = new Dictionary<string, object>
             {
                 { "timeRange", timeRange },
@@ -77,7 +77,7 @@ namespace Unity.Services.Samples.ABTestLevelDifficulty
                 { "timeRangeByABGroup", $"{timeRange} - {RemoteConfigManager.instance.abGroupName} ({RemoteConfigManager.instance.abTestID})" },
                 { "timeRangeBySceneNameAndABGroup", $"{timeRange} - {k_SceneName} - {RemoteConfigManager.instance.abGroupName} ({RemoteConfigManager.instance.abTestID})" }
             };
-                
+
             AnalyticsService.Instance.CustomData("SceneSessionLength", sceneSessionLengthParameters);
             Debug.Log("Sending SceneSessionLength event: " + timeRange);
         }
@@ -85,7 +85,7 @@ namespace Unity.Services.Samples.ABTestLevelDifficulty
         void OnDestroy()
         {
             if (instance == this)
-            { 
+            {
                 instance = null;
             }
         }

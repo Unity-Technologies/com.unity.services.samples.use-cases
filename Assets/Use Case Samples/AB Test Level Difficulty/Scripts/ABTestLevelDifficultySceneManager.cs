@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
-using Unity.Services.Core.Environments;
 using UnityEngine;
 
 namespace Unity.Services.Samples.ABTestLevelDifficulty
@@ -65,11 +64,11 @@ namespace Unity.Services.Samples.ABTestLevelDifficulty
             await SignInIfNecessary();
             if (this == null) return;
             Debug.Log($"Player id: {AuthenticationService.Instance.PlayerId}");
-                
+
             // Economy configuration should be refreshed every time the app initializes.
             // Doing so updates the cached configuration data and initializes for this player any items or
             // currencies that were recently published.
-            // 
+            //
             // It's important to do this update before making any other calls to the Economy or Remote Config
             // APIs as both use the cached data list. (Though it wouldn't be necessary to do if only using Remote
             // Config in your project and not Economy.)
@@ -189,10 +188,11 @@ namespace Unity.Services.Samples.ABTestLevelDifficulty
             }
 
             var rewards = new List<RewardDetail>();
-            rewards.Add(new RewardDetail { 
+            rewards.Add(new RewardDetail
+            {
                 id = currencyId,
-                spriteAddress = spriteAddress, 
-                quantity = rewardQuantity 
+                spriteAddress = spriteAddress,
+                quantity = rewardQuantity
             });
 
             sceneView.OpenLevelUpPopup(rewards);

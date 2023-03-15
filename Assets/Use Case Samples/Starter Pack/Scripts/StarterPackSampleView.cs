@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,7 +17,7 @@ namespace Unity.Services.Samples.StarterPack
         bool m_Enabled;
 
         // using a tri-state boolean so that null can indicate that we don't know yet
-        bool? m_StarterPackIsClaimed = null;
+        bool? m_StarterPackIsClaimed;
 
         void Awake()
         {
@@ -28,6 +29,7 @@ namespace Unity.Services.Samples.StarterPack
             {
                 instance = this;
             }
+
             Refresh();
         }
 
@@ -94,6 +96,7 @@ namespace Unity.Services.Samples.StarterPack
             m_Enabled = isInteractable;
             Refresh();
         }
+
         void OnDestroy()
         {
             if (instance == this)

@@ -8,15 +8,27 @@ namespace Unity.Services.Samples.ProjectInbox
 {
     public class MessagePreviewView : MonoBehaviour
     {
-        [SerializeField] TextMeshProUGUI m_TitleText;
-        [SerializeField] TextMeshProUGUI m_ExpirationText;
-        [SerializeField] Button m_SelectorButton;
+        [SerializeField]
+        TextMeshProUGUI titleText;
+
+        [SerializeField]
+        TextMeshProUGUI expirationText;
+
+        [SerializeField]
+        Button selectorButton;
 
         [Header("State Indicators")]
-        [SerializeField] GameObject m_MessageUnreadIndicator;
-        [SerializeField] Image m_SelectedBackground;
-        [SerializeField] Image m_ReadBackground;
-        [SerializeField] Image m_UnreadBackground;
+        [SerializeField]
+        GameObject messageUnreadIndicator;
+
+        [SerializeField]
+        Image selectedBackground;
+
+        [SerializeField]
+        Image readBackground;
+
+        [SerializeField]
+        Image unreadBackground;
 
         InboxMessage m_Message;
         string m_Title;
@@ -48,7 +60,7 @@ namespace Unity.Services.Samples.ProjectInbox
                 var dayFormat = "m";
                 var timeFormat = "t";
                 m_Expiration = $"Expires on {expiration.ToString(dayFormat, culture)} " +
-                               $"at {expiration.ToString(timeFormat, culture)}";
+                    $"at {expiration.ToString(timeFormat, culture)}";
             }
             else
             {
@@ -58,19 +70,19 @@ namespace Unity.Services.Samples.ProjectInbox
 
         void UpdateView()
         {
-            if (m_TitleText != null)
+            if (titleText != null)
             {
-                m_TitleText.text = m_Title;
+                titleText.text = m_Title;
             }
 
-            if (m_ExpirationText != null)
+            if (expirationText != null)
             {
-                m_ExpirationText.text = m_Expiration;
+                expirationText.text = m_Expiration;
             }
 
-            if (m_MessageUnreadIndicator != null)
+            if (messageUnreadIndicator != null)
             {
-                m_MessageUnreadIndicator.SetActive(!m_Message.metadata.isRead);
+                messageUnreadIndicator.SetActive(!m_Message.metadata.isRead);
             }
 
             SetButtonBackgroundByMessageState();
@@ -78,32 +90,32 @@ namespace Unity.Services.Samples.ProjectInbox
 
         void SetButtonBackgroundByMessageState()
         {
-            if (m_SelectorButton == null || m_SelectedBackground == null || m_ReadBackground == null ||
-                m_UnreadBackground == null)
+            if (selectorButton == null || selectedBackground == null || readBackground == null ||
+                unreadBackground == null)
             {
                 return;
             }
 
             if (m_IsCurrentlySelected)
             {
-                m_SelectorButton.targetGraphic = m_SelectedBackground;
-                m_SelectedBackground.gameObject.SetActive(true);
-                m_ReadBackground.gameObject.SetActive(false);
-                m_UnreadBackground.gameObject.SetActive(false);
+                selectorButton.targetGraphic = selectedBackground;
+                selectedBackground.gameObject.SetActive(true);
+                readBackground.gameObject.SetActive(false);
+                unreadBackground.gameObject.SetActive(false);
             }
             else if (m_Message.metadata.isRead)
             {
-                m_SelectorButton.targetGraphic = m_ReadBackground;
-                m_ReadBackground.gameObject.SetActive(true);
-                m_UnreadBackground.gameObject.SetActive(false);
-                m_SelectedBackground.gameObject.SetActive(false);
+                selectorButton.targetGraphic = readBackground;
+                readBackground.gameObject.SetActive(true);
+                unreadBackground.gameObject.SetActive(false);
+                selectedBackground.gameObject.SetActive(false);
             }
             else
             {
-                m_SelectorButton.targetGraphic = m_UnreadBackground;
-                m_UnreadBackground.gameObject.SetActive(true);
-                m_ReadBackground.gameObject.SetActive(false);
-                m_SelectedBackground.gameObject.SetActive(false);
+                selectorButton.targetGraphic = unreadBackground;
+                unreadBackground.gameObject.SetActive(true);
+                readBackground.gameObject.SetActive(false);
+                selectedBackground.gameObject.SetActive(false);
             }
         }
 

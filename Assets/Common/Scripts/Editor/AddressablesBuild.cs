@@ -1,10 +1,11 @@
+using System;
 using UnityEditor;
 using UnityEditor.AddressableAssets.Settings;
 using UnityEngine;
 
 public class AddressablesBuild
 {
-    static public void PreExport()
+    public static void PreExport()
     {
         Debug.Log("AddressablesBuild.PreExport begin.");
         AddressableAssetSettings.CleanPlayerContent();

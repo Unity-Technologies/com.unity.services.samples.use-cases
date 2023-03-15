@@ -94,9 +94,7 @@ namespace Unity.Services.Samples.SeasonalEvents
 
         // Candidates for what you can pass in the AppAttributes struct could be things like what level the player
         // is on, or what version of the app is installed. The candidates are completely customizable.
-        public struct AppAttributes
-        {
-        }
+        public struct AppAttributes { }
 
         [Serializable]
         public struct Rewards

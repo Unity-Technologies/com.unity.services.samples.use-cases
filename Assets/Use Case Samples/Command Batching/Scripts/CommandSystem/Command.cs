@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -35,6 +36,7 @@ namespace Unity.Services.Samples.CommandBatching
                                 Debug.Log($"No local disbursement action exists for the reward {reward.id}");
                                 break;
                         }
+
                         break;
                 }
             }

@@ -37,8 +37,9 @@ _Note: This project uses the Unity Mediation package, which requires [CocoaPods]
 - [Loot Boxes With Cooldown](Assets/Use%20Case%20Samples/Loot%20Boxes%20With%20Cooldown/README.md) - Grant players random collections of both Currencies and Inventory Items at timed intervals.
 - [Over-The-Air Content Delivery](Assets/Use%20Case%20Samples/Over-The-Air%20Content/README.md) - Add new downloaded content to a game while the game is running.
 - [Rewarded Ads With Unity Mediation](Assets/Use%20Case%20Samples/Rewarded%20Ads%20With%20Unity%20Mediation/README.md) - Offer players opportunity to boost level end rewards by interacting with a reward booster meter and watching a rewarded ad.
-- [Starter Packs](Assets/Use%20Case%20Samples/Starter%20Pack/README.md) - Allow players to purchase a Starter Pack using Cloud Code to implement the one-time-only purchase.
 - [Seasonal Events](Assets/Use%20Case%20Samples/Seasonal%20Events/README.md) - Update game content remotely based on timed special events.
+- [Serverless Multiplayer Game](Assets/Use%20Case%20Samples/Serverless%20Multiplayer%20Game/README.md) - Demonstrates how to utilize game lobbies and compete in a simple, serverless, real-time arena-style game where players collect coins for points.
+- [Starter Packs](Assets/Use%20Case%20Samples/Starter%20Pack/README.md) - Allow players to purchase a Starter Pack using Cloud Code to implement the one-time-only purchase.
 - [Virtual Shop](Assets/Use%20Case%20Samples/Virtual%20Shop/README.md) - Demonstrates a key feature in many games: allowing players to use in-game currency to purchase items and resources to facilitate a server-authoritative in-game economy with multiple store pages and server-managed badges.
 
 _Tested with Unity 2020.3 for PC and Mac._
@@ -51,9 +52,12 @@ To use these implementations in your own project, you will need to setup and con
 
 ## Feedback and Sample Requests
 
-If you have feedback or would like us to demonstrate a new use-case with a sample, please let us know in the [Unity Gaming Services Forum](https://forum.unity.com/forums/unity-gaming-services-general-discussion.561/). We even have a helpful [tag](https://forum.unity.com/tags/unity-gaming-services-samples/) to filter by!
+Your opinion matters to us, and we would like to hear from you so we can provide you with the best learning material that’ll help you become a Unity Gaming Services expert in no time.
 
-Additionally, you can submit feedback directly from the samples project by using the feedback button in the bottom left corner of each scene during Play Mode.
+You can let us know how we're doing by filling out [this anonymous, short survey](https://unitysoftware.co1.qualtrics.com/jfe/form/SV_eE6DomzzTS5YO6a) - it should take less than a minute to fill out!
+
+Alternatively, you can reach us for questions, or to offer feedback or ideas for new sample use cases in the [Unity Gaming Services Forum](https://forum.unity.com/forums/unity-gaming-services-general-discussion.561/) (we even have a helpful [tag](https://forum.unity.com/tags/unity-gaming-services-samples/) to filter by!).
+Also, while in Play Mode in the samples project, you can submit anonymous feedback by using the feedback button in the bottom left corner of each scene.
 
 ## Cloud Diagnostics & User Reporting
 

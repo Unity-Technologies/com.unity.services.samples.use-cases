@@ -1,6 +1,7 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using System;
 using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace Unity.Services.Samples.LootBoxesWithCooldown
 {
@@ -9,7 +10,6 @@ namespace Unity.Services.Samples.LootBoxesWithCooldown
         public Button claimLootBoxButton;
 
         public TextMeshProUGUI claimLootBoxButtonText;
-
 
         public void UpdateCooldown(int seconds)
         {

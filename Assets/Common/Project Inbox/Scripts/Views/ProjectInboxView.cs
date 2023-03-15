@@ -1,38 +1,46 @@
+using System;
 using UnityEngine;
 
 namespace Unity.Services.Samples.ProjectInbox
 {
     public class ProjectInboxView : MonoBehaviour
     {
-        [SerializeField] InboxButtonView m_InboxButtonView;
-        [SerializeField] InboxPopupView m_InboxPopupView;
-        [SerializeField] MessageListView m_MessageListView;
-        [SerializeField] MessageDetailView m_MessageDetailView;
+        [SerializeField]
+        InboxButtonView inboxButtonView;
+
+        [SerializeField]
+        InboxPopupView inboxPopupView;
+
+        [SerializeField]
+        MessageListView messageListView;
+
+        [SerializeField]
+        MessageDetailView messageDetailView;
 
         public void Initialize()
         {
-            m_InboxButtonView.UpdateView(InboxStateManager.unreadMessageCount);
-            m_InboxButtonView.SetInteractable(true);
+            inboxButtonView.UpdateView(InboxStateManager.unreadMessageCount);
+            inboxButtonView.SetInteractable(true);
         }
 
         public void UpdateInboxView()
         {
-            m_InboxPopupView.ShowUpdatingState();
-            m_MessageListView.InitializeMessagePreviews();
-            m_InboxButtonView.UpdateView(InboxStateManager.unreadMessageCount);
-            m_InboxPopupView.HideUpdatingState();
+            inboxPopupView.ShowUpdatingState();
+            messageListView.InitializeMessagePreviews();
+            inboxButtonView.UpdateView(InboxStateManager.unreadMessageCount);
+            inboxPopupView.HideUpdatingState();
         }
 
         public void DeleteMessagePreview(string messageId)
         {
-            m_MessageListView.DeleteMessagePreview(messageId);
+            messageListView.DeleteMessagePreview(messageId);
         }
 
         public void UpdateViewForNewMessageSelected(MessagePreviewView messagePreviewView, InboxMessage message)
         {
-            m_MessageListView.SelectNewMessage(messagePreviewView, message);
-            m_MessageDetailView.Show(message);
-            m_InboxButtonView.UpdateView(InboxStateManager.unreadMessageCount);
+            messageListView.SelectNewMessage(messagePreviewView, message);
+            messageDetailView.Show(message);
+            inboxButtonView.UpdateView(InboxStateManager.unreadMessageCount);
         }
     }
 }

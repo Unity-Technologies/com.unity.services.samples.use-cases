@@ -1,3 +1,4 @@
+using System;
 
 namespace Unity.Services.Samples.VirtualShop
 {

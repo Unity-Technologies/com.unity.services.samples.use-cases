@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Unity.Services.Samples.DailyRewards
 {
@@ -6,13 +7,12 @@ namespace Unity.Services.Samples.DailyRewards
     {
         CalendarDayView[] calendarDays;
 
-
         void Awake()
         {
             calendarDays = GetComponentsInChildren<CalendarDayView>();
 
             for (var dayOn = 0; dayOn < calendarDays.Length; dayOn++)
-            { 
+            {
                 calendarDays[dayOn].SetDayIndex(dayOn + 1);
             }
         }

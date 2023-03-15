@@ -711,8 +711,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6d577dbfcc14213a5ae059f147dae2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_MessageListView: {fileID: 8477352401060951923}
-  m_LoadingSpinner: {fileID: 1799412769346747362}
+  messageListView: {fileID: 8477352401060951923}
+  loadingSpinner: {fileID: 1799412769346747362}
 --- !u!1 &9099015751747866134
 GameObject:
   m_ObjectHideFlags: 0

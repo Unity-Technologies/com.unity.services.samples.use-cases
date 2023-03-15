@@ -163,12 +163,17 @@ MonoBehaviour:
     bodyFormat: 0
     boxCallout: 
     bulletList:
+    - body: 'Authentication: Automatically signs in the player as an anonymous user
+        to keep track of their data server-side.'
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
     - body: 'Cloud Code: Processes Commands at the end of a game.'
       bodyFormat: 0
       bulletList: []
       linkList: []
-    - body: 'Remote Config: Contains the mapping between Commands and their rewards
-        used by both the client and Cloud Code when distributing rewards.'
+    - body: 'Cloud Save: Manages certain player stats (XP and Goals Achieved) that
+        are increased as rewards.'
       bodyFormat: 0
       bulletList: []
       linkList: []
@@ -176,8 +181,8 @@ MonoBehaviour:
       bodyFormat: 0
       bulletList: []
       linkList: []
-    - body: 'Cloud Save: Manages certain player stats (XP and Goals Achieved) that
-        are increased as rewards.'
+    - body: 'Remote Config: Contains the mapping between Commands and their rewards
+        used by both the client and Cloud Code when distributing rewards.'
       bodyFormat: 0
       bulletList: []
       linkList: []
@@ -191,14 +196,16 @@ MonoBehaviour:
     boxCallout: 
     bulletList: []
     linkList:
+    - linkText: Authentication
+      url: https://docs.unity.com/authentication/IntroUnityAuthentication.html
     - linkText: Cloud Code
-      url: https://docs.unity.com//cloud-code/Content/implementation.htm?tocpath=Implementation%7C_____0#SDK_installation
-    - linkText: Remote Config
-      url: https://docs.unity3d.com/Packages/com.unity.remote-config@2.0/manual/ConfiguringYourProject.html
-    - linkText: Economy
-      url: https://docs.unity.com/economy/Content/implementation.htm?tocpath=Implementation%7C_____0
+      url: https://docs.unity.com/cloud-code/implementation.html
     - linkText: Cloud Save
-      url: https://docs.unity.com/cloud-save/Content/index.htm#Implementation
+      url: https://docs.unity.com/cloud-save/index.html#Implementation
+    - linkText: Economy
+      url: https://docs.unity.com/economy/implementation.html
+    - linkText: Remote Config
+      url: https://docs.unity3d.com/Packages/com.unity.remote-config@latest
   - subHeader1: Dashboard Setup
     subHeader2: 
     subHeader3: 

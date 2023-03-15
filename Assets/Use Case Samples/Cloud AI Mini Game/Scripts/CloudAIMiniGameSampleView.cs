@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,7 +24,6 @@ namespace Unity.Services.Samples.CloudAIMiniGame
         public TextMeshProUGUI tiePercentText;
 
         GridEntityView[,] m_GridEntityView = new GridEntityView[k_PlayfieldSize, k_PlayfieldSize];
-
 
         public void SetInteractable(bool isInteractable = true)
         {
@@ -62,9 +62,10 @@ namespace Unity.Services.Samples.CloudAIMiniGame
 
         void ShowNewGamePopup(bool isPlayerFirst)
         {
-            messagePopup.Show("New Game", isPlayerFirst ? 
-                "A new game was started.\n\nCongratulations, you're\nplayer number one." :
-                "A new game was started.\nCloud AI played first.\n\nNow it's your turn.");
+            const string playerOneMessage = "A new game was started.\n\nCongratulations, you're\nplayer number one.";
+            const string playerTwoMessage = "A new game was started.\nCloud AI played first.\n\nNow it's your turn.";
+
+            messagePopup.Show("New Game", isPlayerFirst ? playerOneMessage : playerTwoMessage);
         }
 
         public void ShowSpaceOccupiedErrorPopup()
@@ -100,8 +101,8 @@ namespace Unity.Services.Samples.CloudAIMiniGame
         void ShowRewardPopup(string title, string subTitle, int coinCount)
         {
             rewardPopup.headerText.text = $"<size=45>{title}</size>\n" +
-                                            "<size=10>\n</size>" +
-                                            $"<size=20>{subTitle}</size>";
+                "<size=10>\n</size>" +
+                $"<size=20>{subTitle}</size>";
 
             rewardPopup.closeButtonText.text = "Yay!";
 
@@ -175,7 +176,7 @@ namespace Unity.Services.Samples.CloudAIMiniGame
         }
 
         void ShowWinLossTieCounts(UpdatedState updatedState)
-        { 
+        {
             float totalCount = updatedState.winCount + updatedState.lossCount + updatedState.tieCount;
             winCountText.text = $"{updatedState.winCount}";
             lossCountText.text = $"{updatedState.lossCount}";

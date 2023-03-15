@@ -1,6 +1,8 @@
+using System;
+
 namespace Unity.Services.Samples.BattlePass
 {
-    public enum TierState : int
+    public enum TierState
     {
         Locked,
         Unlocked,

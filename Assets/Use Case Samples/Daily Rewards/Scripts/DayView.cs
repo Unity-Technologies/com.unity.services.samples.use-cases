@@ -1,6 +1,7 @@
-﻿using UnityEngine;
-using UnityEngine.UI;
+﻿using System;
 using TMPro;
+using UnityEngine;
+using UnityEngine.UI;
 
 namespace Unity.Services.Samples.DailyRewards
 {
@@ -16,7 +17,7 @@ namespace Unity.Services.Samples.DailyRewards
             DailyRewardsEventManager.DailyReward reward)
         {
             var dayStatus = eventManager.GetDayStatus(dayIndex);
-                
+
             animator.SetBool("isClaimable", dayStatus == DailyRewardsEventManager.DayStatus.DayClaimable);
             animator.SetBool("isClaimed", dayStatus == DailyRewardsEventManager.DayStatus.DayClaimed);
 

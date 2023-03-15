@@ -1,4 +1,5 @@
-﻿
+﻿using System;
+
 namespace Unity.Services.Samples.DailyRewards
 {
     public class BonusDayView : DayView

@@ -76,15 +76,11 @@ namespace Unity.Services.Samples.OverTheAirContent
         // Remote Config's FetchConfigs call requires passing two non-nullable objects to the method, regardless of
         // whether any data needs to be passed in them. Candidates for what you may want to pass in the UserAttributes
         // struct could be things like device type, however it is completely customizable.
-        public struct UserAttributes
-        {
-        }
+        public struct UserAttributes { }
 
         // Candidates for what you can pass in the AppAttributes struct could be things like what level the player
         // is on, or what version of the app is installed. The candidates are completely customizable.
-        public struct AppAttributes
-        {
-        }
+        public struct AppAttributes { }
 
         [Serializable]
         public struct NewContent

@@ -10,7 +10,8 @@ namespace Unity.Services.Samples.ProjectInbox
     {
         public static int maxInboxSize { get; private set; }
 
-        [SerializeField] ProjectInboxView m_ProjectInboxView;
+        [SerializeField]
+        ProjectInboxView projectInboxView;
 
         DateTime m_InboxLastCheckedTime;
 
@@ -30,7 +31,7 @@ namespace Unity.Services.Samples.ProjectInbox
 
                 UpdateInboxState();
 
-                m_ProjectInboxView.Initialize();
+                projectInboxView.Initialize();
             }
             catch (Exception e)
             {
@@ -90,14 +91,14 @@ namespace Unity.Services.Samples.ProjectInbox
 
             if (inboxStateWasUpdated)
             {
-                m_ProjectInboxView.UpdateInboxView();
+                projectInboxView.UpdateInboxView();
             }
         }
 
         public void DeleteMessage(string messageId)
         {
             InboxStateManager.DeleteMessage(messageId);
-            m_ProjectInboxView.DeleteMessagePreview(messageId);
+            projectInboxView.DeleteMessagePreview(messageId);
         }
 
         public void SelectMessage(MessagePreviewView messagePreviewView, InboxMessage message)
@@ -108,7 +109,7 @@ namespace Unity.Services.Samples.ProjectInbox
 #endif
 
             InboxStateManager.MarkMessageAsRead(message.messageId);
-            m_ProjectInboxView.UpdateViewForNewMessageSelected(messagePreviewView, message);
+            projectInboxView.UpdateViewForNewMessageSelected(messagePreviewView, message);
         }
     }
 }

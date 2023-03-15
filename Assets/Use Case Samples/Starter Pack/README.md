@@ -55,7 +55,7 @@ After purchasing a starter pack, the player cannot purchase another one unless t
 
 1. The button's `OnClick` method calls the `StarterPackSceneManager` script's `OnResetPlayerDataButtonPressed` function, which sends a request to the Cloud Code service to execute the `PurchaseStarterPack` script.
 2. The script sends an update to the Cloud Save service directly to set a flag that this player has not yet claimed the deal.
-3. The UI code reenables the Starter Pack purchase button.
+3. The UI code re-enables the Starter Pack purchase button.
 
 
 ## Setup
@@ -65,12 +65,12 @@ After purchasing a starter pack, the player cannot purchase another one unless t
 
 To replicate this use case, you need the following [Unity packages](https://docs.unity3d.com/Manual/Packages.html) in your project:
 
-| **Package**                                                                                | **Role**                                                                                               |
-| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------ |
-| [Authentication](https://docs.unity.com/authentication/Content/InstallAndConfigureSDK.htm) | Signs in the user anonymously to keep track of their data server-side.                                 |
-| [Cloud Code](https://docs.unity.com/Cloud-Code)                                            | Stores important validation logic on the server side.                                                  |
-| [Cloud Save](https://docs.unity.com/cloud-save/implementation.html#SDK-installation)       | Stores small pieces of data, such as a flag that indicates if the user has claimed their starter pack. |
-| [Economy](https://docs.unity.com/Economy)                                                  | Retrieves the starting and updated currency balances at runtime.                                       |
+| **Package**                                                                           | **Role**                                                                                               |
+|---------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------|
+| [Authentication](https://docs.unity.com/authentication/IntroUnityAuthentication.html) | Signs in the user anonymously to keep track of their data server-side.                                 |
+| [Cloud Code](https://docs.unity.com/cloud-code/implementation.html)                   | Stores important validation logic on the server side.                                                  |
+| [Cloud Save](https://docs.unity.com/cloud-save/index.html#Implementation)             | Stores small pieces of data, such as a flag that indicates if the user has claimed their starter pack. |
+| [Economy](https://docs.unity.com/economy/implementation.html)                         | Retrieves the starting and updated currency balances at runtime.                                       |
 
 To use these services in your game, activate each service for your Organization and project in the [Unity Dashboard](https://dashboard.unity3d.com/).
 

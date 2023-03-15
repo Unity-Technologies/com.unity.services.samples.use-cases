@@ -15,9 +15,8 @@ namespace Unity.Services.Samples.DailyRewards
 
         public static EconomyManager instance { get; private set; }
 
-        private List<CurrencyDefinition> currencies;
+        List<CurrencyDefinition> currencies;
         Dictionary<string, Sprite> m_CurrencyIdToSprite = new Dictionary<string, Sprite>();
-
 
         void Awake()
         {
@@ -33,14 +32,12 @@ namespace Unity.Services.Samples.DailyRewards
 
         public async Task RefreshEconomyConfiguration()
         {
-            // Calling GetCurrenciesAsync (or GetInventoryItemsAsync), in addition to returning the appropriate
-            // Economy configurations, will update the cached configuration list, including any new Currency, 
-            // Inventory Item, or Purchases that have been published since the last time the player's configuration
-            // was cached.
-            //
-            // This is important to do before hitting the Economy or Remote Config services for any other calls as
-            // both use the cached data list.
-            currencies = await EconomyService.Instance.Configuration.GetCurrenciesAsync();
+            await EconomyService.Instance.Configuration.SyncConfigurationAsync();
+
+            // Check that scene has not been unloaded while processing async wait to prevent throw.
+            if (this == null) return;
+
+            currencies = EconomyService.Instance.Configuration.GetCurrencies();
         }
 
         public async Task FetchCurrencySprites()
@@ -130,6 +127,7 @@ namespace Unity.Services.Samples.DailyRewards
             {
                 return null;
             }
+
             return m_CurrencyIdToSprite[currencyId];
         }
 

@@ -38,7 +38,6 @@ namespace Unity.Services.Samples.IdleClickerGame
 
         public static CloudCodeManager instance { get; private set; }
 
-
         void Awake()
         {
             if (instance != null && instance != this)
@@ -83,8 +82,9 @@ namespace Unity.Services.Samples.IdleClickerGame
             {
                 var updatedState = await CloudCodeService.Instance.CallEndpointAsync<IdleClickerResult>(
                     "IdleClicker_PlaceWell",
-                    new Dictionary<string, object> {
-                        { "coord", new Coord { x = (int)coord.x, y = (int)coord.y }}
+                    new Dictionary<string, object>
+                    {
+                        { "coord", new Coord { x = (int)coord.x, y = (int)coord.y } }
                     });
 
                 return updatedState;
@@ -103,9 +103,10 @@ namespace Unity.Services.Samples.IdleClickerGame
             {
                 var updatedState = await CloudCodeService.Instance.CallEndpointAsync<IdleClickerResult>(
                     "IdleClicker_MergeWells",
-                    new Dictionary<string, object> {
-                        { "drag", new Coord { x = (int)drag.x, y = (int)drag.y }},
-                        { "drop", new Coord { x = (int)drop.x, y = (int)drop.y }}
+                    new Dictionary<string, object>
+                    {
+                        { "drag", new Coord { x = (int)drag.x, y = (int)drag.y } },
+                        { "drop", new Coord { x = (int)drop.x, y = (int)drop.y } }
                     });
 
                 return updatedState;
@@ -124,9 +125,10 @@ namespace Unity.Services.Samples.IdleClickerGame
             {
                 var updatedState = await CloudCodeService.Instance.CallEndpointAsync<IdleClickerResult>(
                     "IdleClicker_MoveWell",
-                    new Dictionary<string, object> {
-                        { "drag", new Coord { x = (int)drag.x, y = (int)drag.y }},
-                        { "drop", new Coord { x = (int)drop.x, y = (int)drop.y }}
+                    new Dictionary<string, object>
+                    {
+                        { "drag", new Coord { x = (int)drag.x, y = (int)drag.y } },
+                        { "drop", new Coord { x = (int)drop.x, y = (int)drop.y } }
                     });
 
                 return updatedState;
@@ -159,7 +161,7 @@ namespace Unity.Services.Samples.IdleClickerGame
             if (e is CloudCodeRateLimitedException cloudCodeRateLimitedException)
             {
                 Debug.Log("Cloud Code rate limit has been exceeded. " +
-                            $"Wait {cloudCodeRateLimitedException.RetryAfter} seconds and try again.");
+                    $"Wait {cloudCodeRateLimitedException.RetryAfter} seconds and try again.");
                 return;
             }
 
@@ -250,8 +252,8 @@ namespace Unity.Services.Samples.IdleClickerGame
                 case k_EconomyValidationExceptionStatusCode:
                 case k_HttpBadRequestStatusCode:
                     Debug.Log("A bad server request occurred during Cloud Code script execution: " +
-                                $"{cloudCodeCustomError.name}: {cloudCodeCustomError.message} : " +
-                                $"{cloudCodeCustomError.details[0]}");
+                        $"{cloudCodeCustomError.name}: {cloudCodeCustomError.message} : " +
+                        $"{cloudCodeCustomError.details[0]}");
                     break;
 
                 case k_EconomyPurchaseCostsNotMetStatusCode:
@@ -261,23 +263,23 @@ namespace Unity.Services.Samples.IdleClickerGame
                 case k_RateLimitExceptionStatusCode:
                     // With this status code, message will include which service triggered this rate limit.
                     Debug.Log($"{cloudCodeCustomError.message}. Wait {cloudCodeCustomError.retryAfter} " +
-                                $"seconds and try again.");
+                        "seconds and try again.");
                     break;
 
                 case k_HttpTooManyRequestsStatusCode:
                     Debug.Log($"Rate Limit has been exceeded. Wait {cloudCodeCustomError.retryAfter} " +
-                                $"seconds and try again.");
+                        "seconds and try again.");
                     break;
 
                 case k_UnexpectedFormatCustomStatusCode:
-                    Debug.Log($"Cloud Code returned an Unprocessable Entity exception, " +
-                                $"but it could not be parsed: { cloudCodeCustomError.message }. " +
-                                $"Original error: { cloudCodeCustomError.InnerException?.Message }");
+                    Debug.Log("Cloud Code returned an Unprocessable Entity exception, " +
+                        $"but it could not be parsed: {cloudCodeCustomError.message}. " +
+                        $"Original error: {cloudCodeCustomError.InnerException?.Message}");
                     break;
 
                 default:
                     Debug.Log($"Cloud code returned error: {cloudCodeCustomError.status}: " +
-                                $"{cloudCodeCustomError.name}: {cloudCodeCustomError.message}");
+                        $"{cloudCodeCustomError.name}: {cloudCodeCustomError.message}");
                     break;
             }
         }
@@ -291,7 +293,8 @@ namespace Unity.Services.Samples.IdleClickerGame
             public string[] details;
 
             public CloudCodeCustomError(string name, int status, string message = null,
-                Exception innerException = null) : base(message, innerException)
+                Exception innerException = null)
+                : base(message, innerException)
             {
                 this.name = name;
                 this.status = status;

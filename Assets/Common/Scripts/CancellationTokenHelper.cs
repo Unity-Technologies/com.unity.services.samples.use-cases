@@ -1,6 +1,5 @@
 using System;
 using System.Threading;
-
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -59,6 +58,7 @@ namespace Unity.Services.Samples
             }
 
 #if UNITY_EDITOR
+
             // Clean up unmanaged resources.
             EditorApplication.playModeStateChanged -= OnPlayModeStateChanged;
 #endif

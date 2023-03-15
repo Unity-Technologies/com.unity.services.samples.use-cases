@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -68,7 +69,7 @@ namespace Unity.Services.Samples.InGameMailbox
                 else
                 {
                     Debug.LogError($"A sprite could not be found for the address {economyId}." +
-                                    $" Addressables exception: {handle.OperationException}");
+                        $" Addressables exception: {handle.OperationException}");
                 }
             }
         }

@@ -25,7 +25,7 @@ namespace Unity.Services.Samples.CloudAIMiniGame
                 $"isPlayerTurn:{isPlayerTurn} " +
                 $"isGameOver:{isGameOver} " +
                 $"[aiPieces:{string.Join(",", aiPieces)}] " +
-                $"[playerPieces:{string.Join(",", playerPieces)}] " + 
+                $"[playerPieces:{string.Join(",", playerPieces)}] " +
                 $"W/L/T: {winCount}/{lossCount}/{tieCount}";
         }
     }
@@ -36,7 +36,11 @@ namespace Unity.Services.Samples.CloudAIMiniGame
         public int x;
         public int y;
 
-        public Coord(int x, int y) { this.x = x; this.y = y; }
+        public Coord(int x, int y)
+        {
+            this.x = x;
+            this.y = y;
+        }
 
         public override string ToString()
         {

@@ -37,8 +37,8 @@ namespace Unity.Services.Samples.RewardedAds
         bool m_EconomyHudUpdatedWhileWaiting;
         bool m_IsWaitingForRewardDistribution;
 
-        Dictionary<RewardedAdBoosterWedge, int> m_RewardedAdBoosterWedgeMultipliers = 
-            new Dictionary<RewardedAdBoosterWedge, int> 
+        Dictionary<RewardedAdBoosterWedge, int> m_RewardedAdBoosterWedgeMultipliers =
+            new Dictionary<RewardedAdBoosterWedge, int>
             {
                 { RewardedAdBoosterWedge.Left, 2 },
                 { RewardedAdBoosterWedge.LeftCenter, 3 },
@@ -89,7 +89,7 @@ namespace Unity.Services.Samples.RewardedAds
             // Economy configuration should be refreshed every time the app initializes.
             // Doing so updates the cached configuration data and initializes for this player any items or
             // currencies that were recently published.
-            // 
+            //
             // It's important to do this update before making any other calls to the Economy or Remote Config
             // APIs as both use the cached data list. (Though it wouldn't be necessary to do if only using Remote
             // Config in your project and not Economy.)
@@ -102,7 +102,7 @@ namespace Unity.Services.Samples.RewardedAds
             MediationManager.instance.LoadRewardedAd();
 #else
             Debug.LogWarning("The Mediation SDK doesn't support the current platform, so ads are disabled. " +
-                                "To test rewarded ads, change the build target to Android or iOS.");
+                "To test rewarded ads, change the build target to Android or iOS.");
 #endif
 
             await Task.WhenAll(
@@ -208,7 +208,7 @@ namespace Unity.Services.Samples.RewardedAds
             }
         }
 
-        public void UpdateEconomyHudWhenAppropriate(bool waitForSecondRewardDistribution, string rewardId, 
+        public void UpdateEconomyHudWhenAppropriate(bool waitForSecondRewardDistribution, string rewardId,
             int rewardBalance)
         {
             if (waitForSecondRewardDistribution)

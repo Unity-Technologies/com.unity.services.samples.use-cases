@@ -98,12 +98,12 @@ The **Reset Game** button exists to demonstrate the full game cycle. At the star
 
 To replicate this use case, you need the following [Unity packages](https://docs.unity3d.com/Manual/Packages.html) in your project:
 
-| **Package**                                                                                | **Role**                                                                                                            |
-| ------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------- |
-| [Authentication](https://docs.unity.com/authentication/Content/InstallAndConfigureSDK.htm) | Automatically signs in the player as an anonymous user to keep track of their data server-side.                     |
-| [Cloud Code](https://docs.unity.com//cloud-code/Content/implementation.htm)                | Generates random games, validates game logic, executes AI turns, and grants Economy rewards based on game outcomes. |
-| [Cloud Save](https://docs.unity.com/cloud-save/Content/index.htm#Implementation)           | Stores the active game state.                                                                                       |
-| [Economy](https://docs.unity.com/economy/Content/implementation.htm)                       | Retrieves the starting and updated currency balances at runtime.                                                    |
+| **Package**                                                                           | **Role**                                                                                                            |
+|---------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
+| [Authentication](https://docs.unity.com/authentication/IntroUnityAuthentication.html) | Automatically signs in the player as an anonymous user to keep track of their data server-side.                     |
+| [Cloud Code](https://docs.unity.com/cloud-code/implementation.html)                   | Generates random games, validates game logic, executes AI turns, and grants Economy rewards based on game outcomes. |
+| [Cloud Save](https://docs.unity.com/cloud-save/index.html#Implementation)             | Stores the active game state.                                                                                       |
+| [Economy](https://docs.unity.com/economy/implementation.html)                         | Retrieves the starting and updated currency balances at runtime.                                                    |
 
 To use these services in your game, activate each service for your Organization and project in the[Unity Dashboard](https://dashboard.unity3d.com/).
 

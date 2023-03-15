@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -8,11 +9,11 @@ namespace Unity.Services.Samples.RewardedAds
     public class RewardedAdsSampleView : MonoBehaviour
     {
         public Button completeLevelButton;
-            
+
         [Space]
         public GameObject levelCompletePopup;
         public Button claimLevelEndRewardsButton;
-            
+
         [Space]
         public TextMeshProUGUI adsDisabledText;
 
@@ -99,7 +100,7 @@ namespace Unity.Services.Samples.RewardedAds
                 rewardedAdBoosterWedgeMultipliers[RewardedAdsSceneManager.RewardedAdBoosterWedge.RightCenter]);
             rightWedgeText.text = string.Format(multiplierFormat,
                 rewardedAdBoosterWedgeMultipliers[RewardedAdsSceneManager.RewardedAdBoosterWedge.Right]);
-            rewardedAdBoosterRewardAmountText.text = 
+            rewardedAdBoosterRewardAmountText.text =
                 (baseRewardAmount * rewardedAdBoosterWedgeMultipliers[RewardedAdsSceneManager.RewardedAdBoosterWedge.Left])
                 .ToString();
         }

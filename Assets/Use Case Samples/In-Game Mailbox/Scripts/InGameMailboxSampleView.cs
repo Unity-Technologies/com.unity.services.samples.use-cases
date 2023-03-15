@@ -40,7 +40,7 @@ namespace Unity.Services.Samples.InGameMailbox
         [Header("Inventory View")]
         public Button inventoryButton;
         public InventoryPopupView inventoryPopupView;
-                
+
         [Header("Inbox Debug Game Objects")]
         public TMP_Dropdown audienceDropdown;
         public Button resetInboxButton;
@@ -214,7 +214,7 @@ namespace Unity.Services.Samples.InGameMailbox
                 m_IsFetchingNewMessages = false;
                 fetchingNewMessagesSpinner.SetActive(false);
                 messageFullAlert.gameObject.SetActive(CloudSaveManager.instance.inboxMessages.Count ==
-                                                        InGameMailboxSceneManager.maxInboxSize);
+                    InGameMailboxSceneManager.maxInboxSize);
             }
             catch (Exception e)
             {

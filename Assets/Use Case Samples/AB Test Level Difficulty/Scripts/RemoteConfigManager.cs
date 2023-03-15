@@ -27,15 +27,18 @@ namespace Unity.Services.Samples.ABTestLevelDifficulty
                 instance = this;
             }
         }
-            
+
         public async Task FetchConfigs()
         {
             try
             {
-                // When Remote Config determines what variant values to supply for the A/B test, it is using the Custom
-                // User ID field to check whether the player has already been grouped into a specific variant group. Since
-                // we call FetchConfigsIfServicesAreInitialized only upon a new sign-in, we want to make sure the custom
-                // User ID is pointing to the most current Player ID.
+                // When Game Overrides determines what variant values to supply for the A/B test, it uses Remote Config's
+                // Custom User ID field to check whether the player has already been grouped into a specific variant group.
+                // Since this use case changes user log in more than is typical, and we call FetchConfigs after each new
+                // sign-in, we want to make sure the custom User ID Remote Config is using is the most current Player ID.
+                //
+                // Calling SetCustomUserId() before RemoteConfigService.Instance.FetchConfigsAsync() is not necessary
+                // in most typical uses of Remote Config and Game Overrides.
                 RemoteConfigService.Instance.SetCustomUserID(AuthenticationService.Instance.PlayerId);
                 await RemoteConfigService.Instance.FetchConfigsAsync(new UserAttributes(), new AppAttributes());
 
@@ -49,7 +52,7 @@ namespace Unity.Services.Samples.ABTestLevelDifficulty
                 Debug.LogException(e);
             }
         }
-            
+
         void GetConfigValues()
         {
             levelUpXPNeeded = RemoteConfigService.Instance.appConfig.GetInt("AB_TEST_LEVEL_UP_XP_NEEDED");
@@ -92,15 +95,11 @@ namespace Unity.Services.Samples.ABTestLevelDifficulty
         // Remote Config's FetchConfigs call requires passing two non-nullable objects to the method, regardless of
         // whether any data needs to be passed in them. Candidates for what you may want to pass in the UserAttributes
         // struct could be things like device type, however it is completely customizable.
-        public struct UserAttributes
-        {
-        }
+        public struct UserAttributes { }
 
         // Candidates for what you may want to pass in the AppAttributes struct could be things like what level the
         // player is on, or what version of the app is installed, however it is completely customizable.
-        public struct AppAttributes
-        {
-        }
+        public struct AppAttributes { }
 
         [Serializable]
         public class CurrencyDataHolder

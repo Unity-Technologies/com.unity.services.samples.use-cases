@@ -2,7 +2,22 @@
 
 All notable changes to this project will be documented in this file.
 
-​The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).​
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [1.9.0] - 2023-03-15
+
+### Added
+
+* Serverless Multiplayer Game use case sample which demonstrates how to utilize game lobbies and compete in a simple real-time arena-style game where players collect coins for points.
+
+### Changed
+
+* Upgraded the project from Unity Editor version 2020.3.20f1 to 2020.3.41f1.
+  * Updated various non-UGS packages to their latest versions that are verified for Unity Editor 2020.3.41f1.
+* Removed `RemoteConfigService.instance.SetCustomUserId()` call from `ClientVersionCheck.cs` as calling that method is only necessary in very specific circumstances, and ClientVersionCheck is not one of those circumstances.
+  You can see an example of a circumstance where it is necessary in `ABTestLevelDifficulty/RemoteConfigManager.cs`.
+* Minor refactors to files to support newly applied linting rules.
+* Updated Unity Services packages to latest released as of 2023-03-13.
 
 ## [1.8.1] - 2023-01-20
 

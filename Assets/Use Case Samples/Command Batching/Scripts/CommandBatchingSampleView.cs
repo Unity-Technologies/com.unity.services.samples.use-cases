@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,11 +9,13 @@ namespace Unity.Services.Samples.CommandBatching
     {
         public GameObject gameOverPopupView;
 
-        [Space] public TextMeshProUGUI xpValueText;
+        [Space]
+        public TextMeshProUGUI xpValueText;
         public TextMeshProUGUI remainingTurnsCountText;
         public TextMeshProUGUI goalsAchievedValueText;
 
-        [Space] public Button defeatRedEnemyButton;
+        [Space]
+        public Button defeatRedEnemyButton;
         public Button defeatBlueEnemyButton;
         public Button openChestButton;
         public Button achieveBonusGoalButton;
@@ -35,7 +38,7 @@ namespace Unity.Services.Samples.CommandBatching
 
         public void BeginGame()
         {
-            SetInteractable(true);
+            SetInteractable();
         }
 
         public void GameOver()

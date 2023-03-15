@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -84,7 +85,7 @@ namespace Unity.Services.Samples.BattlePass
 
             seasonXpProgressBarStatusText.text
                 = $"{battlePassSceneManager.battlePassState.seasonXP}" +
-                    $"/{BattlePassHelper.TotalSeasonXpNeededForNextTier(battlePassState.seasonXP, battlePassSceneManager.battlePassConfig)}";
+                $"/{BattlePassHelper.TotalSeasonXpNeededForNextTier(battlePassState.seasonXP, battlePassSceneManager.battlePassConfig)}";
         }
 
         void ClearList()

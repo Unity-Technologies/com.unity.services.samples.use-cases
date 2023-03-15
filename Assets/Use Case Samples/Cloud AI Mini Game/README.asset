@@ -19,13 +19,13 @@ MonoBehaviour:
   - subHeader1: Intro
     subHeader2: 
     subHeader3: 
-    body: 'In some games, it''s desirable to play a mini game as a reward or to advance
+    body: In some games, it's desirable to play a mini game as a reward or to advance
       game play. This sample demonstrates how to use Cloud Code and other UGS packages
       to validate game play in a mini game that implements a simple artificial opponent
       against the player. Additionally, this sample demonstrates how gameplay can
       be rewarded based on game outcome by awarding bonus Coins for wins and ties.
       This can make the mini games more enjoyable and even affect game economy going
-      forward.'
+      forward.
     bodyFormat: 0
     boxCallout: 
     bulletList: []
@@ -49,29 +49,29 @@ MonoBehaviour:
     bodyFormat: 0
     boxCallout: 
     bulletList:
-    - body: CloudAiMiniGame_GetState is called once at startup to return the existing game
-        if possible or generate a random game if none exists. This script will also
-        clear the player's Coin total to 0 at the start of the first game so win/tie
-        count should reflect the current Coin quantity, unless other Use Case Samples
-        are visited.
+    - body: CloudAiMiniGame_GetState is called once at startup to return the existing
+        game if possible or generate a random game if none exists. This script will
+        also clear the player's Coin total to 0 at the start of the first game so
+        win/tie count should reflect the current Coin quantity, unless other Use
+        Case Samples are visited.
       bodyFormat: 0
       bulletList: []
       linkList: []
-    - body: CloudAiMiniGame_PlayerMove is called for each player move. The script is called
-        with x,y coordinates and Cloud Code validates the player's move, makes an
-        AI move if the game isn't over, determines if the game should end, and returns
-        the final updated state. This script also maintains a win/loss/tie count
-        and calls Economy to grant Coins for Wins and Ties.
+    - body: CloudAiMiniGame_PlayerMove is called for each player move. The script
+        is called with x,y coordinates and Cloud Code validates the player's move,
+        makes an AI move if the game isn't over, determines if the game should end,
+        and returns the final updated state. This script also maintains a win/loss/tie
+        count and calls Economy to grant Coins for Wins and Ties.
       bodyFormat: 0
       bulletList: []
       linkList: []
-    - body: CloudAiMiniGame_StartNewGame is called when the player presses the [New Game]
-        or [Forfeit] button (Forfeit replaces New Game whenever a game is in progress).
-        This script checks if a game is in progress (isGameOver is false), and if
-        so, the Loss Count is increased. Next, a new game is created, a random starting
-        player is selected, and if AI is to go first, a piece is added at a random
-        location on the board. Finally, the new game state is then returned to the
-        client.
+    - body: CloudAiMiniGame_StartNewGame is called when the player presses the [New
+        Game] or [Forfeit] button (Forfeit replaces New Game whenever a game is in
+        progress). This script checks if a game is in progress (isGameOver is false),
+        and if so, the Loss Count is increased. Next, a new game is created, a random
+        starting player is selected, and if AI is to go first, a piece is added at
+        a random location on the board. Finally, the new game state is then returned
+        to the client.
       bodyFormat: 0
       bulletList: []
       linkList: []
@@ -141,10 +141,10 @@ MonoBehaviour:
       can show a popup, if appropriate), as well as a permanent counter for wins,
       losses and ties. To demonstrate the full game cycle, we've added the [Debug
       Reset Game] button which will remove the "CLOUD_AI_GAME_STATE" key from Cloud
-      Save and call "CloudAiMiniGame_GetState" as it did at the start of the session. Since
-      Cloud Code then believes this to be a new player, it will reset Coin quantity
-      to 0, create a new save state with all counters set to 0 and generate a new
-      starting game with a random starting player.
+      Save and call "CloudAiMiniGame_GetState" as it did at the start of the session.
+      Since Cloud Code then believes this to be a new player, it will reset Coin
+      quantity to 0, create a new save state with all counters set to 0 and generate
+      a new starting game with a random starting player.
     bodyFormat: 0
     boxCallout: 
     bulletList: []
@@ -166,12 +166,12 @@ MonoBehaviour:
       bodyFormat: 0
       bulletList: []
       linkList: []
-    - body: 'Economy: Stores current "COIN" count which is granted as a reward for
-        winning/tying.'
+    - body: 'Cloud Save: Stores game state.'
       bodyFormat: 0
       bulletList: []
       linkList: []
-    - body: 'Cloud Save: Stores game state.'
+    - body: 'Economy: Stores current "COIN" count which is granted as a reward for
+        winning/tying.'
       bodyFormat: 0
       bulletList: []
       linkList: []
@@ -186,13 +186,13 @@ MonoBehaviour:
     bulletList: []
     linkList:
     - linkText: Authentication
-      url: http://documentation.cloud.unity3d.com/en/articles/5385907-unity-authentication-anonymous-sign-in-guide
+      url: https://docs.unity.com/authentication/IntroUnityAuthentication.html
     - linkText: Cloud Code
-      url: https://docs.unity.com/cloud-code
-    - linkText: Economy
-      url: https://docs.unity.com/economy/Content/implementation.htm?tocpath=Implementation%7C_____0
+      url: https://docs.unity.com/cloud-code/implementation.html
     - linkText: Cloud Save
-      url: https://docs.unity.com/cloud-save
+      url: https://docs.unity.com/cloud-save/index.html#Implementation
+    - linkText: Economy
+      url: https://docs.unity.com/economy/implementation.html
   - subHeader1: Dashboard Setup
     subHeader2: 
     subHeader3: 
@@ -213,8 +213,8 @@ MonoBehaviour:
     - body: Coin
       bodyFormat: 1
       bulletList:
-      - body: Granted by the Cloud Code script CloudAiMiniGame_PlayerMove for Wins and, in
-          a lesser quantity, for Ties.
+      - body: Granted by the Cloud Code script CloudAiMiniGame_PlayerMove for Wins
+          and, in a lesser quantity, for Ties.
         bodyFormat: 0
         bulletList: []
       - body: 'ID: "COIN"'

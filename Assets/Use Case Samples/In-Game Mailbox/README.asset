@@ -11,55 +11,55 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bfbabd22c62c640a6ba459d46825055b, type: 3}
   m_Name: README
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier:
   header:
     title: In-Game Mailbox README
     icon: {fileID: 2800000, guid: 83f0684dab5534e2492f651aaaf4a151, type: 3}
   sections:
   - subHeader1: Intro
-    subHeader2: 
-    subHeader3: 
+    subHeader2:
+    subHeader3:
     body: In-game mailboxes are common mechanisms for game developers to communicate
       with their players. You can use them to tell players about new in-game events,
       gift players items and currency, or to help retain players in the game.
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList: []
   - subHeader1: Overview
-    subHeader2: 
-    subHeader3: 
+    subHeader2:
+    subHeader3:
     body: 'When a player loads the scene for the first time, they see an inbox with
       a list of messages waiting for them to read. On subsequent loads, the inbox
       is either in the state they left it, or an updated state due to messages expiring
       between sessions. '
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
     body: 'Players can interact with the messages, claim their attachments, delete
       messages, or reset the inbox to a brand new state. '
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
     body: 'To see this use case in action:'
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
-    body: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
+    body:
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList:
     - body: 'In the Unity Editor "Project" window, select "Assets" > "Use Case Samples"
         > "In-Game Mailbox", and then double-click "InGameMailboxSample.unity" to
@@ -72,21 +72,21 @@ MonoBehaviour:
       bulletList: []
       linkList: []
     linkList: []
-  - subHeader1: 
+  - subHeader1:
     subHeader2: Initialization
-    subHeader3: 
+    subHeader3:
     body: 'When the scene loads, the "InGameMailboxSceneManager" script performs
       the following initialization steps:'
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
-    body: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
+    body:
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList:
     - body: Initializes Unity Gaming Services.
       bodyFormat: 0
@@ -143,28 +143,28 @@ MonoBehaviour:
       bulletList: []
       linkList: []
     linkList: []
-  - subHeader1: 
+  - subHeader1:
     subHeader2: Functionality
-    subHeader3: 
+    subHeader3:
     body: 'The left panel in the scene displays the list of messages in the player''s
       inbox. This list updates over time as messages expire, or based on player interaction. '
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
     body: 'Below the list, a counter displays how many messages are in the inbox
       and the max number of messages that can be in the inbox at any given time.
       When a player loads the scene for the first time, the inbox is full. '
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
     body: 'When all messages have been deleted from the inbox (either through player
       interaction or message expiration), a popup appears prompting the player to
       reset the inbox.  '
@@ -173,20 +173,20 @@ MonoBehaviour:
       not be an expected interaction in a real-world implementation. '
     bulletList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
+  - subHeader1:
+    subHeader2:
     subHeader3: Open a message
     body: 'When you select a message from the list, the following occurs:'
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
-    body: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
+    body:
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList:
     - body: The full details of the message appears on the right side of the scene.
       bodyFormat: 0
@@ -197,31 +197,31 @@ MonoBehaviour:
       bulletList: []
       linkList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
     body: 'If the message has an attachment, there is also an indication of which
       Economy items are attached, along with a button to claim them. '
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
+  - subHeader1:
+    subHeader2:
     subHeader3: Claim an attachment
     body: 'When you press the "Claim" button, the client code calls the "InGameMailbox_ClaimAttachment.js"
       Cloud Code script with the selected message''s ID included as a parameter.
       The following occurs on the backend: '
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
-    body: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
+    body:
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList:
     - body: The client requests the Cloud Save inbox data, and locates the message
         with the supplied ID.
@@ -245,20 +245,20 @@ MonoBehaviour:
       bulletList: []
       linkList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
+  - subHeader1:
+    subHeader2:
     subHeader3: Delete a message
     body: 'When you press the delete button for a message:'
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
-    body: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
+    body:
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList:
     - body: The message is removed from the local list of inbox messages.
       bodyFormat: 0
@@ -283,22 +283,22 @@ MonoBehaviour:
       bulletList: []
       linkList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
+  - subHeader1:
+    subHeader2:
     subHeader3: Claim all attachments
     body: 'When you press the "Claim All" button, the client code makes a call to
-      the "InGameMailbox_ClaimAllAttachments.js" Cloud Code script. The following occurs
-      on the backend: '
+      the "InGameMailbox_ClaimAllAttachments.js" Cloud Code script. The following
+      occurs on the backend: '
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
-    body: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
+    body:
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList:
     - body: The client requests inbox data from Cloud Save.
       bodyFormat: 0
@@ -327,10 +327,10 @@ MonoBehaviour:
       bulletList: []
       linkList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
-    body: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
+    body:
     bodyFormat: 0
     boxCallout: 'Note: Saving changes in Cloud Save after each attachment is claimed
       would make the process more fault tolerant. However, it would also require
@@ -338,20 +338,20 @@ MonoBehaviour:
       It is up to the developer which advantage to prioritize. '
     bulletList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
+  - subHeader1:
+    subHeader2:
     subHeader3: Delete all read and claimed attachments
     body: 'When you press the "Delete Read" button:'
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
-    body: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
+    body:
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList:
     - body: The script loops through the list of inbox messages, and removes each
         message that has both "message.metadata.isRead" set to "true" and "message.metadata.hasUnclaimedAttachment"
@@ -380,21 +380,21 @@ MonoBehaviour:
       bulletList: []
       linkList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
+  - subHeader1:
+    subHeader2:
     subHeader3: Reset the inbox for a specific audience
     body: 'At the bottom of the scene, you can reset the inbox while impersonating
       a particular audience:'
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
-    body: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
+    body:
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList:
     - body: Default
       bodyFormat: 0
@@ -417,30 +417,30 @@ MonoBehaviour:
       bulletList: []
       linkList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
     body: 'Each of the non-default audiences adds a message to the message list that
       is specific to that particular audience. These messages are determined by Game
       Overrides. '
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
     body: 'When you reset the inbox for the given audience, the following occurs: '
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
-    body: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
+    body:
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList:
     - body: The scene resets, clearing the selected message field and deleting the
         Cloud Save inbox data.
@@ -463,20 +463,20 @@ MonoBehaviour:
       bulletList: []
       linkList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
+  - subHeader1:
+    subHeader2:
     subHeader3: Open the inventory
     body: 'When you press the inventory bag icon, the following occurs:'
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
-    body: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
+    body:
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList:
     - body: The client calls "EconomyService.Instance.PlayerInventory.GetInventoryAsync()"
         to refresh the player's list of owned Economy inventory items.
@@ -490,49 +490,62 @@ MonoBehaviour:
     linkList: []
   - subHeader1: Setup
     subHeader2: Requirements
-    subHeader3: 
+    subHeader3:
     body: 'To replicate this use case, you need the following Unity packages in your
       project: '
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList:
     - linkText: Addressables
       url: https://docs.unity3d.com/Packages/com.unity.addressables@latest
     - linkText: Authentication
-      url: https://docs.unity.com/authentication/Content/InstallAndConfigureSDK.htm
+      url: https://docs.unity.com/authentication/IntroUnityAuthentication.html
     - linkText: Cloud Code
-      url: https://docs.unity.com/Cloud-Code
+      url: https://docs.unity.com/cloud-code/implementation.html
     - linkText: Cloud Save
-      url: https://docs.unity.com/cloud-save/implementation.html#SDK-installation
+      url: https://docs.unity.com/cloud-save/index.html#Implementation
     - linkText: Economy
-      url: https://docs.unity.com/Economy
+      url: https://docs.unity.com/economy/implementation.html
+    - linkText: Game Overrides
+      url: https://docs.unity3d.com/Packages/com.unity.remote-config@3.2/manual/GameOverridesAndSettings.html
     - linkText: Remote Config
-      url: https://docs.unity.com/remote-config
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
+      url: https://docs.unity3d.com/Packages/com.unity.remote-config@latest
+  - subHeader1:
+    subHeader2:
+    subHeader3:
+    body:
+    bodyFormat: 0
+    boxCallout: 'Note that though it is listed as a package and requires separate
+      dashboard configuration, Game Overrides doesn''t actually have an SDK to install
+      from Package Manager. It is a server side offering that affects values returned
+      from other services, like Remote Config. '
+    bulletList: []
+    linkList: []
+  - subHeader1:
+    subHeader2:
+    subHeader3:
     body: 'To use these services in your game, activate each service for your Organization
       and project in the Unity Dashboard. '
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList: []
-  - subHeader1: 
+  - subHeader1:
     subHeader2: Dashboard setup
-    subHeader3: 
+    subHeader3:
     body: 'To replicate this sample scene''s setup on your own dashboard, you need
       to:'
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
-    body: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
+    body:
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList:
     - body: Publish two scripts in Cloud Code.
       bodyFormat: 0
@@ -548,20 +561,20 @@ MonoBehaviour:
       bulletList: []
       linkList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
+  - subHeader1:
+    subHeader2:
     subHeader3: Cloud Code
     body: 'Publish the following scripts in the LiveOps dashboard: '
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
-    body: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
+    body:
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList:
     - body: InGameMailbox_ClaimAttachment
       bodyFormat: 1
@@ -601,10 +614,10 @@ MonoBehaviour:
         bulletList: []
       linkList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
-    body: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
+    body:
     bodyFormat: 0
     boxCallout: 'Note: The Cloud Code scripts included in the `Cloud Code` folder
       are local copies because you cannot view the sample project''s dashboard. Changes
@@ -612,20 +625,20 @@ MonoBehaviour:
       not automatically uploaded to the Cloud Code service. '
     bulletList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
+  - subHeader1:
+    subHeader2:
     subHeader3: Economy
     body: 'Configure the following resources in the LiveOps dashboard:'
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
-    body: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
+    body:
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList:
     - body: Gem
       bodyFormat: 1
@@ -692,20 +705,20 @@ MonoBehaviour:
         bulletList: []
       linkList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
     body: 'In addition, configure the following virtual purchases: '
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
-    body: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
+    body:
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList:
     - body: Message 003 Gift for New Players
       bodyFormat: 1
@@ -786,29 +799,29 @@ MonoBehaviour:
         bulletList: []
       linkList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
-    body: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
+    body:
     bodyFormat: 0
     boxCallout: 'There is no cost associated with these Virtual Purchases because
       they are all gifts to the player reading the message. '
     bulletList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
+  - subHeader1:
+    subHeader2:
     subHeader3: Remote Config
     body: 'Set up the following config values in the LiveOps dashboard: '
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
-    body: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
+    body:
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList:
     - body: MESSAGES_ALL
       bodyFormat: 1
@@ -968,20 +981,20 @@ MonoBehaviour:
         bulletList: []
       linkList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
+  - subHeader1:
+    subHeader2:
     subHeader3: Game Overrides
     body: 'Configure the following Overrides in the LiveOps dashboard: '
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
-    body: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
+    body:
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList:
     - body: Messages All Spenders Overrides
       bodyFormat: 1
@@ -991,7 +1004,8 @@ MonoBehaviour:
         bodyFormat: 0
         bulletList: []
       - body: 'Content: Select "Choose content type" > "Config Overrides", then enter
-          override values for the following keys: "MESSAGE_001" (See README.md for override value)'
+          override values for the following keys: "MESSAGE_001" (See README.md for
+          override value)'
         bodyFormat: 0
         bulletList: []
       - body: 'Scheduling: '
@@ -1012,7 +1026,8 @@ MonoBehaviour:
         bodyFormat: 0
         bulletList: []
       - body: 'Content: Select "Choose content type" > "Config Overrides", then enter
-          override values for the following keys: "MESSAGE_002" (See README.md for override value)'
+          override values for the following keys: "MESSAGE_002" (See README.md for
+          override value)'
         bodyFormat: 0
         bulletList: []
       - body: 'Scheduling: '
@@ -1033,7 +1048,8 @@ MonoBehaviour:
         bodyFormat: 0
         bulletList: []
       - body: 'Content: Select "Choose content type" > "Config Overrides", then enter
-          override values for the following keys: "MESSAGE_003" (See README.md for override value)'
+          override values for the following keys: "MESSAGE_003" (See README.md for
+          override value)'
         bodyFormat: 0
         bulletList: []
       - body: 'Scheduling: '
@@ -1054,7 +1070,8 @@ MonoBehaviour:
         bodyFormat: 0
         bulletList: []
       - body: 'Content: Select "Choose content type" > "Config Overrides", then enter
-          override values for the following keys: "MESSAGE_004" (See README.md for override value)'
+          override values for the following keys: "MESSAGE_004" (See README.md for
+          override value)'
         bodyFormat: 0
         bulletList: []
       - body: 'Scheduling: '
@@ -1068,19 +1085,19 @@ MonoBehaviour:
           bulletList: []
       linkList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
     body: 'Important: After configuring your Overrides, remember to enable them by
       selecting the Override from the list and clicking the "Enable" button.   '
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
-    body: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
+    body:
     bodyFormat: 0
     boxCallout: 'Note: This sample determines which Game Override data should be
       returned based on a JEXL match with the audience value specified in the client.

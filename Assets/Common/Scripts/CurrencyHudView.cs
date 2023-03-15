@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 using Unity.Services.Economy.Model;
 using UnityEngine;
@@ -7,7 +8,6 @@ namespace Unity.Services.Samples
     public class CurrencyHudView : MonoBehaviour
     {
         CurrencyItemView[] m_CurrencyItemViews;
-
 
         void Awake()
         {
@@ -22,14 +22,14 @@ namespace Unity.Services.Samples
             if (getBalancesResult is null) return;
 
             var currenciesString = new StringBuilder();
-            
+
             foreach (var balance in getBalancesResult.Balances)
             {
                 if (balance.Balance > 0)
                 {
                     currenciesString.Append($", {balance.CurrencyId}:{balance.Balance}");
                 }
-                
+
                 foreach (var currencyItemView in m_CurrencyItemViews)
                 {
                     if (string.Equals(balance.CurrencyId, currencyItemView.definitionId))

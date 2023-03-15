@@ -1,3 +1,5 @@
+using System;
+
 namespace Unity.Services.Samples.BattlePass
 {
     public struct BattlePassConfig

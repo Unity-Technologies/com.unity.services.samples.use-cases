@@ -47,7 +47,6 @@ namespace Unity.Services.Samples.DailyRewards
 
         float lastUpdateTime;
 
-
         public async Task RefreshDailyRewardsEventStatus()
         {
             try
@@ -83,7 +82,7 @@ namespace Unity.Services.Samples.DailyRewards
                 m_Status.secondsTillNextDay += m_Status.secondsPerDay;
 
                 // If next day was not claimable then it is now.
-                // Note: This 'if' also prevents us decrementing the daysRemaining field since it was 
+                // Note: This 'if' also prevents us decrementing the daysRemaining field since it was
                 //       already decremented when we claimed the previous day.
                 if (m_Status.secondsTillClaimable > 0)
                 {
@@ -119,7 +118,7 @@ namespace Unity.Services.Samples.DailyRewards
         }
 
         // Helper method for demonstrating Daily Rewards. Normally this would be set manually to the beginning of
-        // the month on Remote Config so all users experience the event over the course of a month, but here we reset 
+        // the month on Remote Config so all users experience the event over the course of a month, but here we reset
         // it manually to demonstrate how Daily Rewards works.
         public async Task Demonstration_StartNextMonth()
         {
@@ -196,14 +195,13 @@ namespace Unity.Services.Samples.DailyRewards
                 // This day has already been claimed
                 return DayStatus.DayClaimed;
             }
-            else if (dayIndex > daysClaimed + 1)
+
+            if (dayIndex > daysClaimed + 1)
             {
                 return DayStatus.DayUnclaimable;
             }
-            else
-            {
-                return isClaimableNow ? DayStatus.DayClaimable : DayStatus.DayUnclaimable;
-            }
+
+            return isClaimableNow ? DayStatus.DayClaimable : DayStatus.DayUnclaimable;
         }
 
         void SaveStatus(ClaimResult claimResult)

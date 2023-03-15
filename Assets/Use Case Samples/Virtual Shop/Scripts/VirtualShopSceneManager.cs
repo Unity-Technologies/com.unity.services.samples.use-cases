@@ -35,7 +35,7 @@ namespace Unity.Services.Samples.VirtualShop
                 // Economy configuration should be refreshed every time the app initializes.
                 // Doing so updates the cached configuration data and initializes for this player any items or
                 // currencies that were recently published.
-                // 
+                //
                 // It's important to do this update before making any other calls to the Economy or Remote Config
                 // APIs as both use the cached data list. (Though it wouldn't be necessary to do if only using Remote
                 // Config in your project and not Economy.)
@@ -64,10 +64,11 @@ namespace Unity.Services.Samples.VirtualShop
 
                 var firstCategoryId = RemoteConfigManager.instance.virtualShopConfig.categories[0].id;
                 if (!VirtualShopManager.instance.virtualShopCategories.TryGetValue(
-                    firstCategoryId, out var firstCategory))
+                        firstCategoryId, out var firstCategory))
                 {
                     throw new KeyNotFoundException($"Unable to find shop category {firstCategoryId}.");
                 }
+
                 virtualShopSampleView.ShowCategory(firstCategory);
 
                 Debug.Log("Initialization and sign in complete.");
@@ -104,7 +105,7 @@ namespace Unity.Services.Samples.VirtualShop
                 ShowRewardPopup(result.Rewards);
             }
             catch (EconomyException e)
-            when (e.ErrorCode == k_EconomyPurchaseCostsNotMetStatusCode)
+                when (e.ErrorCode == k_EconomyPurchaseCostsNotMetStatusCode)
             {
                 virtualShopSampleView.ShowVirtualPurchaseFailedErrorPopup();
             }
@@ -136,7 +137,7 @@ namespace Unity.Services.Samples.VirtualShop
             var rewardDetails = new List<RewardDetail>();
             foreach (var inventoryReward in rewards.Inventory)
             {
-                rewardDetails.Add(new RewardDetail()
+                rewardDetails.Add(new RewardDetail
                 {
                     id = inventoryReward.Id,
                     quantity = inventoryReward.Amount,
@@ -146,7 +147,7 @@ namespace Unity.Services.Samples.VirtualShop
 
             foreach (var currencyReward in rewards.Currency)
             {
-                rewardDetails.Add(new RewardDetail()
+                rewardDetails.Add(new RewardDetail
                 {
                     id = currencyReward.Id,
                     quantity = currencyReward.Amount,

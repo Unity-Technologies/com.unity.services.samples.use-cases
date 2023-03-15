@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
@@ -30,7 +31,7 @@ namespace Unity.Services.Samples
                 else
                 {
                     Debug.Log($"A sprite could not be found for the address {spriteAddress}." +
-                              $" Addressables exception: {handle.OperationException}");
+                        $" Addressables exception: {handle.OperationException}");
                 }
             };
         }

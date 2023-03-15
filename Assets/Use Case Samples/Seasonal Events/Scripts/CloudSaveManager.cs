@@ -58,7 +58,7 @@ namespace Unity.Services.Samples.SeasonalEvents
 
                 // When a string value is saved in Cloud Save, quotes are added around the value.
                 // These quotes don't exist in the value stored in Remote Config which we'll be comparing with, so
-                // we will remove the quotes from the value that we return here. 
+                // we will remove the quotes from the value that we return here.
                 var trimmedEventKey = eventKey.Replace("\"", string.Empty);
                 return trimmedEventKey;
             }

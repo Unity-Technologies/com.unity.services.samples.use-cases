@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,7 +9,6 @@ namespace Unity.Services.Samples.VirtualShop
         public static VirtualShopManager instance { get; private set; }
 
         public Dictionary<string, VirtualShopCategory> virtualShopCategories { get; private set; }
-
 
         void Awake()
         {

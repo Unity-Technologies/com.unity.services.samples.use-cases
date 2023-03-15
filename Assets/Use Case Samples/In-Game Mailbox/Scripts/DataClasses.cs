@@ -14,7 +14,7 @@ namespace Unity.Services.Samples.InGameMailbox
 
         // MessageMetadata is all the player-specific instance data for a given message, stored in Cloud Save.
         public MessageMetadata metadata;
-            
+
         public InboxMessage(string messageId = "", MessageInfo messageInfo = null, MessageMetadata metadata = null)
         {
             this.messageId = messageId;
@@ -42,6 +42,7 @@ namespace Unity.Services.Samples.InGameMailbox
         public MessageMetadata(TimeSpan expiration, bool hasUnclaimedAttachment = false)
         {
             var expirationDateTime = DateTime.Now.Add(expiration);
+
             // "s" format for DateTime results in a string like "2008-10-31T17:04:32"
             expirationDate = expirationDateTime.ToString("s", CultureInfo.GetCultureInfo("en-US"));
             this.hasUnclaimedAttachment = hasUnclaimedAttachment;
@@ -65,5 +66,4 @@ namespace Unity.Services.Samples.InGameMailbox
             return $"{id}:{amount}";
         }
     }
-
 }

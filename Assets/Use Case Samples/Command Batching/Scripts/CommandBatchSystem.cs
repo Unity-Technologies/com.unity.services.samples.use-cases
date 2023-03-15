@@ -44,7 +44,7 @@ namespace Unity.Services.Samples.CommandBatching
         string[] ConvertCommandBatchToCommandKeys()
         {
             var batchSize = commandBatch.Count;
-            var commandKeys = new string[batchSize]; 
+            var commandKeys = new string[batchSize];
 
             for (var i = 0; i < batchSize; i++)
             {

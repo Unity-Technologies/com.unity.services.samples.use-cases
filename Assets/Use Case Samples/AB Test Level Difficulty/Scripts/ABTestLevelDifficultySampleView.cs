@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -30,7 +31,6 @@ namespace Unity.Services.Samples.ABTestLevelDifficulty
 
         bool m_Enabled;
         bool m_IsSignedIn;
-
 
         void OnEnable()
         {

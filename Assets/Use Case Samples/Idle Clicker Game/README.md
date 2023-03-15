@@ -107,12 +107,12 @@ Upon successful Virtual Purchase, all necessary data is added to the Cloud Save 
 
 #### Well Types
 
-| **Well** | **Cost**                      | **Generates**         | **To Unlock**                                  |
-| -------- | ----------------------------- | --------------------- | ---------------------------------------------- |
-| Wood     | 100 Water                     | 1 Water per Second    | N/A (already unlocked at start)                |
-| Bronze   | 200 Water + 2 Wood Wells      | 2 Water per Second    | N/A (already unlocked at start)                |
-| Silver   | 300 Water + 2 Bronze Wells    | 3 Water per Second    | Merge Wood Wells into Bronze Wells 4 times     |
-| Gold     | 400 Water + 2 Silver Wells    | 4 Water per Second    | Merge Bronze Wells into Silver Wells 4 times   |
+| **Well** | **Cost**                      | **Generates**         | **To Unlock**                                |
+|----------|-------------------------------|-----------------------|----------------------------------------------|
+| Wood     | 100 Water                     | 1 Water per Second    | N/A (already unlocked at start)              |
+| Bronze   | 200 Water + 2 Wood Wells      | 2 Water per Second    | N/A (already unlocked at start)              |
+| Silver   | 300 Water + 2 Bronze Wells    | 3 Water per Second    | Merge Wood Wells into Bronze Wells 4 times   |
+| Gold     | 400 Water + 2 Silver Wells    | 4 Water per Second    | Merge Bronze Wells into Silver Wells 4 times |
 
 ## Setup
 
@@ -120,12 +120,12 @@ Upon successful Virtual Purchase, all necessary data is added to the Cloud Save 
 
 To replicate this use case, you need the following [Unity packages](https://docs.unity3d.com/Manual/Packages.html) in your project:
 
-| **Package**                                                                                | **Role**                                                                                                                                                                                                                                         |
-| ------------------------------------------------------------------------------------------ |--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [Authentication](https://docs.unity.com/authentication/Content/InstallAndConfigureSDK.htm) | Automatically signs in the user anonymously to keep track of their data on the server side.                                                                                                                                                      |
-| [Cloud Code](https://docs.unity.com//cloud-code/Content/implementation.htm)                | Sets up the game state for a new game by placing three random obstacles and setting the starting Water currency to 1000. It also validates moves, grants Water based on real-time production, and updates game state based on Virtual Purchases. |
-| [Cloud Save](https://docs.unity.com/cloud-save/implementation.htm)                         | Stores the game state, last update timestamp and unlock data. Cloud Code checks and updates these values directly.                                                                                                                               |
-| [Economy](https://docs.unity.com/economy/Content/implementation.htm)                       | Retrieves the player's starting and updated Water balances at runtime and performs Virtual Purchases to place and/or merge Wells.                                                                                                                |
+| **Package**                                                                           | **Role**                                                                                                                                                                                                                                         |
+|---------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [Authentication](https://docs.unity.com/authentication/IntroUnityAuthentication.html) | Automatically signs in the user anonymously to keep track of their data on the server side.                                                                                                                                                      |
+| [Cloud Code](https://docs.unity.com/cloud-code/implementation.html)                   | Sets up the game state for a new game by placing three random obstacles and setting the starting Water currency to 1000. It also validates moves, grants Water based on real-time production, and updates game state based on Virtual Purchases. |
+| [Cloud Save](https://docs.unity.com/cloud-save/index.html#Implementation)             | Stores the game state, last update timestamp and unlock data. Cloud Code checks and updates these values directly.                                                                                                                               |
+| [Economy](https://docs.unity.com/economy/implementation.html)                         | Retrieves the player's starting and updated Water balances at runtime and performs Virtual Purchases to place and/or merge Wells.                                                                                                                |
 
 To use these services in your game, activate each service for your Organization and project in the [Unity Dashboard](https://dashboard.unity3d.com/).
 

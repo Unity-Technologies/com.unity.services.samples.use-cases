@@ -14,7 +14,7 @@ namespace Unity.Services.Samples.ProjectInbox
 
         // MessageMetadata is all the player-specific instance data for a given message, stored in Cloud Save.
         public MessageMetadata metadata;
-        
+
         public InboxMessage(string messageId = "", MessageInfo messageInfo = null, MessageMetadata metadata = null)
         {
             this.messageId = messageId;
@@ -48,6 +48,7 @@ namespace Unity.Services.Samples.ProjectInbox
         public MessageMetadata(TimeSpan expirationPeriod)
         {
             var expirationDateTime = DateTime.Now.Add(expirationPeriod);
+
             // "s" format for DateTime results in a string like "2008-10-31T17:04:32"
             expiresAtDateTime = expirationDateTime.ToString("s", CultureInfo.GetCultureInfo("en-US"));
             isRead = false;

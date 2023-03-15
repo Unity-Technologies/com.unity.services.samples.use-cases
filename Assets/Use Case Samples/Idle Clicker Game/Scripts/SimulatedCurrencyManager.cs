@@ -27,7 +27,6 @@ namespace Unity.Services.Samples.IdleClickerGame
 
         long m_NextWellProduceTime = long.MaxValue;
 
-
         void Awake()
         {
             if (instance != null && instance != this)
@@ -58,7 +57,7 @@ namespace Unity.Services.Samples.IdleClickerGame
         void UpdateWellsLastProduceTime(List<WellInfo>[] allWells)
         {
             foreach (var wellsByLevel in allWells)
-            { 
+            {
                 var serverTime = GetApproxServerTimestamp();
                 for (int i = 0; i < wellsByLevel.Count; i++)
                 {
@@ -87,7 +86,7 @@ namespace Unity.Services.Samples.IdleClickerGame
             var serverTimestamp = GetApproxServerTimestamp();
 
             if (serverTimestamp >= m_NextWellProduceTime)
-            { 
+            {
                 UpdateAllWellsForTimestamp(serverTimestamp);
 
                 m_NextWellProduceTime = CalculateNextWellProduceTimestamp();
@@ -98,8 +97,9 @@ namespace Unity.Services.Samples.IdleClickerGame
         {
             long currencyProduced = 0;
 
-            for (int wellLevelOn = 0; wellLevelOn < IdleClickerGameSceneManager.k_NumWellLevels;
-                wellLevelOn++)
+            for (int wellLevelOn = 0;
+                 wellLevelOn < IdleClickerGameSceneManager.k_NumWellLevels;
+                 wellLevelOn++)
             {
                 var wellsByLevel = m_AllWells[wellLevelOn];
                 for (var i = 0; i < wellsByLevel.Count; i++)
@@ -134,7 +134,7 @@ namespace Unity.Services.Samples.IdleClickerGame
             var oldestTime = long.MaxValue;
 
             foreach (var wellsByLevel in m_AllWells)
-            { 
+            {
                 foreach (var well in wellsByLevel)
                 {
                     if (well.timestamp < oldestTime)

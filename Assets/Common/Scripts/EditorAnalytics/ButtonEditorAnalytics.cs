@@ -1,4 +1,3 @@
-
 // NOTE:
 // You can disable all editor analytics in Unity > Preferences.
 // The EditorAnalytics API is for Unity to collect usage data for this samples project in
@@ -7,6 +6,7 @@
 // could implement analytics in your own project, have a look at
 // the AB Test Level Difficulty sample or the Seasonal Events sample.
 
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -18,7 +18,7 @@ namespace Unity.Services.Samples
 #if UNITY_EDITOR
         public string buttonName;
 
-        private void Awake()
+        void Awake()
         {
             var button = GetComponent<Button>();
             button.onClick.AddListener(OnButtonPressed);

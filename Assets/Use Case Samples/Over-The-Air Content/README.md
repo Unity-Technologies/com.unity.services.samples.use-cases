@@ -43,15 +43,17 @@ If you choose to clear the cache, the sample will download the content again fro
 
 To replicate this use case, you need the following [Unity packages](https://docs.unity3d.com/Manual/Packages.html) in your project:
 
-| **Package**                                                                                                        | **Role**                                                                                                                                                                                                                          |
-| ------------------------------------------------------------------------------------------------------------------ |-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [Addressables](https://docs.unity3d.com/Packages/com.unity.addressables@latest)                                    | Allows developers to retrieve an asset by using its address. In this sample, the service looks up event-specific images and prefabs based on the information received from Remote Config.                                         |
-| [Authentication](https://docs.unity.com/authentication/Content/InstallAndConfigureSDK.htm)                         | Automatically signs in the user anonymously to keep track of their data server-side.                                                                                                                                              |
-| [Remote Config](https://docs.unity3d.com/Packages/com.unity.remote-config@latest/ConfiguringYourProject.html)      | Provides key-value pairs where the value that is mapped to a given key can change on the server side, either manually or based on specific Game Overrides. In this sample, we use it to inform the client of new content updates. |
+| **Package**                                                                           | **Role**                                                                                                                                                                                                                          |
+|---------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [Addressables](https://docs.unity3d.com/Packages/com.unity.addressables@latest)       | Allows developers to retrieve an asset by using its address. In this sample, the service looks up event-specific images and prefabs based on the information received from Remote Config.                                         |
+| [Authentication](https://docs.unity.com/authentication/IntroUnityAuthentication.html) | Automatically signs in the user anonymously to keep track of their data server-side.                                                                                                                                              |
+| [Cloud Content Delivery (CCD)](https://docs.unity.com/ccd/UnityCCD.html) \*           | Hosts the content asset bundle of the new content.                                                                                                                                                                                |
+| [Remote Config](https://docs.unity3d.com/Packages/com.unity.remote-config@latest)     | Provides key-value pairs where the value that is mapped to a given key can change on the server side, either manually or based on specific Game Overrides. In this sample, we use it to inform the client of new content updates. |
+
+\* Note that though it is listed as a package and requires separate dashboard configuration, the Cloud Content Delivery package doesn't need to be installed in your project. It hosts the content asset bundle, but Addressables is used to download the content in the project.
 
 To use these services in your game, activate each service for your Organization and project in the [Unity Dashboard](https://dashboard.unity3d.com/).
 
-**Note**: This sample uses [Cloud Content Delivery (CCD)](https://docs.unity.com/ccd/UnityCCD.html) to host the downloaded new content. There's no need to install the CCD SDK in order to recreate this sample, as we're only using it for hosting the content asset bundle, which gets downloaded using the Addressables SDK.
 
 
 ### Dashboard setup
