@@ -26,6 +26,10 @@ namespace Unity.Services.Samples.ABTestLevelDifficulty
 
         public async Task RefreshEconomyConfiguration()
         {
+            // Calling SyncConfigurationAsync(), will update the cached configuration list (the lists of Currency,
+            // Inventory Item, and Purchase definitions) with any definitions that have been published or changed by
+            // Economy or overriden by Game Overrides since the last time the player's configuration was cached. It also
+            // ensures that other services like Cloud Code are working with the same configuration that has been cached.
             await EconomyService.Instance.Configuration.SyncConfigurationAsync();
         }
 

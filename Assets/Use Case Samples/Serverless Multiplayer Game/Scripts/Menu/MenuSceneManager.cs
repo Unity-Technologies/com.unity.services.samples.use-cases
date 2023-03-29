@@ -133,6 +133,8 @@ namespace Unity.Services.Samples.ServerlessMultiplayerGame
                 sceneView.ShowMainMenuPanel();
             }
 
+            ShowReturnToLobbyReasonPopupIfNecessary();
+
             sceneView.SetInteractable(true);
         }
 
@@ -437,6 +439,26 @@ namespace Unity.Services.Samples.ServerlessMultiplayerGame
             }
         }
 
+        void ShowReturnToLobbyReasonPopupIfNecessary()
+        {
+            switch (ServerlessMultiplayerGameSampleManager.instance.returnToMenuReason)
+            {
+                case ServerlessMultiplayerGameSampleManager.ReturnToMenuReason.PlayerKicked:
+                    ShowPlayerKickedPopup();
+                    break;
+
+                case ServerlessMultiplayerGameSampleManager.ReturnToMenuReason.LobbyClosed:
+                    ShowLobbyClosedPopup();
+                    break;
+
+                case ServerlessMultiplayerGameSampleManager.ReturnToMenuReason.HostLeftGame:
+                    ShowHostLeftGamePopup();
+                    break;
+            }
+
+            ServerlessMultiplayerGameSampleManager.instance.ClearReturnToMenuReason();
+        }
+
         void ShowInvalidCodePopup()
         {
             sceneView.ShowPopup("Invalid Game Code", "The Game Code you entered is invalid.\n\nPlease try again.");
@@ -450,6 +472,21 @@ namespace Unity.Services.Samples.ServerlessMultiplayerGame
         void ShowLobbyFullPopup()
         {
             sceneView.ShowPopup("Lobby Full", "The lobby you attempted to join is full.\n\nPlease try a different lobby.");
+        }
+
+        void ShowPlayerKickedPopup()
+        {
+            sceneView.ShowPopup("Kicked", "The host has kicked you from the lobby.\n\nPlease rejoin or try a different lobby.");
+        }
+
+        void ShowLobbyClosedPopup()
+        {
+            sceneView.ShowPopup("Lobby Closed", "The lobby you joined has been closed.\n\nPlease try a different lobby.");
+        }
+
+        void ShowHostLeftGamePopup()
+        {
+            sceneView.ShowPopup("Host Left", "The host has left the game causing it to be aborted.\n\nPlease try a different game.");
         }
     }
 }

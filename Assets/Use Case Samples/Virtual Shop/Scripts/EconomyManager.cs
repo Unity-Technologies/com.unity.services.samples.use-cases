@@ -52,9 +52,10 @@ namespace Unity.Services.Samples.VirtualShop
 
         public async Task RefreshEconomyConfiguration()
         {
-            // Calling SyncConfigurationAsync(), will update the cached configuration list,
-            // including any new Currency, Inventory Item, or Purchases that have been published since the last
-            // time the player's configuration was cached.
+            // Calling SyncConfigurationAsync(), will update the cached configuration list (the lists of Currency,
+            // Inventory Item, and Purchase definitions) with any definitions that have been published or changed by
+            // Economy or overriden by Game Overrides since the last time the player's configuration was cached. It also
+            // ensures that other services like Cloud Code are working with the same configuration that has been cached.
             await EconomyService.Instance.Configuration.SyncConfigurationAsync();
 
             // Check that scene has not been unloaded while processing async wait to prevent throw.

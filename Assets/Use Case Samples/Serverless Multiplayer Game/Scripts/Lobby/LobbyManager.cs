@@ -134,6 +134,9 @@ namespace Unity.Services.Samples.ServerlessMultiplayerGame
             {
                 if (this == null) return;
 
+                ServerlessMultiplayerGameSampleManager.instance.SetReturnToMenuReason(
+                    ServerlessMultiplayerGameSampleManager.ReturnToMenuReason.LobbyClosed);
+
                 OnPlayerNotInLobby();
             }
 
@@ -141,6 +144,9 @@ namespace Unity.Services.Samples.ServerlessMultiplayerGame
             catch (LobbyServiceException e) when (e.Reason == LobbyExceptionReason.Forbidden)
             {
                 if (this == null) return;
+
+                ServerlessMultiplayerGameSampleManager.instance.SetReturnToMenuReason(
+                    ServerlessMultiplayerGameSampleManager.ReturnToMenuReason.PlayerKicked);
 
                 OnPlayerNotInLobby();
             }
@@ -466,6 +472,9 @@ namespace Unity.Services.Samples.ServerlessMultiplayerGame
                 }
                 else
                 {
+                    ServerlessMultiplayerGameSampleManager.instance.SetReturnToMenuReason(
+                        ServerlessMultiplayerGameSampleManager.ReturnToMenuReason.PlayerKicked);
+
                     OnPlayerNotInLobby();
                 }
             }

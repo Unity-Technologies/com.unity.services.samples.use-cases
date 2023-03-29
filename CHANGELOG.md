@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.9.1] - 2023-03-29
+
+### Changed
+
+* Add popups to explain cause when client is forced back to the main menu in Serverless Multiplayer Game due to host leaving or kicking player out of lobby.
+* Turned off `Interpolate` in the Serverless Multiplayer Game to improve responsiveness in the game scene and reduce the 'host advantage' in gameplay. The flag is located in the player avatar prefabs' `ClientNetworkTransform` component.
+
 ## [1.9.0] - 2023-03-15
 
 ### Added

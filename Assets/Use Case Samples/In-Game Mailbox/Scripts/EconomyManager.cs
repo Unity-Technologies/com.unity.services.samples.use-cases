@@ -21,10 +21,6 @@ namespace Unity.Services.Samples.InGameMailbox
         public Dictionary<string, List<ItemAndAmountSpec>> virtualPurchaseTransactions { get; private set; } =
             new Dictionary<string, List<ItemAndAmountSpec>>();
 
-        List<CurrencyDefinition> m_CurrencyDefinitions;
-        List<InventoryItemDefinition> m_InventoryItemDefinitions;
-        List<VirtualPurchaseDefinition> m_VirtualPurchaseDefinitions;
-
         void Awake()
         {
             if (instance != null && instance != this)
@@ -39,22 +35,18 @@ namespace Unity.Services.Samples.InGameMailbox
 
         public async Task RefreshEconomyConfiguration()
         {
-            // Calling SyncConfigurationAsync(), will update the cached configuration list,
-            // including any new Currency, Inventory Item, or Purchases that have been published since the last
-            // time the player's configuration was cached.
+            // Calling SyncConfigurationAsync(), will update the cached configuration list (the lists of Currency,
+            // Inventory Item, and Purchase definitions) with any definitions that have been published or changed by
+            // Economy or overriden by Game Overrides since the last time the player's configuration was cached. It also
+            // ensures that other services like Cloud Code are working with the same configuration that has been cached.
             await EconomyService.Instance.Configuration.SyncConfigurationAsync();
-
-            // Check that scene has not been unloaded while processing async wait to prevent throw.
-            if (this == null) return;
-
-            m_CurrencyDefinitions = EconomyService.Instance.Configuration.GetCurrencies();
-            m_InventoryItemDefinitions = EconomyService.Instance.Configuration.GetInventoryItems();
-            m_VirtualPurchaseDefinitions = EconomyService.Instance.Configuration.GetVirtualPurchases();
         }
 
         public void InitializeEconomyLookups()
         {
-            InitializeEconomySpriteAddressLookup(m_CurrencyDefinitions, m_InventoryItemDefinitions);
+            var currencyDefinitions = EconomyService.Instance.Configuration.GetCurrencies();
+            var inventoryItemDefinitions = EconomyService.Instance.Configuration.GetInventoryItems();
+            InitializeEconomySpriteAddressLookup(currencyDefinitions, inventoryItemDefinitions);
             InitializeVirtualPurchaseLookup();
         }
 
@@ -92,12 +84,14 @@ namespace Unity.Services.Samples.InGameMailbox
         {
             virtualPurchaseTransactions.Clear();
 
-            if (m_VirtualPurchaseDefinitions == null)
+            var virtualPurchaseDefinitions = EconomyService.Instance.Configuration.GetVirtualPurchases();
+
+            if (virtualPurchaseDefinitions == null)
             {
                 return;
             }
 
-            foreach (var virtualPurchaseDefinition in m_VirtualPurchaseDefinitions)
+            foreach (var virtualPurchaseDefinition in virtualPurchaseDefinitions)
             {
                 var rewards = ParseEconomyItems(virtualPurchaseDefinition.Rewards);
                 virtualPurchaseTransactions[virtualPurchaseDefinition.Id] = rewards;
@@ -136,8 +130,7 @@ namespace Unity.Services.Samples.InGameMailbox
             }
 
             // Check that scene has not been unloaded while processing async wait to prevent throw.
-            if (this == null)
-                return;
+            if (this == null) return;
 
             currencyHudView.SetBalances(balanceResult);
         }
@@ -169,8 +162,7 @@ namespace Unity.Services.Samples.InGameMailbox
                 Debug.LogException(e);
             }
 
-            if (this == null)
-                return;
+            if (this == null) return;
 
             inventoryHudView.Refresh(inventoryResult.PlayersInventoryItems);
         }

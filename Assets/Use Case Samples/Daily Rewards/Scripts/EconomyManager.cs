@@ -15,7 +15,6 @@ namespace Unity.Services.Samples.DailyRewards
 
         public static EconomyManager instance { get; private set; }
 
-        List<CurrencyDefinition> currencies;
         Dictionary<string, Sprite> m_CurrencyIdToSprite = new Dictionary<string, Sprite>();
 
         void Awake()
@@ -32,16 +31,17 @@ namespace Unity.Services.Samples.DailyRewards
 
         public async Task RefreshEconomyConfiguration()
         {
+            // Calling SyncConfigurationAsync(), will update the cached configuration list (the lists of Currency,
+            // Inventory Item, and Purchase definitions) with any definitions that have been published or changed by
+            // Economy or overriden by Game Overrides since the last time the player's configuration was cached. It also
+            // ensures that other services like Cloud Code are working with the same configuration that has been cached.
             await EconomyService.Instance.Configuration.SyncConfigurationAsync();
-
-            // Check that scene has not been unloaded while processing async wait to prevent throw.
-            if (this == null) return;
-
-            currencies = EconomyService.Instance.Configuration.GetCurrencies();
         }
 
         public async Task FetchCurrencySprites()
         {
+            var currencies = EconomyService.Instance.Configuration.GetCurrencies();
+
             if (currencies is null || currencies.Count <= 0)
             {
                 Debug.Log("Can't fetch currency sprites, ensure RefreshEconomyConfiguration() has been called.");
@@ -71,6 +71,8 @@ namespace Unity.Services.Samples.DailyRewards
 
             // Wait for all Addressables to be loaded.
             await Task.WhenAll(tasks);
+
+            // Check that scene has not been unloaded while processing async wait to prevent throw.
             if (this == null) return;
 
             // Iterate all Addressables and save off the Sprites into our local dictinary.

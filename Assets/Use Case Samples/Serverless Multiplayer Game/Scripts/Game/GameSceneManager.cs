@@ -16,6 +16,8 @@ namespace Unity.Services.Samples.ServerlessMultiplayerGame
 
         public static GameSceneManager instance { get; private set; }
 
+        public bool didPlayerPressLeaveButton { get; private set; }
+
         void Awake()
         {
             if (instance != null && instance != this)
@@ -112,6 +114,8 @@ namespace Unity.Services.Samples.ServerlessMultiplayerGame
 
         public void OnGameLeaveButtonPressed()
         {
+            didPlayerPressLeaveButton = true;
+
             NetworkServiceManager.instance.Uninitialize();
 
             GameEndManager.instance.ReturnToMainMenu();

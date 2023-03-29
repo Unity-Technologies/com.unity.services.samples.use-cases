@@ -378,6 +378,12 @@ namespace Unity.Services.Samples.ServerlessMultiplayerGame
             // When game manager is destroyed, return player to main menu (unless already doing so).
             if (!m_IsShuttingDown)
             {
+                if (GameSceneManager.instance != null && !GameSceneManager.instance.didPlayerPressLeaveButton)
+                {
+                    ServerlessMultiplayerGameSampleManager.instance.SetReturnToMenuReason(
+                        ServerlessMultiplayerGameSampleManager.ReturnToMenuReason.HostLeftGame);
+                }
+
                 GameEndManager.instance?.ReturnToMainMenu();
             }
         }
