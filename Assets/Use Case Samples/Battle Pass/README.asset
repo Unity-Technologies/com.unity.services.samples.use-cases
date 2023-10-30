@@ -398,20 +398,6 @@ MonoBehaviour:
         bodyFormat: 0
         bulletList: []
       linkList: []
-    - body: BATTLE_PASS_TIER_COUNT
-      bodyFormat: 1
-      bulletList:
-      - body: The total number of tiers each season. Not overridden by Game Overrides
-          in this example.
-        bodyFormat: 0
-        bulletList: []
-      - body: 'Type: int'
-        bodyFormat: 0
-        bulletList: []
-      - body: 'Value: 10'
-        bodyFormat: 0
-        bulletList: []
-      linkList: []
     - body: BATTLE_PASS_SEASON_XP_PER_TIER
       bodyFormat: 1
       bulletList:
