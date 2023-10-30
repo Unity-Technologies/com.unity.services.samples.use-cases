@@ -99,7 +99,7 @@ In addition, [configure the following virtual purchases](https://docs.unity.com/
 | **Item name**      | **ID**                            | **This purchase buys**  | **This purchase costs** |
 | :----------------- | :-------------------------------- | :---------------------- | :---------------------- |
 | 1 Sword for Coins  | `VIRTUAL_SHOP_1_SWORD_FOR_COINS`  | Sword (1)               | Coins (15)              |
-| 2 Sword for Coins  | `VIRTUAL_SHOP_2_SWORD_FOR_COINS`  | Sword (2)               | Coins (25)              |
+| 2 Sword for Coins  | `VIRTUAL_SHOP_2_SWORD_FOR_COINS`  | Sword (2)               | Coins (20)              |
 | 3 Sword for Coins  | `VIRTUAL_SHOP_3_SWORD_FOR_COINS`  | Sword (3)               | Coins (30)              |
 | 1 Shield for Coins | `VIRTUAL_SHOP_1_SHIELD_FOR_COINS` | Shield (1)              | Coins (10)              |
 | 2 Shield for Coins | `VIRTUAL_SHOP_2_SHIELD_FOR_COINS` | Shield (2)              | Coins (15)              |
