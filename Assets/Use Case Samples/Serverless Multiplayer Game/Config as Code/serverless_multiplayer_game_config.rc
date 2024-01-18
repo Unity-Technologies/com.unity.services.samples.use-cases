@@ -1,0 +1,39 @@
+{
+  "entries": {
+    "MULTIPLAYER_GAME_SETTINGS": {
+      "playerOptions": [
+        {
+          "players": 2,
+          "gameDuration": 60,
+          "initialSpawnDelay": 1,
+          "spawnInterval": 6,
+          "destroyInterval": 7,
+          "cluster1": 1,
+          "cluster2": 1,
+          "cluster3": 0
+        },
+        {
+          "players": 3,
+          "gameDuration": 60,
+          "initialSpawnDelay": 2,
+          "spawnInterval": 5,
+          "destroyInterval": 5.5,
+          "cluster1": 1,
+          "cluster2": 1,
+          "cluster3": 1
+        },
+        {
+          "players": 4,
+          "gameDuration": 60,
+          "initialSpawnDelay": 3,
+          "spawnInterval": 4,
+          "destroyInterval": 4.5,
+          "cluster1": 1,
+          "cluster2": 2,
+          "cluster3": 1
+        }
+      ]
+    }
+  },
+  "types": {}
+}

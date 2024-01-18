@@ -45,9 +45,6 @@ EditorBuildSettings:
     path: Assets/Use Case Samples/Virtual Shop/VirtualShopSample.unity
     guid: c9e7248306bed8e439bdc5ef66ca4940
   - enabled: 1
-    path: Assets/Use Case Samples/Over-The-Air Content/OTAContentDeliverySample.unity
-    guid: 110649f29bf8f437290484e43759545a
-  - enabled: 1
     path: Assets/Use Case Samples/In-Game Mailbox/InGameMailboxSample.unity
     guid: f91bee564a6ff40e7a02eaf0fdf77bb6
   - enabled: 1

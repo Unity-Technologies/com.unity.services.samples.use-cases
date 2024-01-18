@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: a1bccf1b7748440e7b9b668bdb3278cc
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: fbc33bd6a5704c0881dc7a9ead54089b, type: 3}
+  Parameters:
+  - Name: tierIndex
+    ParameterType: 1
+    Required: 1
+  Source: 0

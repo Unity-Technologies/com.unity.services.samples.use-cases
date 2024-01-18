@@ -42,7 +42,7 @@ This list updates over time as messages expire, or based on player interaction.
 Below the list, a counter displays how many messages are in the inbox and the max number of messages that can be in the inbox at any given time.
 When a player loads the scene for the first time, the inbox is full.
 
-When all messages have been deleted from the inbox (either through player interaction or message expiration), a popup appears prompting the player to [reset the inbox](#reset-the-inbox-for-a-specific-audience). 
+When all messages have been deleted from the inbox (either through player interaction or message expiration), a popup appears prompting the player to [reset the inbox](#reset-the-inbox-for-a-specific-audience).
 
 **Note**: This popup is a usability feature of the sample, and would not be an expected interaction in a real-world implementation.
 
@@ -83,7 +83,7 @@ When you press the **Claim All** button, the client code makes a call to the `In
    1. The script makes an Economy `makeVirtualPurchase` call using the Virtual Purchase ID from the `message.messageInfo.attachment` field.
    2. If the purchase processes successfully, `message.metadata.hasUnclaimedAttachment` is set to `false`, and `message.metadata.isRead` is set to `true`.
 4. Once all message attachments are claimed, the updated message list is saved in Cloud Save.
-   
+
 **Note**: Saving changes in Cloud Save after each attachment is claimed would make the process more fault tolerant. However, it would also require more server calls and therefore be less efficient than the selected approach. It is up to the developer which advantage to prioritize.
 
 #### Delete all read and claimed attachments
@@ -99,11 +99,11 @@ When you press the **Delete Read** button:
 
 At the bottom of the scene, you can reset the inbox while impersonating a particular audience:
 
-* `Default`
-* `All Spenders`
-* `Unengaged Players`
-* `French Speakers`
-* `New Players`
+- `Default`
+- `All Spenders`
+- `Unengaged Players`
+- `French Speakers`
+- `New Players`
 
 Each of the non-default audiences adds a message to the message list that is specific to that particular audience. These messages are determined by Game Overrides.
 
@@ -136,32 +136,93 @@ To replicate this use case, you need the following [Unity packages](https://docs
 | [Economy](https://docs.unity.com/economy/implementation.html)                                                          | Maintains the player's wallet and inventory, and the virtual purchase info associated with a given message's attachment.                                                                                                                                                                                                                                               |
 | [Game Overrides](https://docs.unity3d.com/Packages/com.unity.remote-config@3.2/manual/GameOverridesAndSettings.html)\* | Defines the audience grouping and message data for those messages that we want to only send to a certain audience.                                                                                                                                                                                                                                                     |
 | [Remote Config](https://docs.unity3d.com/Packages/com.unity.remote-config@latest)                                      | Provides key-value pairs where the value that is mapped to a given key can change on the server side, either manually or based on specific Game Overrides. In this sample, we store the message info in Remote Config, and for messages that should only be sent to a particular audience, we store them as blank messages (they'll get filled in by Game Overrides).  |
+| [Deployment](https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2)                                      | The Deployment package provides a cohesive interface to deploy assets for Cloud Services.                                                                                                                                                                                                                                                                              |
 
 \* Note that though it is listed as a package and requires separate dashboard configuration, Game Overrides doesn't actually have an SDK to install from Package Manager. It is a server side offering that affects values returned from other services, like Remote Config.
 
 To use these services in your game, activate each service for your Organization and project in the [Unity Dashboard](https://dashboard.unity3d.com/).
 
-### Dashboard setup
+### Unity Cloud services configuration
 
-To replicate this sample scene's setup on your own dashboard, you need to:
+To replicate this sample scene's setup in your own Unity project, we need to configure the following items:
 
-- Publish two scripts in Cloud Code.
-- Create two Currencies, two Inventory Items, and several Virtual Purchases for the Economy service.
-- Configure values and Game Overrides for the Remote Config service.
+- Cloud Code scripts
+- Economy items
+- Remote Config values
+- Remote Config Game Overrides
 
-#### Cloud Code
+There are two main ways of doing this, either by [using the Deployment package](#using-the-deployment-package), or by [manually entering them using the Dashboard](#using-the-dashboard).
+We recommend the usage of the Deployment package since it will greatly accelerate this process.
+
+#### Using the Deployment package
+
+Here are the steps to deploy configuration using the Deployment package:
+
+1. Open the [Deployment window](https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2/manual/deployment_window.html)
+1. Check in `Common` and `In-Game Mailbox`
+1. Click `Deploy Selection`
+
+This will deploy the following items:
+
+- Cloud Code scripts
+- Economy items
+- Remote Config values
+
+The following items are not managed by the Deployment package at this time:
+
+- Remote Config Game Overrides
+
+To configure them, please refer to [the next section](#using-the-dashboard).
+
+#### Using the Dashboard
+
+The [Dashboard](dashboard.unity3d.com) enables you to edit manually all your services configuration by project and environment.
+Here are the details necessary for the configuration of the current sample.
+
+##### Game Overrides
+
+[Configure the following Overrides](https://docs.unity.com/gameoverrides/CreateAnOverride.html) in the **LiveOps** dashboard:
+
+| **Details**    | Name the Override “Messages All Spenders Overrides”.                                                                                                                                                                                                                                                                                                                                                                                             |
+|----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Targeting**  | Select **JEXL** with the following JEXL code:<br/>user.audience == "AllSpenders" (See **Note**, below)                                                                                                                                                                                                                                                                                                                                           |
+| **Content**    | Select **Choose content type** > **Config Overrides**, then enter override values for the following keys:<br/><ul><li>`MESSAGE_001`: </li><ul>{<ul>`"title"`: "Thank you for supporting us!",<br/>`"content"`: "This message specifically targets Spender players, thanks to Game Overrides that enables other Unity services to target pre-defined or custom audiences.",<br/>`"attachment"`: "",<br/>`"expiration"`: "0.00:03:00.00"<br></ul>} |
+| **Scheduling** | Set the following start and end dates:<ul><li>Set **Start Date** to **Update content immediately**.</li><li>Set **End Date** to **Run indefinitely**.</li></ul>                                                                                                                                                                                                                                                                                  |
+| **Status**     | After finishing creating the Game Override, click `Enable`                                                                                                                                                                                                                                                                                                                                                                                       |
+
+| **Details**    | Name the Override “Messages French Speaker Overrides”.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
+|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Targeting**  | Select **JEXL** with the following JEXL code:<br/>user.audience == "FrenchSpeakers" (See **Note**, below)                                                                                                                                                                                                                                                                                                                                                                                                                                    |
+| **Content**    | Select **Choose content type** > **Config Overrides**, then enter override values for the following keys:<br/><ul><li>`MESSAGE_002`: </li><ul>{<ul>`"title"`: "Oh oui, le message!",<br/>`"content"`: "Et oui, ce message est en français car il cible les joueurs dont la langue du jeu est paramétrée en français. Ceci est rendu possible grâce à Game Overrides qui permet à certains services de Unity  de cibler des audiences pré-définies ou personnalisées.",<br/>`"attachment"`: "",<br/>`"expiration"`: "0.00:03:00.00"<br></ul>} |
+| **Scheduling** | Set the following start and end dates:<ul><li>Set **Start Date** to **Update content immediately**.</li><li>Set **End Date** to **Run indefinitely**.</li></ul>                                                                                                                                                                                                                                                                                                                                                                              |
+| **Status**     | After finishing creating the Game Override, click `Enable`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
+
+| **Details**    | Name the Override “Messages New Players Overrides”.                                                                                                                                                                                                                                                                                                                                                                                                              |
+|----------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Targeting**  | Select **JEXL** with the following JEXL code:<br/>user.audience == "NewPlayers" (See **Note**, below)                                                                                                                                                                                                                                                                                                                                                            |
+| **Content**    | Select **Choose content type** > **Config Overrides**, then enter override values for the following keys:<br/><ul><li>`MESSAGE_003`: </li><ul>{<ul>`"title"`: "Welcome to the game!",<br/>`"content"`: "This message specifically targets New Players, thanks to Game Overrides that enables other Unity services to target pre-defined or custom audiences.",<br/>`"attachment"`: "MESSAGE_003_GIFT_NEW_PLAYERS",<br/>`"expiration"`: "0.00:10:00.00"<br></ul>} |
+| **Scheduling** | Set the following start and end dates:<ul><li>Set **Start Date** to **Update content immediately**.</li><li>Set **End Date** to **Run indefinitely**.</li></ul>                                                                                                                                                                                                                                                                                                  |
+| **Status**     | After finishing creating the Game Override, click `Enable`                                                                                                                                                                                                                                                                                                                                                                                                       |
+
+| **Details**    | Name the Override “Messages Unengaged Players Overrides”.                                                                                                                                                                                                                                                                                                                                                                                                                |
+|----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Targeting**  | Select **JEXL** with the following JEXL code:<br/>user.audience == "UnengagedPlayers" (See **Note**, below)                                                                                                                                                                                                                                                                                                                                                              |
+| **Content**    | Select **Choose content type** > **Config Overrides**, then enter override values for the following keys:<br/><ul><li>`MESSAGE_004`: </li><ul>{<ul>`"title"`: "Welcome back to the game!",<br/>`"content"`: "This message specifically targets Unengaged players, thanks to Game Overrides that enables other Unity services to target pre-defined or custom audiences.",<br/>`"attachment"`: "MESSAGE_004_GIFT_UNENGAGED",<br/>`"expiration"`: 0.00:10:00.00"<br></ul>} |
+| **Scheduling** | Set the following start and end dates:<ul><li>Set **Start Date** to **Update content immediately**.</li><li>Set **End Date** to **Run indefinitely**.</li></ul>                                                                                                                                                                                                                                                                                                          |
+| **Status**     | After finishing creating the Game Override, click `Enable`                                                                                                                                                                                                                                                                                                                                                                                                               |
+
+**Note**: This sample determines which Game Override data should be returned based on a JEXL match with the audience value specified in the client. This is so that the use case can fake a player being in different audiences on demand. In a real app, the Game Overrides would likely be set up to use built-in or custom-defined Analytics audiences for targeting (i.e. during Game Override's targeting step, choose `Stateful (Audiences)` and check the appropriate analytics audience from the list or click `Build a new Audience`).  
+
+##### Cloud Code
 
 [Publish the following scripts](https://docs.unity.com/cloud-code/implementation.html#Writing_your_first_script) in the **LiveOps** dashboard:
 
-| **Script**                          | **Parameters**                                                                                               | **Description**                                                                                                                                                                                                                     | **Location in project**                                                                   |
-|-------------------------------------|--------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|
-| `InGameMailbox_ClaimAttachment`     | `messageId`<br><br>`STRING`<br><br>The id of the message that owns the attachment the player wants to claim. | Fetches the appropriate attachment for the given message, validates that the attachment hasn't already been claimed, calls Economy's process purchase method for that Virtual Purchase, and marks the attachment as claimed.        | `Assets/Use Case Samples/In-Game Mailbox/Cloud Code/InGameMailbox_ClaimAttachment.js`     |
-| `InGameMailbox_ClaimAllAttachments` | none                                                                                                         | Gets the list of messages in a player's inbox, finds all messages that have an unclaimed attachment, and calls Economy's process purchase method for each Virtual Purchase, marking each message as read and attachment as claimed. | `Assets/Use Case Samples/In-Game Mailbox/Cloud Code/InGameMailbox_ClaimAllAttachments.js` |
+| **Script**                          | **Parameters**                                                                                               | **Description**                                                                                                                                                                                                                     | **Location in project**                                                                       |
+|-------------------------------------|--------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|
+| `InGameMailbox_ClaimAttachment`     | `messageId`<br><br>`STRING`<br><br>The id of the message that owns the attachment the player wants to claim. | Fetches the appropriate attachment for the given message, validates that the attachment hasn't already been claimed, calls Economy's process purchase method for that Virtual Purchase, and marks the attachment as claimed.        | `Assets/Use Case Samples/In-Game Mailbox/Config as Code/InGameMailbox_ClaimAttachment.js`     |
+| `InGameMailbox_ClaimAllAttachments` | none                                                                                                         | Gets the list of messages in a player's inbox, finds all messages that have an unclaimed attachment, and calls Economy's process purchase method for each Virtual Purchase, marking each message as read and attachment as claimed. | `Assets/Use Case Samples/In-Game Mailbox/Config as Code/InGameMailbox_ClaimAllAttachments.js` |
 
-**Note**: The Cloud Code scripts included in the `Cloud Code` folder are local copies because you cannot view the sample project's dashboard. Changes to these scripts do not affect the behavior of this sample because they are not automatically uploaded to the Cloud Code service.
-
-
-#### Economy
+##### Economy
 
 [Configure the following resources](https://docs.unity.com/economy/) in the **LiveOps** dashboard:
 
@@ -183,10 +244,9 @@ In addition, [configure the following virtual purchases](https://docs.unity.com/
 | Message 010 Gift                       | `MESSAGE_010_GIFT`             | Gem   (50)                        | none                    |
 | Message 011 Gift                       | `MESSAGE_011_GIFT`             | Sword (1)                         | none                    |
 
-\* There is no cost associated with these Virtual Purchases because they are all gifts to the player reading the message. 
+\* There is no cost associated with these Virtual Purchases because they are all gifts to the player reading the message.
 
-
-#### Remote Config
+##### Remote Config values
 
 [Set up the following config values](https://docs.unity.com/remote-config/HowDoesRemoteConfigWork.html) in the **LiveOps** dashboard:
 
@@ -204,37 +264,3 @@ In addition, [configure the following virtual purchases](https://docs.unity.com/
 | `MESSAGE_009`  | JSON     | One of the messages that a player could receive.                                                                                       | {<ul> `"title"`: "Where is my mind?",</br>`"content"`: "This is a very uninspired and uninspiring message. Our apologies.",</br>`"attachment"`: "",</br>`"expiration"`: "0.00:03:00.00"</br></ul>}                                                                                                                                                                                                 |
 | `MESSAGE_010`  | JSON     | One of the messages that a player could receive.                                                                                       | {<ul> `"title"`: "Server Downtime",</br>`"content"`: "Our servers were offline for 2 hours yesterday for unexpected reasons. Please accept our apologies and this gift as a compensation. Of course, this is only for illustration purposes; UGS Use Case samples are never offline!",</br>`"attachment"`: "MESSAGE_010_GIFT",</br>`"expiration"`: "0.00:10:00.00"</br></ul>}                      |
 | `MESSAGE_011`  | JSON     | One of the messages that a player could receive.                                                                                       | {<ul> `"title"`: "It's dangerous to go alone",</br>`"content"`: "Take this!",</br>`"attachment"`: "MESSAGE_011_GIFT",</br>`"expiration"`: "0.00:10:00.00"</br></ul>}                                                                                                                                                                                                                               |
-
-
-
-#### Game Overrides
-
-[Configure the following Overrides](https://docs.unity.com/gameoverrides/CreateAnOverride.html) in the **LiveOps** dashboard:
-
-| **Details**    | Name the Override “Messages All Spenders Overrides”.                                                                                                                                                                                                                                                                                                                                                                                             |
-|----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Targeting**  | Select **Stateless JEXL** with the following JEXL code:<br/>user.audience == "AllSpenders" (See **Note**, below)                                                                                                                                                                                                                                                                                                                                 |
-| **Content**    | Select **Choose content type** > **Config Overrides**, then enter override values for the following keys:<br/><ul><li>`MESSAGE_001`: </li><ul>{<ul>`"title"`: "Thank you for supporting us!",<br/>`"content"`: "This message specifically targets Spender players, thanks to Game Overrides that enables other Unity services to target pre-defined or custom audiences.",<br/>`"attachment"`: "",<br/>`"expiration"`: "0.00:03:00.00"<br></ul>} |
-| **Scheduling** | Set the following start and end dates:<ul><li>Set **Start Date** to **Update content immediately**.</li><li>Set **End Date** to **Run indefinitely**.</li></ul>                                                                                                                                                                                                                                                                                  |
-
-| **Details**    | Name the Override “Messages French Speaker Overrides”.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       |
-|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Targeting**  | Select **Stateless JEXL** with the following JEXL code:<br/>user.audience == "FrenchSpeakers" (See **Note**, below)                                                                                                                                                                                                                                                                                                                                                                                                                          |
-| **Content**    | Select **Choose content type** > **Config Overrides**, then enter override values for the following keys:<br/><ul><li>`MESSAGE_002`: </li><ul>{<ul>`"title"`: "Oh oui, le message!",<br/>`"content"`: "Et oui, ce message est en français car il cible les joueurs dont la langue du jeu est paramétrée en français. Ceci est rendu possible grâce à Game Overrides qui permet à certains services de Unity  de cibler des audiences pré-définies ou personnalisées.",<br/>`"attachment"`: "",<br/>`"expiration"`: "0.00:03:00.00"<br></ul>} |
-| **Scheduling** | Set the following start and end dates:<ul><li>Set **Start Date** to **Update content immediately**.</li><li>Set **End Date** to **Run indefinitely**.</li></ul>                                                                                                                                                                                                                                                                                                                                                                              |
-
-| **Details**    | Name the Override “Messages New Players Overrides”.                                                                                                                                                                                                                                                                                                                                                                                                              |
-|----------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Targeting**  | Select **Stateless JEXL** with the following JEXL code:<br/>user.audience == "NewPlayers" (See **Note**, below)                                                                                                                                                                                                                                                                                                                                                  |
-| **Content**    | Select **Choose content type** > **Config Overrides**, then enter override values for the following keys:<br/><ul><li>`MESSAGE_003`: </li><ul>{<ul>`"title"`: "Welcome to the game!",<br/>`"content"`: "This message specifically targets New Players, thanks to Game Overrides that enables other Unity services to target pre-defined or custom audiences.",<br/>`"attachment"`: "MESSAGE_003_GIFT_NEW_PLAYERS",<br/>`"expiration"`: "0.00:10:00.00"<br></ul>} |
-| **Scheduling** | Set the following start and end dates:<ul><li>Set **Start Date** to **Update content immediately**.</li><li>Set **End Date** to **Run indefinitely**.</li></ul>                                                                                                                                                                                                                                                                                                  |
-
-| **Details**    | Name the Override “Messages Unengaged Players Overrides”.                                                                                                                                                                                                                                                                                                                                                                                                                |
-|----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Targeting**  | Select **Stateless JEXL** with the following JEXL code:<br/>user.audience == "UnengagedPlayers" (See **Note**, below)                                                                                                                                                                                                                                                                                                                                                    |
-| **Content**    | Select **Choose content type** > **Config Overrides**, then enter override values for the following keys:<br/><ul><li>`MESSAGE_004`: </li><ul>{<ul>`"title"`: "Welcome back to the game!",<br/>`"content"`: "This message specifically targets Unengaged players, thanks to Game Overrides that enables other Unity services to target pre-defined or custom audiences.",<br/>`"attachment"`: "MESSAGE_004_GIFT_UNENGAGED",<br/>`"expiration"`: 0.00:10:00.00"<br></ul>} |
-| **Scheduling** | Set the following start and end dates:<ul><li>Set **Start Date** to **Update content immediately**.</li><li>Set **End Date** to **Run indefinitely**.</li></ul>                                                                                                                                                                                                                                                                                                          |
-
-**Important**: After configuring your Overrides, remember to enable them by selecting the Override from the list and clicking the **Enable** button.  
-
-**Note**: This sample determines which Game Override data should be returned based on a JEXL match with the audience value specified in the client. This is so that the use case can fake a player being in different audiences on demand. In a real app, the Game Overrides would likely be set up to use built-in or custom-defined Analytics audiences for targeting (i.e. during Game Override's targeting step, choose `Stateful (Audiences)` and check the appropriate analytics audience from the list or click `Build a new Audience`).  

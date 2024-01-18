@@ -9,6 +9,7 @@ This sample demonstrates how to grant randomized rewards on a timed cooldown. Af
 ## Overview
 
 To see this use case in action:
+
 1. In the Unity Editor **Project** window, select **Assets**.
 2. Double-click `Start Here.unity` to open the samples menu scene.
 3. Enter **Play Mode**.
@@ -22,10 +23,12 @@ To see this use case in action:
 ### Functionality
 
 When you click the **Claim Daily Reward** button, you receive a random amount of rewards from the available pool (indicated in the currency HUD). For demonstration purposes, the cooldown is set to 60 seconds. The following occurs on the backend:
+
 1. The button's `OnClick` method calls Cloud Code to execute the `GrantTimedRandomReward` function, which picks random currencies and inventory items from internal lists to award.
 2. The Economy service directly grants the reward and returns the final results to the calling Unity C# script.
 
 This example also uses Cloud Code to access Cloud Save to implement a cooldown between rewards and returns:
+
 - A flag if the **Claim Daily Rewards** button should be enabled.
 - The current cooldown in seconds.
 - The default cooldown needed to reset the timer locally when a reward is claimed.
@@ -44,29 +47,45 @@ To replicate this use case, you need the following [Unity packages](https://docs
 | [Cloud Code](https://docs.unity.com/cloud-code/implementation.html)                   | Accesses the cooldown status, picks and grants random currency and inventory items through the Economy server, and then returns the result of the reward.  |
 | [Cloud Save](https://docs.unity.com/cloud-save/index.html#Implementation)             | Stores and retrieves the last granted reward time to allow cooldown values to persist between sessions.                                                    |
 | [Economy](https://docs.unity.com/economy/implementation.html)                         | Retrieves the starting and updated currency balances at runtime.                                                                                           |
+| [Deployment](https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2)     | The Deployment package provides a cohesive interface to deploy assets for Cloud Services.                                                                  |
 
 To use these services in your game, activate each service for your Organization and project in the [Unity Dashboard](https://dashboard.unity3d.com/).
 
+### Unity Cloud services configuration
 
-### Dashboard setup
+To replicate this sample scene's setup in your own Unity project, we need to configure the following items:
 
-To replicate this sample scene's setup on your own dashboard, you need to:
-- Publish two scripts in Cloud Code.
-- Create four Currencies and two Inventory Items for the Economy service.
+- Cloud Code scripts
+- Economy items
 
+There are two main ways of doing this, either by [using the Deployment package](#using-the-deployment-package), or by [manually entering them using the Dashboard](#using-the-dashboard).
+We recommend the usage of the Deployment package since it will greatly accelerate this process.
 
-#### Cloud Code
+#### Using the Deployment package
+
+Here are the steps to deploy configuration using the Deployment package:
+
+1. Open the [Deployment window](https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2/manual/deployment_window.html)
+1. Check in `Common` and `Loot Boxes`
+1. Click `Deploy Selection`
+
+This will deploy all the necessary items.
+
+#### Using the Dashboard
+
+The [Dashboard](dashboard.unity3d.com) enables you to edit manually all your services configuration by project and environment.
+Here are the details necessary for the configuration of the current sample.
+
+##### Cloud Code
 
 [Publish the following scripts](https://docs.unity.com/cloud-code/implementation.html#Writing_your_first_script) in the **LiveOps** dashboard:
 
-| **Script**                         | **Parameters** | **Description**                                                                                                                                                                  | **Location in project**                                                                          |
-|------------------------------------|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------|
-| `LootBoxesWithCooldown_Claim`      | None           | Checks if the cooldown has expired (or was never set), then selects a random reward from the reward pool, grants the reward to the player, and then updates the cooldown timer.  | `Assets/Use Case Samples/Loot Boxes With Cooldown/Cloud Code/LootBoxesWithCooldown_Claim.js`     |
-| `LootBoxesWithCooldown_GetStatus`  | None           | Checks for the last grant time and returns a flag indicating if the player is eligible for a reward, and how many seconds are left in cooldown.                                  | `Assets/Use Case Samples/Loot Boxes With Cooldown/Cloud Code/LootBoxesWithCooldown_GetStatus.js` |
-**Note**: The Cloud Code scripts included in theCloud Code folder are local copies because you cannot view the sample project's dashboard. Changes to these scripts do not affect the behavior of this sample because they are not automatically uploaded to the Cloud Code service.**
+| **Script**                         | **Parameters** | **Description**                                                                                                                                                                  | **Location in project**                                                                              |
+|------------------------------------|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------|
+| `LootBoxesWithCooldown_Claim`      | None           | Checks if the cooldown has expired (or was never set), then selects a random reward from the reward pool, grants the reward to the player, and then updates the cooldown timer.  | `Assets/Use Case Samples/Loot Boxes With Cooldown/Config as Code/LootBoxesWithCooldown_Claim.js`     |
+| `LootBoxesWithCooldown_GetStatus`  | None           | Checks for the last grant time and returns a flag indicating if the player is eligible for a reward, and how many seconds are left in cooldown.                                  | `Assets/Use Case Samples/Loot Boxes With Cooldown/Config as Code/LootBoxesWithCooldown_GetStatus.js` |
 
-
-#### Economy
+##### Economy
 
 [Configure the following resources](https://docs.unity.com/economy/) in the **LiveOps** dashboard:
 

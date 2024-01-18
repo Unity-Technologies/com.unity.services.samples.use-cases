@@ -4,17 +4,21 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.10.0] - 2023-10-12
+## 2.0.0 [Unreleased]
 
 ### Changed
 
-* Upgraded the project from Unity Editor version 2020.3.46f1 to 2022.3.11f1.
-* Updated readme files to fit better default Economy configurations.
-* Updated readme files to fit better default Remote-Config configurations.
+* The use cases are now compatible with the Deployment package an can now deploy most of their service configuration thanks to the Deployment window.
+* Reverted project to be on 2021.3 by default so that we enable an easier compatibility with all current LTS version.
+* For the sake of simplicity, ccd addressable features and the Over the Air Content use case have been removed. Addressables and CCD are demonstrated in a number of other samples already.
 
 ### Fixed
 
-* Removed outdated configurations causing issues with the BattlePass sample.
+* Battle Pass README had the incorrect key name for its virtual purchase. The correct key name is `BATTLE_PASS_PURCHASE`.
+* Battle Pass README didn't list the entire Game Override content for the `BATTLE_PASS_REWARDS_FREE` and `BATTLE_PASS_REWARDS_PREMIUM` keys. That has been added in separate Game Overrides documentation files.
+* Seasonal Events README had the wrong name for its Cloud Code scripts. Both should start with the prefix `SeasonalEvents_`.
+* Removed legacy fields that prevented remote config to be parsed.
+* WebGL compatibility issues with Cloud Code and the Virtual Shop
 
 ## [1.9.1] - 2023-03-29
 

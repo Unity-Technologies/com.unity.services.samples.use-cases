@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 8d26f94fee49164409aeca37b964c844
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: fbc33bd6a5704c0881dc7a9ead54089b, type: 3}
+  Parameters:
+  - Name: coord
+    ParameterType: 3
+    Required: 1
+  Source: 0

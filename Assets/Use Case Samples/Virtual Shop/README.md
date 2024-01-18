@@ -1,4 +1,5 @@
 # Virtual Shop
+
 The Virtual Shop is a key feature in most free-to-play games. They allow players to purchase items and exchange resources within the game environment to facilitate the in-game economy. When properly implemented as part of your core game loop, they can drive engagement and provide opportunities for players to express their unique playstyles.
 
 ![Virtual Shop Test scene](Documentation~/VirtualShop_Testing_Scene.png)
@@ -36,13 +37,13 @@ The **+30** Gems button in the bottom-right corner adds currency for testing pur
 
 #### Virtual Purchases
 
-The shop interface shows the items for sale, along with their respective costs. Click any item to attempt a Virtual Purchase through the Economy service. A pop-up appears to confirm if the purchase succeeded or failed. 
+The shop interface shows the items for sale, along with their respective costs. Click any item to attempt a Virtual Purchase through the Economy service. A pop-up appears to confirm if the purchase succeeded or failed.
 
 **Note:** Most games will disable buttons for purchases the user cannot afford. However, this sample allows you to attempt all purchases regardless, to facilitate testing how the Economy service verifies Virtual Purchases.
 
 #### Category buttons
 
-You can change purchase categories by clicking the tabs to the left of the purchase grid. Choose between **Currencies**, **Items**, and **IAP** to display the corresponding list of purchases as specified by the Remote Config JSON. 
+You can change purchase categories by clicking the tabs to the left of the purchase grid. Choose between **Currencies**, **Items**, and **IAP** to display the corresponding list of purchases as specified by the Remote Config JSON.
 
 **Note:** The **IAP** category is currently unavailable for this sample.
 
@@ -62,18 +63,36 @@ To replicate this use case, you need the following [Unity packages](https://docs
 | [Authentication](https://docs.unity.com/authentication/IntroUnityAuthentication.html) | Automatically signs in the user anonymously to keep track of their data on the server side.                                                                                                                                                                                            |
 | [Economy](https://docs.unity.com/economy/implementation.html)                         | Keeps track of the player's currencies and inventory items, as well as definitions for all currencies, inventory items and Virtual Purchase transactions. Currencies and inventory items all include Custom data to identify which icon sprites to use in the shop.                    |
 | [Remote Config](https://docs.unity3d.com/Packages/com.unity.remote-config@latest)     | Provides key-value pairs where the value that is mapped to a given key can be changed on the server-side, either manually or based on specific Game Overrides. The `VIRTUAL_SHOPS_CONFIG` entry stores all details for Virtual Purchase transactions to be available in each Category. |
+| [Deployment](https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2)     | The Deployment package provides a cohesive interface to deploy assets for Cloud Services.                                                                                                                                                                                              |
 
 To use these services in your game, activate each service for your Organization and project in the [Unity Dashboard](https://dashboard.unity3d.com/).
 
-### Dashboard setup
+### Unity Cloud services configuration
 
-To replicate this sample scene's setup on your own dashboard, you need to:
+To replicate this sample scene's setup in your own Unity project, we need to configure the following items:
 
-* Create Currencies, Inventory Items, and Virtual Purchases for the Economy service.
-* Configure values in the Remote Config service.
+- Economy items
+- Remote Config values
 
+There are two main ways of doing this, either by [using the Deployment package](#using-the-deployment-package), or by [manually entering them using the Dashboard](#using-the-dashboard).
+We recommend the usage of the Deployment package since it will greatly accelerate this process.
 
-#### Economy
+#### Using the Deployment package
+
+Here are the steps to deploy configuration using the Deployment package:
+
+1. Open the [Deployment window](https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2/manual/deployment_window.html)
+1. Check in `Common` and `Virtual Shop`
+1. Click `Deploy Selection`
+
+This will deploy all the necessary items.
+
+#### Using the Dashboard
+
+The [Dashboard](dashboard.unity3d.com) enables you to edit manually all your services configuration by project and environment.
+Here are the details necessary for the configuration of the current sample.
+
+##### Economy
 
 [Configure the following resource](https://docs.unity.com/economy/) in the **LiveOps** dashboard:
 
@@ -99,7 +118,7 @@ In addition, [configure the following virtual purchases](https://docs.unity.com/
 | **Item name**      | **ID**                            | **This purchase buys**  | **This purchase costs** |
 | :----------------- | :-------------------------------- | :---------------------- | :---------------------- |
 | 1 Sword for Coins  | `VIRTUAL_SHOP_1_SWORD_FOR_COINS`  | Sword (1)               | Coins (15)              |
-| 2 Sword for Coins  | `VIRTUAL_SHOP_2_SWORD_FOR_COINS`  | Sword (2)               | Coins (20)              |
+| 2 Sword for Coins  | `VIRTUAL_SHOP_2_SWORD_FOR_COINS`  | Sword (2)               | Coins (25)              |
 | 3 Sword for Coins  | `VIRTUAL_SHOP_3_SWORD_FOR_COINS`  | Sword (3)               | Coins (30)              |
 | 1 Shield for Coins | `VIRTUAL_SHOP_1_SHIELD_FOR_COINS` | Shield (1)              | Coins (10)              |
 | 2 Shield for Coins | `VIRTUAL_SHOP_2_SHIELD_FOR_COINS` | Shield (2)              | Coins (15)              |
@@ -110,7 +129,8 @@ In addition, [configure the following virtual purchases](https://docs.unity.com/
 | 1 Star for Coins   | `VIRTUAL_SHOP_1_STAR_FOR_COINS`   | Star (1)                | Coin (25)               |
 | 3 Pearl for Coins  | `VIRTUAL_SHOP_3_PEARL_FOR_COINS`  | Pearl (3)               | Coin (50)               |
 
-#### Remote Config
+##### Remote Config
+
 [Set up the following config values](https://docs.unity.com/remote-config/HowDoesRemoteConfigWork.html) in the **LiveOps** dashboard:
 
 | **Key**               | **Type** | **Description**                                                                                |

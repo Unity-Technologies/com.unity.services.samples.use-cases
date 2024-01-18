@@ -1,0 +1,86 @@
+{
+  "entries": {
+    "MESSAGE_001": {
+      "title": "",
+      "content": "",
+      "attachment": "",
+      "expirationPeriod": "0.00:03:00.00"
+    },
+    "MESSAGE_002": {
+      "title": "",
+      "content": "",
+      "attachment": "",
+      "expirationPeriod": "0.00:03:00.00"
+    },
+    "MESSAGE_003": {
+      "title": "",
+      "content": "",
+      "attachment": "",
+      "expirationPeriod": "0.00:03:00.00"
+    },
+    "MESSAGE_004": {
+      "title": "",
+      "content": "",
+      "attachment": "",
+      "expirationPeriod": "0.00:03:00.00"
+    },
+    "MESSAGE_005": {
+      "title": "Got new Use Case sample ideas?",
+      "content": "We’d love to hear your suggestions about what kind of new samples you would like us to deliver. Let us know at headstart@unity3d.com",
+      "attachment": "MESSAGE_005_GIFT",
+      "expirationPeriod": "0.00:10:00.00"
+    },
+    "MESSAGE_006": {
+      "title": "New update coming soon",
+      "content": "Our next update will be released soon and will require a client update from the App Store or Google Play Store. No, that’s a joke. Our samples are only available on Github for now ;)",
+      "attachment": "",
+      "expirationPeriod": "0.00:03:00.00"
+    },
+    "MESSAGE_007": {
+      "title": "There's cake at the end",
+      "content": "The cake is a lie.",
+      "attachment": "",
+      "expirationPeriod": "0.00:03:00.00"
+    },
+    "MESSAGE_008": {
+      "title": "The new update is here!!",
+      "content": "We hope you will enjoy the new content the team has prepared for you. On the menu: this brand new In-Game messaging sample and an updated version of the Idle Clicker Game sample that now showcases merging and evolving inventory items.",
+      "attachment": "MESSAGE_008_GIFT",
+      "expirationPeriod": "0.00:10:00.00"
+    },
+    "MESSAGE_009": {
+      "title": "Where is my mind?",
+      "content": "This is a very uninspired and uninspiring message. Our apologies.",
+      "attachment": "",
+      "expirationPeriod": "0.00:03:00.00"
+    },
+    "MESSAGE_010": {
+      "title": "Server Downtime",
+      "content": "Our servers were offline for 2 hours yesterday for unexpected reasons. Please accept our apologies and this gift as a compensation. Of course, this is only for illustration purposes; UGS Use Case samples are never offline!",
+      "attachment": "MESSAGE_010_GIFT",
+      "expirationPeriod": "0.00:10:00.00"
+    },
+    "MESSAGE_011": {
+      "title": "It's dangerous to go alone",
+      "content": "Take this!",
+      "attachment": "MESSAGE_011_GIFT",
+      "expirationPeriod": "0.00:10:00.00"
+    },
+    "MESSAGES_ALL": {
+      "messageList": [
+        "MESSAGE_001",
+        "MESSAGE_002",
+        "MESSAGE_003",
+        "MESSAGE_004",
+        "MESSAGE_005",
+        "MESSAGE_006",
+        "MESSAGE_007",
+        "MESSAGE_008",
+        "MESSAGE_009",
+        "MESSAGE_010",
+        "MESSAGE_011"
+      ]
+    }
+  },
+  "types": {}
+}

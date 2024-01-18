@@ -1,0 +1,12 @@
+{
+  "$schema": "https://ugs-config-schemas.unity3d.com/v1/economy/economy-virtual-purchase.schema.json",
+  "costs": [
+    {
+      "resourceId": "WATER",
+      "amount": 300
+    }
+  ],
+  "rewards": [],
+  "name": "Idle Clicker Game Purchase Well Level 3",
+  "customData": {}
+}

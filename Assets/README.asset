@@ -11,22 +11,22 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bfbabd22c62c640a6ba459d46825055b, type: 3}
   m_Name: README
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier:
   header:
     title: Unity Gaming Services Use Cases
     icon: {fileID: 2800000, guid: 83f0684dab5534e2492f651aaaf4a151, type: 3}
   sections:
   - subHeader1: Welcome to Unity Gaming Services Use Cases
-    subHeader2: 
-    subHeader3: 
-    body: 
+    subHeader2:
+    subHeader3:
+    body:
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
     body: This Unity Gaming Services (UGS) Samples package contains a collection
       of samples designed to show you how you can use multiple UGS products to solve
       common game development challenges. These samples implement typical backend
@@ -34,23 +34,23 @@ MonoBehaviour:
       tasks, and highlight the efficiency you can achieve in your game backend by
       integrating different UGS packages in your project.
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList: []
-  - subHeader1: 
+  - subHeader1:
     subHeader2: Getting Started
-    subHeader3: 
+    subHeader3:
     body: To view each sample in action, open the Start Here scene in the Assets
       directory and hit Play. To review an individual sample, find the use case directory
       in Assets/Use Case Samples and view the README file for implementation details.
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
-    body: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
+    body:
     bodyFormat: 0
     boxCallout: 'Note: This project is tied to a Unity Services Account that allows
       read-only testing in the Editor. The messages "Unable to link project to Unity
@@ -59,10 +59,10 @@ MonoBehaviour:
       build of this project.'
     bulletList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
-    body: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
+    body:
     bodyFormat: 0
     boxCallout: 'Note: This project uses the Unity Mediation package, which requires
       CocoaPods to be installed if building for iOS. If your project uses the Unity
@@ -70,12 +70,12 @@ MonoBehaviour:
       , before building for iOS.'
     bulletList: []
     linkList: []
-  - subHeader1: 
+  - subHeader1:
     subHeader2: List of Samples
-    subHeader3: 
-    body: 
+    subHeader3:
+    body:
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList:
     - body: A/B Test on Game Difficulty
       bodyFormat: 1
@@ -152,13 +152,6 @@ MonoBehaviour:
         bodyFormat: 0
         bulletList: []
       linkList: []
-    - body: Over-The-Air Content Delivery
-      bodyFormat: 1
-      bulletList:
-      - body: Add new downloaded content to a game while the game is running.
-        bodyFormat: 0
-        bulletList: []
-      linkList: []
     - body: Rewarded Ads With Unity Mediation
       bodyFormat: 1
       bulletList:
@@ -200,128 +193,128 @@ MonoBehaviour:
         bulletList: []
       linkList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
-    body: Tested with Unity 2020.3 for PC and Mac.
+  - subHeader1:
+    subHeader2:
+    subHeader3:
+    body: Tested with Unity 2021.3 for PC and Mac.
     bodyFormat: 2
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList: []
-  - subHeader1: 
+  - subHeader1:
     subHeader2: Using your own Unity Services Account
-    subHeader3: 
-    body: 
+    subHeader3:
+    body:
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
     body: These samples use UGS packages which have already been configured so you
       can easily explore the use case samples provided.
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
     body: To use these implementations in your own project, you will need to setup
       and configure the services used in your own UGS Dashboard. Learn more about
       each configuration in the README asset within each samples directory.
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList: []
-  - subHeader1: 
+  - subHeader1:
     subHeader2: Feedback and Sample Requests
-    subHeader3: 
-    body: 
+    subHeader3:
+    body:
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
     body: "Your opinion matters to us, and we would like to hear from you so we can
       provide you with the best learning material that\u2019ll help you become a
       Unity Gaming Services expert in no time."
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
     body: You can let us know how we're doing by filling out the anonymous, short
       survey linked below - it should take less than a minute to fill out!
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList:
     - linkText: Short Survey
       url: https://unitysoftware.co1.qualtrics.com/jfe/form/SV_eE6DomzzTS5YO6a
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
     body: Alternatively, you can reach us for questions, or to offer feedback or
       ideas for new sample use cases in the Unity Gaming Services Forum - we even
       have a helpful tag to filter by!
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList:
     - linkText: Unity Gaming Services Forum
       url: https://forum.unity.com/forums/unity-gaming-services-general-discussion.561/
     - linkText: Posts Tagged with "unity gaming services samples"
       url: https://forum.unity.com/tags/unity-gaming-services-samples/
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
     body: Also, while in Play Mode, you can submit anonymous feedback by using the
       feedback button in the bottom left corner of each scene.
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList: []
-  - subHeader1: 
+  - subHeader1:
     subHeader2: Cloud Diagnostics & User Reporting
-    subHeader3: 
-    body: 
+    subHeader3:
+    body:
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
     body: Unity's Cloud Diagnostics service helps to ensure the quality of this project
       by automatically sending diagnostic data to the dashboard when you encounter
       errors. Additionally, the User Reporting feature lets you submit a screenshot
       and detailed feedback about a sample by clicking the Feedback button in any
       of the Sample scenes during Play Mode.
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
     body: To set up Cloud Diagnostics and User Reporting in your own project, follow
       the set-up instructions provided in the dashboard.
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList: []
     linkList:
     - linkText: Setting up Cloud Diagnostics
       url: https://unitytech.github.io/clouddiagnostics/userreporting/UnityCloudDiagnosticsSettingUp.html
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
-    body: 
+  - subHeader1:
+    subHeader2:
+    subHeader3:
+    body:
     bodyFormat: 0
     boxCallout: 'Note: If you don''t want to automatically send exception data, disable
       Cloud Diagnostics under Project Settings > Services > Cloud Diagnostics.'

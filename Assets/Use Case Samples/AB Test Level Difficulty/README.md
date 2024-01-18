@@ -1,4 +1,5 @@
 # A/B Test for Level Difficulty
+
 A/B testing is a powerful tool to test different variables on various user segments in parallel to see which variable has the most impact on your game.
 A/B tests can be very useful for fine-tuning retention, monetization, or balancing mechanics.
 
@@ -9,7 +10,8 @@ This sample simulates an A/B test to evaluate how much experience (XP) it should
 ## Overview
 
 To see this use case in action:
-1. In the Unity Editor **Project** window, select **Assets > Use Case Samples > AB Test Level Difficulty**, and then double-click `ABTestLevelDifficultySample.unity` to open the sample scene. 
+
+1. In the Unity Editor **Project** window, select **Assets > Use Case Samples > AB Test Level Difficulty**, and then double-click `ABTestLevelDifficultySample.unity` to open the sample scene.
 2. Enter Play Mode to interact with the use case.
 
 When a player signs in, the screen displays their level and an XP meter that tracks their current XP and the total amount of XP required to level up.
@@ -36,9 +38,9 @@ When the XP bar is full (according to the test group threshold), the simulated p
 The following occurs:
 
 1. The button’s `OnClick` method sends an `ActionButtonPressed` custom event to the Analytics service and makes a call to the Cloud Code `ABTestLevelDifficulty_GainXPAndLevelIfReady` script.
-2. This server-authoritative call fetches the player's information from Cloud Save and Remote Config, increases the XP by the amount specified by Remote Config (in this case, 10), then tests whether the new player XP total equals or exceeds the level-up threshold. 
+2. This server-authoritative call fetches the player's information from Cloud Save and Remote Config, increases the XP by the amount specified by Remote Config (in this case, 10), then tests whether the new player XP total equals or exceeds the level-up threshold.
    * If the player did not level up, their new XP is saved in Cloud Save and returned to the client, which updates the values and shows text that indicates how much XP increased.
-   * If the player did level up, it calls the Economy service to distribute the level-up rewards (in this case, 100 Coins), and calls Cloud Save to save the increased player level and new player XP before it returns that information to the client code. 
+   * If the player did level up, it calls the Economy service to distribute the level-up rewards (in this case, 100 Coins), and calls Cloud Save to save the increased player level and new player XP before it returns that information to the client code.
 3. The client code opens a level-up dialog and updates the relevant data in the scene UI.
    Note that this step provides an opportunity to show players different art based on their segmentation, and a convenient way to retrieve additional data for a specific currency at runtime.
 
@@ -56,6 +58,7 @@ The following occurs:
 3. Each time you click the **Sign In As New Player** button, the Authentication service creates a new anonymous player ID, to which the Remote Config service assigns a new A/B test group.
 
 #### Back button
+
 If you press the back button (the arrow in the top-left corner of the scene) to return to the "Start Here" scene, it triggers a `SceneSessionLength` custom Analytics event, which captures the amount of time spent in this scene.
 
 ## Setup
@@ -73,20 +76,52 @@ To replicate this use case, you need the following [Unity packages](https://docs
 | [Economy](https://docs.unity.com/economy/implementation.html)                                                          | Retrieves the starting and updated currency balances at runtime.                                                                                                                              |
 | [Game Overrides](https://docs.unity3d.com/Packages/com.unity.remote-config@3.2/manual/GameOverridesAndSettings.html)\* | Assigns players to different groups based on the requested distribution values. Players receive a different configuration of XP needed to level up depending on which group they're in.       |
 | [Remote Config](https://docs.unity3d.com/Packages/com.unity.remote-config@latest)                                      | Provides key-value pairs that you can map and change server-side, either manually or based on specific Game Overrides. Also stores data associated with currency icon Addressable addresses.  |
+| [Deployment](https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2)                                      | The Deployment package provides a cohesive interface to deploy assets for Cloud Services.                                                                                                     |
 
 \* Note that though it is listed as a package and requires separate dashboard configuration, Game Overrides doesn't actually have an SDK to install from Package Manager. It is a server side offering that affects values returned from other services, like Remote Config.
 
 To use these services in your game, activate each service for your Organization and project in the [Unity Dashboard](https://dashboard.unity3d.com/).
 
-### Dashboard setup
+### Unity Cloud services configuration
 
-To replicate this sample scene's setup on your own dashboard, you need to:
-* Create custom events and parameters for the Analytics service.
-* Publish a script to Cloud Code.
-* Create a Currency for the Economy service.
-* Configure values and Game Overrides for the Remote Config service.
+To replicate this sample scene's setup in your own Unity project, we need to configure the following items:
 
-#### Analytics
+* Cloud Code scripts
+* Economy items
+* Remote Config values
+* Remote Config Game Overrides
+* custom events and parameters for the Analytics service
+
+There are two main ways of doing this, either by [using the Deployment package](#using-the-deployment-package), or by [manually entering them using the Dashboard](#using-the-dashboard).
+We recommend the usage of the Deployment package since it will greatly accelerate this process.
+
+#### Using the Deployment package
+
+Here are the steps to deploy configuration using the Deployment package:
+
+1. Open the [Deployment window](https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2/manual/deployment_window.html)
+1. Check in `Common` and `AB Test Level Difficulty`
+1. Click `Deploy Selection`
+
+This will deploy the following items:
+
+* Cloud Code scripts
+* Economy items
+* Remote Config values
+
+The following items are not managed by the Deployment package at this time:
+
+* Remote Config Game Overrides
+* custom events and parameters for the Analytics service
+
+To configure them, please refer to [the next section](#using-the-dashboard).
+
+#### Using the Dashboard
+
+The [Dashboard](dashboard.unity3d.com) enables you to edit manually all your services configuration by project and environment.
+Here are the details necessary for the configuration of the current sample.
+
+##### Analytics
 
 **Important:** This sample demonstrates the code that is needed to trigger Analytics events.
 However, additional code might be necessary to meet legal requirements such as GDPR, CCPA, and PIPL.
@@ -115,22 +150,29 @@ Configure the following custom parameters to support your custom events:
 | `timeRangeBySceneName`            | string   | Groups the time spent in the scene when the event is triggered with the scene's name. The string format is `"Time range - Scene name"`.                                                           |
 | `timeRangeBySceneNameAndABGroup`  | string   | Groups the time spent in the scene when the event is triggered with the scene's name and the player's A/B group. The string format is `"Time range - Scene name - A/B group name (A/B test ID)"`. |
 
-
 **Note:** This extended list of potential parameters allows for a more flexible analysis of different parameter groupings in the [Data Explorer](https://docs.unity.com/analytics/DataExplorer.html) on the Analytics dashboard.
 Alternatively, you can send only the ungrouped parameters (for example, buttonName or sceneName) and perform any kind of grouped analysis you want by using the Data Export feature within the Data Explorer.
 
-#### Cloud Code
+##### Remote Config Game Overrides
+
+[Configure the following Overrides](https://docs.unity.com/gameoverrides/CreateAnOverride.html) in the **LiveOps** dashboard:
+
+| **Details**    | Name the Override “A/B Test Level Difficulty”.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
+|----------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **Targeting**  | Select **Audiences** with 100% of audiences targeted.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
+| **Content**    | Select **Choose content type** > **Config Overrides**. <ol><li> Enter override values for the following keys for variant 1:<ul><li>`AB_TEST_GROUP`: `A`</li> <li>`AB_TEST_ID`: `LevelDifficultyTest1`</li> <li>`AB_TEST_LEVEL_UP_XP_NEEDED`: `100`</li></ul></li> <li>Enter override values for the following keys for variant 2: <ul><li>`AB_TEST_GROUP`: `B`</li> <li>`AB_TEST_ID`: `LevelDifficultyTest1`</li> <li>`AB_TEST_LEVEL_UP_XP_NEEDED`: `80`</li></ul> <li>Enter override values for the following keys for variant 3: <ul><li>`AB_TEST_GROUP`: `C`</li> <li>`AB_TEST_ID`: `LevelDifficultyTest1`</li> <li>`AB_TEST_LEVEL_UP_XP_NEEDED`: `60`</li></ul></li> <li>Enter override values for the following keys for variant 4: <ul><li>`AB_TEST_GROUP`: `D`</li> <li>`AB_TEST_ID`: `LevelDifficultyTest1`</li> <li>`AB_TEST_LEVEL_UP_XP_NEEDED`: `50`</li></ul></li> <li>Enter override values for the following keys for variant 5: <ul><li>`AB_TEST_GROUP`: `E`</li> <li>`AB_TEST_ID`: `LevelDifficultyTest1`</li> <li>`AB_TEST_LEVEL_UP_XP_NEEDED`: `30`</li></ul></li></ol> |
+| **Scheduling** | Set the following start and end dates:<ul><li>Set **Start Date** to **Update content immediately**.</li><li>Set **End Date** to **Run indefinitely**.</li></ul>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+| **Status**     | After finishing creating the Game Override, click `Enable`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                |
+
+##### Cloud Code
 
 [Publish the following script](https://docs.unity.com/cloud-code/implementation.html#Writing_your_first_script) in the **LiveOps** dashboard:
 
-| **Script**                                    | **Parameters** | **Description**                                                                                                                   | Location in project                                                                                          |
-|-----------------------------------------------|----------------|-----------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------|
-| `ABTestLevelDifficulty_GainXPAndLevelIfReady` | None           | Increments the player's XP and checks to see if the cumulative XP exceeds the level-up threshold defined by their A/B test group. | `Assets/Use Case Samples/AB Test Level Difficulty/Cloud Code/ABTestLevelDifficulty_GainXPAndLevelIfReady.js` |
+| **Script**                                    | **Parameters** | **Description**                                                                                                                   | Location in project                                                                                              |
+|-----------------------------------------------|----------------|-----------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------|
+| `ABTestLevelDifficulty_GainXPAndLevelIfReady` | None           | Increments the player's XP and checks to see if the cumulative XP exceeds the level-up threshold defined by their A/B test group. | `Assets/Use Case Samples/AB Test Level Difficulty/Config as Code/ABTestLevelDifficulty_GainXPAndLevelIfReady.js` |
 
-**Note:** The Cloud Code scripts included in the Cloud Code folder are local copies because you cannot view the sample project's dashboard.
-Changes to these scripts do not affect the behavior of this sample because they are not automatically uploaded to the Cloud Code service.
-
-#### Economy
+##### Economy
 
 [Configure the following resources](https://docs.unity.com/economy/) in the **LiveOps** dashboard:
 
@@ -138,7 +180,7 @@ Changes to these scripts do not affect the behavior of this sample because they 
 |-------------------|-------------------|--------|--------------------------------------------------------------------------|
 | Currency          | Coin              | `COIN` | The currency that is distributed as a reward for the player leveling up. |
 
-#### Remote Config
+##### Remote Config Key/Values
 
 [Set up the following config values](https://docs.unity.com/remote-config/HowDoesRemoteConfigWork.html) in the **LiveOps** dashboard:
 
@@ -149,16 +191,3 @@ Changes to these scripts do not affect the behavior of this sample because they 
 | `AB_TEST_LEVEL_UP_XP_NEEDED`   | int      | The amount of XP needed for the player to level up.                          | `100`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          |
 | `AB_TEST_XP_INCREASE`          | int      | The amount the player's XP will increase by each time they gain XP.          | `10`                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 | `CURRENCIES`                   | json     | A cross-reference from currencyId to spriteAddresses for all currency types. | {<br>&nbsp;&nbsp;&nbsp;&nbsp;"currencyData": [{<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"currencyId": "COIN",<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"currencySpec": {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"spriteAddress": "Sprites/Currency/Coin"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;}, {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"currencyId": "GEM",<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"currencySpec": {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"spriteAddress": "Sprites/Currency/Gem"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;}, {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"currencyId": "PEARL",<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"currencySpec": {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"spriteAddress": "Sprites/Currency/Pearl"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;}, {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"currencyId": "STAR",<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"currencySpec": {<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"spriteAddress": "Sprites/Currency/Star"<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;}<br>&nbsp;&nbsp;&nbsp;&nbsp;}]<br>} |
-    
- #### Game Overrides
-
-[Configure the following Overrides](https://docs.unity.com/gameoverrides/CreateAnOverride.html) in the **LiveOps** dashboard:
-
-
-| **Details**    | Name the Override “A/B Test Level Difficulty”.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-|----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **Targeting**  | Select **Stateful (Audiences)** with 100% of audiences targeted.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| **Content**    | Select **Choose content type** > **Config Overrides**. <ol><li> Enter override values for the following keys for variant 1:<ul><li>AB_TEST_GROUP: “A”</li> <li>AB_TEST_ID: “LevelDifficultyTest1”</li> <li>AB_TEST_LEVEL_UP_XP_NEEDED: 100</li></ul></li> <li>Enter override values for the following keys for variant 2: <ul><li>AB_TEST_GROUP: “B”</li> <li>AB_TEST_ID: “LevelDifficultyTest1”</li> <li>AB_TEST_LEVEL_UP_XP_NEEDED: 80</li></ul> <li>Enter override values for the following keys for variant 3: <ul><li>AB_TEST_GROUP: “C”</li> <li>AB_TEST_ID: “LevelDifficultyTest1”</li> <li>AB_TEST_LEVEL_UP_XP_NEEDED: 60</li></ul></li> <li>Enter override values for the following keys for variant 4: <ul><li>AB_TEST_GROUP: “D”</li> <li>AB_TEST_ID: “LevelDifficultyTest1”</li> <li>AB_TEST_LEVEL_UP_XP_NEEDED: 50</li></ul></li> <li>Enter override values for the following keys for variant 5: <ul><li>AB_TEST_GROUP: “E”</li> <li>AB_TEST_ID: “LevelDifficultyTest1”</li> <li>AB_TEST_LEVEL_UP_XP_NEEDED: 30</li></ul></li></ol> |
-| **Scheduling** | Set the following start and end dates:<ul><li>Set **Start Date** to **Update content immediately**.</li><li>Set **End Date** to **Run indefinitely**.</li></ul>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     |
-
-**Important:** After configuring your Overrides, remember to enable them by selecting the Override from the list and clicking the Enable button.

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ugs-config-schemas.unity3d.com/v1/economy/economy-virtual-purchase.schema.json",
+  "costs": [
+    {
+      "resourceId": "COIN",
+      "amount": 10
+    }
+  ],
+  "rewards": [
+    {
+      "resourceId": "SHIELD",
+      "amount": 1
+    }
+  ],
+  "name": "Virtual Shop 1 Shield for Coins",
+  "customData": {}
+}

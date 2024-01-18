@@ -1,0 +1,75 @@
+{
+  "entries": {
+    "COMMANDBATCH_ACHIEVE_BONUS_GOAL": {
+      "rewards": [
+        {
+          "service": "cloudSave",
+          "id": "COMMAND_BATCH_XP",
+          "amount": 150
+        },
+        {
+          "service": "cloudSave",
+          "id": "COMMAND_BATCH_GOALS_ACHIEVED",
+          "amount": 1
+        }
+      ]
+    },
+    "COMMANDBATCH_DEFEAT_BLUE_ENEMY": {
+      "rewards": [
+        {
+          "service": "currency",
+          "id": "GEM",
+          "amount": 5
+        },
+        {
+          "service": "cloudSave",
+          "id": "COMMAND_BATCH_XP",
+          "amount": 50
+        }
+      ]
+    },
+    "COMMANDBATCH_DEFEAT_RED_ENEMY": {
+      "rewards": [
+        {
+          "service": "currency",
+          "id": "COIN",
+          "amount": 5
+        },
+        {
+          "service": "cloudSave",
+          "id": "COMMAND_BATCH_XP",
+          "amount": 50
+        }
+      ]
+    },
+    "COMMANDBATCH_GAME_OVER": {
+      "rewards": [
+        {
+          "service": "cloudSave",
+          "id": "COMMAND_BATCH_XP",
+          "amount": 100
+        }
+      ]
+    },
+    "COMMANDBATCH_OPEN_CHEST": {
+      "rewards": [
+        {
+          "service": "currency",
+          "id": "COIN",
+          "amount": 25
+        },
+        {
+          "service": "currency",
+          "id": "GEM",
+          "amount": 25
+        },
+        {
+          "service": "cloudSave",
+          "id": "COMMAND_BATCH_XP",
+          "amount": 100
+        }
+      ]
+    }
+  },
+  "types": {}
+}

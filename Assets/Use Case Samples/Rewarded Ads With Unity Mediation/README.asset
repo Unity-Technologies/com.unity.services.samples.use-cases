@@ -226,6 +226,12 @@ MonoBehaviour:
       bodyFormat: 0
       bulletList: []
       linkList: []
+    - body: 'Deployment: In this context, it is used on the editor side to facilitate the
+        configuration of the different Unity services. It enables the display of the Deployment
+        window which allows the deployment of various service configuration assets.'
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: 
@@ -246,19 +252,92 @@ MonoBehaviour:
       url: https://docs.unity.com/economy/implementation.html
     - linkText: Mediation
       url: https://docs.unity.com/mediation/MediationSetupChecklist.html
-  - subHeader1: Dashboard Setup
+    - linkText: Deployment
+      url: https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2
+  - subHeader1: 
     subHeader2: 
     subHeader3: 
-    body: 'To use Mediation, Cloud Code, Economy, and Cloud Save services in your
-      game, activate each service for your organization and project in the Unity
-      Dashboard. '
+    body: To use these services in your game, activate each service for your Organization
+      and project in the Unity Dashboard.
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList:
+    - linkText: Unity Dashboard
+      url: https://dashboard.unity3d.com/
+  - subHeader1: Unity Cloud services configuration
+    subHeader2: 
+    subHeader3: 
+    body: 'To replicate this sample scene''s setup in your own Unity project, we need to configure the following items:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: 
+    - body: Cloud Code scripts
+    - body: Economy items
+    - body: Unity Mediation Ad units
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: There are two main ways of doing this, either by using the Deployment
+      package, or by manually entering them using the Dashboard. We recommend
+      the usage of the Deployment package since it will greatly accelerate this
+      process.
     bodyFormat: 0
     boxCallout: 
     bulletList: []
     linkList: []
   - subHeader1: 
-    subHeader2: Unity Mediation
-    subHeader3: Ad Units
+    subHeader2: Using the Deployment package
+    subHeader3: 
+    body: 'Here are the steps to deploy configuration using the Deployment package:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: Open the Deployment window
+      linkList: 
+      - linkText: Deployment window
+        url: https://dashboard.unity3d.com/
+    - body: Check in `Common` and `Rewarded Ads With Unity Mediation`
+    - body: Click `Deploy Selection`
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'This will deploy the following items:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: Cloud Code scripts
+    - body: Economy items
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'The following items are not managed by the Deployment package at this time:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: Unity Mediation Ad units
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: To configure them, please refer to the next section.
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+  - subHeader1: 
+    subHeader2: Using the Dashboard
+    subHeader3: 
+    body: The Dashboard enables you to edit manually all your services
+        configuration by project and environment. Here are the details
+        necessary for the configuration of the current sample.
+    bodyFormat: 0
+    boxCallout: 
+    linkList:
+    - linkText: Dashboard
+      url: dashboard.unity3d.com
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: Unity Mediation Ad Units
     body: 
     bodyFormat: 0
     boxCallout: 
@@ -305,8 +384,8 @@ MonoBehaviour:
       linkList: []
     linkList: []
   - subHeader1: 
-    subHeader2: Economy Items
-    subHeader3: 
+    subHeader2: 
+    subHeader3: Economy Items
     body: 
     bodyFormat: 0
     boxCallout: 
@@ -324,8 +403,8 @@ MonoBehaviour:
       linkList: []
     linkList: []
   - subHeader1: 
-    subHeader2: Cloud Code Scripts
-    subHeader3: 
+    subHeader2: 
+    subHeader3: Cloud Code Scripts
     body: 
     bodyFormat: 0
     boxCallout: 
@@ -347,15 +426,4 @@ MonoBehaviour:
         bodyFormat: 0
         bulletList: []
       linkList: []
-    linkList: []
-  - subHeader1: 
-    subHeader2: 
-    subHeader3: 
-    body: 
-    bodyFormat: 0
-    boxCallout: 'Note: The Cloud Code scripts included in the "Cloud Code" folder
-      are just local copies, since you can''t see the sample''s dashboard. Changes
-      to these scripts will not affect the behavior of this sample since they will
-      not be automatically uploaded to Cloud Code service.'
-    bulletList: []
     linkList: []

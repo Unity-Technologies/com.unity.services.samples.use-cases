@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 6765c38687ade704db1b70ab6351486d
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: fbc33bd6a5704c0881dc7a9ead54089b, type: 3}
+  Parameters:
+  - Name: drag
+    ParameterType: 3
+    Required: 1
+  - Name: drop
+    ParameterType: 3
+    Required: 1
+  Source: 0
