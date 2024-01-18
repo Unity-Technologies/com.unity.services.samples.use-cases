@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Unity.Services.CloudCode;
 using UnityEngine;
+using UnityEngine.Scripting;
 
 namespace Unity.Services.Samples.ABTestLevelDifficulty
 {
@@ -187,13 +188,16 @@ namespace Unity.Services.Samples.ABTestLevelDifficulty
             public int balance;
         }
 
-        public struct GainXPAndLevelResult
+        public class GainXPAndLevelResult
         {
             public int playerLevel;
             public int playerXP;
             public int playerXPUpdateAmount;
             public bool didLevelUp;
             public LevelUpRewards levelUpRewards;
+
+            [Preserve]
+            public GainXPAndLevelResult() { }
         }
 
         class CloudCodeCustomError : Exception

@@ -11,16 +11,19 @@ This sample demonstrates how to create or join a Lobby Service game lobby and co
 ## Overview
 
 To see this use case in action:
+
 1. In the Unity Editor **Project** window, select **Assets** > **Use Case Samples** > **Serverless Multiplayer Game**.
 2. Double-click `ServerlessMultiplayerGameSample.unity` to open the main sample scene.
 3. Enter Play Mode to interact with the use case.
 
 As you interact with the sample, the use case progresses through the following three scenes:
+
 1. The `ServerlessMultiplayerGameSample` scene, the initial scene where players can choose to start or join a lobby.
 2. The `Lobby` scene, which shows the current lobby and its players and where players can indicate readiness to start the game.
 3. The `Game` scene, where players move about in real time and collect coins.
 
 During the course of the sample, players can perform the following actions:
+
 - Randomize their names.
 - Create public and private lobbies for others to join.
 - Join lobbies either from a list of public lobbies or by entering a secret key to join private ones.
@@ -46,8 +49,9 @@ When the scene loads, the following initialization steps occur:
 You must be able to play multiple instances of this sample to test this use case.
 
 The following are some techniques to facilitate multiplayer testing:
+
 - Clone the repository again (or copy the project folder) to another folder. You can then open both/all instances in the Unity Editor simultaneously and enter Play Mode in each instance to test the sample.
-- Use [ParrelSync](https://github.com/VeriorPies/ParrelSync) to clone the project. This is the preferred method because changes made to the base project automatically propagate to all clones for testing. Note that this is not a Unity product so we recommend reviewing the documentation and license agreement before using. 
+- Use [ParrelSync](https://github.com/VeriorPies/ParrelSync) to clone the project. This is the preferred method because changes made to the base project automatically propagate to all clones for testing. Note that this is not a Unity product so we recommend reviewing the documentation and license agreement before using.
 - Install the sample on multiple physical devices.
 
 **Important:** If you choose to use either of the first two options listed above, ensure that each instance is signed in to UGS with a different anonymous ID.
@@ -104,7 +108,7 @@ This validation ensures that even if one player hacks the system to submit an of
 Note that using an allowlist for input such as usernames can be limiting, since it is difficult to make such a list exhaustive.
 In this case, you could instead use a blocklist to filter out the specific words deemed inappropriate.
 
-You can find the `ProfanityManager` class in` Serverless Multiplayer Game/Scripts/Menu/ProfanityManager.cs`, and the strings included in the player and lobby names allowlists are in `Serverless Multiplayer Game/Scripts/Menu/PlayerNameManager.cs` and `Serverless Multiplayer Game/Scripts/Menu/LobbyNameManager.cs`, respectively.
+You can find the `ProfanityManager` class in`Serverless Multiplayer Game/Scripts/Menu/ProfanityManager.cs`, and the strings included in the player and lobby names allowlists are in `Serverless Multiplayer Game/Scripts/Menu/PlayerNameManager.cs` and `Serverless Multiplayer Game/Scripts/Menu/LobbyNameManager.cs`, respectively.
 If you wanted to use a refactored version of the Profanity Manager, replace the `ProfanityManager.IsValidPlayerName` and `ProfanityManager.IsValidLobbyName` methods with your own implementation.
 
 ##### Game Network Manager
@@ -114,6 +118,7 @@ The Game Network Manager is instantiated on the host when the `Game` scene is fi
 This Game Network Manager instantiates the Game Network Manager in its `Start()` method.
 
 The Game Network Manager handles things such as
+
 - Starting the host/client
 - Creating player avatars for all players
 - Coordinating countdowns and game timers
@@ -141,6 +146,7 @@ To replicate this use case, you need the following [Unity packages](https://docs
 | [Netcode for GameObjects](https://docs-multiplayer.unity3d.com/netcode/current/installation/install) | Spawn network objects such as player avatars and coins, synchronize movement and despawn network objects as needed.                                                                                                                               |
 | [Relay](https://docs.unity.com/relay/en/manual/get-started)                                          | Creates/joins a multiplayer allocation to facilitate real-time gameplay with the creator of the lobby acting as relay service host.                                                                                                               |
 | [Remote Config](https://docs.unity3d.com/Packages/com.unity.remote-config@latest)                    | Maintain game settings such as coin spawning frequency, coin wave sizes, game duration, etc.                                                                                                                                                      |
+| [Deployment](https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2)                    | The Deployment package provides a cohesive interface to deploy assets for Cloud Services.                                                                                                                                                         |
 
 ### Cloud Save
 
@@ -158,19 +164,37 @@ The following is an example of a player's Cloud Save data:
 }
 ```
 
-### Dashboard setup
+### Unity Cloud services configuration
 
-To replicate this sample scene's setup on your own dashboard, you need to:
-* Configure values for the Remote Config service.
+To replicate this sample scene's setup in your own Unity project, we need to configure the following items:
 
-#### Remote Config
+- Remote Config values
+
+There are two main ways of doing this, either by [using the Deployment package](#using-the-deployment-package), or by [manually entering them using the Dashboard](#using-the-dashboard).
+We recommend the usage of the Deployment package since it will greatly accelerate this process.
+
+#### Using the Deployment package
+
+Here are the steps to deploy configuration using the Deployment package:
+
+1. Open the [Deployment window](https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2/manual/deployment_window.html)
+1. Check in `Serverless Multiplayer Game`
+1. Click `Deploy Selection`
+
+This will deploy all the necessary items.
+
+#### Using the Dashboard
+
+The [Dashboard](dashboard.unity3d.com) enables you to edit manually all your services configuration by project and environment.
+Here are the details necessary for the configuration of the current sample.
+
+##### Remote Config
 
 [Set up the following config value](https://docs.unity.com/remote-config/HowDoesRemoteConfigWork.html) in the **LiveOps** dashboard:
 
 | **Key**                      | **Type** | **Description**                                                                           | **Value**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 |------------------------------|----------|-------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | `MULTIPLAYER_GAME_SETTINGS`  | JSON     | List of game settings for all possible games, based on the number of players in the game. | {<ul> `"playerOptions"`: [<ul>{<ul> `"players"`: 2,</br>`"gameDuration"`: 60,</br>`"initialSpawnDelay"`: 1,</br>`"spawnInterval"`: 6,</br>`"destroyInterval"`: 7,</br>`"cluster1"`: 1,</br>`"cluster2"`: 1,</br>`"cluster3"`: 0</br></ul>} , </br>{<ul> `"players"`: 3,</br>`"gameDuration"`: 60,</br>`"initialSpawnDelay"`: 2,</br>`"spawnInterval"`: 5,</br>`"destroyInterval"`: 5.5,</br>`"cluster1"`: 1,</br>`"cluster2"`: 1,</br>`"cluster3"`: 1</br></ul>} , </br>{<ul> `"players"`: 4,</br>`"gameDuration"`: 60,</br>`"initialSpawnDelay"`: 3,</br>`"spawnInterval"`: 4,</br>`"destroyInterval"`: 4.5,</br>`"cluster1"`: 1,</br>`"cluster2"`: 2,</br>`"cluster3"`: 1</br></ul>} </ul>]</ul>} |
-
 
 Additional information about the fields in the above config value:
 

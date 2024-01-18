@@ -1,0 +1,20 @@
+{
+  "$schema": "https://ugs-config-schemas.unity3d.com/v1/economy/economy-virtual-purchase.schema.json",
+  "costs": [],
+  "rewards": [
+    {
+      "resourceId": "SWORD",
+      "amount": 1
+    },
+    {
+      "resourceId": "SHIELD",
+      "amount": 1
+    },
+    {
+      "resourceId": "COIN",
+      "amount": 100
+    }
+  ],
+  "name": "Message 003 Gift for New Players",
+  "customData": {}
+}

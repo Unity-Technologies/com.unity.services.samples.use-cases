@@ -1,0 +1,8 @@
+{
+  "$schema": "https://ugs-config-schemas.unity3d.com/v1/economy/economy-currency.schema.json",
+  "max": 0,
+  "name": "Coin",
+  "customData": {
+    "spriteAddress": "Sprites/Currency/Coin"
+  }
+}

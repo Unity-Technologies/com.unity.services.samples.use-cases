@@ -450,6 +450,19 @@ MonoBehaviour:
       url: https://docs.unity.com/relay/en/manual/get-started
     - linkText: Remote Config
       url: https://docs.unity3d.com/Packages/com.unity.remote-config@latest
+    - linkText: Deployment
+      url: https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: To use these services in your game, activate each service for your Organization
+      and project in the Unity Dashboard.
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList:
+    - linkText: Unity Dashboard
+      url: https://dashboard.unity3d.com/
   - subHeader1: 
     subHeader2: Cloud Save
     subHeader3: 
@@ -470,19 +483,56 @@ MonoBehaviour:
     boxCallout: 
     bulletList: []
     linkList: []
-  - subHeader1: 
-    subHeader2: Dashboard Setup
+  - subHeader1: Unity Cloud services configuration
+    subHeader2: 
     subHeader3: 
-    body: 'To replicate this sample scene''s setup on your own dashboard, you need
-      to:'
+    body: 'To replicate this sample scene''s setup in your own Unity project, we need to configure the following items:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: 
+    - body: Remote Config values
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: There are two main ways of doing this, either by using the Deployment
+      package, or by manually entering them using the Dashboard. We recommend
+      the usage of the Deployment package since it will greatly accelerate this
+      process.
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: Using the Deployment package
+    subHeader3: 
+    body: 'Here are the steps to deploy configuration using the Deployment package:'
     bodyFormat: 0
     boxCallout: 
     bulletList:
-    - body: Configure values for the Remote Config service.
-      bodyFormat: 0
-      bulletList: []
-      linkList: []
-    linkList: []
+    - body: Open the Deployment window
+      linkList: 
+      - linkText: Deployment window
+        url: https://dashboard.unity3d.com/
+    - body: Check in `Common` and `Serverless Multiplayer Game`
+    - body: Click `Deploy Selection`
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'This will deploy all the necessary items.'
+    bodyFormat: 0
+    boxCallout: 
+  - subHeader1: 
+    subHeader2: Using the Dashboard
+    subHeader3: 
+    body: The Dashboard enables you to edit manually all your services
+        configuration by project and environment. Here are the details
+        necessary for the configuration of the current sample.
+    bodyFormat: 0
+    boxCallout: 
+    linkList:
+    - linkText: Dashboard
+      url: dashboard.unity3d.com
   - subHeader1: 
     subHeader2: 
     subHeader3: Remote Config

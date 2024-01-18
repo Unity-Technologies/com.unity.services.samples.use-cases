@@ -6,14 +6,12 @@ This sample demonstrates how to create a one-time starter pack deal in your game
 
 ![Starter Pack scene](Documentation~/Starter_Pack_scene.png)
 
-
 ## Overview
 
 To see this use case in action:
 
 1. In the Unity Editor **Project** window, select **Assets** > **Use Case Samples** > **Starter Pack**, and then double-click `StarterPackSample.unity` to open the sample scene.
 2. Enter Play Mode to interact with the use case.
-
 
 ### Initialization
 
@@ -23,9 +21,7 @@ When the scene loads, the `StarterPackSceneManager.cs` script performs the follo
 2. Signs in the player [anonymously](https://docs.unity.com/authentication/UsingAnonSignIn.html) using the Authentication service. If you’ve previously initialized any of the other sample scenes, Authentication will use your cached Player ID instead of creating a new one.
 3. Retrieves and updates currency balances from the Economy service for that authenticated user.
 
-
 ### Functionality
-
 
 #### Give 10 Gems
 
@@ -35,7 +31,6 @@ In this example, the starter pack costs 10 Gems. For demonstration purposes, thi
 2. `TheOnGiveTenGemsButtonPressed` function calls the Economy service to add 10 Gems to the player's balance, and then the UI code updates the player's resources in the Currency HUD.
 
 **Note**: that the purchase button is temporarily disabled while the currency balance updates.
-
 
 #### Purchase starter pack
 
@@ -48,7 +43,6 @@ When you click the button to buy the starter pack having 10 or more Gems, the pl
 
 The purchase button also updates to indicate that the offer has already been claimed. At this point, you cannot purchase additional starter packs unless you click the **Reset Starter Pack** button, no matter how many Gems you have.
 
-
 #### Reset Starter Pack
 
 After purchasing a starter pack, the player cannot purchase another one unless they reset their game save. To illustrate this, this scene provides a button to reset the flag so the player can purchase it again. When you click the **Reset Starter Pack** button, the following occurs on the backend:
@@ -57,9 +51,7 @@ After purchasing a starter pack, the player cannot purchase another one unless t
 2. The script sends an update to the Cloud Save service directly to set a flag that this player has not yet claimed the deal.
 3. The UI code re-enables the Starter Pack purchase button.
 
-
 ## Setup
-
 
 ### Requirements
 
@@ -71,31 +63,45 @@ To replicate this use case, you need the following [Unity packages](https://docs
 | [Cloud Code](https://docs.unity.com/cloud-code/implementation.html)                   | Stores important validation logic on the server side.                                                  |
 | [Cloud Save](https://docs.unity.com/cloud-save/index.html#Implementation)             | Stores small pieces of data, such as a flag that indicates if the user has claimed their starter pack. |
 | [Economy](https://docs.unity.com/economy/implementation.html)                         | Retrieves the starting and updated currency balances at runtime.                                       |
+| [Deployment](https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2)     | The Deployment package provides a cohesive interface to deploy assets for Cloud Services.              |
 
 To use these services in your game, activate each service for your Organization and project in the [Unity Dashboard](https://dashboard.unity3d.com/).
 
+### Unity Cloud services configuration
 
-### Dashboard setup
+To replicate this sample scene's setup in your own Unity project, we need to configure the following items:
 
-To replicate this sample scene's setup on your own dashboard, you need to:
+- Cloud Code scripts
+- Economy items
 
-- Publish one script in Cloud Code.
-- Create three Currencies and an Inventory Item for the Economy service.
+There are two main ways of doing this, either by [using the Deployment package](#using-the-deployment-package), or by [manually entering them using the Dashboard](#using-the-dashboard).
+We recommend the usage of the Deployment package since it will greatly accelerate this process.
 
+#### Using the Deployment package
 
-#### Cloud Code
+Here are the steps to deploy configuration using the Deployment package:
+
+1. Open the [Deployment window](https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2/manual/deployment_window.html)
+1. Check in `Common` and `Starter Pack`
+1. Click `Deploy Selection`
+
+This will deploy all the necessary items.
+
+#### Using the Dashboard
+
+The [Dashboard](dashboard.unity3d.com) enables you to edit manually all your services configuration by project and environment.
+Here are the details necessary for the configuration of the current sample.
+
+##### Cloud Code
 
 [Publish the following scripts](https://docs.unity.com/cloud-code/implementation.html#Writing_your_first_script) in the **LiveOps** dashboard:
 
-| **Script**             | **Parameters** | **Description**                                                                                                                                        | **Location in project**                                                   |
-|------------------------| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |---------------------------------------------------------------------------|
-| `PurchaseStarterPack`  | None           | Queries the Cloud Save service to verify that the player has not yet claimed the deal, before initiating a purchase directly with the Economy service. | `Assets/Use Case Samples/Starter Pack/Cloud Code/PurchaseStarterPack.js`  |
-| `ResetStarterPackFlag` | None           | Resets the starter pack flag to indicate the current player has not yet claimed the deal.                                                              | `Assets/Use Case Samples/Starter Pack/Cloud Code/ResetStarterPackFlag.js` |
+| **Script**             | **Parameters** | **Description**                                                                                                                                        | **Location in project**                                                       |
+|------------------------| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |-------------------------------------------------------------------------------|
+| `PurchaseStarterPack`  | None           | Queries the Cloud Save service to verify that the player has not yet claimed the deal, before initiating a purchase directly with the Economy service. | `Assets/Use Case Samples/Starter Pack/Config as Code/PurchaseStarterPack.js`  |
+| `ResetStarterPackFlag` | None           | Resets the starter pack flag to indicate the current player has not yet claimed the deal.                                                              | `Assets/Use Case Samples/Starter Pack/Config as Code/ResetStarterPackFlag.js` |
 
-**Note**: The Cloud Code scripts included in theCloud Code folder are local copies because you cannot view the sample project's dashboard. Changes to these scripts do not affect the behavior of this sample because they are not automatically uploaded to the Cloud Code service.
-
-
-#### Economy
+##### Economy
 
 [Configure the following resources](https://docs.unity.com/economy/) in the **LiveOps** dashboard:
 

@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: ProjectInboxImages
+  m_EditorClassIdentifier: 
+  m_GroupName: ProjectInboxImages
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 0ce1730db5ea9455aadd66c813b22a31
+  m_SerializeEntries:
+  - m_GUID: d6fc7d4404cc6492ab95d242b74f0446
+    m_Address: ProjectInboxImages/StartHereScene
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 43e7211959029432ba78e4ce3fcd4ba7
+    m_Address: ProjectInboxImages/ServerlessMultiplayerScene
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: d098d9082bf4e4f6b94dbf2997c0917c, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 8a0eb9b433eea4946b7854c8157f2500, type: 2}
+    - {fileID: 11400000, guid: 6c186826c7cb44b14bb414bb2ebf49d7, type: 2}

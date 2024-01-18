@@ -1,0 +1,185 @@
+{
+  "entries": {
+    "DAILY_REWARDS_CONFIG": {
+      "totalDays": 31,
+      "secondsPerDay": 10,
+      "dailyRewards": [
+        [
+          {
+            "id": "COIN",
+            "quantity": 10
+          }
+        ],
+        [
+          {
+            "id": "COIN",
+            "quantity": 10
+          }
+        ],
+        [
+          {
+            "id": "GEM",
+            "quantity": 1
+          }
+        ],
+        [
+          {
+            "id": "COIN",
+            "quantity": 10
+          }
+        ],
+        [
+          {
+            "id": "COIN",
+            "quantity": 10
+          }
+        ],
+        [
+          {
+            "id": "GEM",
+            "quantity": 1
+          }
+        ],
+        [
+          {
+            "id": "COIN",
+            "quantity": 50
+          }
+        ],
+        [
+          {
+            "id": "COIN",
+            "quantity": 15
+          }
+        ],
+        [
+          {
+            "id": "COIN",
+            "quantity": 15
+          }
+        ],
+        [
+          {
+            "id": "GEM",
+            "quantity": 2
+          }
+        ],
+        [
+          {
+            "id": "COIN",
+            "quantity": 15
+          }
+        ],
+        [
+          {
+            "id": "COIN",
+            "quantity": 15
+          }
+        ],
+        [
+          {
+            "id": "GEM",
+            "quantity": 2
+          }
+        ],
+        [
+          {
+            "id": "COIN",
+            "quantity": 100
+          }
+        ],
+        [
+          {
+            "id": "COIN",
+            "quantity": 20
+          }
+        ],
+        [
+          {
+            "id": "COIN",
+            "quantity": 20
+          }
+        ],
+        [
+          {
+            "id": "GEM",
+            "quantity": 3
+          }
+        ],
+        [
+          {
+            "id": "COIN",
+            "quantity": 20
+          }
+        ],
+        [
+          {
+            "id": "COIN",
+            "quantity": 20
+          }
+        ],
+        [
+          {
+            "id": "GEM",
+            "quantity": 3
+          }
+        ],
+        [
+          {
+            "id": "COIN",
+            "quantity": 150
+          }
+        ],
+        [
+          {
+            "id": "COIN",
+            "quantity": 25
+          }
+        ],
+        [
+          {
+            "id": "COIN",
+            "quantity": 25
+          }
+        ],
+        [
+          {
+            "id": "GEM",
+            "quantity": 4
+          }
+        ],
+        [
+          {
+            "id": "COIN",
+            "quantity": 25
+          }
+        ],
+        [
+          {
+            "id": "COIN",
+            "quantity": 25
+          }
+        ],
+        [
+          {
+            "id": "GEM",
+            "quantity": 4
+          }
+        ],
+        [
+          {
+            "id": "COIN",
+            "quantity": 200
+          }
+        ]
+      ],
+      "bonusReward": [
+        {
+          "id": "PEARL",
+          "quantity": 25
+        }
+      ]
+    }
+  },
+  "types": {}
+}

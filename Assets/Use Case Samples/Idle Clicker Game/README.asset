@@ -554,6 +554,12 @@ MonoBehaviour:
       bodyFormat: 0
       bulletList: []
       linkList: []
+    - body: 'Deployment: In this context, it is used on the editor side to facilitate the
+        configuration of the different Unity services. It enables the display of the Deployment
+        window which allows the deployment of various service configuration assets.'
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: 
@@ -572,26 +578,73 @@ MonoBehaviour:
       url: https://docs.unity.com/cloud-save/index.html#Implementation
     - linkText: Economy
       url: https://docs.unity.com/economy/implementation.html
-  - subHeader1: Dashboard setup
+    - linkText: Deployment
+      url: https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2
+  - subHeader1: 
     subHeader2: 
     subHeader3: 
-    body: 'To replicate this sample scene''s setup on your own dashboard, you need
-      to:'
+    body: To use these services in your game, activate each service for your Organization
+      and project in the Unity Dashboard.
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList:
+    - linkText: Unity Dashboard
+      url: https://dashboard.unity3d.com/
+  - subHeader1: Unity Cloud services configuration
+    subHeader2: 
+    subHeader3: 
+    body: 'To replicate this sample scene''s setup in your own Unity project, we need to configure the following items:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: 
+    - body: Cloud Code scripts
+    - body: Economy items
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: There are two main ways of doing this, either by using the Deployment
+      package, or by manually entering them using the Dashboard. We recommend
+      the usage of the Deployment package since it will greatly accelerate this
+      process.
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList: []
+  - subHeader1: 
+    subHeader2: Using the Deployment package
+    subHeader3: 
+    body: 'Here are the steps to deploy configuration using the Deployment package:'
     bodyFormat: 0
     boxCallout: 
     bulletList:
-    - body: Publish 5 scripts in Cloud Code.
-      bodyFormat: 0
-      bulletList: []
-      linkList: []
-    - body: Create one Currency and 4 Virtual Transactions for the Economy service.
-      bodyFormat: 0
-      bulletList: []
-      linkList: []
-    linkList: []
+    - body: Open the Deployment window
+      linkList: 
+      - linkText: Deployment window
+        url: https://dashboard.unity3d.com/
+    - body: Check in `Common` and `Idle Clicker Game`
+    - body: Click `Deploy Selection`
   - subHeader1: 
-    subHeader2: Cloud Code
+    subHeader2: 
     subHeader3: 
+    body: 'This will deploy all the necessary items.'
+    bodyFormat: 0
+    boxCallout: 
+  - subHeader1: 
+    subHeader2: Using the Dashboard
+    subHeader3: 
+    body: The Dashboard enables you to edit manually all your services
+        configuration by project and environment. Here are the details
+        necessary for the configuration of the current sample.
+    bodyFormat: 0
+    boxCallout: 
+    linkList:
+    - linkText: Dashboard
+      url: dashboard.unity3d.com
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: Cloud Code
     body: 'Publish the following scripts in the LiveOps dashboard:'
     bodyFormat: 0
     boxCallout: 
@@ -607,7 +660,7 @@ MonoBehaviour:
       - body: 'Parameters: none'
         bodyFormat: 0
         bulletList: []
-      - body: Assets/Use Case Samples/Idle Clicker Game/Cloud Code/IdleClicker_GetUpdatedState.js
+      - body: Assets/Use Case Samples/Idle Clicker Game/Config as Code/IdleClicker_GetUpdatedState.js
         bodyFormat: 0
         bulletList: []
       linkList: []
@@ -628,7 +681,7 @@ MonoBehaviour:
           bulletList:
           - 'Type: JSON'
           - Position for Well.
-      - body: Assets/Use Case Samples/Idle Clicker Game/Cloud Code/IdleClicker_PlaceWell.js
+      - body: Assets/Use Case Samples/Idle Clicker Game/Config as Code/IdleClicker_PlaceWell.js
         bodyFormat: 0
         bulletList: []
       linkList: []
@@ -652,7 +705,7 @@ MonoBehaviour:
           bulletList:
           - 'Type: JSON'
           - Ending position for the Well after operation.
-      - body: Assets/Use Case Samples/Idle Clicker Game/Cloud Code/IdleClicker_MoveWell.js
+      - body: Assets/Use Case Samples/Idle Clicker Game/Config as Code/IdleClicker_MoveWell.js
         bodyFormat: 0
         bulletList: []
       linkList: []
@@ -678,7 +731,7 @@ MonoBehaviour:
           - 'Type: JSON'
           - Position where second Well is and final position for the merged Well
             after operation.
-      - body: Assets/Use Case Samples/Idle Clicker Game/Cloud Code/IdleClicker_MergeWells.js
+      - body: Assets/Use Case Samples/Idle Clicker Game/Config as Code/IdleClicker_MergeWells.js
         bodyFormat: 0
         bulletList: []
       linkList: []
@@ -691,25 +744,14 @@ MonoBehaviour:
       - body: 'Parameters: none.'
         bodyFormat: 0
         bulletList: []
-      - body: Assets/Use Case Samples/Idle Clicker Game/Cloud Code/IdleClicker_Reset.js
+      - body: Assets/Use Case Samples/Idle Clicker Game/Config as Code/IdleClicker_Reset.js
         bodyFormat: 0
         bulletList: []
       linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: 
-    subHeader3: 
-    body: 
-    bodyFormat: 0
-    boxCallout: 'Note: The Cloud Code scripts included in the Cloud Code folder are
-      local copies because you cannot see the sample''s dashboard. Changes to these
-      scripts do not affect the behavior of this sample because they are not automatically
-      uploaded to the Cloud Code service.'
-    bulletList: []
-    linkList: []
-  - subHeader1: 
-    subHeader2: Economy
-    subHeader3: 
+    subHeader3: Economy
     body: 'Configure the following resources in the LiveOps dashboard:'
     bodyFormat: 0
     boxCallout: 

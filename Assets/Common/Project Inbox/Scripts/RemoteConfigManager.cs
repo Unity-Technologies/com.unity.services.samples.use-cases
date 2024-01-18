@@ -10,13 +10,10 @@ namespace Unity.Services.Samples.ProjectInbox
     {
         public static int maxInboxCount { get; private set; }
 
-        public static string ccdContentUrl { get; private set; }
-
         static List<string> s_OrderedMessageIds;
 
         const string k_MaxInboxCountKey = "PROJECT_INBOX_MAX_INBOX_COUNT";
         const string k_MessagesListKey = "PROJECT_INBOX_MESSAGES_LIST";
-        const string k_CloudContentDeliveryUrlKey = "PROJECT_INBOX_CCD_CONTENT_URL";
 
         public static async Task FetchConfigs()
         {
@@ -37,8 +34,6 @@ namespace Unity.Services.Samples.ProjectInbox
         static void CacheConfigValues()
         {
             maxInboxCount = RemoteConfigService.Instance.appConfig.GetInt(k_MaxInboxCountKey);
-
-            ccdContentUrl = RemoteConfigService.Instance.appConfig.GetString(k_CloudContentDeliveryUrlKey);
 
             var json = RemoteConfigService.Instance.appConfig.GetJson(k_MessagesListKey, "");
 

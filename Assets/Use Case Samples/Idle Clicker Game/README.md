@@ -1,6 +1,7 @@
 # Idle Clicker game
 
 In real-time idle clicker and social games, such as farming or city-building games, common considerations include:
+
 - How to simulate real-time activities in a game that is not running all the time.
 - How the simulation can occur on the cloud, to ensure that all players' games are updated properly, regardless of timezone or any modifications to the date and time on a player's device.
 - How to merge pieces to form more powerful pieces by using Cloud Code logic and Economy Virtual Purchases to verify and consume appropriate quantities of resources (Water currency).
@@ -12,29 +13,29 @@ In this sample, the player uses a resource (Water) to purchase Wells, which init
 
 ![Idle Clicker scene](Documentation~/Idle_Clicker_scene.png)
 
-
 ## Overview
 
 To see this use case in action:
+
 1. In the Unity Editor **Project** window, select **Assets** > **Use Case Samples** > **Idle Clicker Game**, and then double-click `IdleClickerGameSample.unity` to open the sample scene.
 2. Enter Play Mode to interact with the use case.
-
 
 ### Initialization
 
 The `IdleClickerGameSceneManager.cs` script performs the following initialization tasks in its `Start` function:
+
 1. Initializes Unity Gaming Services.
 2. Signs in the player [anonymously](https://docs.unity.com/authentication/UsingAnonSignIn.html) using the Authentication service. If you’ve previously initialized any of the other sample scenes, Authentication will use your cached Player ID instead of creating a new one.
 3. Retrieves and updates the player's currency balances from the Economy service.
 4. Retrieves or creates the game state by calling the `IdleClicker_GetUpdatedState.js` Cloud Code script. If this is a new game, this script will generate a random game playfield and reset the player's Water, otherwise it calculates the amount of Water generated since the last update and calls the Economy service to grant that amount to the player’s currency balance. It also retrieves the state of the Unlock Manager.
 5. Enables button-click and drag functionality for the available tiles in the playfield.
 
-
 ### Functionality
 
 #### Placing Wells
 
 You can click any open tile in the playfield to place a Well in exchange for 100 Water. The client and Cloud Code both validate whether the purchase is valid (the space is empty and the player has enough Water), then a Well is placed. When you click a tile, the following occurs:
+
 1. The client validates that the selected location is empty and that the player has enough Water to purchase the Well. If either test fails, a popup occurs and the client does not call Cloud Code.
 2. Once the client validates the request, the Cloud Code script `IdleClicker_PlaceWell.js` is called to perform the following steps:
     - First it grants all Water generated since the last Cloud Code call using the Economy service. Note that, until this occurs, the Water total the player is seeing in the Unity Client is just a simulation of how much Water he or she should have. Once Cloud Code determines the actual amount and grants it, the Client will be updated with this new total and will then continue simulating Water from that point until Cloud Code is called again.
@@ -48,6 +49,7 @@ You can click any open tile in the playfield to place a Well in exchange for 100
 #### Moving Wells
 
 You can drag any Well to any other open tile in the playfield to change a Well's position as a free action. The client, then Cloud Code both validate that you are moving the Well to an empty tile. When you drag a Well, the following occurs:
+
 1. The client first validates the move. If the destination is blocked, a popup appears and Cloud Code is not called.
 2. If the move is valid, the Cloud Code script `IdleClicker_MoveWell.js` is called to perform the following actions:
     - Grant all Water that was generated since the last Cloud Code call.
@@ -61,12 +63,14 @@ You can drag any Well to any other open tile in the playfield to change a Well's
 #### Merging Wells
 
 You can drag any Well onto another Well of the same type to attempt to merge them into a single, improved Well that produces more Water. Both the client and Cloud Code will validate that the merge is valid. Any of the following issues would make a merge request invalid and result in a popup message:
+
 1. The Wells are different types, such as a Wood Well and a Bronze Well.
 2. The upgraded Well has not been unlocked. Bronze Wells begin unlocked. To unlock Silver Wells, the player must successfully merge Wood Wells 4 times (merging 8 Wood Wells to create 4 Bronze Wells). An indicator on the right side of the screen shows which Wells are unlocked, and overall progress toward unlocking each upgraded Well.
 3. The player has insufficient Water. Each improvement requires 100 more Water than the last so making a Bronze Well requires 200 Water, making Silver Wells requires 300 Water, and Gold Wells require 400.
 4. The best Well improvement has been made. Gold Wells are the best possible so they cannot be merged.
 
 If the merge is valid, the client will call Cloud Code script `IdleClicker_MergeWells` to perform the following:
+
 1. First it grants all Water generated since the last Cloud Code call using the Economy service.
 2. Cloud Save is updated with the latest timestamp.
 3. It then removes the Wells from both the starting and ending locations. This is done on the internal game state and, if anything prevents merging the Wells (including either of the Wells being missing), Cloud Code will throw an exception back to the client and this temporary state will be lost thus leaving the game state unchanged. Only if this and all future tests succeed will this game state become official, and be updated on Cloud Save and returned to the client.
@@ -83,12 +87,14 @@ If the merge is valid, the client will call Cloud Code script `IdleClicker_Merge
 #### Resetting Game State
 
 Whenever you need to start over, the [Reset Game] button can be pressed to perform the following:
+
 1. Call Cloud Code script `IdleClicker_Reset` which clears the Cloud Save data so the state resembles that of a new player.
 2. Call Cloud Code script `IdleClicker_GetUpdatedState`. Since the Cloud Save data is missing, it treats the request as a new player and creates a random playfield, resets the player's Water currency to 1,000 and sets the starting values for the Unlock Manager.
 
 #### Real-time resource updates
 
 Between moves, while the player is viewing the game scene but not interacting, the client simulates Water production and updates the Currency HUD accordingly. Each Well produces one Water per second per level of the Well (Wood Wells produce 1/sec, Bronze Wells produce 2/sec, etc.). Because this sample is intended to be real-time, whenever the client calls Cloud Code, it checks the current time and calculates how much cumulative Water has been produced by each Well since its last production cycle. Every time the Use Case is opened or the player attempts to place/move/merge a Well, the following occurs on the backend:
+
 1. The current timestamp is determined using Date.now().
 2. Cloud Save is read to determine the last update timestamp.
 3. Each Well is processed to determine how much Water should have been produced since the last time it was updated. This is determined by comparing how much Water should have been produced since it was created (using the current timestamp and the Well's Cloud Save data which records the Well's creation time) and deducting the amount of Water the Well has already produced (using the last update timestamp and the Well's creation time). By simply subtracting these numbers, we can determine how much Water the Well will produce now (i.e. how much Water each Well produced since the last time the game state was updated).
@@ -126,33 +132,48 @@ To replicate this use case, you need the following [Unity packages](https://docs
 | [Cloud Code](https://docs.unity.com/cloud-code/implementation.html)                   | Sets up the game state for a new game by placing three random obstacles and setting the starting Water currency to 1000. It also validates moves, grants Water based on real-time production, and updates game state based on Virtual Purchases. |
 | [Cloud Save](https://docs.unity.com/cloud-save/index.html#Implementation)             | Stores the game state, last update timestamp and unlock data. Cloud Code checks and updates these values directly.                                                                                                                               |
 | [Economy](https://docs.unity.com/economy/implementation.html)                         | Retrieves the player's starting and updated Water balances at runtime and performs Virtual Purchases to place and/or merge Wells.                                                                                                                |
+| [Deployment](https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2)     | The Deployment package provides a cohesive interface to deploy assets for Cloud Services.                                                                                                                                                        |
 
 To use these services in your game, activate each service for your Organization and project in the [Unity Dashboard](https://dashboard.unity3d.com/).
 
+### Unity Cloud services configuration
 
-### Dashboard Setup
+To replicate this sample scene's setup in your own Unity project, we need to configure the following items:
 
-To replicate this sample scene's setup on your own dashboard, you need to:
-- Publish 5 scripts in Cloud Code.
-- Create one Currency and 4 Virtual Transactions for the Economy service.
+- Cloud Code scripts
+- Economy items
 
+There are two main ways of doing this, either by [using the Deployment package](#using-the-deployment-package), or by [manually entering them using the Dashboard](#using-the-dashboard).
+We recommend the usage of the Deployment package since it will greatly accelerate this process.
 
-#### Cloud Code
+#### Using the Deployment package
+
+Here are the steps to deploy configuration using the Deployment package:
+
+1. Open the [Deployment window](https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2/manual/deployment_window.html)
+1. Check in `Common` and `Idle Clicker Game`
+1. Click `Deploy Selection`
+
+This will deploy all the necessary items.
+
+#### Using the Dashboard
+
+The [Dashboard](dashboard.unity3d.com) enables you to edit manually all your services configuration by project and environment.
+Here are the details necessary for the configuration of the current sample.
+
+##### Cloud Code
 
 [Publish the following scripts](https://docs.unity.com/cloud-code/implementation.html#Writing_your_first_script) in the **LiveOps** dashboard:
 
-| **Script**                    | **Parameters**                                                                                                                                                                                                                                                          | **Description**                                                                                                                                                                                                                         | **Location**                                                                          |
-|-------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|
-| `IdleClicker_GetUpdatedState` | None                                                                                                                                                                                                                                                                    | Creates a random game if necessary, updates the game state since the last call (including granting any necessary Water), and returns the state to the client.                                                                           | `Assets/Use Case Samples/Idle Clicker Game/Cloud Code/IdleClicker_GetUpdatedState.js` |
-| `IdleClicker_PlaceWell`       | `coord`<br><br>`JSON`<br><br>The {x, y} coordinates for the new Well to add to the playfield.<br><br>Example: `{"x":0, "y":0}`                                                                                                                                          | Updates currency balances since the last server call, validates the player's moves, uses Economy service Virtual Purchases to “buy” new Wells, and updates the game state appropriately (for example, adding a Well to the game board). | `Assets/Use Case Samples/Idle Clicker Game/Cloud Code/IdleClicker_PlaceWell.js`       |
-| `IdleClicker_MoveWell`        | `drag`<br><br>`JSON`<br><br>The {x, y} coordinates for the Well starting position on the playfield.<br><br>Example: `{"x":0, "y":0}`<hr>`drop`<br><br>`JSON`<br><br>The {x, y} coordinates for the Well ending position on the playfield.                               | Updates Water balances since the last server call, validates the player's move, and updates the game state appropriately.                                                                                                               | `Assets/Use Case Samples/Idle Clicker Game/Cloud Code/IdleClicker_MoveWell.js`        |
-| `IdleClicker_MergeWells`      | `drag`<br><br>`JSON`<br><br>The {x, y} coordinates for the first Well's position on the playfield.<br><br>Example: `{"x":0, "y":0}`<hr>`drop`<br><br>`JSON`<br><br>The {x, y} coordinates for the second Well's position and upgraded Well's position on the playfield. | Updates currency balances since the last server call, validates the player's moves, uses Economy service Virtual Purchases to “buy” the new Well, and updates the game state appropriately.                                             | `Assets/Use Case Samples/Idle Clicker Game/Cloud Code/IdleClicker_MergeWells.js`      |
-| `IdleClicker_Reset`           | None.                                                                                                                                                                                                                                                                   | Clears Cloud Save entries to simulate a new player                                                                                                                                                                                      | `Assets/Use Case Samples/Idle Clicker Game/Cloud Code/IdleClicker_Reset.js`           |
+| **Script**                    | **Parameters**                                                                                                                                                                                                                                                          | **Description**                                                                                                                                                                                                                         | **Location**                                                                              |
+|-------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|
+| `IdleClicker_GetUpdatedState` | None                                                                                                                                                                                                                                                                    | Creates a random game if necessary, updates the game state since the last call (including granting any necessary Water), and returns the state to the client.                                                                           | `Assets/Use Case Samples/Idle Clicker Game/Config as Code/IdleClicker_GetUpdatedState.js` |
+| `IdleClicker_PlaceWell`       | `coord`<br><br>`JSON`<br><br>The {x, y} coordinates for the new Well to add to the playfield.<br><br>Example: `{"x":0, "y":0}`                                                                                                                                          | Updates currency balances since the last server call, validates the player's moves, uses Economy service Virtual Purchases to “buy” new Wells, and updates the game state appropriately (for example, adding a Well to the game board). | `Assets/Use Case Samples/Idle Clicker Game/Config as Code/IdleClicker_PlaceWell.js`       |
+| `IdleClicker_MoveWell`        | `drag`<br><br>`JSON`<br><br>The {x, y} coordinates for the Well starting position on the playfield.<br><br>Example: `{"x":0, "y":0}`<hr>`drop`<br><br>`JSON`<br><br>The {x, y} coordinates for the Well ending position on the playfield.                               | Updates Water balances since the last server call, validates the player's move, and updates the game state appropriately.                                                                                                               | `Assets/Use Case Samples/Idle Clicker Game/Config as Code/IdleClicker_MoveWell.js`        |
+| `IdleClicker_MergeWells`      | `drag`<br><br>`JSON`<br><br>The {x, y} coordinates for the first Well's position on the playfield.<br><br>Example: `{"x":0, "y":0}`<hr>`drop`<br><br>`JSON`<br><br>The {x, y} coordinates for the second Well's position and upgraded Well's position on the playfield. | Updates currency balances since the last server call, validates the player's moves, uses Economy service Virtual Purchases to “buy” the new Well, and updates the game state appropriately.                                             | `Assets/Use Case Samples/Idle Clicker Game/Config as Code/IdleClicker_MergeWells.js`      |
+| `IdleClicker_Reset`           | None.                                                                                                                                                                                                                                                                   | Clears Cloud Save entries to simulate a new player                                                                                                                                                                                      | `Assets/Use Case Samples/Idle Clicker Game/Config as Code/IdleClicker_Reset.js`           |
 
-**Note**: The Cloud Code scripts included in the `Cloud Code` folder are local copies because you cannot see the sample's dashboard. Changes to these scripts do not affect the behavior of this sample because they are not automatically uploaded to the Cloud Code service.
-
-
-#### Economy
+##### Economy
 
 [Configure the following resources](https://docs.unity.com/economy/) in the **LiveOps** dashboard:
 
