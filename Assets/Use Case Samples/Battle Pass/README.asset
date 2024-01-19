@@ -11,14 +11,14 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bfbabd22c62c640a6ba459d46825055b, type: 3}
   m_Name: README
-  m_EditorClassIdentifier:
+  m_EditorClassIdentifier: 
   header:
     title: Battle Pass README
     icon: {fileID: 2800000, guid: 83f0684dab5534e2492f651aaaf4a151, type: 3}
   sections:
   - subHeader1: Intro
-    subHeader2:
-    subHeader3:
+    subHeader2: 
+    subHeader3: 
     body: A seasonal points-based reward system is a popular and effective way to
       retain players in a game over time. Unlike a time-based reward system, there
       is an element of skill required to progress through the reward track. The Battle
@@ -28,12 +28,12 @@ MonoBehaviour:
       most games are designed to award cosmetic items at the premium level, or other
       items that do not give players a gameplay advantage.
     bodyFormat: 0
-    boxCallout:
+    boxCallout: 
     bulletList: []
     linkList: []
-  - subHeader1:
-    subHeader2:
-    subHeader3:
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
     body: This sample expands on the Seasonal Events sample to add a seasonal points-based
       reward system and Battle Pass. It's a good idea to check out that sample first,
       if you haven't already. The README in that sample explains how the seasonal
@@ -41,12 +41,12 @@ MonoBehaviour:
       Battle Pass sample builds on and complements the Seasonal Events sample, and
       specific Battle Pass features.
     bodyFormat: 0
-    boxCallout:
+    boxCallout: 
     bulletList: []
     linkList: []
-  - subHeader1:
-    subHeader2:
-    subHeader3:
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
     body: 'Each time a new season starts, the player is offered a set of rewards
       unique to the current season, which they can unlock by earning Season Experience
       Points (Season XP). There are two tracks of rewards: the normal track, and
@@ -54,32 +54,32 @@ MonoBehaviour:
       rewards track, but only Battle Pass holders are eligible for the Battle Pass
       rewards.'
     bodyFormat: 0
-    boxCallout:
+    boxCallout: 
     bulletList: []
     linkList: []
-  - subHeader1:
-    subHeader2:
-    subHeader3:
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
     body: The Season XP and Battle Pass are only relevant to the current season.
       When a season ends, the player's Season XP progress and Battle Pass ownership
       are reset, but the claimed rewards are permanent.
     bodyFormat: 0
-    boxCallout:
+    boxCallout: 
     bulletList: []
     linkList: []
   - subHeader1: Implementation Overview
-    subHeader2:
-    subHeader3:
+    subHeader2: 
+    subHeader3: 
     body: When this scene first loads, it will initialize Unity Services and sign
       the player in anonymously using Authentication. This can be seen in the BattlePassSceneManager
       script.
     bodyFormat: 0
-    boxCallout:
+    boxCallout: 
     bulletList: []
     linkList: []
-  - subHeader1:
-    subHeader2:
-    subHeader3:
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
     body: 'Once Unity Services completes initialization, we use a Cloud Code function
       to retrieve the configuration and state of the Battle Pass. The configuration
       that''s returned to us is based on the server''s timestamp and the Game Override
@@ -89,13 +89,13 @@ MonoBehaviour:
       is over. With that we can control our countdown view, and eventually determine
       that it''s time to query the server again for the next season''s configs.'
     bodyFormat: 0
-    boxCallout:
+    boxCallout: 
     bulletList: []
     linkList: []
-  - subHeader1:
-    subHeader2:
-    subHeader3:
-    body:
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 
     bodyFormat: 0
     boxCallout: "Note: This sample determines which Game Override data should be
       returned based on the last digit of the number of minutes in the current server
@@ -106,9 +106,9 @@ MonoBehaviour:
       implementations can be a bit different."
     bulletList: []
     linkList: []
-  - subHeader1:
-    subHeader2:
-    subHeader3:
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
     body: 'Everything about the reward system and Battle Pass is powered by Cloud
       Code scripts, from getting the progress to claiming tiers to purchasing a Battle
       Pass. At first, it looks like some of these actions could be simpler calls
@@ -117,7 +117,7 @@ MonoBehaviour:
       Battle Pass, you could make a call directly via the Economy SDK. However, these
       actions have potential side effects that we want to be server-authoritative:'
     bodyFormat: 0
-    boxCallout:
+    boxCallout: 
     bulletList:
     - body: By retrieving the player's progress, you also want it to reset the player's
         progress if the season has changed.
@@ -131,11 +131,11 @@ MonoBehaviour:
       linkList: []
     linkList: []
   - subHeader1: Packages Required
-    subHeader2:
-    subHeader3:
-    body:
+    subHeader2: 
+    subHeader3: 
+    body: 
     bodyFormat: 0
-    boxCallout:
+    boxCallout: 
     bulletList:
     - body: 'Addressables: Allows developers to ask for an asset via its address.
         Wherever the asset resides (local or remote), the system will locate it and
@@ -191,14 +191,20 @@ MonoBehaviour:
       bodyFormat: 0
       bulletList: []
       linkList: []
+    - body: 'Deployment: In this context, it is used on the editor side to facilitate the
+        configuration of the different Unity services. It enables the display of the Deployment
+        window which allows the deployment of various service configuration assets.'
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
     linkList: []
-  - subHeader1:
-    subHeader2:
-    subHeader3:
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
     body: See the package docs to learn how to install and configure these SDKs in
       your project.
     bodyFormat: 0
-    boxCallout:
+    boxCallout: 
     bulletList: []
     linkList:
     - linkText: Addressables
@@ -215,10 +221,12 @@ MonoBehaviour:
       url: https://docs.unity3d.com/Packages/com.unity.remote-config@3.2/manual/GameOverridesAndSettings.html
     - linkText: Remote Config
       url: https://docs.unity3d.com/Packages/com.unity.remote-config@latest
-  - subHeader1:
-    subHeader2:
-    subHeader3:
-    body:
+    - linkText: Deployment
+      url: https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 
     bodyFormat: 0
     boxCallout: 'Note that though it is listed as a package and requires separate
       dashboard configuration, Game Overrides doesn''t actually have an SDK to install
@@ -226,34 +234,95 @@ MonoBehaviour:
       from other services, like Remote Config. '
     bulletList: []
     linkList: []
-  - subHeader1: Dashboard Setup
-    subHeader2:
-    subHeader3:
-    body: The setup here has a lot in common with the setup in the Seasonal Event
-      sample. We won't be using the Challenge Reward or seasonal images in this sample,
-      but we'll be using everything else, with some additions.
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: To use these services in your game, activate each service for your Organization
+      and project in the Unity Dashboard.
     bodyFormat: 0
-    boxCallout:
+    boxCallout: 
+    bulletList: []
+    linkList:
+    - linkText: Unity Dashboard
+      url: https://dashboard.unity3d.com/
+  - subHeader1: Unity Cloud services configuration
+    subHeader2: 
+    subHeader3: 
+    body: 'To replicate this sample scene''s setup in your own Unity project, we need to configure the following items:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: 
+    - body: Cloud Code scripts
+    - body: Economy items
+    - body: Remote Config values
+    - body: Remote Config Game Overrides
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: There are two main ways of doing this, either by using the Deployment
+      package, or by manually entering them using the Dashboard. We recommend
+      the usage of the Deployment package since it will greatly accelerate this
+      process.
+    bodyFormat: 0
+    boxCallout: 
     bulletList: []
     linkList: []
-  - subHeader1:
-    subHeader2:
-    subHeader3:
-    body: 'To use Economy, Remote Config, and Cloud Code services in your game, activate
-      each service for your organization and project in the Unity Dashboard. To duplicate
-      this sample scene''s setup on your own dashboard, you''ll need a few currencies
-      in the Economy setup, some Config Values and Game Overrides set up in Remote
-      Config, and a number of scripts published in Cloud Code:'
+  - subHeader1: 
+    subHeader2: Using the Deployment package
+    subHeader3: 
+    body: 'Here are the steps to deploy configuration using the Deployment package:'
     bodyFormat: 0
-    boxCallout:
+    boxCallout: 
+    bulletList:
+    - body: Open the Deployment window
+      linkList: 
+      - linkText: Deployment window
+        url: https://dashboard.unity3d.com/
+    - body: Check in `Common` and `Battle Pass`
+    - body: Click `Deploy Selection`
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'This will deploy the following items:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: Cloud Code scripts
+    - body: Economy items
+    - body: Remote Config values
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'The following items are not managed by the Deployment package at this time:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: Remote Config Game Overrides
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: To configure them, please refer to the next section.
+    bodyFormat: 0
+    boxCallout: 
     bulletList: []
-    linkList: []
-  - subHeader1:
-    subHeader2: Economy Items
-    subHeader3:
-    body:
+  - subHeader1: 
+    subHeader2: Using the Dashboard
+    subHeader3: 
+    body: The Dashboard enables you to edit manually all your services
+        configuration by project and environment. Here are the details
+        necessary for the configuration of the current sample.
     bodyFormat: 0
-    boxCallout:
+    boxCallout: 
+    linkList:
+    - linkText: Dashboard
+      url: dashboard.unity3d.com
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: Economy Items
+    body: 
+    bodyFormat: 0
+    boxCallout: 
     bulletList:
     - body: Currency
       bodyFormat: 1
@@ -321,10 +390,10 @@ MonoBehaviour:
     - body: Virtual Purchase
       bodyFormat: 1
       bulletList:
-      - body: 'Name: Battle Pass'
+      - body: 'Name: Battle Pass Purchase'
         bodyFormat: 0
         bulletList: []
-      - body: 'ID: BATTLE_PASS'
+      - body: 'ID: BATTLE_PASS_PURCHASE'
         bodyFormat: 0
         bulletList: []
       - body: 'Cost: 10 Gems'
@@ -336,12 +405,12 @@ MonoBehaviour:
         bulletList: []
       linkList: []
     linkList: []
-  - subHeader1:
-    subHeader2: Remote Config
-    subHeader3: Config Values
-    body:
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: Remote Config Values
+    body: 
     bodyFormat: 0
-    boxCallout:
+    boxCallout: 
     bulletList:
     - body: EVENT_NAME
       bodyFormat: 1
@@ -352,7 +421,7 @@ MonoBehaviour:
       - body: 'Type: string'
         bodyFormat: 0
         bulletList: []
-      - body: 'Value: ""'
+      - body: 'Value: empty default value'
         bodyFormat: 0
         bulletList: []
       linkList: []
@@ -366,7 +435,7 @@ MonoBehaviour:
       - body: 'Type: string'
         bodyFormat: 0
         bulletList: []
-      - body: 'Value: ""'
+      - body: 'Value: empty default value'
         bodyFormat: 0
         bulletList: []
       linkList: []
@@ -395,6 +464,20 @@ MonoBehaviour:
         bodyFormat: 0
         bulletList: []
       - body: 'Value: 0'
+        bodyFormat: 0
+        bulletList: []
+      linkList: []
+    - body: BATTLE_PASS_TIER_COUNT
+      bodyFormat: 1
+      bulletList:
+      - body: The total number of tiers each season. Not overridden by Game Overrides
+          in this example.
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Type: int'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Value: 10'
         bodyFormat: 0
         bulletList: []
       linkList: []
@@ -444,139 +527,136 @@ MonoBehaviour:
         bulletList: []
       linkList: []
     linkList: []
-  - subHeader1:
-    subHeader2:
-    subHeader3: Game Overrides
-    body:
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: Remote Config Game Overrides
+    body: 
     bodyFormat: 0
-    boxCallout:
+    boxCallout: 
     bulletList:
     - body: Fall Event
       bodyFormat: 1
       bulletList:
-      - body: 'Status: Active'
-        bodyFormat: 0
-        bulletList: []
-      - body: 'Audience: Stateless JEXL'
+      - body: 'Targeting: JEXL'
         bodyFormat: 0
         bulletList:
         - body: '"user.timestampMinutes % 10 == 0 || user.timestampMinutes % 10 ==
             1 || user.timestampMinutes % 10 == 2"'
           bodyFormat: 0
           bulletList: []
-      - body: 'Start Date: Immediately'
-        bodyFormat: 0
-        bulletList: []
-      - body: 'End Date: Indefinitely'
-        bodyFormat: 0
-        bulletList: []
-      - body: 'Overrides:'
+      - body: 'Content: Config Overrides'
         bodyFormat: 0
         bulletList:
-        - body: 'EVENT_NAME: Fall Event'
+        - body: See `Game Overrides/Fall Content Overrides.md` for more details.
           bodyFormat: 0
           bulletList: []
-        - body: 'EVENT_KEY: Fall'
+      - body: 'Scheduling:'
+        bodyFormat: 0
+        bulletList:
+        - body: 'Start Date: Immediately'
           bodyFormat: 0
           bulletList: []
-        - body: 'EVENT_END_TIME: 2'
+        - body: 'End Date: Indefinitely'
           bodyFormat: 0
           bulletList: []
-        - body: 'EVENT_TOTAL_DURATION_MINUTES: 3'
-          bodyFormat: 0
-          bulletList: []
-        - body: 'BATTLE_PASS_REWARDS_FREE: See markdown README for details'
-          bodyFormat: 0
-          bulletList: []
-        - body: 'BATTLE_PASS_REWARDS_PREMIUM: See markdown README for details'
-          bodyFormat: 0
-          bulletList: []
+      - body: 'Status: Active'
+        bodyFormat: 0
+        bulletList: []
       linkList: []
     - body: Winter Event
       bodyFormat: 1
       bulletList:
-      - body: 'Audience: Stateless JEXL'
+      - body: 'Targeting: JEXL'
         bodyFormat: 0
         bulletList:
         - body: '"user.timestampMinutes % 10 == 3 || user.timestampMinutes % 10 ==
             4"'
           bodyFormat: 0
           bulletList: []
-      - body: 'EVENT_NAME: Winter Event'
+      - body: 'Content: Config Overrides'
         bodyFormat: 0
-        bulletList: []
-      - body: 'EVENT_KEY: Winter'
+        bulletList:
+        - body: See `Game Overrides/Winter Content Overrides.md` for more details.
+          bodyFormat: 0
+          bulletList: []
+      - body: 'Scheduling:'
         bodyFormat: 0
-        bulletList: []
-      - body: 'EVENT_END_TIME: 4'
+        bulletList:
+        - body: 'Start Date: Immediately'
+          bodyFormat: 0
+          bulletList: []
+        - body: 'End Date: Indefinitely'
+          bodyFormat: 0
+          bulletList: []
+      - body: 'Status: Active'
         bodyFormat: 0
-        bulletList: []
-      - body: 'EVENT_TOTAL_DURATION_MINUTES: 2'
-        bodyFormat: 0
-        bulletList: []
-      - body: For everything else, just like the Fall Event, but with different rewards.
-        bodyFormat: 2
         bulletList: []
       linkList: []
     - body: Spring Event
       bodyFormat: 1
       bulletList:
-      - body: 'Audience: Stateless JEXL'
+      - body: 'Targeting: JEXL'
         bodyFormat: 0
         bulletList:
         - body: '"user.timestampMinutes % 10 == 5 || user.timestampMinutes % 10 ==
             6 || user.timestampMinutes % 10 == 7"'
           bodyFormat: 0
           bulletList: []
-      - body: 'EVENT_NAME: Spring Event'
+      - body: 'Content: Config Overrides'
         bodyFormat: 0
-        bulletList: []
-      - body: 'EVENT_KEY: Spring'
+        bulletList:
+        - body: See `Game Overrides/Spring Content Overrides.md` for more details.
+          bodyFormat: 0
+          bulletList: []
+      - body: 'Scheduling:'
         bodyFormat: 0
-        bulletList: []
-      - body: 'EVENT_END_TIME: 7'
+        bulletList:
+        - body: 'Start Date: Immediately'
+          bodyFormat: 0
+          bulletList: []
+        - body: 'End Date: Indefinitely'
+          bodyFormat: 0
+          bulletList: []
+      - body: 'Status: Active'
         bodyFormat: 0
-        bulletList: []
-      - body: 'EVENT_TOTAL_DURATION_MINUTES: 3'
-        bodyFormat: 0
-        bulletList: []
-      - body: For everything else, just like the Fall Event, but with different rewards.
-        bodyFormat: 2
         bulletList: []
       linkList: []
     - body: Summer Event
       bodyFormat: 1
       bulletList:
-      - body: 'Audience: Stateless JEXL'
+      - body: 'Targeting: JEXL'
         bodyFormat: 0
         bulletList:
         - body: '"user.timestampMinutes % 10 == 8 || user.timestampMinutes % 10 ==
             9"'
           bodyFormat: 0
           bulletList: []
-      - body: 'EVENT_NAME: Summer Event'
+      - body: 'Content: Config Overrides'
         bodyFormat: 0
-        bulletList: []
-      - body: 'EVENT_KEY: Summer'
+        bulletList:
+        - body: See `Game Overrides/Summer Content Overrides.md` for more details.
+          bodyFormat: 0
+          bulletList: []
+      - body: 'Scheduling:'
         bodyFormat: 0
-        bulletList: []
-      - body: 'EVENT_END_TIME: 9'
+        bulletList:
+        - body: 'Start Date: Immediately'
+          bodyFormat: 0
+          bulletList: []
+        - body: 'End Date: Indefinitely'
+          bodyFormat: 0
+          bulletList: []
+      - body: 'Status: Active'
         bodyFormat: 0
-        bulletList: []
-      - body: 'EVENT_TOTAL_DURATION_MINUTES: 2'
-        bodyFormat: 0
-        bulletList: []
-      - body: For everything else, just like the Fall Event, but with different rewards.
-        bodyFormat: 2
         bulletList: []
       linkList: []
     linkList: []
-  - subHeader1:
-    subHeader2: Cloud Code Scripts
-    subHeader3:
-    body:
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: Cloud Code scripts
+    body: 
     bodyFormat: 0
-    boxCallout:
+    boxCallout: 
     bulletList:
     - body: BattlePass_GetState
       bodyFormat: 1
@@ -584,7 +664,7 @@ MonoBehaviour:
       - body: 'Parameters: none'
         bodyFormat: 0
         bulletList: []
-      - body: 'Script: "Assets/Use Case Samples/Battle Pass/Cloud Code/BattlePass_GetState.js"'
+      - body: 'Script: "Assets/Use Case Samples/Battle Pass/Config as Code/BattlePass_GetState.js"'
         bodyFormat: 0
         bulletList: []
       linkList: []
@@ -599,7 +679,7 @@ MonoBehaviour:
           bulletList:
           - 'Type: NUMERIC'
           - The amount of season XP to gain.
-      - body: 'Script: "Assets/Use Case Samples/Battle Pass/Cloud Code/BattlePass_GainSeasonXP.js"'
+      - body: 'Script: "Assets/Use Case Samples/Battle Pass/Config as Code/BattlePass_GainSeasonXP.js"'
         bodyFormat: 0
         bulletList: []
       linkList: []
@@ -614,7 +694,7 @@ MonoBehaviour:
           bulletList:
           - 'Type: NUMERIC'
           - The 0-based index of the tier to claim.
-      - body: 'Script: "Assets/Use Case Samples/Battle Pass/Cloud Code/BattlePass_ClaimTier.js"'
+      - body: 'Script: "Assets/Use Case Samples/Battle Pass/Config as Code/BattlePass_ClaimTier.js"'
         bodyFormat: 0
         bulletList: []
       linkList: []
@@ -624,19 +704,8 @@ MonoBehaviour:
       - body: 'Parameters: none'
         bodyFormat: 0
         bulletList: []
-      - body: 'Script: "Assets/Use Case Samples/Battle Pass/Cloud Code/BattlePass_PurchaseBattlePass.js"'
+      - body: 'Script: "Assets/Use Case Samples/Battle Pass/Config as Code/BattlePass_PurchaseBattlePass.js"'
         bodyFormat: 0
         bulletList: []
       linkList: []
-    linkList: []
-  - subHeader1:
-    subHeader2:
-    subHeader3:
-    body:
-    bodyFormat: 0
-    boxCallout: 'Note: The Cloud Code scripts included in the "Cloud Code" folder
-      are just local copies, since you can''t see the sample''s dashboard. Changes
-      to these scripts will not affect the behavior of this sample since they will
-      not be automatically uploaded to Cloud Code service.'
-    bulletList: []
     linkList: []

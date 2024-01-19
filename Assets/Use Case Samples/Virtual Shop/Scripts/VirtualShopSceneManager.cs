@@ -39,9 +39,11 @@ namespace Unity.Services.Samples.VirtualShop
 
                 // Note: We want these methods to use the most up to date configuration data, so we will wait to
                 // call them until the previous two methods (which update the configuration data) have completed.
-                await Task.WhenAll(AddressablesManager.instance.PreloadAllEconomySprites(),
-                    RemoteConfigManager.instance.FetchConfigs(),
-                    EconomyManager.instance.RefreshCurrencyBalances());
+                await AddressablesManager.instance.PreloadAllEconomySprites();
+                if (this == null) return;
+                await RemoteConfigManager.instance.FetchConfigs();
+                if (this == null) return;
+                await EconomyManager.instance.RefreshCurrencyBalances();
                 if (this == null) return;
 
                 // Read all badge addressables

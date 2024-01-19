@@ -1,0 +1,25 @@
+{
+  "$schema": "https://ugs-config-schemas.unity3d.com/v1/economy/economy-virtual-purchase.schema.json",
+  "costs": [
+    {
+      "resourceId": "GEM",
+      "amount": 10
+    }
+  ],
+  "rewards": [
+    {
+      "resourceId": "COIN",
+      "amount": 100
+    },
+    {
+      "resourceId": "SWORD",
+      "amount": 1
+    },
+    {
+      "resourceId": "PEARL",
+      "amount": 10
+    }
+  ],
+  "name": "Starter Pack Purchase",
+  "customData": {}
+}

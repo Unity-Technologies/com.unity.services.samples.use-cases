@@ -1,0 +1,31 @@
+{
+  "entries": {
+    "CLIENT_VERSION_LATEST": "1.9.1",
+    "CLIENT_VERSION_MIN": "1.7.0",
+    "PROJECT_INBOX_MESSAGE_WELCOME": {
+      "title": "Welcome to UGS Use Cases samples!",
+      "content": "<b>What is this project about?</b><br><br>This Unity Gaming Services (UGS) Use Cases project contains a collection of samples designed to demonstrate how to use multiple UGS products in a single Unity project to solve common game development challenges and features.<br><br><br><b>How to get started?</b><br><br>Are you interested in learning more about how to build a Battle Pass with UGS, or how to optimize and batch your calls? Nothing simpler! Once you hit the play button in the editor, you’ll be able to navigate to different use cases and interact with them. From there, you can inspect the README to know more about the proposed implementation as well as all the code and scripts that are provided along with each use case.<br><br><br><b>Do you have questions or ideas for new use cases you would like to see?</b><br><br>Feel free to reach out to us at <b><u>headstart@unity3d.com</u></b>!<br><br><br><b>Do you have a bug to report?</b><br><br>Bugs are sad, but it happens :) If you were to stumble on one yourself, please reach out to us via the “feedback” button, conveniently located on the bottom left of the main scene, and on all use case screens. From there you can easily and quickly fill out a ticket that our team will receive directly, so we can fix it promptly!",
+      "addressablesAddress": "ProjectInboxImages/StartHereScene"
+    },
+    "PROJECT_INBOX_MESSAGES_LIST": {
+      "messageList": [
+        "PROJECT_INBOX_MESSAGE_WELCOME",
+        "PROJECT_INBOX_MESSAGE_INITIAL_NPS_SURVEY",
+        "PROJECT_INBOX_MESSAGE_RELEASE_1.9"
+      ]
+    },
+    "PROJECT_INBOX_MAX_INBOX_COUNT": 0,
+    "PROJECT_INBOX_MESSAGE_INITIAL_NPS_SURVEY": {
+      "title": "Tell us about your experience",
+      "content": "Your opinion matters to us, and we would like to hear from you so we can provide you with the best learning material that’ll help you become a Unity Gaming Services expert in no time.<br><br>It will only take a couple minutes!<br><br><link=\"https://unitysoftware.co1.qualtrics.com/jfe/form/SV_eE6DomzzTS5YO6a\"><color=blue><u>Take survey here</u></color></link>."
+    },
+    "PROJECT_INBOX_MESSAGE_RELEASE_1.9": {
+      "title": "1.9 now released!",
+      "content": "<b>Serverless Multiplayer Game sample</b><br><br>With the release of our new version, we would like to introduce our latest use case: the Serverless Multiplayer Game sample. This sample demonstrates how to create or join a Lobby Service game lobby and compete in a simple arena-style game where players collect coins for points. You will learn how, with Unity Gaming Services, you could create your own private or public lobby, define your game parameters, and launch the synchronous multiplayer experience.<br><br><br><b>How to get started?</b><br><br>Make sure you have the latest version of the Unity Gaming Services Use Case project. Currently, the latest version is 1.9. You can always  find the latest version on our dedicated GitHub page at the following link: <link=\"https://github.com/Unity-Technologies/com.unity.services.samples.use-cases\"><color=blue><u>https://github.com/Unity-Technologies/com.unity.services.samples.use-cases</u></color></link>.<br><br><br><b>Do you have questions, ideas or bugs to report?</b><br><br>Feel free to reach out to us at headstart@unity3d.com.",
+      "addressablesAddress": "ProjectInboxImages/ServerlessMultiplayerScene"
+    }
+  },
+  "types": {
+    "PROJECT_INBOX_MAX_INBOX_COUNT": "INT"
+  }
+}

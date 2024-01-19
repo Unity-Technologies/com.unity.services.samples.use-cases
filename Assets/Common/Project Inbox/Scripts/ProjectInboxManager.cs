@@ -62,10 +62,7 @@ namespace Unity.Services.Samples.ProjectInbox
             // InitializeInboxState relies on DownloadContentCatalog which relies on FetchConfigs
             await RemoteConfigManager.FetchConfigs();
             if (this == null) return;
-
-            await AddressablesManager.instance.DownloadContentCatalog();
-            if (this == null) return;
-
+            
             InboxStateManager.InitializeInboxState();
 
             maxInboxSize = RemoteConfigManager.maxInboxCount;

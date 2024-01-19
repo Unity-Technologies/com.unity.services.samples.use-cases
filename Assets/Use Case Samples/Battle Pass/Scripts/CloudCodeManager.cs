@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Unity.Services.CloudCode;
 using UnityEngine;
+using UnityEngine.Scripting;
 
 namespace Unity.Services.Samples.BattlePass
 {
@@ -250,16 +251,20 @@ namespace Unity.Services.Samples.BattlePass
             }
         }
 
-        public struct ResultReward
+        public class ResultReward
         {
+            [Preserve]
+            public ResultReward() { }
             public string service;
             public string id;
             public int quantity;
             public string spriteAddress;
         }
 
-        public struct GetStateResult
+        public class GetStateResult
         {
+            [Preserve]
+            public GetStateResult() { }
             public int seasonXp;
             public bool ownsBattlePass;
             public int[] seasonTierStates;
@@ -267,8 +272,10 @@ namespace Unity.Services.Samples.BattlePass
             public GetStateRemoteConfigs remoteConfigs;
         }
 
-        public struct GetStateRemoteConfigs
+        public class GetStateRemoteConfigs
         {
+            [Preserve]
+            public GetStateRemoteConfigs() { }
             public ResultReward[] battlePassRewardsFree;
             public ResultReward[] battlePassRewardsPremium;
             public int battlePassSeasonXpPerTier;
@@ -278,23 +285,29 @@ namespace Unity.Services.Samples.BattlePass
             public int eventTotalDurationMinutes;
         }
 
-        public struct GainSeasonXpResult
+        public class GainSeasonXpResult
         {
+            [Preserve]
+            public GainSeasonXpResult() { }
             public int seasonXp;
             public int unlockedNewTier;
             public string validationResult;
             public int[] seasonTierStates;
         }
 
-        public struct PurchaseBattlePassResult
+        public class PurchaseBattlePassResult
         {
+            [Preserve]
+            public PurchaseBattlePassResult() { }
             public string purchaseResult;
             public ResultReward[] grantedRewards;
             public int[] seasonTierStates;
         }
 
-        public struct ClaimTierResult
+        public class ClaimTierResult
         {
+            [Preserve]
+            public ClaimTierResult() { }
             public string validationResult;
             public ResultReward[] grantedRewards;
             public int[] seasonTierStates;

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -13,9 +12,9 @@ namespace Unity.Services.Samples.ProjectInbox
         // interacted with, the OTA use case can't clear the cache.
         public static AddressablesManager instance { get; private set; }
 
-        public Dictionary<string, (Sprite sprite, AsyncOperationHandle<Sprite> handle)>
+        public Dictionary<string, (Sprite sprite, AsyncOperationHandle<Texture2D> handle)>
             addressableSpriteContent { get; } =
-            new Dictionary<string, (Sprite sprite, AsyncOperationHandle<Sprite> handle)>();
+            new Dictionary<string, (Sprite sprite, AsyncOperationHandle<Texture2D> handle)>();
 
         void Awake()
         {
@@ -29,37 +28,6 @@ namespace Unity.Services.Samples.ProjectInbox
             }
         }
 
-        public async Task DownloadContentCatalog()
-        {
-            var remoteCatalogAddress = RemoteConfigManager.ccdContentUrl;
-
-            var handle = Addressables.LoadContentCatalogAsync(remoteCatalogAddress, false);
-            await handle.Task;
-            if (this == null) return;
-
-            switch (handle.Status)
-            {
-                case AsyncOperationStatus.None:
-                    Debug.Log("Addressable Catalog Download: None");
-                    break;
-
-                case AsyncOperationStatus.Succeeded:
-                    Debug.Log("Addressable Catalog Download: Succeeded");
-                    break;
-
-                case AsyncOperationStatus.Failed:
-                    Debug.Log("Addressable Catalog Download: Failed");
-                    Addressables.Release(handle);
-                    throw handle.OperationException;
-
-                default:
-                    Addressables.Release(handle);
-                    throw new ArgumentOutOfRangeException();
-            }
-
-            Addressables.Release(handle);
-        }
-
         public async void LoadImageForMessage(string imageAddress, string messageId)
         {
             try
@@ -69,14 +37,15 @@ namespace Unity.Services.Samples.ProjectInbox
                     return;
                 }
 
-                var imageLoadHandle = Addressables.LoadAssetAsync<Sprite>(imageAddress);
+                var imageLoadHandle = Addressables.LoadAssetAsync<Texture2D>(imageAddress);
                 await imageLoadHandle.Task;
                 if (this == null) return;
 
-                var sprite = imageLoadHandle.Result;
+                var texture2D = imageLoadHandle.Result;
 
-                if (!(sprite is null))
+                if (!(texture2D is null))
                 {
+                    var sprite = Sprite.Create(texture2D, new Rect(0, 0, texture2D.width, texture2D.height), Vector2.zero, 100);
                     addressableSpriteContent.Add(messageId, (sprite, imageLoadHandle));
                 }
             }

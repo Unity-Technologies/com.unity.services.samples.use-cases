@@ -11,10 +11,10 @@ This Unity Gaming Services (UGS) Samples package contains a collection of sample
 
 ## Getting Started
 
-- Download Unity Editor 2020.3 or later
-  - [Unity Hub](unityhub://2020.3.30f1/1fb1bf06830e)
-  - [Download (Win)](https://download.unity3d.com/download_unity/1fb1bf06830e/UnityDownloadAssistant-2020.3.30f1.exe)
-  - [Download (Mac)](https://download.unity3d.com/download_unity/1fb1bf06830e/UnityDownloadAssistant-2020.3.30f1.dmg)
+- Download Unity Editor 2021.3 or later
+  - [Unity Hub](unityhub://2021.3.32f1/3b9dae9532f5)
+  - [Download (Win)](https://download.unity3d.com/download_unity/3b9dae9532f5/UnityDownloadAssistant-2021.3.32f1.exe)
+  - [Download (Mac)](https://download.unity3d.com/download_unity/3b9dae9532f5/UnityDownloadAssistant-2021.3.32f1.dmg)
 - Clone the repository: `git clone https://github.com/Unity-Technologies/com.unity.services.samples.use-cases.git`
 - Open the project from the Unity Hub or Unity Editor
 
@@ -35,8 +35,6 @@ _Note: This project uses the Unity Mediation package, which requires [CocoaPods]
 - [In-Game Mailbox](Assets/Use%20Case%20Samples/In-Game%20Mailbox/README.md) - Demonstrates a way that developers can send in-game messages to their players, including with gifts of various game currencies and inventory items.
 - [Loot Boxes](Assets/Use%20Case%20Samples/Loot%20Boxes/README.md) - Reward players with a random Economy currency using Cloud Code to perform the Economy grants.
 - [Loot Boxes With Cooldown](Assets/Use%20Case%20Samples/Loot%20Boxes%20With%20Cooldown/README.md) - Grant players random collections of both Currencies and Inventory Items at timed intervals.
-- [Over-The-Air Content Delivery](Assets/Use%20Case%20Samples/Over-The-Air%20Content/README.md) - Add new downloaded content to a game while the game is running.
-- [Rewarded Ads With Unity Mediation](Assets/Use%20Case%20Samples/Rewarded%20Ads%20With%20Unity%20Mediation/README.md) - Offer players opportunity to boost level end rewards by interacting with a reward booster meter and watching a rewarded ad.
 - [Seasonal Events](Assets/Use%20Case%20Samples/Seasonal%20Events/README.md) - Update game content remotely based on timed special events.
 - [Serverless Multiplayer Game](Assets/Use%20Case%20Samples/Serverless%20Multiplayer%20Game/README.md) - Demonstrates how to utilize game lobbies and compete in a simple, serverless, real-time arena-style game where players collect coins for points.
 - [Starter Packs](Assets/Use%20Case%20Samples/Starter%20Pack/README.md) - Allow players to purchase a Starter Pack using Cloud Code to implement the one-time-only purchase.

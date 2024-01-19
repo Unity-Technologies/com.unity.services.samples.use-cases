@@ -11,24 +11,24 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bfbabd22c62c640a6ba459d46825055b, type: 3}
   m_Name: README
-  m_EditorClassIdentifier:
+  m_EditorClassIdentifier: 
   header:
     title: A/B Test for Level Difficulty README
     icon: {fileID: 2800000, guid: 83f0684dab5534e2492f651aaaf4a151, type: 3}
   sections:
   - subHeader1: Intro
-    subHeader2:
-    subHeader3:
+    subHeader2: 
+    subHeader3: 
     body: An A/B Test is a useful mechanism for tweaking a single feature of game
       play or game design, and learning what variation of that feature is most engaging
       to your players.
     bodyFormat: 0
-    boxCallout:
+    boxCallout: 
     bulletList: []
     linkList: []
-  - subHeader1:
-    subHeader2:
-    subHeader3:
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
     body: 'In this sample, the feature we are testing is level difficulty, specifically
       how much XP is required to get to the next level. When a player is signed in,
       the screen displays their level, as well as an XP meter that indicates their
@@ -36,23 +36,23 @@ MonoBehaviour:
       60, 50, or 30). The amount of XP that a player needs to level up depends on
       which test group they were randomly placed into.  '
     bodyFormat: 0
-    boxCallout:
+    boxCallout: 
     bulletList: []
     linkList: []
-  - subHeader1:
-    subHeader2:
-    subHeader3:
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
     body: 'For diagnostic purposes, the player''s test group is also displayed (A,
       B, C, D, or E). While in a real game setting the test group would rarely be
       publicly displayed, it could be used internally to capture analytics details
       about how the different groups respond to the A/B test.  '
     bodyFormat: 0
-    boxCallout:
+    boxCallout: 
     bulletList: []
     linkList: []
   - subHeader1: Implementation Overview
-    subHeader2:
-    subHeader3:
+    subHeader2: 
+    subHeader3: 
     body: 'When the scene first loads, Unity Services is initialized and the player
       is signed in to an anonymous player ID (either one that has already been created
       from a previous sign-in or a new one) using the Authentication service. Once
@@ -65,12 +65,12 @@ MonoBehaviour:
       player. All of this updated data will get displayed in the scene. At this point,
       the "Gain XP" button is enabled for interaction.  '
     bodyFormat: 0
-    boxCallout:
+    boxCallout: 
     bulletList: []
     linkList: []
-  - subHeader1:
-    subHeader2:
-    subHeader3:
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
     body: 'When a player clicks the "Gain XP" button, a call is sent to the Cloud
       Code endpoint "GainXPAndLevelIfReady". This server-authoritative call fetches
       the player''s info from Cloud Code and Remote Config, increases the XP by the
@@ -82,12 +82,12 @@ MonoBehaviour:
       Code is called to save the increased player level and new player XP (XP gets
       reset to 0 upon level up) before returning the info to the client code.  '
     bodyFormat: 0
-    boxCallout:
+    boxCallout: 
     bulletList: []
     linkList: []
-  - subHeader1:
-    subHeader2:
-    subHeader3:
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
     body: 'The client code then opens a dialog to indicate that the player has leveled
       up, what currency reward was granted, and updates the relevant data in the
       scene. Note: A cross reference dictionary located in the Remote Config and
@@ -97,12 +97,12 @@ MonoBehaviour:
       and provides a convenient way to retrieve additional data for a specific currency
       at runtime.  '
     bodyFormat: 0
-    boxCallout:
+    boxCallout: 
     bulletList: []
     linkList: []
-  - subHeader1:
-    subHeader2:
-    subHeader3:
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
     body: "Please note that a simpler approach to display different art according
       to a player\u2019s segmentation is to attach additional information to the
       Custom Data associated with Currencies in the Economy configuration data. However,
@@ -110,12 +110,12 @@ MonoBehaviour:
       Overrides themselves to demonstrate the flexibility permitted by the Remote
       Config service.  "
     bodyFormat: 0
-    boxCallout:
+    boxCallout: 
     bulletList: []
     linkList: []
-  - subHeader1:
-    subHeader2:
-    subHeader3:
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
     body: 'If a player instead clicks "Sign In As New Player", the current anonymous
       player ID is deleted, the cached values are reset to empty/default state, and
       then a new sign in is initiated with the Authentication service, following
@@ -125,13 +125,13 @@ MonoBehaviour:
       determination is random, you may need to follow this flow a few times before
       you see yourself in a new group.  '
     bodyFormat: 0
-    boxCallout:
+    boxCallout: 
     bulletList: []
     linkList: []
-  - subHeader1:
-    subHeader2:
-    subHeader3:
-    body:
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 
     bodyFormat: 0
     boxCallout: 'Note: This use case is created with the assumption that the game
       style won''t trigger frequent XP increases. While testing the use case, if
@@ -144,20 +144,20 @@ MonoBehaviour:
       in a real game).  '
     bulletList: []
     linkList: []
-  - subHeader1:
-    subHeader2:
-    subHeader3:
-    body:
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 
     bodyFormat: 0
-    boxCallout:
+    boxCallout: 
     bulletList: []
     linkList: []
   - subHeader1: Packages Required
-    subHeader2:
-    subHeader3:
-    body:
+    subHeader2: 
+    subHeader3: 
+    body: 
     bodyFormat: 0
-    boxCallout:
+    boxCallout: 
     bulletList:
     - body: 'Analytics: Sends events that track the player''s in-game interactions,
         retention metrics, and other information that you can use to analyze and
@@ -196,14 +196,21 @@ MonoBehaviour:
       bodyFormat: 0
       bulletList: []
       linkList: []
+    - body: 'Deployment: In this context, it is used on the editor side to facilitate
+        the configuration of the different Unity services. It enables the display
+        of the Deployment window which allows the deployment of various service configuration
+        assets.'
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
     linkList: []
-  - subHeader1:
-    subHeader2:
-    subHeader3:
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
     body: See the package docs to learn how to install and configure these SDKs in
       your project.
     bodyFormat: 0
-    boxCallout:
+    boxCallout: 
     bulletList: []
     linkList:
     - linkText: Analytics
@@ -220,10 +227,12 @@ MonoBehaviour:
       url: https://docs.unity3d.com/Packages/com.unity.remote-config@3.2/manual/GameOverridesAndSettings.html
     - linkText: Remote Config
       url: https://docs.unity3d.com/Packages/com.unity.remote-config@latest
-  - subHeader1:
-    subHeader2:
-    subHeader3:
-    body:
+    - linkText: Deployment
+      url: https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 
     bodyFormat: 0
     boxCallout: 'Note that though it is listed as a package and requires separate
       dashboard configuration, Game Overrides doesn''t actually have an SDK to install
@@ -231,24 +240,97 @@ MonoBehaviour:
       from other services, like Remote Config. '
     bulletList: []
     linkList: []
-  - subHeader1: Dashboard Setup
-    subHeader2:
-    subHeader3:
-    body: 'To use Cloud Save, Economy, Remote Config, and Cloud Code services in
-      your game, activate each service for your organization and project in the Unity
-      Dashboard. To duplicate this sample scene''s setup on your own dashboard, you''ll
-      need a a currency in the Economy setup, some Config Values and a Game Override
-      set up in Remote Config, and a script published in Cloud Code:'
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: To use these services in your game, activate each service for your Organization
+      and project in the Unity Dashboard.
     bodyFormat: 0
-    boxCallout:
+    boxCallout: 
+    bulletList: []
+    linkList:
+    - linkText: Unity Dashboard
+      url: https://dashboard.unity3d.com/
+  - subHeader1: Unity Cloud services configuration
+    subHeader2: 
+    subHeader3: 
+    body: 'To replicate this sample scene''s setup in your own Unity project, we need to configure the following items:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: 
+    - body: Cloud Code scripts
+    - body: Economy items
+    - body: Remote Config values
+    - body: Remote Config Game Overrides
+    - body: Analytics custom events and parameters
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: There are two main ways of doing this, either by using the Deployment
+      package, or by manually entering them using the Dashboard. We recommend
+      the usage of the Deployment package since it will greatly accelerate this
+      process.
+    bodyFormat: 0
+    boxCallout: 
     bulletList: []
     linkList: []
-  - subHeader1:
-    subHeader2: Economy Items
-    subHeader3:
-    body:
+  - subHeader1: 
+    subHeader2: Using the Deployment package
+    subHeader3: 
+    body: 'Here are the steps to deploy configuration using the Deployment package:'
     bodyFormat: 0
-    boxCallout:
+    boxCallout: 
+    bulletList:
+    - body: Open the Deployment window
+      linkList: 
+      - linkText: Deployment window
+        url: https://dashboard.unity3d.com/
+    - body: Check in `Common` and `AB Test Level Difficulty`
+    - body: Click `Deploy Selection`
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'This will deploy the following items:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: Cloud Code scripts
+    - body: Economy items
+    - body: Remote Config values
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'The following items are not managed by the Deployment package at this time:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: Remote Config Game Overrides
+    - body: custom events and parameters for the Analytics service
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: To configure them, please refer to the next section.
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+  - subHeader1: 
+    subHeader2: Using the Dashboard
+    subHeader3: 
+    body: The Dashboard enables you to edit manually all your services
+        configuration by project and environment. Here are the details
+        necessary for the configuration of the current sample.
+    bodyFormat: 0
+    boxCallout: 
+    linkList:
+    - linkText: Dashboard
+      url: dashboard.unity3d.com
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: Economy Items
+    body: 
+    bodyFormat: 0
+    boxCallout: 
     bulletList:
     - body: Coin
       bodyFormat: 1
@@ -261,12 +343,12 @@ MonoBehaviour:
         bulletList: []
       linkList: []
     linkList: []
-  - subHeader1:
-    subHeader2: Remote Config
-    subHeader3: Config Values
-    body:
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: Remote Config Values
+    body: 
     bodyFormat: 0
-    boxCallout:
+    boxCallout: 
     bulletList:
     - body: AB_TEST_GROUP
       bodyFormat: 1
@@ -335,26 +417,17 @@ MonoBehaviour:
         bulletList: []
       linkList: []
     linkList: []
-  - subHeader1:
-    subHeader2:
-    subHeader3: Game Overrides
-    body:
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: Remote Config Game Overrides
+    body: 
     bodyFormat: 0
-    boxCallout:
+    boxCallout: 
     bulletList:
     - body: A/B Test Level Difficulty
       bodyFormat: 1
       bulletList:
-      - body: 'Status: Active'
-        bodyFormat: 0
-        bulletList: []
-      - body: 'Audience: true, 100%'
-        bodyFormat: 0
-        bulletList: []
-      - body: 'Start Date: Immediately'
-        bodyFormat: 0
-        bulletList: []
-      - body: 'End Date: Indefinitely'
+      - body: 'Targeting: Audiences, 100%'
         bodyFormat: 0
         bulletList: []
       - body: 'Overrides:'
@@ -390,14 +463,23 @@ MonoBehaviour:
           - 'AB_TEST_LEVEL_UP_XP_NEEDED: 30'
           - 'AB_TEST_GROUP: E'
           - 'AB_TEST_ID: LevelDifficultyTest1'
+      - body: 'Start Date: Immediately'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'End Date: Indefinitely'
+        bodyFormat: 0
+        bulletList: []
+      - body: 'Status: Active'
+        bodyFormat: 0
+        bulletList: []
       linkList: []
     linkList: []
-  - subHeader1:
-    subHeader2: Cloud Code Scripts
-    subHeader3:
-    body:
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: Cloud Code Scripts
+    body: 
     bodyFormat: 0
-    boxCallout:
+    boxCallout: 
     bulletList:
     - body: 'ABTestLevelDifficulty_GainXPAndLevelIfReady:'
       bodyFormat: 1
@@ -405,25 +487,15 @@ MonoBehaviour:
       - body: 'Parameters: `none`'
         bodyFormat: 0
         bulletList: []
-      - body: 'Script: "Assets/Use Case Samples/AB Test Level Difficulty/Cloud Code/ABTestLevelDifficulty_GainXPAndLevelIfReady.js"'
+      - body: 'Script: "Assets/Use Case Samples/AB Test Level Difficulty/Config as
+          Code/ABTestLevelDifficulty_GainXPAndLevelIfReady.js"'
         bodyFormat: 0
         bulletList: []
       linkList: []
     linkList: []
-  - subHeader1:
-    subHeader2:
-    subHeader3:
-    body:
-    bodyFormat: 0
-    boxCallout: 'Note: The Cloud Code scripts included in the "Cloud Code" folder
-      are just local copies, since you can''t see the sample''s dashboard. Changes
-      to these scripts will not affect the behavior of this sample since they will
-      not be automatically uploaded to Cloud Code service.'
-    bulletList: []
-    linkList: []
-  - subHeader1:
-    subHeader2: Analytics
-    subHeader3:
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: Analytics
     body: 'In the configuration of the Analytics custom events and parameters, you
       can see a fairly long list of potential parameters that are sent with some
       of the events. This extended list allows for a more flexible analysis of different
@@ -432,13 +504,13 @@ MonoBehaviour:
       sceneName, etc), and do any kind of grouped analysis desired using the Data
       Export feature within the Data Explorer on the dashboard. '
     bodyFormat: 0
-    boxCallout:
+    boxCallout: 
     bulletList: []
     linkList: []
-  - subHeader1:
-    subHeader2:
-    subHeader3:
-    body:
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 
     bodyFormat: 0
     boxCallout: 'Note: This sample demonstrates the code needed to trigger analytics
       events, however additional code may be necessary to meet legal requirements
@@ -446,12 +518,12 @@ MonoBehaviour:
       https://docs.unity.com/analytics/ManagingDataPrivacy.html'
     bulletList: []
     linkList: []
-  - subHeader1:
-    subHeader2:
+  - subHeader1: 
+    subHeader2: 
     subHeader3: Custom Events
-    body:
+    body: 
     bodyFormat: 0
-    boxCallout:
+    boxCallout: 
     bulletList:
     - body: SceneOpened
       bodyFormat: 2
@@ -534,12 +606,12 @@ MonoBehaviour:
           bulletList: []
       linkList: []
     linkList: []
-  - subHeader1:
-    subHeader2:
+  - subHeader1: 
+    subHeader2: 
     subHeader3: Custom Parameters
-    body:
+    body: 
     bodyFormat: 0
-    boxCallout:
+    boxCallout: 
     bulletList:
     - body: sceneName
       bodyFormat: 2
