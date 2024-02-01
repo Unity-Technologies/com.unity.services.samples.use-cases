@@ -40,7 +40,7 @@ _Note: This project uses the Unity Mediation package, which requires [CocoaPods]
 - [Starter Packs](Assets/Use%20Case%20Samples/Starter%20Pack/README.md) - Allow players to purchase a Starter Pack using Cloud Code to implement the one-time-only purchase.
 - [Virtual Shop](Assets/Use%20Case%20Samples/Virtual%20Shop/README.md) - Demonstrates a key feature in many games: allowing players to use in-game currency to purchase items and resources to facilitate a server-authoritative in-game economy with multiple store pages and server-managed badges.
 
-_Tested with Unity 2020.3 for PC and Mac._
+_Tested with Unity 2021.3 for PC and Mac._
 
 ## Using your own Unity Services Account
 
