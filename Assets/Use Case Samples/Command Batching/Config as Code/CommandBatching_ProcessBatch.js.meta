@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: cc2e2479d881a41fca86b65835e3d397
+ScriptedImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 2
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+  script: {fileID: 11500000, guid: fbc33bd6a5704c0881dc7a9ead54089b, type: 3}
+  Parameters:
+  - Name: commands
+    ParameterType: 3
+    Required: 1
+  Source: 0

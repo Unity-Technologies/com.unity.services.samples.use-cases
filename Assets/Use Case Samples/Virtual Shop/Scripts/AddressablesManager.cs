@@ -56,7 +56,10 @@ namespace Unity.Services.Samples.VirtualShop
             AddAddressablesItemTasks(EconomyManager.instance.inventoryItemDefinitions, addressablesLoadAsyncData);
 
             // Wait for all Addressables to be loaded.
-            await Task.WhenAll(addressablesLoadAsyncData.tasks);
+            foreach (var t in addressablesLoadAsyncData.tasks)
+            {
+                await t;
+            }
 
             // Check that scene has not been unloaded while processing async wait to prevent throw.
             if (this == null) return;
@@ -87,7 +90,10 @@ namespace Unity.Services.Samples.VirtualShop
             }
 
             // Wait for all Addressables to be loaded.
-            await Task.WhenAll(addressablesLoadAsyncData.tasks);
+            foreach (var t in addressablesLoadAsyncData.tasks)
+            {
+                await t;
+            }
             if (this == null) return;
 
             // Iterate all Addressables loaded and save off the Sprites into our Dictionary.

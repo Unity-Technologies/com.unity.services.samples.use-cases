@@ -1,0 +1,85 @@
+{
+  "entries": {
+    "VIRTUAL_SHOP_CONFIG": {
+      "categories": [
+        {
+          "id": "Items",
+          "enabledFlag": true,
+          "items": [
+            {
+              "id": "VIRTUAL_SHOP_1_SWORD_FOR_COINS"
+            },
+            {
+              "id": "VIRTUAL_SHOP_2_SWORD_FOR_COINS",
+              "color": "#FFFFFFFF",
+              "badgeIconAddress": ""
+            },
+            {
+              "id": "VIRTUAL_SHOP_3_SWORD_FOR_COINS",
+              "color": "#FFFFFFFF",
+              "badgeIconAddress": ""
+            },
+            {
+              "id": "VIRTUAL_SHOP_1_SHIELD_FOR_COINS",
+              "color": "#FFFFFFFF",
+              "badgeIconAddress": ""
+            },
+            {
+              "id": "VIRTUAL_SHOP_2_SHIELD_FOR_COINS",
+              "color": "#FFFFFFFF",
+              "badgeIconAddress": ""
+            },
+            {
+              "id": "VIRTUAL_SHOP_3_SHIELD_FOR_COINS",
+              "color": "#FFFFFFFF",
+              "badgeIconAddress": "Sprites/Badges/Banner",
+              "badgeColor": "#FF0000FF",
+              "badgeText": "Best Value",
+              "badgeTextColor": "#FFFFFFFF"
+            }
+          ]
+        },
+        {
+          "id": "Currencies",
+          "enabledFlag": true,
+          "items": [
+            {
+              "id": "VIRTUAL_SHOP_100_COIN_FOR_GEMS",
+              "color": "#FFFFFFFF",
+              "badgeIconAddress": ""
+            },
+            {
+              "id": "VIRTUAL_SHOP_250_COIN_FOR_GEMS",
+              "color": "#FFFFFFFF",
+              "badgeIconAddress": ""
+            },
+            {
+              "id": "VIRTUAL_SHOP_1000_COIN_FOR_GEMS",
+              "color": "#FFFFFFFF",
+              "badgeIconAddress": "Sprites/Badges/Banner",
+              "badgeColor": "#FF0000FF",
+              "badgeText": "Best Value",
+              "badgeTextColor": "#FFFFFFFF"
+            },
+            {
+              "id": "VIRTUAL_SHOP_1_STAR_FOR_COINS",
+              "color": "#FFFFFFFF",
+              "badgeIconAddress": ""
+            },
+            {
+              "id": "VIRTUAL_SHOP_3_PEARL_FOR_COINS",
+              "color": "#FFFFFFFF",
+              "badgeIconAddress": ""
+            }
+          ]
+        },
+        {
+          "id": "IAP",
+          "enabledFlag": false,
+          "items": []
+        }
+      ]
+    }
+  },
+  "types": {}
+}

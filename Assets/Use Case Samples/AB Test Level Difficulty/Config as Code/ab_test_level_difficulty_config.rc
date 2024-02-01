@@ -1,0 +1,40 @@
+{
+  "entries": {
+    "CURRENCIES": {
+      "currencyData": [
+        {
+          "currencyId": "COIN",
+          "currencySpec": {
+            "spriteAddress": "Sprites/Currency/Coin"
+          }
+        },
+        {
+          "currencyId": "GEM",
+          "currencySpec": {
+            "spriteAddress": "Sprites/Currency/Gem"
+          }
+        },
+        {
+          "currencyId": "PEARL",
+          "currencySpec": {
+            "spriteAddress": "Sprites/Currency/Pearl"
+          }
+        },
+        {
+          "currencyId": "STAR",
+          "currencySpec": {
+            "spriteAddress": "Sprites/Currency/Star"
+          }
+        }
+      ]
+    },
+    "AB_TEST_XP_INCREASE": 10,
+    "AB_TEST_LEVEL_UP_XP_NEEDED": 100,
+    "AB_TEST_GROUP": "",
+    "AB_TEST_ID": ""
+  },
+  "types": {
+    "AB_TEST_XP_INCREASE": "INT",
+    "AB_TEST_LEVEL_UP_XP_NEEDED": "INT"
+  }
+}

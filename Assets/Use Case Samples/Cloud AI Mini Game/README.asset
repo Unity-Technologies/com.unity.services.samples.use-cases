@@ -175,6 +175,12 @@ MonoBehaviour:
       bodyFormat: 0
       bulletList: []
       linkList: []
+    - body: 'Deployment: In this context, it is used on the editor side to facilitate the
+        configuration of the different Unity services. It enables the display of the Deployment
+        window which allows the deployment of various service configuration assets.'
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: 
@@ -193,19 +199,73 @@ MonoBehaviour:
       url: https://docs.unity.com/cloud-save/index.html#Implementation
     - linkText: Economy
       url: https://docs.unity.com/economy/implementation.html
-  - subHeader1: Dashboard Setup
+    - linkText: Deployment
+      url: https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2
+  - subHeader1: 
     subHeader2: 
     subHeader3: 
-    body: 'To use Economy, Cloud Code and Cloud Save services in your game, activate
-      each service for your organization and project in the Unity Dashboard. You''ll
-      need a Currency item in the Economy, as well as a few scripts in Cloud Code:'
+    body: To use these services in your game, activate each service for your Organization
+      and project in the Unity Dashboard.
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: []
+    linkList:
+    - linkText: Unity Dashboard
+      url: https://dashboard.unity3d.com/
+  - subHeader1: Unity Cloud services configuration
+    subHeader2: 
+    subHeader3: 
+    body: 'To replicate this sample scene''s setup in your own Unity project, we need to configure the following items:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList: 
+    - body: Cloud Code scripts
+    - body: Economy items
+    linkList: []
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: There are two main ways of doing this, either by using the Deployment
+      package, or by manually entering them using the Dashboard. We recommend
+      the usage of the Deployment package since it will greatly accelerate this
+      process.
     bodyFormat: 0
     boxCallout: 
     bulletList: []
     linkList: []
   - subHeader1: 
-    subHeader2: Economy Item
+    subHeader2: Using the Deployment package
     subHeader3: 
+    body: 'Here are the steps to deploy configuration using the Deployment package:'
+    bodyFormat: 0
+    boxCallout: 
+    bulletList:
+    - body: Open the Deployment window
+      linkList: 
+      - linkText: Deployment window
+        url: https://dashboard.unity3d.com/
+    - body: Check in `Common` and `Cloud AI Mini Game`
+    - body: Click `Deploy Selection`
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: 
+    body: 'This will deploy all the necessary items.'
+    bodyFormat: 0
+    boxCallout: 
+  - subHeader1: 
+    subHeader2: Using the Dashboard
+    subHeader3: 
+    body: The Dashboard enables you to edit manually all your services
+        configuration by project and environment. Here are the details
+        necessary for the configuration of the current sample.
+    bodyFormat: 0
+    boxCallout: 
+    linkList:
+    - linkText: Dashboard
+      url: dashboard.unity3d.com
+  - subHeader1: 
+    subHeader2: 
+    subHeader3: Economy Item
     body: 
     bodyFormat: 0
     boxCallout: 
@@ -223,8 +283,7 @@ MonoBehaviour:
       linkList: []
     linkList: []
   - subHeader1: 
-    subHeader2: Cloud Code Scripts
-    subHeader3: 
+    subHeader3: Cloud Code scripts
     body: 
     bodyFormat: 0
     boxCallout: 
@@ -240,7 +299,7 @@ MonoBehaviour:
       - body: 'Parameters: none'
         bodyFormat: 0
         bulletList: []
-      - body: 'Script: "Assets/Use Case Samples/Cloud AI Mini Game/Cloud Code/CloudAiMiniGame_GetState.js"'
+      - body: 'Script: "Assets/Use Case Samples/Cloud AI Mini Game/Config as Code/CloudAiMiniGame_GetState.js"'
         bodyFormat: 0
         bulletList: []
       linkList: []
@@ -261,7 +320,7 @@ MonoBehaviour:
           bulletList:
           - 'Type: JSON'
           - '{x,y} coordinate for the player piece to add.'
-      - body: 'Script: "Assets/Use Case Samples/Cloud AI Mini Game/Cloud Code/CloudAiMiniGame_ValidatePlayerMoveAndRespond.js"'
+      - body: 'Script: "Assets/Use Case Samples/Cloud AI Mini Game/Config as Code/CloudAiMiniGame_ValidatePlayerMoveAndRespond.js"'
         bodyFormat: 0
         bulletList: []
       linkList: []
@@ -276,25 +335,14 @@ MonoBehaviour:
       - body: 'Parameters: none'
         bodyFormat: 0
         bulletList: []
-      - body: 'Script: "Assets/Use Case Samples/Cloud AI Mini Game/Cloud Code/CloudAiMiniGame_StartNewGame.js"'
+      - body: 'Script: "Assets/Use Case Samples/Cloud AI Mini Game/Config as Code/CloudAiMiniGame_StartNewGame.js"'
         bodyFormat: 0
         bulletList: []
       linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: 
-    subHeader3: 
-    body: 
-    bodyFormat: 0
-    boxCallout: 'Note: The Cloud Code scripts included in the "Cloud Code" folder
-      are just local copies, since you can''t see the sample''s dashboard. Changes
-      to these scripts will not affect the behavior of this sample since they will
-      not be automatically uploaded to Cloud Code service.'
-    bulletList: []
-    linkList: []
-  - subHeader1: 'Sample Cloud Save "CLOUD_AI_GAME_STATE" entries:'
-    subHeader2: 
-    subHeader3: 
+    subHeader3: 'Sample Cloud Save "CLOUD_AI_GAME_STATE" entries:'
     body: 
     bodyFormat: 0
     boxCallout: 
