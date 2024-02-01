@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 2.0.0 [Unreleased]
+## [2.0.0] - 2024-02-01
 
 ### Changed
 
@@ -20,6 +20,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) 
 * Seasonal Events README had the wrong name for its Cloud Code scripts. Both should start with the prefix `SeasonalEvents_`.
 * Removed legacy fields that prevented remote config to be parsed.
 * WebGL compatibility issues with Cloud Code and the Virtual Shop
+
+## [1.10.0] - 2023-10-12
+
+### Changed
+
+* Upgraded the project from Unity Editor version 2020.3.46f1 to 2022.3.11f1.
+* Updated readme files to fit better default Economy configurations.
+* Updated readme files to fit better default Remote-Config configurations.
+
+### Fixed
+
+* Removed outdated configurations causing issues with the BattlePass sample.
 
 ## [1.9.1] - 2023-03-29
 
