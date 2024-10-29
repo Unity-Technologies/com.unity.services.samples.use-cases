@@ -42,6 +42,12 @@ _Note: This project uses the Unity Mediation package, which requires [CocoaPods]
 
 _Tested with Unity 2021.3 for PC and Mac._
 
+## Additional Samples
+
+On top of this project, the following additional samples can help you implement UGS features in your games.
+
+- [Additional sample projects](https://docs.unity.com/ugs/en-us/solutions/manual#Sample_projects)
+
 ## Using your own Unity Services Account
 
 These samples use UGS packages which have already been configured so you can easily explore the use case samples provided.
