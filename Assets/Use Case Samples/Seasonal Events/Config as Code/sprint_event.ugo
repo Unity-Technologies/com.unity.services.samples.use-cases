@@ -1,0 +1,39 @@
+{
+  "$schema": "https://ugs-config-schemas.unity3d.com/v1/game-overrides.schema.json",
+  "Overrides": {
+    "Sprint Override": {
+      "Description": "Game Overrides description",
+      "Audience": { "Targets": [ ] },
+      "Rollout": 100,
+      "Condition": { "Value": "user.timestampMinutes % 10 == 5 || user.timestampMinutes % 10 == 6 || user.timestampMinutes % 10 == 7" },
+      "Variants": [{
+        "RemoteConfig": {
+            "Entries": {
+                "EVENT_NAME": "Spring Event",
+                "EVENT_KEY": "Spring",
+                "EVENT_END_TIME": 7,
+                "EVENT_TOTAL_DURATION_MINUTES": 3,
+                "SEASONAL_EVENTS_CHALLENGE_REWARD":
+                { "rewards":
+                [{
+                "id": "COIN",
+                "quantity": 100,
+                "spriteAddress": "Sprites/Currency/Coin"
+                },
+                {
+                "id": "STAR",
+                "quantity": 50,
+                "spriteAddress": "Sprites/Currency/Star"
+                }]
+                }
+            },
+          "Types" : {
+            "EVENT_END_TIME": "INT",
+            "EVENT_TOTAL_DURATION_MINUTES": "INT"
+          }
+         }
+      }],
+      "Scheduling": { "StartDate": "2025-01-16T11:37:45.5015862-05:00" }
+    }
+  }
+}

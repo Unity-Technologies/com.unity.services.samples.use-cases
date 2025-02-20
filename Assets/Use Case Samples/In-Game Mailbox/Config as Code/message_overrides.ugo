@@ -1,0 +1,87 @@
+{
+  "$schema": "https://ugs-config-schemas.unity3d.com/v1/game-overrides.schema.json",
+  "Overrides": {
+    "Messages All Spenders Overrides": {
+      "Description": "Game Overrides description",
+      "Audience": { "Targets": [ ] },
+      "Rollout": 100,
+      "Condition": { "Value": "user.audience == \"AllSpenders\"" },
+      "Variants" : [
+        {
+          "RemoteConfig": {
+            "Entries": {
+              "MESSAGE_001": {
+                "title": "Thank you for supporting us!",
+                "content": "This message specifically targets Spender players, thanks to Game Overrides that enables other Unity services to target pre-defined or custom audiences.",
+                "attachment": "",
+                "expiration": "0.00:03:00.00"
+              }
+            }
+          }
+        }
+      ],
+      "Scheduling": { "StartDate": "2025-01-16T11:37:45.5015862-05:00" }
+    },
+    "Messages French Speaker Overrides": {
+      "Description": "Game Overrides description",
+      "Audience": { "Targets": [ ] },
+      "Rollout": 100,
+      "Condition": { "Value": "user.audience == \"FrenchSpeakers\"" },
+      "Variants": [
+        {
+          "RemoteConfig": {
+              "Entries": {
+                  "MESSAGE_002": {
+                      "title": "Oh oui, le message!",
+                      "content": "Et oui, ce message est en français car il cible les joueurs dont la langue du jeu est paramétrée en français. Ceci est rendu possible grâce à Game Overrides qui permet à certains services de Unity de cibler des audiences pré-définies ou personnalisées.",
+                      "attachment": "",
+                      "expiration": "0.00:03:00.00"
+                  }
+              }
+          }
+        }
+      ],
+      "Scheduling": { "StartDate": "2025-01-16T11:37:45.5015862-05:00" }
+    },
+    "Messages New Players Overrides": {
+      "Description": "Game Overrides description",
+      "Audience": { "Targets": [ ] },
+      "Rollout": 100,
+      "Condition": { "Value": "user.audience == \"NewPlayers\"" },
+      "Variants": [{
+        "RemoteConfig": {
+            "Entries": {
+                "MESSAGE_003":
+                {
+                    "title": "Welcome to the game!",
+                    "content": "This message specifically targets New Players, thanks to Game Overrides that enables other Unity services to target pre-defined or custom audiences.",
+                    "attachment": "MESSAGE_003_GIFT_NEW_PLAYERS",
+                    "expiration": "0.00:10:00.00"
+                }
+            }
+        }
+      }],
+      "Scheduling": { "StartDate": "2025-01-16T11:37:45.5015862-05:00" }
+    },
+    "Messages Unengaged Players Overrides": {
+      "Description": "Game Overrides description",
+      "Audience": { "Targets": [ ] },
+      "Rollout": 100,
+      "Condition": { "Value": "user.audience == \"UnengagedPlayers\"" },
+      "Variants": [{
+        "RemoteConfig": {
+            "Entries": {
+                "MESSAGE_004":
+                {
+                    "title": "Welcome back to the game!",
+                    "content": "This message specifically targets Unengaged players, thanks to Game Overrides that enables other Unity services to target pre-defined or custom audiences.",
+                    "attachment": "MESSAGE_004_GIFT_UNENGAGED",
+                    "expiration": "0.00:10:00.00"
+                }
+            }
+        }
+      }],
+      "Scheduling": { "StartDate": "2025-01-16T11:37:45.5015862-05:00" }
+    }
+  }
+}

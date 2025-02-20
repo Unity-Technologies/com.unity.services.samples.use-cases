@@ -58,51 +58,46 @@ To replicate this use case, you need the following [Unity packages](https://docs
 | [Authentication](https://docs.unity.com/authentication/IntroUnityAuthentication.html)                                  | Automatically signs in the user anonymously to keep track of their data on the server side.                                                                                                                                                                              |
 | [Cloud Code](https://docs.unity.com/cloud-code/implementation.html)                                                    | Contains important validation logic on the server side. In this sample, it distributes rewards for the event challenge. It also independently verifies the timestamp at the time of reward distribution on the server-side to confirm which event rewards to distribute. |
 | [Cloud Save](https://docs.unity.com/cloud-save/index.html#Implementation)                                              | Stores a flag for whether the current challenge has already been played, to prevent the player from participating multiple times.                                                                                                                                        |
+| [Deployment](https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2)                                      | The Deployment package provides a cohesive interface to deploy assets for Cloud Services.                                                                                                                                                                                |
 | [Economy](https://docs.unity.com/economy/implementation.html)                                                          | Retrieves the player's starting and updated currency balances at runtime.                                                                                                                                                                                                |
 | [Game Overrides](https://docs.unity3d.com/Packages/com.unity.remote-config@3.2/manual/GameOverridesAndSettings.html)\* | Maintains the four seasonal events and returns different values for certain keys based on which Game Override is deemed active.                                                                                                                                          |                                                                                                                                                                                                                                                                      |
 | [Remote Config](https://docs.unity3d.com/Packages/com.unity.remote-config@latest)                                      | Provides key-value pairs that can be changed server-side, either manually or based on specific Game Overrides.                                                                                                                                                           |
-| [Deployment](https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2)                                      | The Deployment package provides a cohesive interface to deploy assets for Cloud Services.                                                                                                                                                                                |
 
 \* Note that though it is listed as a package and requires separate dashboard configuration, Game Overrides doesn't actually have an SDK to install from Package Manager. It is a server side offering that affects values returned from other services, like Remote Config.
 
-To use these services in your game, activate each service for your Organization and project in the [Unity Dashboard](https://dashboard.unity3d.com/).
+To use these services in your game, activate each service for your Organization and project in the [Unity Cloud Dashboard](https://dashboard.unity3d.com/).
 
 ### Unity Cloud services configuration
 
-To replicate this sample scene's setup in your own Unity project, we need to configure the following items:
+To replicate this sample scene's setup in your own Unity project, configure the following items:
 
 - Cloud Code scripts
 - Economy items
 - Remote Config values
 - Remote Config Game Overrides
 
-There are two main ways of doing this, either by [using the Deployment package](#using-the-deployment-package), or by [manually entering them using the Dashboard](#using-the-dashboard).
-We recommend the usage of the Deployment package since it will greatly accelerate this process.
+To configure these items you can [use the Deployment package](#using-the-deployment-package), or [manually enter them using the Unity Cloud Dashboard](#using-the-unity-cloud-dashboard).
+The recommended best practice is to use the Deployment package as it greatly accelerates this process.
 
 #### Using the Deployment package
 
-Here are the steps to deploy configuration using the Deployment package:
+To deploy configurations using the Deployment package:
 
-1. Open the [Deployment window](https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2/manual/deployment_window.html)
-1. Check in `Common` and `Seasonal Events`
-1. Click `Deploy Selection`
+1. Open the [Deployment window](https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2/manual/deployment_window.html).
+1. Check in `Common` and `Seasonal Events`.
+1. Click `Deploy Selection`.
 
-This will deploy the following items:
+This deploys the following items:
 
 - Cloud Code scripts
 - Economy items
 - Remote Config values
-
-The following items are not managed by the Deployment package at this time:
-
 - Remote Config Game Overrides
 
-To configure them, please refer to [the next section](#using-the-dashboard).
+#### Using the Unity Cloud Dashboard
 
-#### Using the Dashboard
-
-The [Dashboard](dashboard.unity3d.com) enables you to edit manually all your services configuration by project and environment.
-Here are the details necessary for the configuration of the current sample.
+You can use the [Unity Cloud Dashboard](dashboard.unity3d.com) to manually configure your services by project and environment.
+Refer to the following sections to configure this sample.
 
 ##### Cloud Code
 
@@ -122,7 +117,7 @@ Here are the details necessary for the configuration of the current sample.
 
 ##### Remote Config values
 
-[Set up the following config values](https://docs.unity.com/remote-config/HowDoesRemoteConfigWork.html) in the **LiveOps** dashboard:
+Set up the following [config values](https://docs.unity.com/remote-config/HowDoesRemoteConfigWork.html) in the Unity Cloud Dashboard:
 
 | **Value**                          | **Type** | **Description**                                                                                                                     | **Value**                                                                                        |
 |------------------------------------|----------|-------------------------------------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------|
@@ -133,7 +128,7 @@ Here are the details necessary for the configuration of the current sample.
 
 ##### Game Overrides
 
-[Configure the following Overrides](https://docs.unity.com/gameoverrides/CreateAnOverride.html) in the **LiveOps** dashboard:
+Configure the following [Overrides](https://docs.unity.com/gameoverrides/CreateAnOverride.html) in the Unity Cloud Dashboard:
 
 | **Details**    | Name the Override “Fall Event”.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
 |----------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

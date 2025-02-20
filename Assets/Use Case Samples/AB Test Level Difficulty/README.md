@@ -11,7 +11,7 @@ This sample simulates an A/B test to evaluate how much experience (XP) it should
 
 To see this use case in action:
 
-1. In the Unity Editor **Project** window, select **Assets > Use Case Samples > AB Test Level Difficulty**, and then double-click `ABTestLevelDifficultySample.unity` to open the sample scene.
+1. In the Unity Editor **Project** window, select **Assets** > **Use Case Samples** > **AB Test Level Difficulty**, and then double-click `ABTestLevelDifficultySample.unity` to open the sample scene.
 2. Enter Play Mode to interact with the use case.
 
 When a player signs in, the screen displays their level and an XP meter that tracks their current XP and the total amount of XP required to level up.
@@ -73,61 +73,61 @@ To replicate this use case, you need the following [Unity packages](https://docs
 | [Authentication](https://docs.unity.com/authentication/IntroUnityAuthentication.html)                                  | Automatically signs in the player as an anonymous user to keep track of their data server-side.                                                                                               |
 | [Cloud Code](https://docs.unity.com/cloud-code/implementation.html)                                                    | Stores validation logic for increasing XP and leveling up the player server-side.                                                                                                             |
 | [Cloud Save](https://docs.unity.com/cloud-save/index.html#Implementation)                                              | Provides a server-authoritative way to save player data and the game state. In this example, the service stores the player's level and XP.                                                    |
+| [Deployment](https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2)                                      | The Deployment package provides a cohesive interface to deploy assets for Cloud Services.                                                                                                     |
 | [Economy](https://docs.unity.com/economy/implementation.html)                                                          | Retrieves the starting and updated currency balances at runtime.                                                                                                                              |
 | [Game Overrides](https://docs.unity3d.com/Packages/com.unity.remote-config@3.2/manual/GameOverridesAndSettings.html)\* | Assigns players to different groups based on the requested distribution values. Players receive a different configuration of XP needed to level up depending on which group they're in.       |
 | [Remote Config](https://docs.unity3d.com/Packages/com.unity.remote-config@latest)                                      | Provides key-value pairs that you can map and change server-side, either manually or based on specific Game Overrides. Also stores data associated with currency icon Addressable addresses.  |
-| [Deployment](https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2)                                      | The Deployment package provides a cohesive interface to deploy assets for Cloud Services.                                                                                                     |
 
 \* Note that though it is listed as a package and requires separate dashboard configuration, Game Overrides doesn't actually have an SDK to install from Package Manager. It is a server side offering that affects values returned from other services, like Remote Config.
 
-To use these services in your game, activate each service for your Organization and project in the [Unity Dashboard](https://dashboard.unity3d.com/).
+To use these services in your game, activate each service for your Organization and project in the [Unity Cloud Dashboard](https://dashboard.unity3d.com/).
 
 ### Unity Cloud services configuration
 
-To replicate this sample scene's setup in your own Unity project, we need to configure the following items:
+To replicate this sample scene's setup in your own Unity project, configure the following items:
 
 * Cloud Code scripts
 * Economy items
 * Remote Config values
 * Remote Config Game Overrides
-* custom events and parameters for the Analytics service
+* Custom events and parameters for the Analytics service
 
-There are two main ways of doing this, either by [using the Deployment package](#using-the-deployment-package), or by [manually entering them using the Dashboard](#using-the-dashboard).
-We recommend the usage of the Deployment package since it will greatly accelerate this process.
+To configure these items you can [use the Deployment package](#using-the-deployment-package), or [manually enter them using the Unity Cloud Dashboard](#using-the-unity-cloud-dashboard).
+The recommended best practice is to use the Deployment package as it greatly accelerates this process.
 
 #### Using the Deployment package
 
-Here are the steps to deploy configuration using the Deployment package:
+To deploy configurations using the Deployment package:
 
-1. Open the [Deployment window](https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2/manual/deployment_window.html)
-1. Check in `Common` and `AB Test Level Difficulty`
-1. Click `Deploy Selection`
+1. Open the [Deployment window](https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2/manual/deployment_window.html).
+1. Check in `Common` and `AB Test Level Difficulty`.
+1. Click `Deploy Selection`.
 
-This will deploy the following items:
+This deploys the following items:
 
 * Cloud Code scripts
 * Economy items
 * Remote Config values
 
-The following items are not managed by the Deployment package at this time:
+The Deployment package doesn't support the following items:
 
-* Remote Config Game Overrides
-* custom events and parameters for the Analytics service
+* Remote Config Game Overrides with "Variants"
+* Custom events and parameters for the Analytics service
 
-To configure them, please refer to [the next section](#using-the-dashboard).
+To configure them, refer to [Using the Unity Cloud Dashboard](#using-the-unity-cloud-dashboard).
 
-#### Using the Dashboard
+#### Using the Unity Cloud Dashboard
 
-The [Dashboard](dashboard.unity3d.com) enables you to edit manually all your services configuration by project and environment.
-Here are the details necessary for the configuration of the current sample.
+You can use the [Unity Cloud Dashboard](dashboard.unity3d.com) to manually configure your services by project and environment.
+Refer to the following sections to configure this sample.
 
 ##### Analytics
 
 **Important:** This sample demonstrates the code that is needed to trigger Analytics events.
 However, additional code might be necessary to meet legal requirements such as GDPR, CCPA, and PIPL.
-For more information, see the documentation on [managing data privacy](https://docs.unity.com/analytics/ManagingDataPrivacy.html).
+For more information, refer to [managing data privacy](https://docs.unity.com/analytics/ManagingDataPrivacy.html).
 
-[Configure the following custom Analytics events](https://docs.unity.com/analytics/EventManager.html#Custom_Events):
+Configure the following [custom Analytics events](https://docs.unity.com/analytics/EventManager.html#Custom_Events):
 
 | **Event name**        | **Description**                                                                                                                                                                                                                                                   | **Enabled**  | **Custom parameters**                                                                                                                                                             |
 |-----------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|--------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -155,7 +155,7 @@ Alternatively, you can send only the ungrouped parameters (for example, buttonNa
 
 ##### Remote Config Game Overrides
 
-[Configure the following Overrides](https://docs.unity.com/gameoverrides/CreateAnOverride.html) in the **LiveOps** dashboard:
+Configure the following [Overrides](https://docs.unity.com/gameoverrides/CreateAnOverride.html) in the Unity Cloud Dashboard:
 
 | **Details**    | Name the Override “A/B Test Level Difficulty”.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            |
 |----------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -166,7 +166,7 @@ Alternatively, you can send only the ungrouped parameters (for example, buttonNa
 
 ##### Cloud Code
 
-[Publish the following script](https://docs.unity.com/cloud-code/implementation.html#Writing_your_first_script) in the **LiveOps** dashboard:
+Publish the following [script](https://docs.unity.com/cloud-code/implementation.html#Writing_your_first_script) in the Unity Cloud Dashboard:
 
 | **Script**                                    | **Parameters** | **Description**                                                                                                                   | Location in project                                                                                              |
 |-----------------------------------------------|----------------|-----------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------|
@@ -174,7 +174,7 @@ Alternatively, you can send only the ungrouped parameters (for example, buttonNa
 
 ##### Economy
 
-[Configure the following resources](https://docs.unity.com/economy/) in the **LiveOps** dashboard:
+Configure the following [resources](https://docs.unity.com/economy/) in the Unity Cloud Dashboard:
 
 | **Resource type** | **Resource item** | **ID** | **Description**                                                          |
 |-------------------|-------------------|--------|--------------------------------------------------------------------------|
@@ -182,7 +182,7 @@ Alternatively, you can send only the ungrouped parameters (for example, buttonNa
 
 ##### Remote Config Key/Values
 
-[Set up the following config values](https://docs.unity.com/remote-config/HowDoesRemoteConfigWork.html) in the **LiveOps** dashboard:
+Set up the following [config values](https://docs.unity.com/remote-config/HowDoesRemoteConfigWork.html) in the Unity Cloud Dashboard:
 
 | **Key**                        | **Type** | **Description**                                                              | **Value**                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
 |--------------------------------|----------|------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|

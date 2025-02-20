@@ -86,55 +86,50 @@ To replicate this use case, you need the following [Unity packages](https://docs
 | [Authentication](https://docs.unity.com/authentication/IntroUnityAuthentication.html)                                  | Automatically signs in the user anonymously to keep track of their data server-side.                                                                                                                                                                                                                                                                                                                                                                                 |
 | [Cloud Code](https://docs.unity.com/cloud-code/implementation.html)                                                    | Stores important validation logic server-side. In this sample, it has four main purposes:<br><ul><li>Retrieving the player's season progress, or resetting their progress if the season has changed.</li><li>Gaining season XP, potentially unlocking new reward tiers.</li><li>Claiming a reward tier, granting currency or inventory items.</li><li>Purchasing a battle pass, which unlocks more rewards and possibly grants rewards for previously claimed tiers. |
 | [Cloud Save](https://docs.unity.com/cloud-save/index.html#Implementation)\*                                            | Stores the player's season XP progress and battle pass ownership token. This sample doesn't actually use the Cloud Save methods in C#, as all of the Cloud Save work occurs in Cloud Code scripts.                                                                                                                                                                                                                                                                   |
+| [Deployment](https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2)                                      | The Deployment package provides a cohesive interface to deploy assets for Cloud Services.                                                                                                                                                                                                                                                                                                                                                                            |
 | [Economy](https://docs.unity.com/economy/implementation.html)                                                          | Retrieves the starting and updated currency balances at runtime.                                                                                                                                                                                                                                                                                                                                                                                                     |
 | [Game Overrides](https://docs.unity3d.com/Packages/com.unity.remote-config@3.2/manual/GameOverridesAndSettings.html)\* | Configures the four battle pass seasons and returns different reward tiers based on which Game Override is deemed active based on the current time. Note: These season configurations are shared with the Seasonal Events use case sample.                                                                                                                                                                                                                           |                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
 | [Remote Config](https://docs.unity3d.com/Packages/com.unity.remote-config@latest)\*                                    | Provides key-value pairs where the value that is mapped to a given key can change on the server side, either manually or based on specific Game Overrides.                                                                                                                                                                                                                                                                                                           |
-| [Deployment](https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2)                                      | The Deployment package provides a cohesive interface to deploy assets for Cloud Services.                                                                                                                                                                                                                                                                                                                                                                            |
 
  \*In this sample, the Cloud Save, Remote Config and Game Overrides services are only used on the Cloud Code (server) side. While these services play important roles in the use case, you aren’t required to install their SDKs in your Unity project.
 
-To use these services in your game, activate each service for your Organization and project in the [Unity Dashboard](https://dashboard.unity3d.com/).
+To use these services in your game, activate each service for your Organization and project in the [Unity Cloud Dashboard](https://dashboard.unity3d.com/).
 
 ### Unity Cloud services configuration
 
-To replicate this sample scene's setup in your own Unity project, we need to configure the following items:
+To replicate this sample scene's setup in your own Unity project, configure the following items:
 
 - Cloud Code scripts
 - Economy items
 - Remote Config values
 - Remote Config Game Overrides
 
-There are two main ways of doing this, either by [using the Deployment package](#using-the-deployment-package), or by [manually entering them using the Dashboard](#using-the-dashboard).
-We recommend the usage of the Deployment package since it will greatly accelerate this process.
+To configure these items you can [use the Deployment package](#using-the-deployment-package), or [manually enter them using the Unity Cloud Dashboard](#using-the-unity-cloud-dashboard).
+The recommended best practice is to use the Deployment package as it greatly accelerates this process.
 
 #### Using the Deployment package
 
-Here are the steps to deploy configuration using the Deployment package:
+To deploy configurations using the Deployment package:
 
-1. Open the [Deployment window](https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2/manual/deployment_window.html)
-1. Check in `Common` and `Battle Pass`
-1. Click `Deploy Selection`
+1. Open the [Deployment window](https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2/manual/deployment_window.html).
+1. Check in `Common` and `Battle Pass`.
+1. Click `Deploy Selection`.
 
-This will deploy the following items:
+This deploys the following items:
 
 - Cloud Code scripts
 - Economy items
 - Remote Config values
-
-The following items are not managed by the Deployment package at this time:
-
 - Remote Config Game Overrides
 
-To configure them, please refer to [the next section](#using-the-dashboard).
+#### Using the Unity Cloud Dashboard
 
-#### Using the Dashboard
-
-The [Dashboard](dashboard.unity3d.com) enables you to edit manually all your services configuration by project and environment.
-Here are the details necessary for the configuration of the current sample.
+You can use the [Unity Cloud Dashboard](dashboard.unity3d.com) to manually configure your services by project and environment.
+Refer to the following sections to configure this sample.
 
 ##### Game Overrides
 
-[Configure the following Overrides](https://docs.unity.com/gameoverrides/CreateAnOverride.html) in the **LiveOps** dashboard:
+Configure the following [Overrides](https://docs.unity.com/gameoverrides/CreateAnOverride.html) in the Unity Cloud  Dashboard:
 
 | **Details**    | Name the Override “Fall Event”.                                                                                                                                                                                                                                                                                                                                                                        |
 |----------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -168,7 +163,7 @@ Here are the details necessary for the configuration of the current sample.
 
 ##### Cloud Code
 
-[Publish the following scripts](https://docs.unity.com/cloud-code/implementation.html#Writing_your_first_script) in the **LiveOps** dashboard:
+Publish the following [scripts](https://docs.unity.com/cloud-code/implementation.html#Writing_your_first_script) in the Unity Cloud Dashboard:
 
 | **Script**                      | **Parameters**                                                                                                         | **Description**                                                                                                                                                                   | **Location in project**                                                           |
 |---------------------------------|------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------|
@@ -179,7 +174,7 @@ Here are the details necessary for the configuration of the current sample.
 
 ##### Economy
 
-[Configure the following resources](https://docs.unity.com/economy/) in the **LiveOps** dashboard:
+Configure the following [resources](https://docs.unity.com/economy/) in the Unity Cloud Dashboard:
 
 | **Resource type** | **Resource item** | **ID**    | **Description**                                                                                                    |
 |-------------------|-------------------|-----------|--------------------------------------------------------------------------------------------------------------------|
@@ -190,7 +185,7 @@ Here are the details necessary for the configuration of the current sample.
 | Inventory Item    | Sword             | `SWORD`   | An inventory item granted by some Battle Pass reward tiers.                                                        |
 | Inventory Item    | Shield            | `SHIELD`  | An inventory item granted by some Battle Pass reward tiers.                                                        |
 
-In addition, [configure the following virtual purchase](https://docs.unity.com/economy/item-types.html#Virtual_purchase) for the battle pass:
+In addition, configure the following [virtual purchase](https://docs.unity.com/economy/item-types.html#Virtual_purchase) for the battle pass:
 
 | **Item name**        | **ID**                 | **This purchase buys** | **This purchase costs** |
 |----------------------|------------------------|------------------------|-------------------------|
@@ -200,7 +195,7 @@ In addition, [configure the following virtual purchase](https://docs.unity.com/e
 
 #### Remote Config Key/Values
 
-[Set up the following config values](https://docs.unity.com/remote-config/HowDoesRemoteConfigWork.html) in the **LiveOps** dashboard:
+Set up the following [config values](https://docs.unity.com/remote-config/HowDoesRemoteConfigWork.html) in the Unity Cloud Dashboard:
 
 | **Value**                        | **Type** | **Description**                                                                                                                                                                                                                       | **Default value**                                                                   |
 |----------------------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------|

@@ -1,0 +1,44 @@
+{
+  "$schema": "https://ugs-config-schemas.unity3d.com/v1/game-overrides.schema.json",
+  "Overrides": {
+    "Summer Override": {
+      "Description": "Game Overrides description",
+      "Audience": { "Targets": [ ] },
+      "Rollout": 100,
+      "Condition": { "Value": "user.timestampMinutes % 10 == 8 || user.timestampMinutes % 10 == 9" },
+      "Variants": [{
+        "RemoteConfig": {
+            "Entries": {
+                "EVENT_NAME": "Summer Event",
+                "EVENT_KEY": "Summer",
+                "EVENT_END_TIME": 9,
+                "EVENT_TOTAL_DURATION_MINUTES": 2,
+                "SEASONAL_EVENTS_CHALLENGE_REWARD":
+                { "rewards":
+                [{
+                "id": "STAR",
+                "quantity": 50,
+                "spriteAddress": "Sprites/Currency/Star"
+                },
+                {
+                "id": "PEARL",
+                "quantity": 50,
+                "spriteAddress": "Sprites/Currency/Pearl"
+                },
+                {
+                "id": "GEM",
+                "quantity": 50,
+                "spriteAddress": "Sprites/Currency/Gem"
+                }]
+                }
+            },
+          "Types" : {
+            "EVENT_END_TIME": "INT",
+            "EVENT_TOTAL_DURATION_MINUTES": "INT"
+          }
+         }
+      }],
+      "Scheduling": { "StartDate": "2025-01-16T11:37:45.5015862-05:00" }
+    }
+  }
+}
