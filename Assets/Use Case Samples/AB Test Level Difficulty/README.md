@@ -108,10 +108,10 @@ This deploys the following items:
 * Cloud Code scripts
 * Economy items
 * Remote Config values
+* Remote Config Game Overrides with "Variants"
 
 The Deployment package doesn't support the following items:
 
-* Remote Config Game Overrides with "Variants"
 * Custom events and parameters for the Analytics service
 
 To configure them, refer to [Using the Unity Cloud Dashboard](#using-the-unity-cloud-dashboard).
