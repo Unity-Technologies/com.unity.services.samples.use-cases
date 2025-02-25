@@ -1,0 +1,128 @@
+{
+  "$schema": "https://ugs-config-schemas.unity3d.com/v1/game-overrides.schema.json",
+  "Overrides": {
+    "Winter Override": {
+      "Description": "Game Overrides description",
+      "Audience": { "Targets": [ ] },
+      "Rollout": 100,
+      "Condition": { "Value": "user.timestampMinutes % 10 == 3 || user.timestampMinutes % 10 == 4" },
+      "Variants": [{
+        "RemoteConfig": { "Entries":
+            {
+                "EVENT_NAME": "Winter Event",
+                "EVENT_KEY": "Winter",
+                "EVENT_END_TIME": 4,
+                "EVENT_TOTAL_DURATION_MINUTES": 2,
+                "BATTLE_PASS_REWARDS_FREE": [{
+                        "service": "inventory",
+                        "id": "SWORD",
+                        "quantity": 1,
+                        "spriteAddress": "Sprites/Inventory/Sword"
+                    }, {
+                        "service": "currency",
+                        "id": "PEARL",
+                        "quantity": 1,
+                        "spriteAddress": "Sprites/Currency/Pearl"
+                    }, {
+                        "service": "currency",
+                        "id": "COIN",
+                        "quantity": 1,
+                        "spriteAddress": "Sprites/Currency/Coin"
+                    }, {
+                        "service": "inventory",
+                        "id": "SHIELD",
+                        "quantity": 1,
+                        "spriteAddress": "Sprites/Inventory/Shield"
+                    }, {
+                        "service": "currency",
+                        "id": "STAR",
+                        "quantity": 1,
+                        "spriteAddress": "Sprites/Currency/Star"
+                    }, {
+                        "service": "currency",
+                        "id": "COIN",
+                        "quantity": 50,
+                        "spriteAddress": "Sprites/Currency/Coin"
+                    }, {
+                        "service": "inventory",
+                        "id": "SWORD",
+                        "quantity": 1,
+                        "spriteAddress": "Sprites/Inventory/Sword"
+                    }, {
+                        "service": "currency",
+                        "id": "PEARL",
+                        "quantity": 1,
+                        "spriteAddress": "Sprites/Currency/Pearl"
+                    }, {
+                        "service": "currency",
+                        "id": "STAR",
+                        "quantity": 1,
+                        "spriteAddress": "Sprites/Currency/Star"
+                    }, {
+                        "service": "inventory",
+                        "id": "SHIELD",
+                        "quantity": 1,
+                        "spriteAddress": "Sprites/Inventory/Shield"
+                    }],
+                "BATTLE_PASS_REWARDS_PREMIUM": [{
+                        "service": "currency",
+                        "id": "COIN",
+                        "quantity": 100,
+                        "spriteAddress": "Sprites/Currency/Coin"
+                    }, {
+                        "service": "currency",
+                        "id": "GEM",
+                        "quantity": 3,
+                        "spriteAddress": "Sprites/Currency/Gem"
+                    }, {
+                        "service": "currency",
+                        "id": "PEARL",
+                        "quantity": 7,
+                        "spriteAddress": "Sprites/Currency/Pearl"
+                    }, {
+                        "service": "currency",
+                        "id": "COIN",
+                        "quantity": 100,
+                        "spriteAddress": "Sprites/Currency/Coin"
+                    }, {
+                        "service": "currency",
+                        "id": "GEM",
+                        "quantity": 2,
+                        "spriteAddress": "Sprites/Currency/Gem"
+                    }, {
+                        "service": "currency",
+                        "id": "STAR",
+                        "quantity": 5,
+                        "spriteAddress": "Sprites/Currency/Star"
+                    }, {
+                        "service": "currency",
+                        "id": "COIN",
+                        "quantity": 200,
+                        "spriteAddress": "Sprites/Currency/Coin"
+                    }, {
+                        "service": "currency",
+                        "id": "GEM",
+                        "quantity": 2,
+                        "spriteAddress": "Sprites/Currency/Gem"
+                    }, {
+                        "service": "currency",
+                        "id": "COIN",
+                        "quantity": 200,
+                        "spriteAddress": "Sprites/Currency/Coin"
+                    }, {
+                        "service": "currency",
+                        "id": "GEM",
+                        "quantity": 4,
+                        "spriteAddress": "Sprites/Currency/Gem"
+                    }]
+            },
+            "Types" : {
+                "EVENT_END_TIME": "INT",
+                "EVENT_TOTAL_DURATION_MINUTES": "INT"
+            }
+       }
+      }],
+      "Scheduling": { "StartDate": "2025-01-16T11:37:45.5015862-05:00" }
+    }
+  }
+}

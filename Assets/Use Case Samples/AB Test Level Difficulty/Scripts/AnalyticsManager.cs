@@ -34,11 +34,11 @@ namespace Unity.Services.Samples.ABTestLevelDifficulty
         // can call when we're ready.
         public void SendSceneOpenedEvent()
         {
-            Dictionary<string, object> sceneOpenedParameters = new Dictionary<string, object>
+            var sceneOpened = new CustomEvent("SceneOpened")
             {
                 { "sceneName", k_SceneName }
             };
-            AnalyticsService.Instance.CustomData("SceneOpened", sceneOpenedParameters);
+            AnalyticsService.Instance.RecordEvent(sceneOpened);
             Debug.Log("Sending Scene opened event.");
         }
 
@@ -50,7 +50,7 @@ namespace Unity.Services.Samples.ABTestLevelDifficulty
             // buttonNameBySceneNameAndABGroup) so that you can view these combinations in Data Explorer at a glance.
             // Alternatively, you can include the single item parameters (i.e. buttonName, sceneName, and abGroup)
             // and do advanced analysis on them using Data Export.
-            Dictionary<string, object> actionButtonPressedParameters = new Dictionary<string, object>
+            CustomEvent actionButtonPressed = new CustomEvent("ActionButtonPressed")
             {
                 { "buttonName", buttonName },
                 { "sceneName", k_SceneName },
@@ -60,7 +60,7 @@ namespace Unity.Services.Samples.ABTestLevelDifficulty
                 { "buttonNameBySceneNameAndABGroup", $"{buttonName} - {k_SceneName} - {RemoteConfigManager.instance.abGroupName} ({RemoteConfigManager.instance.abTestID})" }
             };
 
-            AnalyticsService.Instance.CustomData("ActionButtonPressed", actionButtonPressedParameters);
+            AnalyticsService.Instance.RecordEvent(actionButtonPressed);
         }
 
         // The session length is sent when the Back button in the scene is clicked.
@@ -68,7 +68,7 @@ namespace Unity.Services.Samples.ABTestLevelDifficulty
         {
             var timeRange = Utils.GetElapsedTimeRange(m_SessionStartTime);
 
-            Dictionary<string, object> sceneSessionLengthParameters = new Dictionary<string, object>
+            CustomEvent sceneSessionLength = new CustomEvent("SceneSessionLength")
             {
                 { "timeRange", timeRange },
                 { "sceneName", k_SceneName },
@@ -78,7 +78,7 @@ namespace Unity.Services.Samples.ABTestLevelDifficulty
                 { "timeRangeBySceneNameAndABGroup", $"{timeRange} - {k_SceneName} - {RemoteConfigManager.instance.abGroupName} ({RemoteConfigManager.instance.abTestID})" }
             };
 
-            AnalyticsService.Instance.CustomData("SceneSessionLength", sceneSessionLengthParameters);
+            AnalyticsService.Instance.RecordEvent(sceneSessionLength);
             Debug.Log("Sending SceneSessionLength event: " + timeRange);
         }
 

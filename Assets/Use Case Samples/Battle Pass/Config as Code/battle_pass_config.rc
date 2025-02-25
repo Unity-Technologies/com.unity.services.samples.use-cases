@@ -2,7 +2,9 @@
   "entries": {
     "BATTLE_PASS_SEASON_XP_PER_TIER": 100,
     "BATTLE_PASS_REWARDS_FREE": [],
-    "BATTLE_PASS_REWARDS_PREMIUM": []
+    "BATTLE_PASS_REWARDS_PREMIUM": [],
+    "EVENT_END_TIME": 0
+            
   },
   "types": {
     "BATTLE_PASS_SEASON_XP_PER_TIER": "INT"

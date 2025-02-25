@@ -1,0 +1,73 @@
+{
+  "$schema": "https://ugs-config-schemas.unity3d.com/v1/game-overrides.schema.json",
+  "Overrides": {
+    "My first Game Override": {
+      "Description": "Game Overrides description",
+      "Audience": {
+        "Targets": ["Existing Players"]
+      },
+      "Rollout": 100.0,
+      "Condition": { "Value" : "true" },
+      "Variants": [
+        {
+          "Weight": 20,
+          "RemoteConfig": {
+            "Entries": {
+                "AB_TEST_GROUP": "A",
+                "AB_TEST_ID": "LevelDifficultyTest1",
+                "AB_TEST_LEVEL_UP_XP_NEEDED": 100
+            },
+            "Types" : {"AB_TEST_LEVEL_UP_XP_NEEDED" : "INT" }
+          }
+        },
+        {
+          "Weight": 20,
+          "RemoteConfig": {
+            "Entries": {
+                "AB_TEST_GROUP": "B",
+                "AB_TEST_ID": "LevelDifficultyTest1",
+                "AB_TEST_LEVEL_UP_XP_NEEDED": 80
+            },
+            "Types" : {"AB_TEST_LEVEL_UP_XP_NEEDED" : "INT" }
+          }
+        },
+        {
+          "Weight": 20,
+          "RemoteConfig": {
+            "Entries": {
+                "AB_TEST_GROUP": "C",
+                "AB_TEST_ID": "LevelDifficultyTest1",
+                "AB_TEST_LEVEL_UP_XP_NEEDED": 60
+            },
+            "Types" : {"AB_TEST_LEVEL_UP_XP_NEEDED" : "INT" }
+          }
+        },
+        {
+          "Weight": 20,
+          "RemoteConfig": {
+            "Entries": {
+                "AB_TEST_GROUP": "D",
+                "AB_TEST_ID": "LevelDifficultyTest1",
+                "AB_TEST_LEVEL_UP_XP_NEEDED": 50
+            },
+            "Types" : {"AB_TEST_LEVEL_UP_XP_NEEDED" : "INT" }
+          }
+        },
+        {
+          "Weight": 20,
+          "RemoteConfig": {
+            "Entries": {
+                "AB_TEST_GROUP": "E",
+                "AB_TEST_ID": "LevelDifficultyTest1",
+                "AB_TEST_LEVEL_UP_XP_NEEDED": 30
+            },
+            "Types" : {"AB_TEST_LEVEL_UP_XP_NEEDED" : "INT" }
+          }
+        }
+      ],
+      "Scheduling": {
+        "StartDate": "2025-01-28T18:37:51.9780304-05:00"
+      }
+    }
+  }
+}
