@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Default Local Group
+  m_EditorClassIdentifier: 
+  m_GroupName: Default Local Group
+  m_GUID: 28654e9adef151e4388a8a2cdc1c6a2b
+  m_SerializeEntries:
+  - m_GUID: 0a460f6750bafb142b0340a5e205adf4
+    m_Address: Assets/GemHunterMatch/Fonts/CurseCasual/Curse Casual SDF.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: bfbc3b08e466c7d458e1710f7bf96ebe, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 741c047be685baf47870e8535122c831, type: 2}
+    - {fileID: 11400000, guid: 7e2bdadab93a0e14bba117d0cd3a4407, type: 2}

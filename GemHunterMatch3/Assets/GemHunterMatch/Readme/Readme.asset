@@ -1,0 +1,113 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fcf7219bab7fe46a1ad266029b2fee19, type: 3}
+  m_Name: Readme
+  m_EditorClassIdentifier: 
+  icon: {fileID: 2800000, guid: 7c0822b0780ca4a74b276e50db2c68a3, type: 3}
+  title: 2D Sample project - Gem Hunter Match
+  sections:
+  - bannerImage: {fileID: 2800000, guid: 54417f56b93f445bb99a8653bfd80a05, type: 3}
+    heading: About this project
+    text: 'This sample shows how you can create great-looking 2D dynamic lighting
+      in match 3, word, and card games, in which static scenes and gameplay are common.
+      The sample uses the Sprite Custom Lit Shader Graph to create custom lighting
+      that illuminates the pieces in a simple but visually appealing way. This custom
+      shader is combined with out-of-the-box 2D lighting features, secondary textures,
+      and VFX Graph capabilities in URP.  You can add the sample content to your
+      own creative projects or add your own systems, graphics, levels, or collectables
+      to the sample. '
+    linkText: 
+    url: https://blog.unity.com/games/try-the-new-ui-toolkit-sample-now-available-on-the-asset-store
+  - bannerImage: {fileID: 2800000, guid: bbac1e6a0c73041d28970a1b8aabc003, type: 3}
+    heading: '2D lighting: Sprite Lit and Sprite Custom Lit shaders'
+    text: "The default Sprite Lit shader makes it easy to enhance games with real-time
+      2D lights, change the appearance of characters as they get closer to a light
+      source, or move light objects affecting the environment.  Sometimes, due to
+      gameplay, convenience, or art direction needs, you\u2019ll want to use a custom
+      lighting model. You can achieve this with a Sprite Custom Lit Shader Graph,
+      which enables you to modify the 2D Light Texture information, and/or illuminate
+      the sprite in creative ways. In Gem Hunter Match, for example, a \"fictional\"
+      light position is represented by a GameObject called LightRotator, which is
+      animated to create a glare effect off the gems. Both modified and fully customized
+      2D light information is in use in the TileShader Shader Graph applied to the
+      gems in the game. "
+    linkText: Watch the Unite 2023 session on 2D lighting in URP
+    url: https://www.youtube.com/watch?v=R1B5Aw8oBGg
+  - bannerImage: {fileID: 2800000, guid: d054423cd1c2943cd88a6d2fdb1faca5, type: 3}
+    heading: '2D effects with Shader Graph and VFX Graph '
+    text: 'In the recent past in Unity, you could create 2D effects mainly with the
+      CPU-based Built-In Particle System or by baking animation into sprites. In
+      Unity 2022 LTS, VFX Graph supports 2D effects, so you can now enable millions
+      of particles on the GPU. And add more visual variety and nuance to your graphics
+      and animation by rendering each particle with a Shader Graph shader that reacts
+      to 2D lights.  For example, the ripple effect in the sample is made with a
+      Shader Graph shader and the CameraSortingLayer texture enabled in the 2D Renderer
+      Data Asset. All the effects can be found in the VFX folder '
+    linkText: 
+    url: 
+  - bannerImage: {fileID: 2800000, guid: 621856f4b512a4599b6803bdad4fae70, type: 3}
+    heading: Tilemap as a level design tool
+    text: "Unity\u2019s Tilemap system provides visual, out-of-the box design tools
+      that you can use instead of creating your own custom level design tools for
+      a grid-based game. For example, the Tilemap API offers convenient ways to track
+      the position of the many pieces. The level design in Gem Hunter Match was mainly
+      created with a Tilemap (named Logic) in which all the tiles are swapped out
+      for actual GameObjects when you press Play. "
+    linkText: Watch it in the Youtube channel
+    url: https://www.youtube.com/@unity/videos
+  - bannerImage: {fileID: 2800000, guid: 3a916430d49664f248b218d079620571, type: 3}
+    heading: More 2D URP lighting and effects in  Happy Harvest
+    text: "Happy Harvest is another sample that shows you how to implement a variety
+      of 2D lighting and special effects with URP and Unity 2022 LTS. This sample
+      is a 2D top-down farming simulation game that uses 2D lights, shadow effects,
+      skeletal animation, sprite libraries, visual effects, and more.   Finally,
+      don\u2019t forget to check our other 2D lighting and effects sample, Dragon
+      Crashers, recently updated with a mini-manual to help guide you through the
+      sample\u2019s lighting setup. Both projects are available on the Unity Asset
+      Store. "
+    linkText: Get Happy Harvest
+    url: https://blog.unity.com/games/happy-harvest-demo-latest-2d-techniques
+  - bannerImage: {fileID: 2800000, guid: 1517bf53dd14145098b1dcecb9c16713, type: 3}
+    heading: Want to make the game your own?
+    text: "You can use the assets in Gem Hunter Match in your own projects. Or, add
+      your own content to the sample, like creating new levels. Go to File > New
+      Scene to use the template. The LevelData object contains the moves and goals
+      information. The Grid/Tilemap and Tilemap_Frame contain the visual background,
+      while the Logic Tilemap contains the pieces\u2019 placeholders and spawners
+      (the locations from where pieces will drop)."
+    linkText: 
+    url: 
+  - bannerImage: {fileID: 2800000, guid: 81096787a56b54a2cabeb68ad28240d5, type: 3}
+    heading: Get our foundational 2D e-book for artists
+    text: 'The e-book 2D game art, animation, and lighting for artists provides in-depth
+      instruction for the techniques in our 2D samples, and much more. '
+    linkText: Get the free e-book
+    url: https://unity.com/resources/2d-game-art-animation-lighting-for-artists-ebook?isGated=false
+  - bannerImage: {fileID: 2800000, guid: e62abc739c5d14d4da887e4f81d81f55, type: 3}
+    heading: More technical e-books
+    text: "Whether you\u2019re interested in coding performant gameplay or creating
+      state-of-the art visual and lighting effects, you\u2019ll find tons of valuable
+      know-how in Unity\u2019s technical e-books, which you can download for free. "
+    linkText: Get all the e-books
+    url: https://unity.com/how-to#all-e-books
+  - bannerImage: {fileID: 0}
+    heading: Forum post for feedback and support
+    text: You can share your feedback about Gem Hunter Match and the companion content
+      in the dedicated forum post.
+    linkText: Join the forum
+    url: https://forum.unity.com/forums/2d.53/
+  - bannerImage: {fileID: 0}
+    heading: 
+    text: Access UI documentation
+    linkText: Go to the manual
+    url: https://docs.unity3d.com/Manual/UI-system-compare.html
+  loadedLayout: 1

@@ -42,6 +42,11 @@ _Note: This project uses the Unity Mediation package, which requires [CocoaPods]
 
 _Tested with Unity 2021.3 for PC and Mac._
 
+
+- [GemHunterMatch3](GemHunterMatch3/README.md) - Official Unity sample project showcasing common features found in mobile and live service games. The project demonstrates a player hub or metagame with social features, a progression system, and an in-game store.
+
+_Tested with Unity 6.3 for PC and Mac._
+
 ## Additional Samples
 
 On top of this project, the following additional samples can help you implement UGS features in your games.
