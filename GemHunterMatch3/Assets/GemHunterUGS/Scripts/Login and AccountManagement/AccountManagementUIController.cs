@@ -1,6 +1,8 @@
 using System;
 using System.Threading.Tasks;
+#if FACEBOOK_SDK
 using Facebook.Unity;
+#endif
 using Unity.Services.Authentication;
 using Unity.Services.Authentication.PlayerAccounts;
 using UnityEngine;

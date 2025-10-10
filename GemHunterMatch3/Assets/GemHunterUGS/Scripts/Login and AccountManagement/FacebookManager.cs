@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
+#if FACEBOOK_SDK
 using Facebook.Unity;
+#endif
 using Logger = GemHunterUGS.Scripts.Utilities.Logger;
 namespace GemHunterUGS.Scripts.Login_and_AccountManagement
 {
@@ -23,6 +25,7 @@ namespace GemHunterUGS.Scripts.Login_and_AccountManagement
         /// </summary>
         private static async Task InitializeAsync()
         {
+#if FACEBOOK_SDK
             if (s_IsInitialized) return;
 
             if (s_InitializationTask == null)
@@ -44,10 +47,12 @@ namespace GemHunterUGS.Scripts.Login_and_AccountManagement
             }
 
             await s_InitializationTask.Task;
+#endif
         }
         
         private static void InitCallback()
         {
+#if FACEBOOK_SDK
             if (FB.IsInitialized)
             {
                 FB.ActivateApp();
@@ -60,6 +65,7 @@ namespace GemHunterUGS.Scripts.Login_and_AccountManagement
                 Logger.LogWarning("Failed to initialize the Facebook SDK");
                 s_InitializationTask.TrySetException(new Exception("Failed to initialize the Facebook SDK"));
             }
+#endif
         }
 
         private void OnHideUnity(bool isGameShown)
@@ -70,6 +76,7 @@ namespace GemHunterUGS.Scripts.Login_and_AccountManagement
 
         public async Task<(bool success, string token, string userId)> LoginAsync()
         {
+#if FACEBOOK_SDK
             await EnsureInitializedAsync();
 
             // Check if Facebook App ID is configured
@@ -134,19 +141,31 @@ namespace GemHunterUGS.Scripts.Login_and_AccountManagement
             });
 
             return await tcs.Task;
+#else
+            return (false, null, null);
+#endif
         }
         
         /// <summary>
         /// Check if user is currently logged in to Facebook
         /// </summary>
-        public bool IsLoggedIn => FB.IsLoggedIn;
+        public bool IsLoggedIn =>
+            #if FACEBOOK_SDK
+            FB.IsLoggedIn;
+            #else
+            false;
+            #endif
         
         /// <summary>
         /// Get current access token if logged in
         /// </summary>
         public string GetCurrentToken()
         {
+#if FACEBOOK_SDK
             return FB.IsLoggedIn ? AccessToken.CurrentAccessToken?.TokenString : null;
+#else
+            return null;
+            #endif
         }
         
         private async Task EnsureInitializedAsync()
@@ -159,6 +178,7 @@ namespace GemHunterUGS.Scripts.Login_and_AccountManagement
         
         public async Task RefreshAccessTokenAsync()
         {
+#if FACEBOOK_SDK
             await EnsureInitializedAsync();
 
             var tcs = new TaskCompletionSource<bool>();
@@ -176,8 +196,8 @@ namespace GemHunterUGS.Scripts.Login_and_AccountManagement
                     tcs.SetResult(true);
                 }
             });
-
             await tcs.Task;
+#endif
         }
 
         public void Dispose()
