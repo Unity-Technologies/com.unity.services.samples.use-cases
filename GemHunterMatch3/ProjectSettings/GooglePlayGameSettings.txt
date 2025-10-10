@@ -1,0 +1,11 @@
+lastUpgrade=20000
+proj.pluginVersion=2.0.0
+proj.AppId=149845788338
+and.BundleId=com.unity.match3
+proj.classDir=Assets%2fGemHunterUGS%2fScripts%2fGooglePlayGames
+proj.ConstantsClassName=GPGConstants
+and.ResourceData=%3c%3fxml+version%3d%221.0%22+encoding%3d%22utf-8%22%3f%3e%0d%0a%3c%21--Google+Play+game+services+IDs.+Save+this+file+as+res%2fvalues%2fgames-ids.xml+in+your+project.--%3e%0d%0a%3cresources%3e%0d%0a++%3c%21--app_id--%3e%0d%0a++%3cstring+name%3d%22app_id%22+translatable%3d%22false%22%3e149845788338%3c%2fstring%3e%0d%0a++%3c%21--package_name--%3e%0d%0a++%3cstring+name%3d%22package_name%22+translatable%3d%22false%22%3ecom.unity.match3%3c%2fstring%3e%0d%0a++%3c%21--achievement+Earn+1%2c000+Coins--%3e%0d%0a++%3cstring+name%3d%22achievement_earn_1000_coins%22+translatable%3d%22false%22%3eCgkIso2FnK4EEAIQAg%3c%2fstring%3e%0d%0a++%3c%21--event+Earned+One+Thousand+Coins--%3e%0d%0a++%3cstring+name%3d%22event_earned_one_thousand_coins%22+translatable%3d%22false%22%3eCgkIso2FnK4EEAIQAQ%3c%2fstring%3e%0d%0a%3c%2fresources%3e
+and.ClientId=149845788338-8nup5d5b2vl0cob5rj63c3f0q4so5e0p.apps.googleusercontent.com
+android.SetupDone=true
+App.NearbdServiceId=com.unity.match3
+android.NearbySetupDone=true

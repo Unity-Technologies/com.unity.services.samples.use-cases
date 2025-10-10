@@ -1,0 +1,56 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 469c24fdb3bd6431b92cc1465bd9166b, type: 3}
+  m_Name: RemoteConfigDataStoreAsset
+  m_EditorClassIdentifier: 
+  _rsKeyList: "[\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\": \"4ce6a6c0-6c6e-471f-a807-43622b9d4cdc\"\r\n   
+    },\r\n    \"rs\": {\r\n      \"key\": \"DAILY_REWARDS_CONFIG\",\r\n      \"type\":
+    \"json\",\r\n      \"schemaId\": null,\r\n      \"value\": {\r\n        \"DailyRewards\":
+    [\r\n          {\r\n            \"id\": \"COIN\",\r\n            \"quantity\":
+    100\r\n          },\r\n          {\r\n            \"id\": \"COIN\",\r\n           
+    \"quantity\": 200\r\n          },\r\n          {\r\n            \"id\": \"GEM\",\r\n           
+    \"quantity\": 1\r\n          }\r\n        ],\r\n        \"BonusReward\": {\r\n         
+    \"id\": \"HORIZONTAL_ROCKET\",\r\n          \"amount\": 1\r\n        },\r\n       
+    \"secondsPerDay\": 86400,\r\n        \"totalDays\": 30\r\n      }\r\n    }\r\n 
+    },\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\": \"ebed76ab-19f5-4d88-b33e-0b976823235b\"\r\n   
+    },\r\n    \"rs\": {\r\n      \"key\": \"AREA_COMPLETE_REWARDS\",\r\n      \"type\":
+    \"json\",\r\n      \"schemaId\": null,\r\n      \"value\": {\r\n        \"Area1CompleteRewards\":
+    [\r\n          {\r\n            \"id\": \"HORIZONTAL_ROCKET\",\r\n           
+    \"amount\": 2\r\n          },\r\n          {\r\n            \"id\": \"VERTICAL_ROCKET\",\r\n           
+    \"amount\": 2\r\n          },\r\n          {\r\n            \"id\": \"COLOR_BONUS\",\r\n           
+    \"amount\": 2\r\n          }\r\n        ]\r\n      }\r\n    }\r\n  },\r\n  {\r\n   
+    \"metadata\": {\r\n      \"entityId\": \"a3c6de2b-1b20-400e-bb7e-18c520bb5304\"\r\n   
+    },\r\n    \"rs\": {\r\n      \"key\": \"UPGRADABLE_AREA_ITEM\",\r\n      \"type\":
+    \"json\",\r\n      \"schemaId\": null,\r\n      \"value\": {}\r\n    }\r\n  }\r\n]"
+  _rsLastCachedKeyList: "[\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\": \"4ce6a6c0-6c6e-471f-a807-43622b9d4cdc\"\r\n   
+    },\r\n    \"rs\": {\r\n      \"key\": \"DAILY_REWARDS_CONFIG\",\r\n      \"type\":
+    \"json\",\r\n      \"schemaId\": null,\r\n      \"value\": {\r\n        \"DailyRewards\":
+    [\r\n          {\r\n            \"id\": \"COIN\",\r\n            \"quantity\":
+    100\r\n          },\r\n          {\r\n            \"id\": \"COIN\",\r\n           
+    \"quantity\": 200\r\n          },\r\n          {\r\n            \"id\": \"GEM\",\r\n           
+    \"quantity\": 1\r\n          }\r\n        ],\r\n        \"BonusReward\": {\r\n         
+    \"id\": \"HORIZONTAL_ROCKET\",\r\n          \"amount\": 1\r\n        },\r\n       
+    \"secondsPerDay\": 86400,\r\n        \"totalDays\": 30\r\n      }\r\n    }\r\n 
+    },\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\": \"ebed76ab-19f5-4d88-b33e-0b976823235b\"\r\n   
+    },\r\n    \"rs\": {\r\n      \"key\": \"AREA_COMPLETE_REWARDS\",\r\n      \"type\":
+    \"json\",\r\n      \"schemaId\": null,\r\n      \"value\": {\r\n        \"Area1CompleteRewards\":
+    [\r\n          {\r\n            \"id\": \"HORIZONTAL_ROCKET\",\r\n           
+    \"amount\": 2\r\n          },\r\n          {\r\n            \"id\": \"VERTICAL_ROCKET\",\r\n           
+    \"amount\": 2\r\n          },\r\n          {\r\n            \"id\": \"COLOR_BONUS\",\r\n           
+    \"amount\": 2\r\n          }\r\n        ]\r\n      }\r\n    }\r\n  },\r\n  {\r\n   
+    \"metadata\": {\r\n      \"entityId\": \"a3c6de2b-1b20-400e-bb7e-18c520bb5304\"\r\n   
+    },\r\n    \"rs\": {\r\n      \"key\": \"UPGRADABLE_AREA_ITEM\",\r\n      \"type\":
+    \"json\",\r\n      \"schemaId\": null,\r\n      \"value\": {}\r\n    }\r\n  }\r\n]"
+  _environments: "[\r\n  {\r\n    \"projectId\": \"cd9a8e0f-41a9-41b7-b63a-7b913a03e982\",\r\n   
+    \"name\": \"production\",\r\n    \"id\": \"53d6f5df-1fd4-4050-bc4e-7c80be7817c0\",\r\n   
+    \"isDefault\": true,\r\n    \"createdAt\": \"2024-02-29T19:43:33Z\",\r\n    \"updatedAt\":
+    \"2024-02-29T19:43:33Z\"\r\n  }\r\n]"

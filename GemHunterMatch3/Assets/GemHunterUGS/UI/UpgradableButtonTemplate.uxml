@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:Button text="Area" name="Upgradable1Button" class="upgradable-button" style="overflow: visible; visibility: visible; display: flex; padding-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; width: 100%; height: 100%;">
+        <ui:ProgressBar value="50" title="area-1-progress" high-value="100" name="ProgressBar" class="upgradable-progress-bar" style="align-items: stretch; align-self: center; align-content: center;" />
+        <ui:VisualElement name="StarGraphic" style="position: absolute; height: 121px; width: 80px; background-image: url(&quot;project://database/Assets/GemHunterUGS/Art/UI_Assets-Updated.psd?fileID=2889012364142747841&amp;guid=ac8d91374d183b142b4426b3604fdc7d&amp;type=3#ic_star&quot;); top: -37px; left: -48px; -unity-background-scale-mode: scale-to-fit;" />
+    </ui:Button>
+</ui:UXML>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<projectSettings>
+  <projectSetting name="com.google.external-dependency-managerAnalyticsCookie" value="38c84681046f45e88f1e9e130556cf02" />
+  <projectSetting name="com.google.external-dependency-managerAnalyticsEnabled" value="True" />
+  <projectSetting name="Google.IOSResolver.AutoPodToolInstallInEditor" value="True" />
+  <projectSetting name="Google.IOSResolver.CocoapodsIntegrationMethod" value="2" />
+  <projectSetting name="Google.IOSResolver.PodfileAddUseFrameworks" value="True" />
+  <projectSetting name="Google.IOSResolver.PodfileAllowPodsInMultipleTargets" value="True" />
+  <projectSetting name="Google.IOSResolver.PodfileAlwaysAddMainTarget" value="True" />
+  <projectSetting name="Google.IOSResolver.PodfileEnabled" value="True" />
+  <projectSetting name="Google.IOSResolver.PodfileStaticLinkFrameworks" value="True" />
+  <projectSetting name="Google.IOSResolver.PodToolExecutionViaShellEnabled" value="True" />
+  <projectSetting name="Google.IOSResolver.PodToolShellExecutionSetLang" value="True" />
+  <projectSetting name="Google.IOSResolver.SwiftFrameworkSupportWorkaroundEnabled" value="True" />
+  <projectSetting name="Google.IOSResolver.SwiftLanguageVersion" value="5.0" />
+  <projectSetting name="Google.IOSResolver.VerboseLoggingEnabled" value="False" />
+  <projectSetting name="Google.PackageManagerResolver.VerboseLoggingEnabled" value="False" />
+  <projectSetting name="Google.VersionHandler.VerboseLoggingEnabled" value="True" />
+  <projectSetting name="Google.VersionHandler.VersionHandlingEnabled" value="True" />
+  <projectSetting name="GooglePlayServices.AndroidPackageInstallationEnabled" value="True" />
+  <projectSetting name="GooglePlayServices.AutoResolutionDisabledWarning" value="True" />
+  <projectSetting name="GooglePlayServices.AutoResolveOnBuild" value="True" />
+  <projectSetting name="GooglePlayServices.AutoResolverEnabled" value="True" />
+  <projectSetting name="GooglePlayServices.ExplodeAars" value="True" />
+  <projectSetting name="GooglePlayServices.LocalMavenRepoDir" value="Assets/GeneratedLocalRepo" />
+  <projectSetting name="GooglePlayServices.PatchAndroidManifest" value="True" />
+  <projectSetting name="GooglePlayServices.PatchMainTemplateGradle" value="True" />
+  <projectSetting name="GooglePlayServices.PatchPropertiesTemplateGradle" value="True" />
+  <projectSetting name="GooglePlayServices.PatchSettingsTemplateGradle" value="True" />
+  <projectSetting name="GooglePlayServices.PromptBeforeAutoResolution" value="False" />
+  <projectSetting name="GooglePlayServices.UseFullCustomMavenRepoPathWhenExport" value="True" />
+  <projectSetting name="GooglePlayServices.UseFullCustomMavenRepoPathWhenNotExport" value="False" />
+  <projectSetting name="GooglePlayServices.UseGradleDaemon" value="False" />
+  <projectSetting name="GooglePlayServices.UseJetifier" value="False" />
+  <projectSetting name="GooglePlayServices.UserRejectedGradleUpgrade" value="False" />
+  <projectSetting name="GooglePlayServices.VerboseLogging" value="False" />
+</projectSettings>

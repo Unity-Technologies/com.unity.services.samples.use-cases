@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="ShopEntry" class="shop-entry" style="flex-grow: 1; border-left-color: rgba(0, 0, 0, 0); border-right-color: rgba(0, 0, 0, 0); border-top-color: rgba(0, 0, 0, 0); border-bottom-color: rgba(0, 0, 0, 0);">
+        <ui:VisualElement name="ItemIcon" />
+        <ui:Label tabindex="-1" text="Item Name" display-tooltip-when-elided="true" name="ItemName" />
+        <ui:Label tabindex="-1" text="2" display-tooltip-when-elided="true" name="ItemPrice">
+            <ui:VisualElement name="CoinIcon" style="position: absolute; width: 50px; height: 50px; top: 35%; bottom: 35%; background-image: url(&apos;project://database/Assets/GemHunterMatch/Images/UI/Sprite_coin_icon.png?fileID=21300000&amp;guid=4baf87582a25f324f82be8fb235d32ef&amp;type=3#Sprite_coin_icon&apos;);" />
+        </ui:Label>
+        <ui:Button text="Buy" display-tooltip-when-elided="true" name="BuyButton" enable-rich-text="true" class="match-button" style="background-color: rgba(0, 0, 0, 0); border-left-color: rgba(0, 0, 0, 0); border-right-color: rgba(0, 0, 0, 0); border-top-color: rgba(0, 0, 0, 0); border-bottom-color: rgba(0, 0, 0, 0);" />
+    </ui:VisualElement>
+</ui:UXML>

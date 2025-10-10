@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95831d92834c3bc44af22b9a42ae2749, type: 3}
+  m_Name: LiveItem
+  m_EditorClassIdentifier: 
+  ItemSprite: {fileID: 21300000, guid: c2804d3b17a42e549a7a781417fe2036, type: 3}
+  ItemName: Live
+  Price: 50

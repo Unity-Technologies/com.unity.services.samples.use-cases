@@ -1,0 +1,16 @@
+Library
+.idea
+2d-game-match3.sln.DotSettings.user
+Logs
+obj
+Temp
+UserSettings
+UIElementsSchema
+Build
+*.sln
+*.csproj
+Assembly-CSharp.Player.csproj.private_dst.0
+Assembly-CSharp.Player.csproj.private.0
+.vscode
+.vs
+TemporaryKeystore
