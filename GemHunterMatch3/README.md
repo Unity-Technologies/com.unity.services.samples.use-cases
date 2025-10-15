@@ -1,3 +1,4 @@
+# GemHunter Match 3
 Gem Hunter Match - Games Services is an official Unity sample project based on common features in mobile and live service games. The project is a sample slice of a player hub or metagame where there are social features, a progression system, and an in-game store.
 Gem Hunter is based on the popular grid-based, match 3 genre, but any style or genre of game may implement similar features. This project corresponds to our latest YouTube tutorial series on the Unity Gaming Services. We recommend starting with the tutorial series if you are new to mobile development or the Unity Gaming Services. In the series, we start from scratch and build out a system to begin the game session with new and returning players.
 
@@ -6,3 +7,12 @@ Gem Hunter Match is an example of how to integrate the services (e.g. Cloud Save
 Note that you will need to look at both the client-side scripts in the Asset folder GemHunterUGS/Scripts and the server-side scripts that are part of Cloud Code solution in the project folder GemHunterUGSCloud.
 
 This sample is based on Gem Hunter Match originally released on the Asset Store to showcase the capabilities of 2D lighting and visual effects in the Universal Render Pipeline (URP).
+
+## Third-party SDKs
+
+In order to fully utilize the sample by following the tutorials, you will need to obtain third-party SDKs:
+
+1. [Facebook SDK for Unity](https://developers.facebook.com/docs/unity)
+2. [Google Play Unity Plugin](https://developer.android.com/games/pgs/unity/unity-start)
+3. [Google Dependency Manager (EDM4U)](https://github.com/googlesamples/unity-jar-resolver)
+    a. You will be prompted to obtain this when opening the project
