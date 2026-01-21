@@ -1,0 +1,15 @@
+{
+  "$schema": "https://ugs-config-schemas.unity3d.com/v1/economy/economy-inventory.schema.json",
+  "name": "Infinite Heart",
+  "customData": {
+    "properties": {
+      "activatedAt": {
+        "type": "number"
+      },
+      "active": {
+        "type": "boolean"
+      }
+    },
+    "type": "object"
+  }
+}

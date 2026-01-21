@@ -14,3 +14,6 @@ Assembly-CSharp.Player.csproj.private.0
 .vscode
 .vs
 TemporaryKeystore
+bin
+!GemHunterUGSCloud/GemHunterUGSCloud.sln
+!GemHunterUGSCloud/Project/GemHunterUGSCloud.csproj

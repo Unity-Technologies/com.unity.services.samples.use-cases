@@ -1,0 +1,7 @@
+{
+  "$schema": "https://ugs-config-schemas.unity3d.com/v1/economy/economy-inventory.schema.json",
+  "name": "Vertical Rocket",
+  "customData": {
+    "amount": 0
+  }
+}
