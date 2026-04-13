@@ -118,7 +118,7 @@ To configure them, refer to [Using the Unity Cloud Dashboard](#using-the-unity-c
 
 #### Using the Unity Cloud Dashboard
 
-You can use the [Unity Cloud Dashboard](dashboard.unity3d.com) to manually configure your services by project and environment.
+You can use the [Unity Cloud Dashboard](https://dashboard.unity3d.com/) to manually configure your services by project and environment.
 Refer to the following sections to configure this sample.
 
 ##### Analytics

@@ -1,12 +1,12 @@
 import * as vscode from 'vscode';
 import { UnityDataService } from './services/UnityDataService';
 
-export function activate(context: vscode.ExtensionContext) {
+export function activate(context: vscode.ExtensionContext): void {
     console.log('Congratulations, your extension "into-the-void-extension" is now active!');
 
     const dataService = new UnityDataService();
 
-    let disposable = vscode.commands.registerCommand('into-the-void.syncUnity', async () => {
+    const disposable = vscode.commands.registerCommand('into-the-void.syncUnity', async () => {
         vscode.window.showInformationMessage('Syncing with Unity 6...');
         try {
             const data = await dataService.fetchLatestProjectData();
@@ -19,4 +19,4 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(disposable);
 }
 
-export function deactivate() {}
+export function deactivate(): void {}

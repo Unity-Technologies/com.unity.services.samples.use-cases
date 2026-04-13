@@ -96,7 +96,7 @@ This deploys the following items:
 
 #### Using the Unity Cloud Dashboard
 
-You can use the [Unity Cloud Dashboard](dashboard.unity3d.com) to manually configure your services by project and environment.
+You can use the [Unity Cloud Dashboard](https://dashboard.unity3d.com/) to manually configure your services by project and environment.
 Refer to the following sections to configure this sample.
 
 ##### Cloud Code

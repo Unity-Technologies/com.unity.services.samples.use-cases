@@ -16,7 +16,7 @@ We take the security of our systems and the data of our users seriously. If you 
 
 Instead, please send a detailed report to:
 
-**[security@milehighworldllc.com](mailto:security@milehighworldllc.com)**
+**[security@milehigh-world.com](mailto:security@milehigh-world.com)**
 
 ### What to include in your report
 

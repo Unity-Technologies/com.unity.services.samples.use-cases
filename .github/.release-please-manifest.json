@@ -1,3 +1,5 @@
 {
-  ".": "1.0.0"
+  ".": "1.0.0",
+  "plugins/vscode-extension": "1.0.0",
+  "packages/amazonq": "1.0.0"
 }

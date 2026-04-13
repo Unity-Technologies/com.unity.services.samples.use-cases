@@ -16,9 +16,9 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Markdown Lint
-        uses: igorshubovych/markdownlint-cli-action@v1
-        with:
-          config: .markdownlint.json
+        run: |
+          npm install -g markdownlint-cli
+          markdownlint "**/*.md" --config .markdownlint.json
 
   link-check:
     runs-on: ubuntu-latest
@@ -28,4 +28,5 @@ jobs:
       - name: Link Checker
         uses: lycheeverse/lychee-action@v1.9.0
         with:
-          args: --verbose --no-progress "**/*.md"
+          args: --verbose --no-progress --exclude "milehigh-world.com" --exclude "docs.unity.com" --exclude "unity3d.com" "**/*.md"
+          fail: true

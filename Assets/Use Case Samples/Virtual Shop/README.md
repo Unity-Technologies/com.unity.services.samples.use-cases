@@ -89,7 +89,7 @@ This will deploy all the necessary items.
 
 #### Using the Dashboard
 
-The [Dashboard](dashboard.unity3d.com) enables you to edit manually all your services configuration by project and environment.
+The [Dashboard](https://dashboard.unity3d.com/) enables you to edit manually all your services configuration by project and environment.
 Here are the details necessary for the configuration of the current sample.
 
 ##### Economy
