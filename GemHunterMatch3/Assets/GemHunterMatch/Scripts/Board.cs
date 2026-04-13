@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Match3;
 using UnityEngine;
+using UnityEngine.Profiling;
 using UnityEngine.InputSystem;
 using UnityEngine.Tilemaps;
 using UnityEngine.VFX;
@@ -73,6 +74,12 @@ namespace Match3
         private Dictionary<Vector3Int, Action> m_MatchedCallback = new();
 
         private List<IBoardAction> m_BoardActions = new();
+
+        // Optimized buffers for Flood-Fill
+        private bool[,] m_VisitedBuffer;
+        private Stack<Vector3Int> m_CheckStack = new(64);
+        private List<Vector3Int> m_GemListBuffer = new(64);
+        private System.Diagnostics.Stopwatch m_CheckStopwatch = new();
 
         private bool m_SwipeQueued;
         private Vector3Int m_StartSwipe;
@@ -180,6 +187,10 @@ namespace Match3
             }
 
             GenerateBoard();
+
+            // Initialize optimization buffers
+            m_VisitedBuffer = new bool[m_BoundsInt.width + 1, m_BoundsInt.height + 1];
+
             FindAllPossibleMatch();
         
             m_HintIndicator = Instantiate(GameManager.Instance.Settings.VisualSettings.HintPrefab);
@@ -1190,51 +1201,63 @@ namespace Match3
             if (centerGem.ContainingGem.CurrentMatch != null)
                 return false;
 
-            Vector3Int[] offsets = new[]
+            m_CheckStopwatch.Restart();
+            Profiler.BeginSample("IXNode.FloodFill");
+
+            // Optimized non-recursive flood-fill using pre-allocated buffers
+            m_CheckStack.Clear();
+            m_GemListBuffer.Clear();
+
+            // Reset visited buffer for the relevant area
+            System.Array.Clear(m_VisitedBuffer, 0, m_VisitedBuffer.Length);
+
+            m_CheckStack.Push(startCell);
+            m_VisitedBuffer[startCell.x - m_BoundsInt.xMin, startCell.y - m_BoundsInt.yMin] = true;
+
+            int targetGemType = centerGem.ContainingGem.GemType;
+
+            while (m_CheckStack.Count > 0)
             {
-                Vector3Int.up, Vector3Int.right, Vector3Int.down, Vector3Int.left
-            };
+                var current = m_CheckStack.Pop();
+                m_GemListBuffer.Add(current);
 
-            //First find all the connected gem of the same type
-            List<Vector3Int> gemList = new List<Vector3Int>();
-            List<Vector3Int> checkedCells = new();
-
-            Queue<Vector3Int> toCheck = new();
-            toCheck.Enqueue(startCell);
-
-            while (toCheck.Count > 0)
-            {
-                var current = toCheck.Dequeue();
-
-                gemList.Add(current);
-                checkedCells.Add(current);
-
-                foreach (var dir in offsets)
+                foreach (var dir in BoardCell.Neighbours)
                 {
                     var nextCell = current + dir;
 
-                    if (checkedCells.Contains(nextCell))
+                    int localX = nextCell.x - m_BoundsInt.xMin;
+                    int localY = nextCell.y - m_BoundsInt.yMin;
+
+                    // Bounds check
+                    if (localX < 0 || localX > m_BoundsInt.width || localY < 0 || localY > m_BoundsInt.height)
                         continue;
 
-                    if (CellContent.TryGetValue(current + dir, out var content)
+                    if (m_VisitedBuffer[localX, localY])
+                        continue;
+
+                    if (CellContent.TryGetValue(nextCell, out var content)
                         && content.CanMatch()
                         && content.ContainingGem.CurrentMatch == null
-                        && content.ContainingGem.GemType == centerGem.ContainingGem.GemType)
+                        && content.ContainingGem.GemType == targetGemType)
                     {
-                        toCheck.Enqueue(nextCell);
+                        m_VisitedBuffer[localX, localY] = true;
+                        m_CheckStack.Push(nextCell);
                     }
                 }
             }
 
-            //we try to fit any bonus shapes in
-            List<Vector3Int> temporaryShapeMatch = new();
+            var gemList = m_GemListBuffer;
+
+            // Pre-allocate temporaryShapeMatch to avoid heap allocation in tight loops
+            // Using a reasonably large initial capacity
+            List<Vector3Int> temporaryShapeMatch = new(32);
             MatchShape matchedShape = null;
             List<BonusGem> matchedBonusGem = new();
             foreach (var bonusGem in GameManager.Instance.Settings.BonusSettings.Bonuses)
             {
                 foreach (var shape in bonusGem.Shapes)
                 {
-                    if (shape.FitIn(gemList, ref temporaryShapeMatch))
+                    if (shape.FitIn(gemList, ref temporaryShapeMatch, m_VisitedBuffer, m_BoundsInt))
                     {
                         if (matchedShape == null || matchedShape.Cells.Count < shape.Cells.Count)
                         {
@@ -1253,22 +1276,32 @@ namespace Match3
             }
 
             //-- now we build a list of all line of 3+ gems
-            List<Vector3Int> lineList = new();
+            List<Vector3Int> lineList = new(16);
 
             foreach (var idx in gemList)
             {
                 //for each dir (up/down/left/right) if there is no gem in that dir, that mean this could be the start of
                 //a matching line, so we check in the opposite direction till we have no more gem
-                foreach (var dir in offsets)
+                foreach (var dir in BoardCell.Neighbours)
                 {
-                    if (!gemList.Contains(idx + dir))
+                    Vector3Int neighborPos = idx + dir;
+                    int nX = neighborPos.x - m_BoundsInt.xMin;
+                    int nY = neighborPos.y - m_BoundsInt.yMin;
+                    bool neighborInList = nX >= 0 && nX <= m_BoundsInt.width && nY >= 0 && nY <= m_BoundsInt.height && m_VisitedBuffer[nX, nY];
+
+                    if (!neighborInList)
                     {
                         var currentList = new List<Vector3Int>() { idx };
-                        var next = idx - dir;
-                        while (gemList.Contains(next))
+                        Vector3Int next = idx - dir;
+                        int nextX = next.x - m_BoundsInt.xMin;
+                        int nextY = next.y - m_BoundsInt.yMin;
+
+                        while (nextX >= 0 && nextX <= m_BoundsInt.width && nextY >= 0 && nextY <= m_BoundsInt.height && m_VisitedBuffer[nextX, nextY])
                         {
                             currentList.Add(next);
                             next -= dir;
+                            nextX = next.x - m_BoundsInt.xMin;
+                            nextY = next.y - m_BoundsInt.yMin;
                         }
 
                         if (currentList.Count >= 3)
@@ -1281,7 +1314,12 @@ namespace Match3
 
             //no lines and no bonus match, so there is no match in that.
             if (lineList.Count == 0 && temporaryShapeMatch.Count == 0)
+            {
+                Profiler.EndSample();
+                m_CheckStopwatch.Stop();
+                // Logger.LogDemo($"[Bolt] DoCheck took {m_CheckStopwatch.ElapsedTicks} ticks (no match)");
                 return false;
+            }
 
             if (createMatch)
             {
@@ -1309,6 +1347,9 @@ namespace Match3
                 UIHandler.Instance.TriggerCharacterAnimation(UIHandler.CharacterAnimation.Match);
             }
 
+            Profiler.EndSample();
+            m_CheckStopwatch.Stop();
+            // Logger.LogDemo($"[Bolt] DoCheck took {m_CheckStopwatch.ElapsedTicks} ticks");
             return true;
         }
 
