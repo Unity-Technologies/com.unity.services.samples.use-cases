@@ -1,6 +1,17 @@
 import { ProjectUpdate, UnityUpdatePayload } from '../models/ProjectUpdate';
 
 /**
+ * Custom error class for Unity synchronization operations.
+ */
+export class UnitySyncError extends Error {
+    constructor(message: string, public readonly code?: number) {
+        super(message);
+        this.name = 'UnitySyncError';
+        Object.setPrototypeOf(this, UnitySyncError.prototype);
+    }
+}
+
+/**
  * Service responsible for orchestrating data synchronization between
  * the VS Code extension and the core Unity 6 environment.
  */
@@ -12,21 +23,22 @@ export class UnityDataService {
     public async fetchLatestProjectData(): Promise<ProjectUpdate[]> {
         try {
             // Mocking an asynchronous data pipeline fetch
-            return await new Promise<ProjectUpdate[]>((resolve) => {
+            const updates = await new Promise<ProjectUpdate[]>((resolve) => {
                 setTimeout(() => {
-                    const updates: ProjectUpdate[] = [
+                    const data: ProjectUpdate[] = [
                         {
                             id: '001',
                             timestamp: Date.now(),
                             payload: { status: 'synchronized' }
                         }
                     ];
-                    resolve(updates);
+                    resolve(data);
                 }, 500);
             });
+            return updates;
         } catch (error) {
-            console.error('Failed to fetch latest project data:', error);
-            throw new Error(`UnityDataService: Synchronization failed. ${error instanceof Error ? error.message : String(error)}`);
+            const message = error instanceof Error ? error.message : String(error);
+            throw new UnitySyncError(`Synchronization failed: ${message}`);
         }
     }
 
@@ -43,8 +55,7 @@ export class UnityDataService {
             const fetchPromises = ids.map(id => this.fetchUpdateById(id));
             return await Promise.all(fetchPromises);
         } catch (error) {
-            console.error('Concurrent update processing failed:', error);
-            throw new Error('UnityDataService: Batch processing failed.');
+            throw new UnitySyncError('Batch processing failed.', 500);
         }
     }
 
@@ -64,6 +75,6 @@ export class UnityDataService {
      * Validates the integrity of an update payload.
      */
     public validatePayload(payload: UnityUpdatePayload): boolean {
-        return !!(payload.status || payload.detail);
+        return !!(payload.status || payload.detail || payload.errorCode);
     }
 }

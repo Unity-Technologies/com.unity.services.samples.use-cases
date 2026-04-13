@@ -2,9 +2,14 @@
  * Represents the structure of data payloads received from the Unity pipeline.
  */
 export interface UnityUpdatePayload {
-    status?: string;
+    /** Current synchronization status of the project */
+    status?: 'synchronized' | 'out_of_sync' | 'error';
+    /** Detailed message or description of the update */
     detail?: string;
-    [key: string]: string | number | boolean | undefined;
+    /** Optional error code if the status is 'error' */
+    errorCode?: number;
+    /** Additional metadata for the update */
+    metadata?: Record<string, string | number | boolean>;
 }
 
 /**
