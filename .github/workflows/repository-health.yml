@@ -18,7 +18,7 @@ jobs:
       - name: Markdown Lint
         run: |
           npm install -g markdownlint-cli
-          markdownlint "**/*.md" --config .markdownlint.json
+          markdownlint "**/*.md" --config .markdownlint.json --ignore "**/node_modules/**"
 
   link-check:
     runs-on: ubuntu-latest

@@ -12,7 +12,9 @@ export function activate(context: vscode.ExtensionContext): void {
             const data = await dataService.fetchLatestProjectData();
             vscode.window.showInformationMessage(`Sync Complete: Received ${data.length} updates.`);
         } catch (error) {
-            vscode.window.showErrorMessage(`Sync Failed: ${error}`);
+            const message = error instanceof Error ? error.message : String(error);
+            console.error(`[into-the-void] Sync Error: ${message}`);
+            vscode.window.showErrorMessage(`Sync Failed: ${message}`);
         }
     });
 

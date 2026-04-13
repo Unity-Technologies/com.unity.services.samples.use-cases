@@ -1,20 +1,20 @@
 # Contributing to Into the Void
 
-Thank you for your interest in contributing to the **Into the Void** ecosystem. To maintain architectural integrity and ensure seamless automated workflows, we enforce a strict set of contribution protocols. **Non-compliant contributions will be rejected.**
+Thank you for your interest in contributing to the **Into the Void** ecosystem. To maintain architectural integrity and ensure seamless automated workflows, we enforce a strict set of contribution protocols. **Non-compliant contributions will be rejected without exception.**
 
 ## Mandatory Branching Strategy
 
-All contributions **must** follow our strictly defined branching model. Pull Requests from branches that do not follow this naming convention will not be reviewed. Branches must be prefixed according to their purpose:
+All contributions **must** follow our strictly defined branching model. Pull Requests from branches that do not follow this naming convention will be automatically closed. Branches must be prefixed according to their purpose:
 
 *   **`feature/`**: New functional development or significant enhancements.
 *   **`hotfix/`**: Critical patches for production-ready code.
-*   **`agent/`**: AI-driven development tasks, automated architectural refinements, and infrastructure-as-code updates.
+*   **`agent/`**: AI-driven development tasks, automated architectural refinements, infrastructure-as-code updates, and agentic optimizations.
 
 **Example:** `feature/integration-unity-6`, `agent/refactor-ts-services`, `hotfix/memory-leak-fix`.
 
 ## Mandatory Commit Message Protocol
 
-We strictly adhere to the [Conventional Commits](https://www.conventionalcommits.org/) specification (v1.0.0). This is critical for our automated versioning and changelog generation via `release-please`.
+We strictly adhere to the [Conventional Commits](https://www.conventionalcommits.org/) specification (v1.0.0). This protocol is fundamental to our automated versioning and changelog generation via `release-please`. Failure to follow this protocol disrupts our CI/CD pipeline.
 
 **Format:** `<type>(<scope>): <description>`
 
