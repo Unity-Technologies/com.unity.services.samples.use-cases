@@ -1,0 +1,147 @@
+{
+  "entries": {
+    "DAILY_REWARDS_CONFIG": {
+      "dailyRewards": [
+        {
+          "id": "COIN",
+          "quantity": 10
+        },
+        {
+          "id": "COIN",
+          "quantity": 20
+        },
+        {
+          "id": "COIN",
+          "quantity": 30
+        },
+        {
+          "id": "COIN",
+          "quantity": 40
+        },
+        {
+          "id": "COIN",
+          "quantity": 50
+        },
+        {
+          "id": "COIN",
+          "quantity": 60
+        },
+        {
+          "id": "COIN",
+          "quantity": 70
+        },
+        {
+          "id": "COIN",
+          "quantity": 80
+        },
+        {
+          "id": "COIN",
+          "quantity": 90
+        },
+        {
+          "id": "COIN",
+          "quantity": 100
+        },
+        {
+          "id": "COIN",
+          "quantity": 110
+        },
+        {
+          "id": "COIN",
+          "quantity": 120
+        },
+        {
+          "id": "COIN",
+          "quantity": 130
+        },
+        {
+          "id": "COIN",
+          "quantity": 140
+        },
+        {
+          "id": "COIN",
+          "quantity": 150
+        },
+        {
+          "id": "COIN",
+          "quantity": 160
+        },
+        {
+          "id": "COIN",
+          "quantity": 170
+        },
+        {
+          "id": "COIN",
+          "quantity": 180
+        },
+        {
+          "id": "COIN",
+          "quantity": 190
+        },
+        {
+          "id": "COIN",
+          "quantity": 200
+        },
+        {
+          "id": "COIN",
+          "quantity": 210
+        },
+        {
+          "id": "COIN",
+          "quantity": 220
+        },
+        {
+          "id": "COIN",
+          "quantity": 230
+        },
+        {
+          "id": "COIN",
+          "quantity": 240
+        },
+        {
+          "id": "COIN",
+          "quantity": 250
+        },
+        {
+          "id": "COIN",
+          "quantity": 260
+        },
+        {
+          "id": "COIN",
+          "quantity": 270
+        },
+        {
+          "id": "COIN",
+          "quantity": 280
+        },
+        {
+          "id": "COIN",
+          "quantity": 290
+        },
+        {
+          "id": "COIN",
+          "quantity": 300
+        }
+      ],
+      "secondsPerDay": 30,
+      "totalDays": 30
+    },
+    "AREA_COMPLETE_REWARDS": {
+      "area1CompleteRewards": [
+        {
+          "id": "COLOR_BONUS",
+          "amount": 4
+        },
+        {
+          "id": "VERTICAL_ROCKET",
+          "amount": 4
+        },
+        {
+          "id": "LARGE_BOMB",
+          "amount": 4
+        }
+      ]
+    }
+  },
+  "types": {}
+}

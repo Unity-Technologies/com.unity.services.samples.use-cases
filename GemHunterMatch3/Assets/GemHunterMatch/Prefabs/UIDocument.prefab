@@ -1,0 +1,68 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &809629293478245050
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2956174047639187855}
+  - component: {fileID: 504573943912951336}
+  - component: {fileID: 3742865961744458264}
+  m_Layer: 5
+  m_Name: UIDocument
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2956174047639187855
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 809629293478245050}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &504573943912951336
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 809629293478245050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_PanelSettings: {fileID: 11400000, guid: 8a415f75cb57ea54eb5e880422067d93, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 8bd3d3a0d2d335d46a607938106cef40, type: 3}
+  m_SortingOrder: 0
+--- !u!114 &3742865961744458264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 809629293478245050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6ecfb699dee48447a04131eab9d08ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GemGoalTemplate: {fileID: 9197481963319205126, guid: 46e256bb648e0e640a5d0e7575b27412, type: 3}
+  PortraitCameraPrefab: {fileID: 933719180453573544, guid: 864e5c5ce0cc62b4b81714b79790076d, type: 3}
+  CoinSprite: {fileID: 21300000, guid: 4baf87582a25f324f82be8fb235d32ef, type: 3}
+  ShopItemEntryTemplate: {fileID: 9197481963319205126, guid: 30891e04d7af6a84f835e6b59aeca6cd, type: 3}
+  BonusItemTemplate: {fileID: 9197481963319205126, guid: 483e68b0bf3854fa9a2ad52f310c7ade, type: 3}

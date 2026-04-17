@@ -1,0 +1,161 @@
+#ClaimListViewParent {
+    margin-right: 18px;
+}
+
+#ClaimListView {
+    justify-content: flex-start;
+    align-self: stretch;
+    padding-right: 8px;
+    margin-right: 0;
+    width: auto;
+}
+
+#ClaimListView > .unity-collection-view__scroll-view {
+    justify-content: space-between;
+    align-items: stretch;
+    margin-left: 0;
+    padding-right: 0;
+    align-self: auto;
+    align-content: auto;
+    flex-grow: 1;
+}
+
+#ClaimListView > .unity-collection-view__scroll-view > #unity-content-and-vertical-scroll-container > .unity-scroll-view__vertical-scroller {
+    width: 14px;
+    margin-left: 0;
+    padding-left: 16px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#ClaimListView > .unity-collection-view__scroll-view > #unity-content-and-vertical-scroll-container > .unity-scroll-view__vertical-scroller > #unity-high-button {
+    display: none;
+    background-image: none;
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+    -unity-text-outline-width: 0;
+    justify-content: flex-start;
+    align-items: stretch;
+    align-self: auto;
+}
+
+#ClaimListView > .unity-collection-view__scroll-view > #unity-content-and-vertical-scroll-container > .unity-scroll-view__vertical-scroller > #unity-low-button {
+    display: none;
+    flex-grow: 1;
+    align-self: auto;
+}
+
+#ClaimListView > .unity-collection-view__scroll-view > #unity-content-and-vertical-scroll-container > .unity-scroll-view__vertical-scroller > #unity-slider {
+    align-self: auto;
+    align-content: auto;
+    width: 20px;
+    padding-left: 0;
+    margin-left: 0;
+    flex-grow: 1;
+    justify-content: flex-start;
+    align-items: auto;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    flex-direction: column;
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+    border-bottom-right-radius: 14px;
+    border-bottom-left-radius: 14px;
+}
+
+#ClaimListView > .unity-collection-view__scroll-view > #unity-content-and-vertical-scroll-container > .unity-scroll-view__vertical-scroller > #unity-slider > .unity-slider__input > #unity-drag-container {
+    background-color: rgba(0, 0, 0, 0.25);
+    border-radius: 7px;
+    margin: 0;
+    padding: 0;
+    align-items: auto;
+    justify-content: flex-start;
+    width: 100px;
+    align-self: center;
+    align-content: auto;
+    flex-grow: 1;
+    flex-direction: column;
+    padding-left: 0;
+    flex-wrap: nowrap;
+    flex-shrink: 1;
+    overflow: visible;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    right: auto;
+    left: auto;
+}
+
+#ClaimListView > .unity-collection-view__scroll-view > #unity-content-and-vertical-scroll-container > .unity-scroll-view__vertical-scroller > #unity-slider > .unity-slider__input > #unity-drag-container > #unity-dragger {
+    width: 22%;
+    background-color: rgba(0, 0, 0, 0.48);
+    border-radius: 7px;
+    border-width: 0;
+    margin: 0;
+    align-self: center;
+    transition-property: all;
+    transition-duration: 0.1s;
+    transition-timing-function: ease-out;
+    opacity: 1;
+    align-content: stretch;
+    justify-content: space-around;
+    align-items: center;
+    height: 100%;
+    -unity-background-scale-mode: stretch-to-fill;
+    flex-grow: 1;
+    scale: 1 1;
+    border-left-color: rgb(0, 0, 0);
+    border-right-color: rgb(0, 0, 0);
+    border-top-color: rgb(0, 0, 0);
+    border-bottom-color: rgb(0, 0, 0);
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    flex-direction: column;
+    margin-right: 0;
+    -unity-background-image-tint-color: rgba(0, 0, 0, 0);
+    rotate: 0;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    flex-shrink: 1;
+    background-position-y: center 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    background-size: 100% 100%;
+    right: auto;
+    left: auto;
+}
+
+#ClaimListView > .unity-collection-view__scroll-view > #unity-content-and-vertical-scroll-container > .unity-scroll-view__vertical-scroller > #unity-slider > .unity-slider__input > #unity-drag-container > #unity-tracker {
+    visibility: hidden;
+    background-color: rgba(0, 0, 0, 0.46);
+    -unity-background-image-tint-color: rgb(0, 0, 0);
+    width: 100%;
+    flex-grow: 1;
+    align-items: center;
+    align-self: center;
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
+    border-bottom-right-radius: 40px;
+    border-bottom-left-radius: 40px;
+}

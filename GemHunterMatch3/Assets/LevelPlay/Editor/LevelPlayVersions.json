@@ -1,0 +1,3146 @@
+{
+  "unityPackage": {
+    "displayName": "Unity Package",
+    "packageURL": "https://github.com/ironsource-mobile/Unity-sdk/raw/master/${VERSION}/UnityLevelPlay_v${VERSION}.unitypackage",
+    "versions": {
+      "8.9.0": {
+        "ironSourceSdkVersion": "[8.9.1, 9.0.0["
+      },
+      "8.8.1": {
+        "ironSourceSdkVersion": "[8.7.0, 8.9.0["
+      },
+      "8.8.0": {
+        "ironSourceSdkVersion": "[8.7.0, 8.9.0["
+      },
+      "8.7.0": {
+        "ironSourceSdkVersion": "[8.7.0, 8.9.0["
+      },
+      "8.6.0": {
+        "ironSourceSdkVersion": "[8.6.0, 8.9.0["
+      },
+      "8.5.1": {
+        "ironSourceSdkVersion": "[8.5.0, 8.9.0["
+      },
+      "8.5.0": {
+        "ironSourceSdkVersion": "[8.5.0, 8.9.0["
+      },
+      "8.4.1": {
+        "ironSourceSdkVersion": "[8.4.0, 8.9.0["
+      },
+      "8.4.0": {
+        "ironSourceSdkVersion": "[8.4.0, 8.9.0["
+      }
+    }
+  },
+  "IronSourceSdk": {
+    "displayName": "IronSource SDK",
+    "dependencyXmlURL": "https://s3.amazonaws.com/ssa.public/Dependencies-xmls/IronSource/${VERSION}/IronSourceSDKDependencies.xml",
+    "dependencyXmlFileName": "IronSourceSDKDependencies.xml",
+    "updateMessage": "LevelPlay SDK 8.8.0 Update: a new version of the LevelPlay SDK is now available. Update your Unity\npackage from Package Manager (Ads Mediation UPM Package) or from the LevelPlay Network\nManager (UPM or Unity Plugin). If you're unable to update the Unity Plugin from Network Manager,\ndownload the new version here: <a href=\"https://developers.is.com/ironsource-mobile/unity/unity-plugin/\">https://developers.is.com/ironsource-mobile/unity/unity-plugin/</a>",
+    "versions": {
+      "8.9.1": {
+        "androidSdkVersion": "8.9.1",
+        "iosSdkVersion": "8.9.1.0",
+        "message": "You've upgraded to LevelPlay SDK 8.9.1. \n\nTo access new features for Unity, make sure you've upgraded your Unity package to the latest. If\nyou're unable to update the Unity Plugin from Network Manager, download the latest version here:\n<a href=\"https://developers.is.com/ironsource-mobile/unity/unity-plugin/\">https://developers.is.com/ironsource-mobile/unity/unity-plugin/</a>"
+      },
+      "8.8.0": {
+        "androidSdkVersion": "8.8.0",
+        "iosSdkVersion": "8.8.0.0",
+        "message": "You've upgraded to LevelPlay SDK 8.8.0. \n\nTo access new features for Unity, make sure you've upgraded your Unity package to the latest. If\nyou're unable to update the Unity Plugin from Network Manager, download the latest version here:\n<a href=\"https://developers.is.com/ironsource-mobile/unity/unity-plugin/\">https://developers.is.com/ironsource-mobile/unity/unity-plugin/</a>"
+      },
+      "8.7.0": {
+        "androidSdkVersion": "8.7.0",
+        "iosSdkVersion": "8.7.0.0",
+        "message": "You've upgraded to LevelPlay SDK 8.7.0. \n\nTo access new features for Unity, make sure you've upgraded your Unity package to the latest. If\nyou're unable to update the Unity Plugin from Network Manager, download the latest version here:\n<a href=\"https://developers.is.com/ironsource-mobile/unity/unity-plugin/\">https://developers.is.com/ironsource-mobile/unity/unity-plugin/</a>"
+      },
+      "8.6.2": {
+        "androidSdkVersion": "8.6.1",
+        "iosSdkVersion": "8.6.1.0",
+        "message": "You've upgraded to LevelPlay SDK 8.6.2. \n\nTo access new features for Unity, make sure you've upgraded your Unity package to the latest. If\nyou're unable to update the Unity Plugin from Network Manager, download the latest version here:\n<a href=\"https://developers.is.com/ironsource-mobile/unity/unity-plugin/\">https://developers.is.com/ironsource-mobile/unity/unity-plugin/</a>"
+      },
+      "8.6.1": {
+        "androidSdkVersion": "8.6.1",
+        "iosSdkVersion": "8.6.0.0",
+        "message": "You've upgraded to LevelPlay SDK 8.6.1. \n\nTo access new features for Unity, make sure you've upgraded your Unity package to the latest. If\nyou're unable to update the Unity Plugin from Network Manager, download the latest version here:\n<a href=\"https://developers.is.com/ironsource-mobile/unity/unity-plugin/\">https://developers.is.com/ironsource-mobile/unity/unity-plugin/</a>"
+      },
+      "8.6.0": {
+        "androidSdkVersion": "8.6.0",
+        "iosSdkVersion": "8.6.0.0",
+        "message": "You've upgraded to LevelPlay SDK 8.6.0. \n\nTo access new features for Unity, make sure you've upgraded your Unity package to the latest. If\nyou're unable to update the Unity Plugin from Network Manager, download the latest version here:\n<a href=\"https://developers.is.com/ironsource-mobile/unity/unity-plugin/\">https://developers.is.com/ironsource-mobile/unity/unity-plugin/</a>"
+      },
+      "8.5.1": {
+        "androidSdkVersion": "8.5.0",
+        "iosSdkVersion": "8.5.1.0",
+        "message": "You've upgraded to version 8.5.1 of the ironSource SDK for LevelPlay.\n\nTo access new Unity features and improvements, make sure your\nUnity package is updated to the latest version.\n\nIf you are unable to update the Unity Plugin from the LevelPlay Network Manager,\ndownload the latest version from the Knowledge Center here:\n<a href=\"https://developers.is.com/ironsource-mobile/unity/unity-plugin/\">https://developers.is.com/ironsource-mobile/unity/unity-plugin/</a>"
+      },
+      "8.5.0": {
+        "androidSdkVersion": "8.5.0",
+        "iosSdkVersion": "8.5.0.0",
+        "message": "You've upgraded to version 8.5.0 of the ironSource SDK for LevelPlay.\n\nTo access new Unity features and improvements, make sure your\nUnity package is updated to the latest version.\n\nIf you are unable to update the Unity Plugin from the LevelPlay Network Manager,\ndownload the latest version from the Knowledge Center here:\n<a href=\"https://developers.is.com/ironsource-mobile/unity/unity-plugin/\">https://developers.is.com/ironsource-mobile/unity/unity-plugin/</a>"
+      },
+      "8.4.0": {
+        "androidSdkVersion": "8.4.0",
+        "iosSdkVersion": "8.4.0.0",
+        "message": "You've upgraded to ironSource SDK 8.4.0.\n\nTo access new features and improvements for Unity, please make sure you have also\nupgraded your Unity package to the latest version.\nIf you integrated LevelPlay using the Unity Plugin and you are unable to update\nfrom the Network Manager, download the latest version from the Knowledge Center\nat the URL below and import it into your project:\n<a href=\"https://developers.is.com/ironsource-mobile/unity/unity-plugin/\">https://developers.is.com/ironsource-mobile/unity/unity-plugin/</a>"
+      }
+    }
+  },
+  "adapters": {
+    "UnityAds": {
+      "displayName": "Unity Ads",
+      "isRecommended": true,
+      "dependencyXmlURL": "https://s3.amazonaws.com/ssa.public/Dependencies-xmls/UnityAds/${VERSION}/ISUnityAdsAdapterDependencies.xml",
+      "dependencyXmlFileName": "ISUnityAdsAdapterDependencies.xml",
+      "SKAdNetworkIdXmlURL": "https://s3.amazonaws.com/ssa.public/Unity/SKAdNetwork-IDs/All/skadnetworks.unityads.plist.xml",
+      "versions": {
+        "4.3.60.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.55",
+            "adNetworkVersion": "4.15.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.52.0",
+            "adNetworkVersion": "4.15.0"
+          }
+        },
+        "4.3.59.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.54",
+            "adNetworkVersion": "4.14.2"
+          },
+          "ios": {
+            "adapterVersion": "4.3.51.0",
+            "adNetworkVersion": "4.14.2"
+          }
+        },
+        "4.3.58.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.53",
+            "adNetworkVersion": "4.14.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.50.0",
+            "adNetworkVersion": "4.14.1"
+          }
+        },
+        "4.3.57.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.52",
+            "adNetworkVersion": "4.14.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.50.0",
+            "adNetworkVersion": "4.14.1"
+          }
+        },
+        "4.3.56.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.51",
+            "adNetworkVersion": "4.14.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.49.0",
+            "adNetworkVersion": "4.14.0"
+          }
+        },
+        "4.3.55.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.50",
+            "adNetworkVersion": "4.13.2"
+          },
+          "ios": {
+            "adapterVersion": "4.3.48.0",
+            "adNetworkVersion": "4.13.2"
+          }
+        },
+        "4.3.54.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.49",
+            "adNetworkVersion": "4.13.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.47.0",
+            "adNetworkVersion": "4.13.1"
+          }
+        },
+        "4.3.53.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.48",
+            "adNetworkVersion": "4.13.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.47.0",
+            "adNetworkVersion": "4.13.1"
+          }
+        },
+        "4.3.52.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.47",
+            "adNetworkVersion": "4.13.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.46.0",
+            "adNetworkVersion": "4.13.0"
+          }
+        },
+        "4.3.51.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.46",
+            "adNetworkVersion": "4.12.5"
+          },
+          "ios": {
+            "adapterVersion": "4.3.45.0",
+            "adNetworkVersion": "4.12.5"
+          }
+        },
+        "4.3.50.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.45",
+            "adNetworkVersion": "4.12.5"
+          },
+          "ios": {
+            "adapterVersion": "4.3.45.0",
+            "adNetworkVersion": "4.12.5"
+          }
+        },
+        "4.3.49.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.44",
+            "adNetworkVersion": "4.12.4"
+          },
+          "ios": {
+            "adapterVersion": "4.3.44.0",
+            "adNetworkVersion": "4.12.4"
+          }
+        },
+        "4.3.48.1": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.43",
+            "adNetworkVersion": "4.12.3"
+          },
+          "ios": {
+            "adapterVersion": "4.3.43.1",
+            "adNetworkVersion": "4.12.3"
+          }
+        }
+      }
+    },
+    "APS": {
+      "displayName": "Amazon Publisher Services",
+      "dependencyXmlURL": "https://s3.amazonaws.com/ssa.public/Dependencies-xmls/APS/${VERSION}/ISAPSAdapterDependencies.xml",
+      "dependencyXmlFileName": "ISAPSAdapterDependencies.xml",
+      "SKAdNetworkIdXmlURL": "https://s3.amazonaws.com/ssa.public/Unity/SKAdNetwork-IDs/All/skadnetworks.aps.plist.xml",
+      "versions": {
+        "4.3.20.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.17",
+            "adNetworkVersion": "11.0.0+"
+          },
+          "ios": {
+            "adapterVersion": "4.3.20.0",
+            "adNetworkVersion": "5.2.0"
+          }
+        },
+        "4.3.19.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.17",
+            "adNetworkVersion": "11.0.0+"
+          },
+          "ios": {
+            "adapterVersion": "4.3.19.0",
+            "adNetworkVersion": "5.1.0"
+          }
+        },
+        "4.3.18.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.16",
+            "adNetworkVersion": "10.0.0+"
+          },
+          "ios": {
+            "adapterVersion": "4.3.19.0",
+            "adNetworkVersion": "5.1.0"
+          }
+        },
+        "4.3.17.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.16",
+            "adNetworkVersion": "10.0.0+"
+          },
+          "ios": {
+            "adapterVersion": "4.3.18.0",
+            "adNetworkVersion": "5.0.1"
+          }
+        },
+        "4.3.16.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.15",
+            "adNetworkVersion": "9.10.0+"
+          },
+          "ios": {
+            "adapterVersion": "4.3.17.0",
+            "adNetworkVersion": "4.10.1"
+          }
+        },
+        "4.3.15.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.14",
+            "adNetworkVersion": "9.10.0+"
+          },
+          "ios": {
+            "adapterVersion": "4.3.17.0",
+            "adNetworkVersion": "4.10.1"
+          }
+        },
+        "4.3.14.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.14",
+            "adNetworkVersion": "9.10.0+"
+          },
+          "ios": {
+            "adapterVersion": "4.3.16.0",
+            "adNetworkVersion": "4.10.0"
+          }
+        },
+        "4.3.13.2": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.13",
+            "adNetworkVersion": "9.10.0+"
+          },
+          "ios": {
+            "adapterVersion": "4.3.15.2",
+            "adNetworkVersion": "4.9.7"
+          }
+        }
+      }
+    },
+    "AppLovin": {
+      "displayName": "AppLovin",
+      "dependencyXmlURL": "https://s3.amazonaws.com/ssa.public/Dependencies-xmls/AppLovin/${VERSION}/ISAppLovinAdapterDependencies.xml",
+      "dependencyXmlFileName": "ISAppLovinAdapterDependencies.xml",
+      "SKAdNetworkIdXmlURL": "https://s3.amazonaws.com/ssa.public/Unity/SKAdNetwork-IDs/All/skadnetworks.applovin.plist.xml",
+      "versions": {
+        "4.3.60.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.54",
+            "adNetworkVersion": "13.3.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.55.0",
+            "adNetworkVersion": "13.3.1"
+          }
+        },
+        "4.3.59.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.53",
+            "adNetworkVersion": "13.2.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.54.0",
+            "adNetworkVersion": "13.2.0"
+          }
+        },
+        "4.3.58.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.52",
+            "adNetworkVersion": "13.2.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.54.0",
+            "adNetworkVersion": "13.2.0"
+          }
+        },
+        "4.3.57.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.51",
+            "adNetworkVersion": "13.1.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.53.0",
+            "adNetworkVersion": "13.1.0"
+          }
+        },
+        "4.3.56.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.50",
+            "adNetworkVersion": "13.1.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.52.0",
+            "adNetworkVersion": "13.1.0"
+          }
+        },
+        "4.3.55.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.49",
+            "adNetworkVersion": "13.0.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.51.0",
+            "adNetworkVersion": "13.0.1"
+          }
+        },
+        "4.3.54.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.48",
+            "adNetworkVersion": "13.0.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.50.0",
+            "adNetworkVersion": "13.0.1"
+          }
+        },
+        "4.3.53.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.47",
+            "adNetworkVersion": "13.0.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.49.0",
+            "adNetworkVersion": "13.0.0"
+          }
+        },
+        "4.3.52.1": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.46",
+            "adNetworkVersion": "12.6.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.48.1",
+            "adNetworkVersion": "12.6.1"
+          }
+        }
+      }
+    },
+    "BidMachine": {
+      "displayName": "BidMachine",
+      "isNew": true,
+      "dependencyXmlURL": "https://s3.amazonaws.com/ssa.public/Dependencies-xmls/BidMachine/${VERSION}/ISBidMachineAdapterDependencies.xml",
+      "dependencyXmlFileName": "ISBidMachineAdapterDependencies.xml",
+      "SKAdNetworkIdXmlURL": "https://s3.amazonaws.com/ssa.public/Unity/SKAdNetwork-IDs/All/skadnetworks.bidmachine.plist.xml",
+      "versions": {
+        "4.3.17.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.14",
+            "adNetworkVersion": "3.3.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.17.0",
+            "adNetworkVersion": "3.3.0"
+          }
+        },
+        "4.3.16.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.13",
+            "adNetworkVersion": "3.3.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.16.0",
+            "adNetworkVersion": "3.3.0"
+          }
+        },
+        "4.3.15.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.12",
+            "adNetworkVersion": "3.2.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.15.0",
+            "adNetworkVersion": "3.2.1"
+          }
+        },
+        "4.3.14.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.11",
+            "adNetworkVersion": "3.2.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.14.0",
+            "adNetworkVersion": "3.2.0"
+          }
+        },
+        "4.3.13.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.10",
+            "adNetworkVersion": "3.1.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.13.0",
+            "adNetworkVersion": "3.1.2"
+          }
+        },
+        "4.3.12.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.10",
+            "adNetworkVersion": "3.1.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.12.0",
+            "adNetworkVersion": "3.1.1"
+          }
+        },
+        "4.3.11.3": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.9",
+            "adNetworkVersion": "3.0.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.11.3",
+            "adNetworkVersion": "3.0.1"
+          }
+        },
+        "4.3.11.1": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.9",
+            "adNetworkVersion": "3.0.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.11.1",
+            "adNetworkVersion": "3.0.1"
+          }
+        }
+      }
+    },
+    "Bigo": {
+      "displayName": "BIGO Ads",
+      "isNew": true,
+      "dependencyXmlURL": "https://s3.amazonaws.com/ssa.public/Dependencies-xmls/Bigo/${VERSION}/ISBigoAdapterDependencies.xml",
+      "dependencyXmlFileName": "ISBigoAdapterDependencies.xml",
+      "SKAdNetworkIdXmlURL": "https://s3.amazonaws.com/ssa.public/Unity/SKAdNetwork-IDs/All/skadnetworks.bigo.plist.xml",
+      "versions": {
+        "4.3.12.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.9",
+            "adNetworkVersion": "5.3.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.6.0",
+            "adNetworkVersion": "4.8.0"
+          }
+        },
+        "4.3.11.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.9",
+            "adNetworkVersion": "5.3.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.5.0",
+            "adNetworkVersion": "4.7.0"
+          }
+        },
+        "4.3.10.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.8",
+            "adNetworkVersion": "5.2.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.5.0",
+            "adNetworkVersion": "4.7.0"
+          }
+        },
+        "4.3.9.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.7",
+            "adNetworkVersion": "5.2.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.5.0",
+            "adNetworkVersion": "4.7.0"
+          }
+        },
+        "4.3.8.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.7",
+            "adNetworkVersion": "5.2.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.4.0",
+            "adNetworkVersion": "4.6.0"
+          }
+        },
+        "4.3.7.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.6",
+            "adNetworkVersion": "5.1.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.4.0",
+            "adNetworkVersion": "4.6.0"
+          }
+        },
+        "4.3.6.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.5",
+            "adNetworkVersion": "5.0.2"
+          },
+          "ios": {
+            "adapterVersion": "4.3.4.0",
+            "adNetworkVersion": "4.6.0"
+          }
+        },
+        "4.3.5.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.4",
+            "adNetworkVersion": "5.0.2"
+          },
+          "ios": {
+            "adapterVersion": "4.3.3.0",
+            "adNetworkVersion": "4.5.1"
+          }
+        },
+        "4.3.4.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.3",
+            "adNetworkVersion": "5.0.2"
+          },
+          "ios": {
+            "adapterVersion": "4.3.2.0",
+            "adNetworkVersion": "4.5.1"
+          }
+        },
+        "4.3.3.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.2",
+            "adNetworkVersion": "4.9.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.2.0",
+            "adNetworkVersion": "4.5.1"
+          }
+        },
+        "4.3.2.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.2",
+            "adNetworkVersion": "4.9.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.1.1",
+            "adNetworkVersion": "4.5.1"
+          }
+        },
+        "4.3.1.1": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.1",
+            "adNetworkVersion": "4.9.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.1.1",
+            "adNetworkVersion": "4.5.1"
+          }
+        }
+      }
+    },
+    "Chartboost": {
+      "displayName": "Chartboost",
+      "dependencyXmlURL": "https://s3.amazonaws.com/ssa.public/Dependencies-xmls/Chartboost/${VERSION}/ISChartboostAdapterDependencies.xml",
+      "dependencyXmlFileName": "ISChartboostAdapterDependencies.xml",
+      "SKAdNetworkIdXmlURL": "https://s3.amazonaws.com/ssa.public/Unity/SKAdNetwork-IDs/All/skadnetworks.chartboost.plist.xml",
+      "versions": {
+        "4.3.29.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.19",
+            "adNetworkVersion": "9.8.3"
+          },
+          "ios": {
+            "adapterVersion": "4.3.22.0",
+            "adNetworkVersion": "9.9.0"
+          }
+        },
+        "4.3.28.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.19",
+            "adNetworkVersion": "9.8.3"
+          },
+          "ios": {
+            "adapterVersion": "4.3.20.0",
+            "adNetworkVersion": "9.8.1"
+          }
+        },
+        "4.3.27.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.18",
+            "adNetworkVersion": "9.8.2"
+          },
+          "ios": {
+            "adapterVersion": "4.3.19.3",
+            "adNetworkVersion": "9.7.0"
+          }
+        },
+        "4.3.26.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.17",
+            "adNetworkVersion": "9.7.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.19.3",
+            "adNetworkVersion": "9.7.0"
+          }
+        },
+        "4.3.25.3": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.16",
+            "adNetworkVersion": "9.7.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.19.3",
+            "adNetworkVersion": "9.7.0"
+          }
+        }
+      }
+    },
+    "CSJ": {
+      "displayName": "CSJ",
+      "dependencyXmlURL": "https://s3.amazonaws.com/ssa.public/Dependencies-xmls/CSJ/${VERSION}/ISCSJAdapterDependencies.xml",
+      "dependencyXmlFileName": "ISCSJAdapterDependencies.xml",
+      "SKAdNetworkIdXmlURL": "https://s3.amazonaws.com/ssa.public/Unity/SKAdNetwork-IDs/All/skadnetworks.csj.plist.xml",
+      "versions": {
+        "4.3.24.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "ios": {
+            "adapterVersion": "4.3.24.0",
+            "adNetworkVersion": "6.9.1.0"
+          }
+        },
+        "4.3.23.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "ios": {
+            "adapterVersion": "4.3.23.0",
+            "adNetworkVersion": "6.8.2.2"
+          }
+        },
+        "4.3.22.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "ios": {
+            "adapterVersion": "4.3.22.0",
+            "adNetworkVersion": "6.8.2.1"
+          }
+        },
+        "4.3.21.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "ios": {
+            "adapterVersion": "4.3.21.0",
+            "adNetworkVersion": "6.8.1.8"
+          }
+        },
+        "4.3.20.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "ios": {
+            "adapterVersion": "4.3.20.0",
+            "adNetworkVersion": "6.8.1.7"
+          }
+        },
+        "4.3.19.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "ios": {
+            "adapterVersion": "4.3.19.0",
+            "adNetworkVersion": "6.8.1.3"
+          }
+        },
+        "4.3.18.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "ios": {
+            "adapterVersion": "4.3.18.0",
+            "adNetworkVersion": "6.8.1.1"
+          }
+        },
+        "4.3.17.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "ios": {
+            "adapterVersion": "4.3.17.0",
+            "adNetworkVersion": "6.8.0.7"
+          }
+        },
+        "4.3.16.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "ios": {
+            "adapterVersion": "4.3.16.0",
+            "adNetworkVersion": "6.7.2.3"
+          }
+        },
+        "4.3.15.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "ios": {
+            "adapterVersion": "4.3.15.0",
+            "adNetworkVersion": "6.7.2.0"
+          }
+        },
+        "4.3.14.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "ios": {
+            "adapterVersion": "4.3.14.0",
+            "adNetworkVersion": "6.7.1.7"
+          }
+        },
+        "4.3.13.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "ios": {
+            "adapterVersion": "4.3.13.0",
+            "adNetworkVersion": "6.7.1.6"
+          }
+        },
+        "4.3.12.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "ios": {
+            "adapterVersion": "4.3.12.0",
+            "adNetworkVersion": "6.7.1.3"
+          }
+        },
+        "4.3.11.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "ios": {
+            "adapterVersion": "4.3.11.0",
+            "adNetworkVersion": "6.7.0.8"
+          }
+        },
+        "4.3.10.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "ios": {
+            "adapterVersion": "4.3.10.0",
+            "adNetworkVersion": "6.6.2.2"
+          }
+        },
+        "4.3.9.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "ios": {
+            "adapterVersion": "4.3.9.0",
+            "adNetworkVersion": "6.6.1.6"
+          }
+        },
+        "4.3.8.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "ios": {
+            "adapterVersion": "4.3.8.0",
+            "adNetworkVersion": "6.4.4.0"
+          }
+        },
+        "4.3.7.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "ios": {
+            "adapterVersion": "4.3.7.0",
+            "adNetworkVersion": "6.4.3.2"
+          }
+        },
+        "4.3.6.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "ios": {
+            "adapterVersion": "4.3.6.0",
+            "adNetworkVersion": "6.4.1.0"
+          }
+        },
+        "4.3.5.1": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "ios": {
+            "adapterVersion": "4.3.5.1",
+            "adNetworkVersion": "6.3.1.0"
+          }
+        }
+      }
+    },
+    "Fyber": {
+      "displayName": "DT Exchange",
+      "dependencyXmlURL": "https://s3.amazonaws.com/ssa.public/Dependencies-xmls/Fyber/${VERSION}/ISFyberAdapterDependencies.xml",
+      "dependencyXmlFileName": "ISFyberAdapterDependencies.xml",
+      "SKAdNetworkIdXmlURL": "https://s3.amazonaws.com/ssa.public/Unity/SKAdNetwork-IDs/All/skadnetworks.fyber.plist.xml",
+      "versions": {
+        "4.3.58.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.38",
+            "adNetworkVersion": "8.3.7"
+          },
+          "ios": {
+            "adapterVersion": "4.3.43.0",
+            "adNetworkVersion": "8.3.7"
+          }
+        },
+        "4.3.57.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.38",
+            "adNetworkVersion": "8.3.7"
+          },
+          "ios": {
+            "adapterVersion": "4.3.42.0",
+            "adNetworkVersion": "8.3.6"
+          }
+        },
+        "4.3.56.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.37",
+            "adNetworkVersion": "8.3.6"
+          },
+          "ios": {
+            "adapterVersion": "4.3.42.0",
+            "adNetworkVersion": "8.3.6"
+          }
+        },
+        "4.3.55.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.37",
+            "adNetworkVersion": "8.3.6"
+          },
+          "ios": {
+            "adapterVersion": "4.3.41.0",
+            "adNetworkVersion": "8.3.5"
+          }
+        },
+        "4.3.54.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.36",
+            "adNetworkVersion": "8.3.5"
+          },
+          "ios": {
+            "adapterVersion": "4.3.41.0",
+            "adNetworkVersion": "8.3.5"
+          }
+        },
+        "4.3.53.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.36",
+            "adNetworkVersion": "8.3.5"
+          },
+          "ios": {
+            "adapterVersion": "4.3.40.0",
+            "adNetworkVersion": "8.3.4"
+          }
+        },
+        "4.3.52.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.35",
+            "adNetworkVersion": "8.3.3"
+          },
+          "ios": {
+            "adapterVersion": "4.3.40.0",
+            "adNetworkVersion": "8.3.4"
+          }
+        },
+        "4.3.51.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.35",
+            "adNetworkVersion": "8.3.3"
+          },
+          "ios": {
+            "adapterVersion": "4.3.39.0",
+            "adNetworkVersion": "8.3.4"
+          }
+        },
+        "4.3.50.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.35",
+            "adNetworkVersion": "8.3.3"
+          },
+          "ios": {
+            "adapterVersion": "4.3.38.0",
+            "adNetworkVersion": "8.3.3"
+          }
+        },
+        "4.3.49.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.35",
+            "adNetworkVersion": "8.3.3"
+          },
+          "ios": {
+            "adapterVersion": "4.3.37.0",
+            "adNetworkVersion": "8.3.2"
+          }
+        },
+        "4.3.48.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.34",
+            "adNetworkVersion": "8.3.2"
+          },
+          "ios": {
+            "adapterVersion": "4.3.37.0",
+            "adNetworkVersion": "8.3.2"
+          }
+        },
+        "4.3.47.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.33",
+            "adNetworkVersion": "8.3.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.37.0",
+            "adNetworkVersion": "8.3.2"
+          }
+        },
+        "4.3.46.2": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.32",
+            "adNetworkVersion": "8.2.7"
+          },
+          "ios": {
+            "adapterVersion": "4.3.36.3",
+            "adNetworkVersion": "8.3.1"
+          }
+        }
+      }
+    },
+    "AdMob": {
+      "displayName": "Google (AdMob and Ad Manager)",
+      "dependencyXmlURL": "https://s3.amazonaws.com/ssa.public/Dependencies-xmls/AdMob/${VERSION}/ISAdMobAdapterDependencies.xml",
+      "dependencyXmlFileName": "ISAdMobAdapterDependencies.xml",
+      "SKAdNetworkIdXmlURL": "https://s3.amazonaws.com/ssa.public/Unity/SKAdNetwork-IDs/All/skadnetworks.admob.plist.xml",
+      "versions": {
+        "4.3.79.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.52",
+            "adNetworkVersion": "24.4.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.67.0",
+            "adNetworkVersion": "12.6.0"
+          }
+        },
+        "4.3.78.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.51",
+            "adNetworkVersion": "24.3.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.66.0",
+            "adNetworkVersion": "12.5.0"
+          }
+        },
+        "4.3.77.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.51",
+            "adNetworkVersion": "24.3.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.65.0",
+            "adNetworkVersion": "12.4.0"
+          }
+        },
+        "4.3.76.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.50",
+            "adNetworkVersion": "24.2.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.65.0",
+            "adNetworkVersion": "12.4.0"
+          }
+        },
+        "4.3.75.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.50",
+            "adNetworkVersion": "24.2.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.64.0",
+            "adNetworkVersion": "12.3.0"
+          }
+        },
+        "4.3.74.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.50",
+            "adNetworkVersion": "24.2.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.63.0",
+            "adNetworkVersion": "12.2.0"
+          }
+        },
+        "4.3.73.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.49",
+            "adNetworkVersion": "23.6.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.63.0",
+            "adNetworkVersion": "12.2.0"
+          }
+        },
+        "4.3.72.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.49",
+            "adNetworkVersion": "23.6.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.62.0",
+            "adNetworkVersion": "12.1.0"
+          }
+        },
+        "4.3.71.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.49",
+            "adNetworkVersion": "23.6.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.61.0",
+            "adNetworkVersion": "12.0.0"
+          }
+        },
+        "4.3.70.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.49",
+            "adNetworkVersion": "23.6.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.60.0",
+            "adNetworkVersion": "11.13.0"
+          }
+        },
+        "4.3.69.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.48",
+            "adNetworkVersion": "23.6.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.60.0",
+            "adNetworkVersion": "11.13.0"
+          }
+        },
+        "4.3.68.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.47",
+            "adNetworkVersion": "23.5.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.59.0",
+            "adNetworkVersion": "11.12.0"
+          }
+        },
+        "4.3.67.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.47",
+            "adNetworkVersion": "23.5.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.58.0",
+            "adNetworkVersion": "11.11.0"
+          }
+        },
+        "4.3.66.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.46",
+            "adNetworkVersion": "23.4.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.58.0",
+            "adNetworkVersion": "11.11.0"
+          }
+        },
+        "4.3.65.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.46",
+            "adNetworkVersion": "23.4.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.57.1",
+            "adNetworkVersion": "11.10.0"
+          }
+        },
+        "4.3.64.1": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.45",
+            "adNetworkVersion": "23.3.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.57.1",
+            "adNetworkVersion": "11.10.0"
+          }
+        }
+      }
+    },
+    "HyprMX": {
+      "displayName": "HyprMX",
+      "dependencyXmlURL": "https://s3.amazonaws.com/ssa.public/Dependencies-xmls/HyprMX/${VERSION}/ISHyprMXAdapterDependencies.xml",
+      "dependencyXmlFileName": "ISHyprMXAdapterDependencies.xml",
+      "SKAdNetworkIdXmlURL": "https://s3.amazonaws.com/ssa.public/Unity/SKAdNetwork-IDs/All/skadnetworks.hyprmx.plist.xml",
+      "versions": {
+        "4.3.15.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.13",
+            "adNetworkVersion": "6.4.2"
+          },
+          "ios": {
+            "adapterVersion": "4.3.10.0",
+            "adNetworkVersion": "6.4.2"
+          }
+        },
+        "4.3.14.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.12",
+            "adNetworkVersion": "6.4.2"
+          },
+          "ios": {
+            "adapterVersion": "4.3.9.0",
+            "adNetworkVersion": "6.4.2"
+          }
+        },
+        "4.3.13.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.11",
+            "adNetworkVersion": "6.4.2"
+          },
+          "ios": {
+            "adapterVersion": "4.3.9.0",
+            "adNetworkVersion": "6.4.2"
+          }
+        },
+        "4.3.12.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.11",
+            "adNetworkVersion": "6.4.2"
+          },
+          "ios": {
+            "adapterVersion": "4.3.8.0",
+            "adNetworkVersion": "6.4.1"
+          }
+        },
+        "4.3.11.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.10",
+            "adNetworkVersion": "6.4.2"
+          },
+          "ios": {
+            "adapterVersion": "4.3.8.0",
+            "adNetworkVersion": "6.4.1"
+          }
+        },
+        "4.3.10.1": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.10",
+            "adNetworkVersion": "6.4.2"
+          },
+          "ios": {
+            "adapterVersion": "4.3.7.1",
+            "adNetworkVersion": "6.4.1"
+          }
+        }
+      }
+    },
+    "InMobi": {
+      "displayName": "InMobi",
+      "dependencyXmlURL": "https://s3.amazonaws.com/ssa.public/Dependencies-xmls/InMobi/${VERSION}/ISInMobiAdapterDependencies.xml",
+      "dependencyXmlFileName": "ISInMobiAdapterDependencies.xml",
+      "SKAdNetworkIdXmlURL": "https://s3.amazonaws.com/ssa.public/Unity/SKAdNetwork-IDs/All/skadnetworks.inmobi.plist.xml",
+      "versions": {
+        "4.3.37.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.30",
+            "adNetworkVersion": "10.8.3"
+          },
+          "ios": {
+            "adapterVersion": "4.3.29.0",
+            "adNetworkVersion": "10.8.3"
+          }
+        },
+        "4.3.36.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.30",
+            "adNetworkVersion": "10.8.3"
+          },
+          "ios": {
+            "adapterVersion": "4.3.28.0",
+            "adNetworkVersion": "10.8.3"
+          }
+        },
+        "4.3.35.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.29",
+            "adNetworkVersion": "10.8.2"
+          },
+          "ios": {
+            "adapterVersion": "4.3.28.0",
+            "adNetworkVersion": "10.8.3"
+          }
+        },
+        "4.3.34.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.29",
+            "adNetworkVersion": "10.8.2"
+          },
+          "ios": {
+            "adapterVersion": "4.3.27.0",
+            "adNetworkVersion": "10.8.2"
+          }
+        },
+        "4.3.33.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.29",
+            "adNetworkVersion": "10.8.2"
+          },
+          "ios": {
+            "adapterVersion": "4.3.26.0",
+            "adNetworkVersion": "10.8.0"
+          }
+        },
+        "4.3.32.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.28",
+            "adNetworkVersion": "10.8.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.26.0",
+            "adNetworkVersion": "10.8.0"
+          }
+        },
+        "4.3.31.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.27",
+            "adNetworkVersion": "10.7.8"
+          },
+          "ios": {
+            "adapterVersion": "4.3.25.0",
+            "adNetworkVersion": "10.7.8"
+          }
+        },
+        "4.3.30.1": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.26",
+            "adNetworkVersion": "10.7.7"
+          },
+          "ios": {
+            "adapterVersion": "4.3.24.2",
+            "adNetworkVersion": "10.7.5"
+          }
+        }
+      }
+    },
+    "Liftoff": {
+      "displayName": "Liftoff Monetize",
+      "dependencyXmlURL": "https://s3.amazonaws.com/ssa.public/Dependencies-xmls/Vungle/${VERSION}/ISVungleAdapterDependencies.xml",
+      "dependencyXmlFileName": "ISVungleAdapterDependencies.xml",
+      "SKAdNetworkIdXmlURL": "https://s3.amazonaws.com/ssa.public/Unity/SKAdNetwork-IDs/All/skadnetworks.liftoff.plist.xml",
+      "versions": {
+        "4.3.56.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.30",
+            "adNetworkVersion": "7.5.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.45.0",
+            "adNetworkVersion": "7.5.1"
+          }
+        },
+        "4.3.55.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.30",
+            "adNetworkVersion": "7.5.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.44.0",
+            "adNetworkVersion": "7.5.0"
+          }
+        },
+        "4.3.54.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.29",
+            "adNetworkVersion": "7.4.3"
+          },
+          "ios": {
+            "adapterVersion": "4.3.44.0",
+            "adNetworkVersion": "7.5.0"
+          }
+        },
+        "4.3.53.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.29",
+            "adNetworkVersion": "7.4.3"
+          },
+          "ios": {
+            "adapterVersion": "4.3.43.0",
+            "adNetworkVersion": "7.4.5"
+          }
+        },
+        "4.3.52.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.29",
+            "adNetworkVersion": "7.4.3"
+          },
+          "ios": {
+            "adapterVersion": "4.3.42.0",
+            "adNetworkVersion": "7.4.4"
+          }
+        },
+        "4.3.51.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.28",
+            "adNetworkVersion": "7.4.2"
+          },
+          "ios": {
+            "adapterVersion": "4.3.42.0",
+            "adNetworkVersion": "7.4.4"
+          }
+        },
+        "4.3.50.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.28",
+            "adNetworkVersion": "7.4.2"
+          },
+          "ios": {
+            "adapterVersion": "4.3.41.0",
+            "adNetworkVersion": "7.4.3"
+          }
+        },
+        "4.3.49.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.27",
+            "adNetworkVersion": "7.4.2"
+          },
+          "ios": {
+            "adapterVersion": "4.3.40.0",
+            "adNetworkVersion": "7.4.3"
+          }
+        },
+        "4.3.48.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.27",
+            "adNetworkVersion": "7.4.2"
+          },
+          "ios": {
+            "adapterVersion": "4.3.39.0",
+            "adNetworkVersion": "7.4.2"
+          }
+        },
+        "4.3.47.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.27",
+            "adNetworkVersion": "7.4.2"
+          },
+          "ios": {
+            "adapterVersion": "4.3.38.0",
+            "adNetworkVersion": "7.4.2"
+          }
+        },
+        "4.3.46.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.26",
+            "adNetworkVersion": "7.4.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.38.0",
+            "adNetworkVersion": "7.4.2"
+          }
+        },
+        "4.3.45.1": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.26",
+            "adNetworkVersion": "7.4.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.37.1",
+            "adNetworkVersion": "7.4.1"
+          }
+        }
+      }
+    },
+    "Maio": {
+      "displayName": "Maio",
+      "dependencyXmlURL": "https://s3.amazonaws.com/ssa.public/Dependencies-xmls/Maio/${VERSION}/ISMaioAdapterDependencies.xml",
+      "dependencyXmlFileName": "ISMaioAdapterDependencies.xml",
+      "SKAdNetworkIdXmlURL": "https://s3.amazonaws.com/ssa.public/Unity/SKAdNetwork-IDs/All/skadnetworks.maio.plist.xml",
+      "versions": {
+        "4.1.14.15": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.1.11",
+            "adNetworkVersion": "1.1.16"
+          },
+          "ios": {
+            "adapterVersion": "4.1.11.15",
+            "adNetworkVersion": "1.6.3"
+          }
+        }
+      }
+    },
+    "Meta": {
+      "displayName": "Meta Audience Network",
+      "dependencyXmlURL": "https://s3.amazonaws.com/ssa.public/Dependencies-xmls/Facebook/${VERSION}/ISFacebookAdapterDependencies.xml",
+      "dependencyXmlFileName": "ISFacebookAdapterDependencies.xml",
+      "SKAdNetworkIdXmlURL": "https://s3.amazonaws.com/ssa.public/Unity/SKAdNetwork-IDs/All/skadnetworks.meta.plist.xml",
+      "versions": {
+        "4.3.73.0": {
+          "ironSourceSdkVersion": "[8.5.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.50",
+            "adNetworkVersion": "6.20.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.50.0",
+            "adNetworkVersion": "6.20.0"
+          }
+        },
+        "4.3.72.0": {
+          "ironSourceSdkVersion": "[8.5.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.50",
+            "adNetworkVersion": "6.20.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.49.0",
+            "adNetworkVersion": "6.17.1"
+          }
+        },
+        "4.3.71.0": {
+          "ironSourceSdkVersion": "[8.5.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.49",
+            "adNetworkVersion": "6.19.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.49.0",
+            "adNetworkVersion": "6.17.1"
+          }
+        },
+        "4.3.70.0": {
+          "ironSourceSdkVersion": "[8.5.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.49",
+            "adNetworkVersion": "6.19.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.48.0",
+            "adNetworkVersion": "6.17.0"
+          }
+        },
+        "4.3.69.0": {
+          "ironSourceSdkVersion": "[8.5.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.49",
+            "adNetworkVersion": "6.19.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.47.0",
+            "adNetworkVersion": "6.16.0"
+          }
+        },
+        "4.3.68.0": {
+          "ironSourceSdkVersion": "[8.5.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.48",
+            "adNetworkVersion": "6.18.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.47.0",
+            "adNetworkVersion": "6.16.0"
+          }
+        },
+        "4.3.67.1": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.48",
+            "adNetworkVersion": "6.18.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.46.1",
+            "adNetworkVersion": "6.15.2"
+          }
+        }
+      }
+    },
+    "Mintegral": {
+      "displayName": "Mintegral",
+      "dependencyXmlURL": "https://s3.amazonaws.com/ssa.public/Dependencies-xmls/Mintegral/${VERSION}/ISMintegralAdapterDependencies.xml",
+      "dependencyXmlFileName": "ISMintegralAdapterDependencies.xml",
+      "SKAdNetworkIdXmlURL": "https://s3.amazonaws.com/ssa.public/Unity/SKAdNetwork-IDs/All/skadnetworks.mintegral.plist.xml",
+      "versions": {
+        "4.3.46.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.42",
+            "adNetworkVersion": "16.9.71"
+          },
+          "ios": {
+            "adapterVersion": "4.3.35.0",
+            "adNetworkVersion": "7.7.8"
+          }
+        },
+        "4.3.45.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.41",
+            "adNetworkVersion": "16.9.71"
+          },
+          "ios": {
+            "adapterVersion": "4.3.35.0",
+            "adNetworkVersion": "7.7.8"
+          }
+        },
+        "4.3.44.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.40",
+            "adNetworkVersion": "16.9.71"
+          },
+          "ios": {
+            "adapterVersion": "4.3.34.0",
+            "adNetworkVersion": "7.7.7"
+          }
+        },
+        "4.3.43.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.39",
+            "adNetworkVersion": "16.9.61"
+          },
+          "ios": {
+            "adapterVersion": "4.3.34.0",
+            "adNetworkVersion": "7.7.7"
+          }
+        },
+        "4.3.42.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.38",
+            "adNetworkVersion": "16.9.61"
+          },
+          "ios": {
+            "adapterVersion": "4.3.33.0",
+            "adNetworkVersion": "7.7.7"
+          }
+        },
+        "4.3.41.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.37",
+            "adNetworkVersion": "16.9.51"
+          },
+          "ios": {
+            "adapterVersion": "4.3.33.0",
+            "adNetworkVersion": "7.7.7"
+          }
+        },
+        "4.3.40.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.36",
+            "adNetworkVersion": "16.9.41"
+          },
+          "ios": {
+            "adapterVersion": "4.3.33.0",
+            "adNetworkVersion": "7.7.7"
+          }
+        },
+        "4.3.39.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.36",
+            "adNetworkVersion": "16.9.41"
+          },
+          "ios": {
+            "adapterVersion": "4.3.32.0",
+            "adNetworkVersion": "7.7.6"
+          }
+        },
+        "4.3.38.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.35",
+            "adNetworkVersion": "16.9.31"
+          },
+          "ios": {
+            "adapterVersion": "4.3.32.0",
+            "adNetworkVersion": "7.7.6"
+          }
+        },
+        "4.3.37.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.35",
+            "adNetworkVersion": "16.9.31"
+          },
+          "ios": {
+            "adapterVersion": "4.3.31.0",
+            "adNetworkVersion": "7.7.5"
+          }
+        },
+        "4.3.36.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.35",
+            "adNetworkVersion": "16.9.31"
+          },
+          "ios": {
+            "adapterVersion": "4.3.30.0",
+            "adNetworkVersion": "7.7.4"
+          }
+        },
+        "4.3.35.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.34",
+            "adNetworkVersion": "16.9.21"
+          },
+          "ios": {
+            "adapterVersion": "4.3.29.0",
+            "adNetworkVersion": "7.7.3"
+          }
+        },
+        "4.3.34.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.33",
+            "adNetworkVersion": "16.8.91"
+          },
+          "ios": {
+            "adapterVersion": "4.3.28.0",
+            "adNetworkVersion": "7.7.3"
+          }
+        },
+        "4.3.33.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.32",
+            "adNetworkVersion": "16.8.91"
+          },
+          "ios": {
+            "adapterVersion": "4.3.27.0",
+            "adNetworkVersion": "7.7.3"
+          }
+        },
+        "4.3.32.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.31",
+            "adNetworkVersion": "16.8.81"
+          },
+          "ios": {
+            "adapterVersion": "4.3.27.0",
+            "adNetworkVersion": "7.7.3"
+          }
+        },
+        "4.3.31.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.30",
+            "adNetworkVersion": "16.8.61"
+          },
+          "ios": {
+            "adapterVersion": "4.3.27.0",
+            "adNetworkVersion": "7.7.3"
+          }
+        },
+        "4.3.30.1": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.29",
+            "adNetworkVersion": "16.8.51"
+          },
+          "ios": {
+            "adapterVersion": "4.3.26.1",
+            "adNetworkVersion": "7.7.2"
+          }
+        }
+      }
+    },
+    "MobileFuse": {
+      "displayName": "MobileFuse",
+      "dependencyXmlURL": "https://s3.amazonaws.com/ssa.public/Dependencies-xmls/MobileFuse/${VERSION}/ISMobileFuseAdapterDependencies.xml",
+      "dependencyXmlFileName": "ISMobileFuseAdapterDependencies.xml",
+      "SKAdNetworkIdXmlURL": "https://s3.amazonaws.com/ssa.public/Unity/SKAdNetwork-IDs/All/skadnetworks.mobilefuse.plist.xml",
+      "isNew": true,
+      "versions": {
+        "4.3.9.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.7",
+            "adNetworkVersion": "1.9.2"
+          },
+          "ios": {
+            "adapterVersion": "4.3.8.0",
+            "adNetworkVersion": "1.9.2"
+          }
+        },
+        "4.3.8.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.7",
+            "adNetworkVersion": "1.9.2"
+          },
+          "ios": {
+            "adapterVersion": "4.3.7.0",
+            "adNetworkVersion": "1.9.1"
+          }
+        },
+        "4.3.7.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.6",
+            "adNetworkVersion": "1.9.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.7.0",
+            "adNetworkVersion": "1.9.1"
+          }
+        },
+        "4.3.6.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.5",
+            "adNetworkVersion": "1.9.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.6.0",
+            "adNetworkVersion": "1.9.0"
+          }
+        },
+        "4.3.5.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.4",
+            "adNetworkVersion": "1.8.2"
+          },
+          "ios": {
+            "adapterVersion": "4.3.5.0",
+            "adNetworkVersion": "1.8.2"
+          }
+        },
+        "4.3.4.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.3",
+            "adNetworkVersion": "1.8.2"
+          },
+          "ios": {
+            "adapterVersion": "4.3.4.0",
+            "adNetworkVersion": "1.8.2"
+          }
+        },
+        "4.3.3.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.3",
+            "adNetworkVersion": "1.8.2"
+          },
+          "ios": {
+            "adapterVersion": "4.3.3.0",
+            "adNetworkVersion": "1.8.2"
+          }
+        },
+        "4.3.2.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.2",
+            "adNetworkVersion": "1.8.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.2.0",
+            "adNetworkVersion": "1.8.0"
+          }
+        },
+        "4.3.1.1": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.1",
+            "adNetworkVersion": "1.7.6"
+          },
+          "ios": {
+            "adapterVersion": "4.3.1.1",
+            "adNetworkVersion": "1.7.6"
+          }
+        }
+      }
+    },
+    "Moloco": {
+      "displayName": "Moloco",
+      "dependencyXmlURL": "https://s3.amazonaws.com/ssa.public/Dependencies-xmls/Moloco/${VERSION}/ISMolocoAdapterDependencies.xml",
+      "dependencyXmlFileName": "ISMolocoAdapterDependencies.xml",
+      "SKAdNetworkIdXmlURL": "https://s3.amazonaws.com/ssa.public/Unity/SKAdNetwork-IDs/All/skadnetworks.moloco.plist.xml",
+      "isNew": true,
+      "versions": {
+        "4.3.26.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.18",
+            "adNetworkVersion": "3.10.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.20.0",
+            "adNetworkVersion": "3.10.1"
+          }
+        },
+        "4.3.25.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.18",
+            "adNetworkVersion": "3.10.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.19.0",
+            "adNetworkVersion": "3.9.1"
+          }
+        },
+        "4.3.24.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.18",
+            "adNetworkVersion": "3.10.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.18.0",
+            "adNetworkVersion": "3.10.0"
+          }
+        },
+        "4.3.23.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.17",
+            "adNetworkVersion": "3.9.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.18.0",
+            "adNetworkVersion": "3.10.0"
+          }
+        },
+        "4.3.22.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.17",
+            "adNetworkVersion": "3.9.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.17.0",
+            "adNetworkVersion": "3.9.1"
+          }
+        },
+        "4.3.21.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.17",
+            "adNetworkVersion": "3.9.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.16.0",
+            "adNetworkVersion": "3.9.0"
+          }
+        },
+        "4.3.20.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.16",
+            "adNetworkVersion": "3.8.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.15.0",
+            "adNetworkVersion": "3.8.0"
+          }
+        },
+        "4.3.19.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.16",
+            "adNetworkVersion": "3.8.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.14.0",
+            "adNetworkVersion": "3.7.2"
+          }
+        },
+        "4.3.18.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.15",
+            "adNetworkVersion": "3.7.2"
+          },
+          "ios": {
+            "adapterVersion": "4.3.14.0",
+            "adNetworkVersion": "3.7.2"
+          }
+        },
+        "4.3.17.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.14",
+            "adNetworkVersion": "3.7.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.14.0",
+            "adNetworkVersion": "3.7.2"
+          }
+        },
+        "4.3.16.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.14",
+            "adNetworkVersion": "3.7.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.13.0",
+            "adNetworkVersion": "3.7.1"
+          }
+        },
+        "4.3.15.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.14",
+            "adNetworkVersion": "3.7.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.12.0",
+            "adNetworkVersion": "3.7.1"
+          }
+        },
+        "4.3.14.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.13",
+            "adNetworkVersion": "3.7.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.11.0",
+            "adNetworkVersion": "3.7.0"
+          }
+        },
+        "4.3.13.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.12",
+            "adNetworkVersion": "3.6.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.10.0",
+            "adNetworkVersion": "3.6.0"
+          }
+        },
+        "4.3.12.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.11",
+            "adNetworkVersion": "3.6.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.10.0",
+            "adNetworkVersion": "3.6.0"
+          }
+        },
+        "4.3.11.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.10",
+            "adNetworkVersion": "3.5.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.9.0",
+            "adNetworkVersion": "3.5.0"
+          }
+        },
+        "4.3.10.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.9",
+            "adNetworkVersion": "3.4.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.8.0",
+            "adNetworkVersion": "3.4.0"
+          }
+        },
+        "4.3.9.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.8",
+            "adNetworkVersion": "3.2.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.7.0",
+            "adNetworkVersion": "3.2.0"
+          }
+        },
+        "4.3.8.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.7",
+            "adNetworkVersion": "3.2.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.7.0",
+            "adNetworkVersion": "3.2.0"
+          }
+        },
+        "4.3.7.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.6",
+            "adNetworkVersion": "3.2.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.7.0",
+            "adNetworkVersion": "3.2.0"
+          }
+        },
+        "4.3.6.1": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.5",
+            "adNetworkVersion": "3.1.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.6.1",
+            "adNetworkVersion": "3.1.3"
+          }
+        }
+      }
+    },
+    "Ogury": {
+      "displayName": "Ogury",
+      "dependencyXmlURL": "https://s3.amazonaws.com/ssa.public/Dependencies-xmls/Ogury/${VERSION}/ISOguryAdapterDependencies.xml",
+      "dependencyXmlFileName": "ISOguryAdapterDependencies.xml",
+      "SKAdNetworkIdXmlURL": "https://s3.amazonaws.com/ssa.public/Unity/SKAdNetwork-IDs/All/skadnetworks.ogury.plist.xml",
+      "isNew": true,
+      "versions": {
+        "4.3.5.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.2",
+            "adNetworkVersion": "6.0.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.3.0",
+            "adNetworkVersion": "5.0.2"
+          }
+        },
+        "4.3.4.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.1",
+            "adNetworkVersion": "5.8.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.3.0",
+            "adNetworkVersion": "5.0.2"
+          }
+        },
+        "4.3.3.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.1",
+            "adNetworkVersion": "5.8.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.2.0",
+            "adNetworkVersion": "5.0.1"
+          }
+        },
+        "4.3.2.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.0",
+            "adNetworkVersion": "5.8.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.2.0",
+            "adNetworkVersion": "5.0.1"
+          }
+        },
+        "4.3.1.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.0",
+            "adNetworkVersion": "5.8.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.1.0",
+            "adNetworkVersion": "4.4.2"
+          }
+        },
+        "4.3.0.1": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.0",
+            "adNetworkVersion": "5.8.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.0.1",
+            "adNetworkVersion": "4.4.0"
+          }
+        }
+      }
+    },
+    "Pangle": {
+      "displayName": "Pangle",
+      "dependencyXmlURL": "https://s3.amazonaws.com/ssa.public/Dependencies-xmls/Pangle/${VERSION}/ISPangleAdapterDependencies.xml",
+      "dependencyXmlFileName": "ISPangleAdapterDependencies.xml",
+      "SKAdNetworkIdXmlURL": "https://s3.amazonaws.com/ssa.public/Unity/SKAdNetwork-IDs/All/skadnetworks.pangle.plist.xml",
+      "versions": {
+        "4.3.56.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.45",
+            "adNetworkVersion": "7.2.0.6"
+          },
+          "ios": {
+            "adapterVersion": "4.3.46.0",
+            "adNetworkVersion": "7.2.0.5"
+          }
+        },
+        "4.3.55.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.44",
+            "adNetworkVersion": "7.2.0.5"
+          },
+          "ios": {
+            "adapterVersion": "4.3.45.0",
+            "adNetworkVersion": "7.2.0.4"
+          }
+        },
+        "4.3.54.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.43",
+            "adNetworkVersion": "7.2.0.4"
+          },
+          "ios": {
+            "adapterVersion": "4.3.45.0",
+            "adNetworkVersion": "7.2.0.4"
+          }
+        },
+        "4.3.53.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.42",
+            "adNetworkVersion": "7.2.0.3"
+          },
+          "ios": {
+            "adapterVersion": "4.3.44.0",
+            "adNetworkVersion": "7.1.1.1"
+          }
+        },
+        "4.3.52.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.41",
+            "adNetworkVersion": "7.1.0.8"
+          },
+          "ios": {
+            "adapterVersion": "4.3.44.0",
+            "adNetworkVersion": "7.1.1.1"
+          }
+        },
+        "4.3.51.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.40",
+            "adNetworkVersion": "7.1.0.7"
+          },
+          "ios": {
+            "adapterVersion": "4.3.43.0",
+            "adNetworkVersion": "7.1.1.0"
+          }
+        },
+        "4.3.50.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.40",
+            "adNetworkVersion": "7.1.0.7"
+          },
+          "ios": {
+            "adapterVersion": "4.3.42.0",
+            "adNetworkVersion": "7.1.0.8"
+          }
+        },
+        "4.3.49.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.39",
+            "adNetworkVersion": "7.1.0.6"
+          },
+          "ios": {
+            "adapterVersion": "4.3.42.0",
+            "adNetworkVersion": "7.1.0.8"
+          }
+        },
+        "4.3.48.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.38",
+            "adNetworkVersion": "6.5.0.6"
+          },
+          "ios": {
+            "adapterVersion": "4.3.41.0",
+            "adNetworkVersion": "6.5.0.9"
+          }
+        },
+        "4.3.47.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.37",
+            "adNetworkVersion": "6.5.0.5"
+          },
+          "ios": {
+            "adapterVersion": "4.3.40.0",
+            "adNetworkVersion": "6.5.0.8"
+          }
+        },
+        "4.3.46.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.36",
+            "adNetworkVersion": "6.5.0.4"
+          },
+          "ios": {
+            "adapterVersion": "4.3.40.0",
+            "adNetworkVersion": "6.5.0.8"
+          }
+        },
+        "4.3.45.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.35",
+            "adNetworkVersion": "6.5.0.3"
+          },
+          "ios": {
+            "adapterVersion": "4.3.39.0",
+            "adNetworkVersion": "6.4.1.2"
+          }
+        },
+        "4.3.44.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.34",
+            "adNetworkVersion": "6.4.0.6"
+          },
+          "ios": {
+            "adapterVersion": "4.3.39.0",
+            "adNetworkVersion": "6.4.1.2"
+          }
+        },
+        "4.3.43.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.34",
+            "adNetworkVersion": "6.4.0.6"
+          },
+          "ios": {
+            "adapterVersion": "4.3.38.0",
+            "adNetworkVersion": "6.4.1.1"
+          }
+        },
+        "4.3.42.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.33",
+            "adNetworkVersion": "6.4.0.5"
+          },
+          "ios": {
+            "adapterVersion": "4.3.38.0",
+            "adNetworkVersion": "6.4.1.1"
+          }
+        },
+        "4.3.41.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.32",
+            "adNetworkVersion": "6.4.0.3"
+          },
+          "ios": {
+            "adapterVersion": "4.3.37.0",
+            "adNetworkVersion": "6.4.0.7"
+          }
+        },
+        "4.3.40.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.31",
+            "adNetworkVersion": "6.3.0.4"
+          },
+          "ios": {
+            "adapterVersion": "4.3.36.0",
+            "adNetworkVersion": "6.3.1.1"
+          }
+        },
+        "4.3.39.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.31",
+            "adNetworkVersion": "6.3.0.4"
+          },
+          "ios": {
+            "adapterVersion": "4.3.35.0",
+            "adNetworkVersion": "6.3.0.9"
+          }
+        },
+        "4.3.38.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.31",
+            "adNetworkVersion": "6.3.0.4"
+          },
+          "ios": {
+            "adapterVersion": "4.3.34.0",
+            "adNetworkVersion": "6.3.0.8"
+          }
+        },
+        "4.3.37.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.30",
+            "adNetworkVersion": "6.2.0.7"
+          },
+          "ios": {
+            "adapterVersion": "4.3.33.0",
+            "adNetworkVersion": "6.2.0.9"
+          }
+        },
+        "4.3.36.1": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.29",
+            "adNetworkVersion": "6.2.0.6"
+          },
+          "ios": {
+            "adapterVersion": "4.3.32.1",
+            "adNetworkVersion": "6.2.0.7"
+          }
+        }
+      }
+    },
+    "Smaato": {
+      "displayName": "Smaato",
+      "dependencyXmlURL": "https://s3.amazonaws.com/ssa.public/Dependencies-xmls/Smaato/${VERSION}/ISSmaatoAdapterDependencies.xml",
+      "dependencyXmlFileName": "ISSmaatoAdapterDependencies.xml",
+      "SKAdNetworkIdXmlURL": "https://s3.amazonaws.com/ssa.public/Unity/SKAdNetwork-IDs/All/skadnetworks.smaato.plist.xml",
+      "versions": {
+        "4.3.19.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.14",
+            "adNetworkVersion": "22.7.2"
+          },
+          "ios": {
+            "adapterVersion": "4.3.17.0",
+            "adNetworkVersion": "22.9.3"
+          }
+        },
+        "4.3.18.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.14",
+            "adNetworkVersion": "22.7.2"
+          },
+          "ios": {
+            "adapterVersion": "4.3.16.0",
+            "adNetworkVersion": "22.9.2"
+          }
+        },
+        "4.3.17.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.13",
+            "adNetworkVersion": "22.7.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.16.0",
+            "adNetworkVersion": "22.9.2"
+          }
+        },
+        "4.3.16.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.12",
+            "adNetworkVersion": "22.7.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.16.0",
+            "adNetworkVersion": "22.9.2"
+          }
+        },
+        "4.3.15.1": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.12",
+            "adNetworkVersion": "22.7.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.15.0",
+            "adNetworkVersion": "22.9.1"
+          }
+        },
+        "4.3.15.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.12",
+            "adNetworkVersion": "22.7.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.15.0",
+            "adNetworkVersion": "22.9.1"
+          }
+        },
+        "4.3.14.1": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.11",
+            "adNetworkVersion": "22.7.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.14.1",
+            "adNetworkVersion": "22.8.4"
+          }
+        }
+      }
+    },
+    "SuperAwesome": {
+      "displayName": "SuperAwesome",
+      "dependencyXmlURL": "https://s3.amazonaws.com/ssa.public/Dependencies-xmls/SuperAwesome/${VERSION}/ISSuperAwesomeAdapterDependencies.xml",
+      "dependencyXmlFileName": "ISSuperAwesomeAdapterDependencies.xml",
+      "SKAdNetworkIdXmlURL": "https://s3.amazonaws.com/ssa.public/Unity/SKAdNetwork-IDs/All/skadnetworks.superawesome.plist.xml",
+      "versions": {
+        "4.1.14.1": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.1.10",
+            "adNetworkVersion": "9.4.0"
+          },
+          "ios": {
+            "adapterVersion": "4.1.13.1",
+            "adNetworkVersion": "9.4.0"
+          }
+        }
+      }
+    },
+    "Tencent": {
+      "displayName": "Tencent",
+      "dependencyXmlURL": "https://s3.amazonaws.com/ssa.public/Dependencies-xmls/Tencent/${VERSION}/ISTencentAdapterDependencies.xml",
+      "dependencyXmlFileName": "ISTencentAdapterDependencies.xml",
+      "SKAdNetworkIdXmlURL": "https://s3.amazonaws.com/ssa.public/Unity/SKAdNetwork-IDs/All/skadnetworks.tencent.plist.xml",
+      "versions": {
+        "4.3.12.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "ios": {
+            "adapterVersion": "4.3.12.0",
+            "adNetworkVersion": "4.15.40"
+          }
+        },
+        "4.3.11.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "ios": {
+            "adapterVersion": "4.3.11.0",
+            "adNetworkVersion": "4.15.30"
+          }
+        },
+        "4.3.10.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "ios": {
+            "adapterVersion": "4.3.10.0",
+            "adNetworkVersion": "4.15.22"
+          }
+        },
+        "4.3.9.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "ios": {
+            "adapterVersion": "4.3.9.0",
+            "adNetworkVersion": "4.15.10"
+          }
+        },
+        "4.3.8.1": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "ios": {
+            "adapterVersion": "4.3.8.1",
+            "adNetworkVersion": "4.15.00"
+          }
+        }
+      }
+    },
+    "Verve": {
+      "displayName": "Verve",
+      "dependencyXmlURL": "https://s3.amazonaws.com/ssa.public/Dependencies-xmls/Verve/${VERSION}/ISVerveAdapterDependencies.xml",
+      "dependencyXmlFileName": "ISVerveAdapterDependencies.xml",
+      "SKAdNetworkIdXmlURL": "https://s3.amazonaws.com/ssa.public/Unity/SKAdNetwork-IDs/All/skadnetworks.verve.plist.xml",
+      "isNew": true,
+      "versions": {
+        "4.3.9.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.6",
+            "adNetworkVersion": "3.6.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.6.0",
+            "adNetworkVersion": "3.6.0"
+          }
+        },
+        "4.3.8.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.5",
+            "adNetworkVersion": "3.3.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.6.0",
+            "adNetworkVersion": "3.6.0"
+          }
+        },
+        "4.3.7.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.5",
+            "adNetworkVersion": "3.3.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.5.0",
+            "adNetworkVersion": "3.2.0"
+          }
+        },
+        "4.3.6.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.5",
+            "adNetworkVersion": "3.3.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.4.0",
+            "adNetworkVersion": "3.1.4"
+          }
+        },
+        "4.3.5.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.4",
+            "adNetworkVersion": "3.2.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.4.0",
+            "adNetworkVersion": "3.1.4"
+          }
+        },
+        "4.3.4.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.3",
+            "adNetworkVersion": "3.2.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.3.0",
+            "adNetworkVersion": "3.1.3"
+          }
+        },
+        "4.3.3.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.3",
+            "adNetworkVersion": "3.2.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.2.0",
+            "adNetworkVersion": "3.1.2"
+          }
+        },
+        "4.3.2.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.2",
+            "adNetworkVersion": "3.1.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.1.0",
+            "adNetworkVersion": "3.1.1"
+          }
+        },
+        "4.3.1.1": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.1",
+            "adNetworkVersion": "3.0.4"
+          },
+          "ios": {
+            "adapterVersion": "4.3.0.1",
+            "adNetworkVersion": "3.0.4"
+          }
+        }
+      }
+    },
+    "MyTarget": {
+      "displayName": "VK Ad Network",
+      "dependencyXmlURL": "https://s3.amazonaws.com/ssa.public/Dependencies-xmls/MyTarget/${VERSION}/ISMyTargetAdapterDependencies.xml",
+      "dependencyXmlFileName": "ISMyTargetAdapterDependencies.xml",
+      "SKAdNetworkIdXmlURL": "https://s3.amazonaws.com/ssa.public/Unity/SKAdNetwork-IDs/All/skadnetworks.mytarget.plist.xml",
+      "versions": {
+        "4.3.3.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.0",
+            "adNetworkVersion": "5.27.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.3.0",
+            "adNetworkVersion": "5.31.1"
+          }
+        },
+        "4.3.2.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.0",
+            "adNetworkVersion": "5.27.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.2.0",
+            "adNetworkVersion": "5.31.0"
+          }
+        },
+        "4.3.1.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.0",
+            "adNetworkVersion": "5.27.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.1.0",
+            "adNetworkVersion": "5.30.0"
+          }
+        },
+        "4.3.0.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.0",
+            "adNetworkVersion": "5.27.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.0.0",
+            "adNetworkVersion": "5.29.1"
+          }
+        },
+        "4.1.35.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.1.21",
+            "adNetworkVersion": "5.27.1"
+          },
+          "ios": {
+            "adapterVersion": "4.1.32.0",
+            "adNetworkVersion": "5.29.1"
+          }
+        },
+        "4.1.34.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.1.21",
+            "adNetworkVersion": "5.27.1"
+          },
+          "ios": {
+            "adapterVersion": "4.1.31.0",
+            "adNetworkVersion": "5.29.0"
+          }
+        },
+        "4.1.33.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.1.21",
+            "adNetworkVersion": "5.27.1"
+          },
+          "ios": {
+            "adapterVersion": "4.1.30.0",
+            "adNetworkVersion": "5.28.0"
+          }
+        },
+        "4.1.32.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.1.21",
+            "adNetworkVersion": "5.27.1"
+          },
+          "ios": {
+            "adapterVersion": "4.1.29.0",
+            "adNetworkVersion": "5.27.0"
+          }
+        },
+        "4.1.31.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.1.20",
+            "adNetworkVersion": "5.22.1"
+          },
+          "ios": {
+            "adapterVersion": "4.1.29.0",
+            "adNetworkVersion": "5.27.0"
+          }
+        },
+        "4.1.30.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.1.20",
+            "adNetworkVersion": "5.22.1"
+          },
+          "ios": {
+            "adapterVersion": "4.1.28.0",
+            "adNetworkVersion": "5.26.0"
+          }
+        },
+        "4.1.29.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.1.20",
+            "adNetworkVersion": "5.22.1"
+          },
+          "ios": {
+            "adapterVersion": "4.1.27.0",
+            "adNetworkVersion": "5.25.1"
+          }
+        },
+        "4.1.28.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.1.20",
+            "adNetworkVersion": "5.22.1"
+          },
+          "ios": {
+            "adapterVersion": "4.1.26.0",
+            "adNetworkVersion": "5.24.1"
+          }
+        },
+        "4.1.27.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.1.20",
+            "adNetworkVersion": "5.22.1"
+          },
+          "ios": {
+            "adapterVersion": "4.1.25.0",
+            "adNetworkVersion": "5.21.9"
+          }
+        },
+        "4.1.26.1": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.1.20",
+            "adNetworkVersion": "5.22.1"
+          },
+          "ios": {
+            "adapterVersion": "4.1.24.1",
+            "adNetworkVersion": "5.21.7"
+          }
+        }
+      }
+    },
+    "Yandex": {
+      "displayName": "Yandex",
+      "dependencyXmlURL": "https://s3.amazonaws.com/ssa.public/Dependencies-xmls/Yandex/${VERSION}/ISYandexAdapterDependencies.xml",
+      "dependencyXmlFileName": "ISYandexAdapterDependencies.xml",
+      "SKAdNetworkIdXmlURL": "https://s3.amazonaws.com/ssa.public/Unity/SKAdNetwork-IDs/All/skadnetworks.yandex.plist.xml",
+      "isNew": true,
+      "versions": {
+        "4.3.24.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.13",
+            "adNetworkVersion": "7.14.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.21.0",
+            "adNetworkVersion": "7.14.1"
+          }
+        },
+        "4.3.23.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.12",
+            "adNetworkVersion": "7.14.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.20.0",
+            "adNetworkVersion": "7.14.0"
+          }
+        },
+        "4.3.22.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.11",
+            "adNetworkVersion": "7.13.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.19.0",
+            "adNetworkVersion": "7.13.0"
+          }
+        },
+        "4.3.21.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.10",
+            "adNetworkVersion": "7.12.3"
+          },
+          "ios": {
+            "adapterVersion": "4.3.19.0",
+            "adNetworkVersion": "7.13.0"
+          }
+        },
+        "4.3.20.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.10",
+            "adNetworkVersion": "7.12.3"
+          },
+          "ios": {
+            "adapterVersion": "4.3.18.0",
+            "adNetworkVersion": "7.12.3"
+          }
+        },
+        "4.3.19.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.8",
+            "adNetworkVersion": "7.8.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.18.0",
+            "adNetworkVersion": "7.12.3"
+          }
+        },
+        "4.3.18.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.8",
+            "adNetworkVersion": "7.8.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.17.0",
+            "adNetworkVersion": "7.12.2"
+          }
+        },
+        "4.3.17.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.8",
+            "adNetworkVersion": "7.8.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.16.0",
+            "adNetworkVersion": "7.12.1"
+          }
+        },
+        "4.3.16.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.8",
+            "adNetworkVersion": "7.8.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.15.0",
+            "adNetworkVersion": "7.12.0"
+          }
+        },
+        "4.3.15.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.8",
+            "adNetworkVersion": "7.8.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.14.0",
+            "adNetworkVersion": "7.11.1"
+          }
+        },
+        "4.3.14.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.8",
+            "adNetworkVersion": "7.8.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.13.0",
+            "adNetworkVersion": "7.11.0"
+          }
+        },
+        "4.3.13.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.8",
+            "adNetworkVersion": "7.8.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.12.0",
+            "adNetworkVersion": "7.10.2"
+          }
+        },
+        "4.3.12.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.8",
+            "adNetworkVersion": "7.8.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.11.0",
+            "adNetworkVersion": "7.10.1"
+          }
+        },
+        "4.3.11.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.8",
+            "adNetworkVersion": "7.8.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.10.0",
+            "adNetworkVersion": "7.10.0"
+          }
+        },
+        "4.3.10.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.8",
+            "adNetworkVersion": "7.8.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.9.0",
+            "adNetworkVersion": "7.9.0"
+          }
+        },
+        "4.3.9.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.8",
+            "adNetworkVersion": "7.8.1"
+          },
+          "ios": {
+            "adapterVersion": "4.3.8.0",
+            "adNetworkVersion": "7.8.0"
+          }
+        },
+        "4.3.8.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.7",
+            "adNetworkVersion": "7.8.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.8.0",
+            "adNetworkVersion": "7.8.0"
+          }
+        },
+        "4.3.7.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.6",
+            "adNetworkVersion": "7.7.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.7.0",
+            "adNetworkVersion": "7.7.0"
+          }
+        },
+        "4.3.6.0": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.5",
+            "adNetworkVersion": "7.6.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.6.0",
+            "adNetworkVersion": "7.6.1"
+          }
+        },
+        "4.3.5.1": {
+          "ironSourceSdkVersion": "[8.4.0, 9.0[",
+          "android": {
+            "adapterVersion": "4.3.4",
+            "adNetworkVersion": "7.5.0"
+          },
+          "ios": {
+            "adapterVersion": "4.3.5.1",
+            "adNetworkVersion": "7.5.1"
+          }
+        }
+      }
+    }
+  }
+}

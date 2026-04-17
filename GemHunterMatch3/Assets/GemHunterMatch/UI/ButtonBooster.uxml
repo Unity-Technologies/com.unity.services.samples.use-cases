@@ -1,0 +1,9 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <Style src="project://database/Assets/_Prototype/UI/MainUI.uss?fileID=7433441132597879392&amp;guid=1b2947054596e714da0a2b077220e36f&amp;type=3#MainUI" />
+    <ui:VisualElement name="ButtonBoosterContainer" class="button-booster-container">
+        <ui:Button parse-escape-sequences="true" display-tooltip-when-elided="true" name="ButtonBooster" class="button-booster" style="text-shadow: 0 2.9px 0 rgba(255, 255, 255, 0); background-color: rgba(188, 188, 188, 0); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0;">
+            <ui:VisualElement name="ImageBooster" style="flex-grow: 1; position: absolute; left: 13%; top: 16%; background-image: url(&apos;project://database/Assets/_Prototype/Images/ColorBonus.png?fileID=21300000&amp;guid=8c52306a35ae8144592f1b2834b9f962&amp;type=3#ColorBonus&apos;); width: 124px; height: 124px;" />
+            <ui:Label tabindex="-1" text="88" parse-escape-sequences="true" display-tooltip-when-elided="true" name="LabelBoosterNumber" style="position: absolute; bottom: 0; right: 0; height: 80px; width: 58px; color: rgb(255, 255, 255); font-size: 46px; text-shadow: 1.4px 4.2px 0.9px rgb(111, 0, 0);" />
+        </ui:Button>
+    </ui:VisualElement>
+</ui:UXML>

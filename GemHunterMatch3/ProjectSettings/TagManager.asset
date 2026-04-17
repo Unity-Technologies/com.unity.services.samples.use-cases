@@ -1,0 +1,60 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 3
+  tags: []
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - Portrait
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: FarBackground
+    uniqueID: 1505598541
+    locked: 0
+  - name: Background
+    uniqueID: 867880795
+    locked: 0
+  - name: Default
+    uniqueID: 0
+    locked: 0
+  - name: Gems
+    uniqueID: 1890678711
+    locked: 0
+  - name: Character
+    uniqueID: 3183144165
+    locked: 0
+  - name: VFX
+    uniqueID: 666422525
+    locked: 0
+  m_RenderingLayers:
+  - Default

@@ -64,3 +64,9 @@ crashlytics-build.properties
 .DS_Store
 .idea/
 /ProjectSettings/Packages
+
+# Node.js
+node_modules/
+out/
+dist/
+*.vsix

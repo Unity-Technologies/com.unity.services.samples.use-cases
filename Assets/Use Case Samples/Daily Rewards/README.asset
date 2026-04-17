@@ -290,7 +290,7 @@ MonoBehaviour:
     boxCallout: 
     linkList:
     - linkText: Dashboard
-      url: dashboard.unity3d.com
+      url: https://dashboard.unity3d.com/
   - subHeader1: 
     subHeader2: 
     subHeader3: Economy Items

@@ -1,0 +1,95 @@
+#PlayerNameTextField {
+    background-color: rgba(0, 0, 0, 0);
+    display: flex;
+    align-self: stretch;
+    height: auto;
+    flex-shrink: 1;
+    flex-grow: 1;
+    align-content: auto;
+    justify-content: space-around;
+    align-items: auto;
+    text-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    width: 100%;
+    -unity-background-scale-mode: stretch-to-fill;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    -unity-slice-scale: 1px;
+    max-width: 100%;
+    -unity-font-definition: url("project://database/Assets/GemHunterMatch/Fonts/CurseCasual/Curse%20Casual.ttf?fileID=12800000&guid=31797353ab4fc7043a0f62eacf5ea3a9&type=3#Curse Casual");
+    max-height: 100%;
+}
+
+#PlayerNameTextField #unity-text-input {
+    background-color: rgba(0, 0, 0, 0);
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    font-size: 54px;
+    padding-left: 25px;
+    padding-bottom: 40px;
+    -unity-text-outline-color: rgba(0, 0, 0, 0.5);
+    text-shadow: 4px 4px 4px rgba(0, 0, 0, 0);
+    width: auto;
+    align-content: auto;
+    align-items: auto;
+    max-height: none;
+    height: auto;
+    justify-content: space-around;
+}
+
+#PlayerNameTextField #unity-text-input.unity-base-text-field__input {
+    background-color: rgba(255, 255, 255, 0);
+    border-radius: 8px;
+    background-image: url("project://database/Assets/GemHunterUGS/Art/UI_Assets-Updated.psd?fileID=7035183003079888374&guid=ac8d91374d183b142b4426b3604fdc7d&type=3#input_bg");
+    -unity-background-scale-mode: stretch-to-fill;
+    -unity-slice-left: 0;
+    -unity-slice-top: 0;
+    -unity-slice-right: 0;
+    -unity-slice-bottom: 0;
+    -unity-slice-scale: 1px;
+    width: 100%;
+    height: 130px;
+    text-shadow: 2px 2px 10px rgba(0, 0, 0, 0);
+    flex-grow: 1;
+}
+
+.profile-picture-button {
+    background-image: url("project://database/Assets/GemHunterUGS/Art/UI_Assets-Updated.psd?fileID=-5044030982087941707&guid=ac8d91374d183b142b4426b3604fdc7d&type=3#profile_pic1");
+    width: 180px;
+    height: 180px;
+    margin-top: 4px;
+    margin-right: 4px;
+    margin-bottom: 4px;
+    margin-left: 4px;
+    flex-grow: 0;
+    align-items: auto;
+    align-self: stretch;
+    background-color: rgba(0, 0, 0, 0);
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    flex-shrink: 0;
+    -unity-background-scale-mode: scale-to-fit;
+    max-width: none;
+    max-height: none;
+    min-width: 60px;
+    min-height: 60px;
+    background-size: contain;
+    overflow: visible;
+    flex-wrap: nowrap;
+    align-content: stretch;
+    transform-origin: center;
+    scale: 1 1;
+    left: auto;
+    top: auto;
+    right: auto;
+    bottom: auto;
+}
+
+#PlayerNameTextField > #unity-text-input > .unity-text-element--inner-input-field-component {
+    padding-left: 26px;
+}

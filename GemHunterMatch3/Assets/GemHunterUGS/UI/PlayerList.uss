@@ -1,0 +1,53 @@
+.friend-interaction-button {
+    background-image: url("project://database/Assets/GemHunterUGS/Art/UI_Assets-Updated.psd?fileID=-1819624125508571413&guid=ac8d91374d183b142b4426b3604fdc7d&type=3#btn_live_send");
+    width: 120px;
+    height: 120px;
+    -unity-font-definition: url("project://database/Assets/GemHunterMatch/Fonts/CurseCasual/Curse%20Casual.ttf?fileID=12800000&guid=31797353ab4fc7043a0f62eacf5ea3a9&type=3#Curse Casual");
+    color: rgb(255, 255, 255);
+    -unity-text-align: middle-center;
+    font-size: 46px;
+    padding-right: 0;
+    text-shadow: 0 0 0 rgba(0, 0, 0, 0.41);
+    padding-bottom: 0;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    background-color: rgba(188, 188, 188, 0);
+    display: flex;
+    padding-left: 0;
+    letter-spacing: 0;
+    word-spacing: 0;
+    -unity-background-scale-mode: scale-to-fit;
+    padding-top: 0;
+    align-content: center;
+    align-self: center;
+    margin-top: 4px;
+    margin-right: -20px;
+    margin-bottom: 4px;
+    margin-left: 0;
+    flex-grow: 1;
+}
+
+.unity-list-view__item--selected {
+    background-color: rgba(200, 200, 200, 0.3);
+    border-left-width: 4px;
+    border-left-color: rgb(100, 150, 255);
+}
+
+.unity-list-view__item:hover {
+    background-color: rgba(200, 200, 200, 0.2);
+}
+
+.unity-list-view__item--selected Label {
+    color: rgb(35, 35, 35);
+}
+
+#PlayerIDLabel {
+}
+
+#PlayersListItem > #Background > #CenterContainer {
+}
+
+#PlayersListItem {
+}

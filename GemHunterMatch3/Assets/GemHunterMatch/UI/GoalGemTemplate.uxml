@@ -1,0 +1,6 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="GoalGemTemplate" class="goalGem" style="justify-content: flex-end; background-image: url(&apos;project://database/Assets/_Prototype/Images/UI/Gems/SP_Gem_Blue.png?fileID=2800000&amp;guid=42dd346b733da1c46b67bb6ee1332cbe&amp;type=3#SP_Gem_Blue&apos;); max-width: 128px; min-width: 12px; flex-direction: row; flex-wrap: wrap; flex-grow: 1; margin-right: 15px;">
+        <ui:Label tabindex="-1" text="22" display-tooltip-when-elided="true" name="GemGoalCount" style="position: absolute; font-size: 55%; -unity-font-style: bold; bottom: -8%; right: -7%; color: rgb(255, 255, 255); text-shadow: -0.5px 6.7px 3px rgba(0, 0, 0, 0.89);" />
+        <ui:VisualElement name="Checkmark" style="background-image: url(&apos;project://database/Assets/_Prototype/Images/UI/green_checkmark.png?fileID=21300000&amp;guid=b3e8a413594507f4c8cb2c3fc3b7f0a0&amp;type=3#green_checkmark&apos;); position: absolute; padding-left: 1px; padding-right: 2px; padding-top: 4px; padding-bottom: 4px; display: none;" />
+    </ui:VisualElement>
+</ui:UXML>

@@ -1,0 +1,10 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/GemHunterMatch/UI/MainUI.uss?fileID=7433441132597879392&amp;guid=1b2947054596e714da0a2b077220e36f&amp;type=3#MainUI" />
+    <ui:VisualElement name="ShopBlockerBackground" style="flex-grow: 1; background-color: rgba(0, 0, 0, 0.5); justify-content: space-around; height: 1634px;">
+        <ui:VisualElement name="ShopBackground" style="width: 100%;">
+            <ui:Label tabindex="-1" text="Shop" display-tooltip-when-elided="true" name="ShopTitle" />
+            <ui:ScrollView name="ShopContentScroll" style="border-left-color: rgba(0, 0, 0, 0); border-right-color: rgba(0, 0, 0, 0); border-top-color: rgba(0, 0, 0, 0); border-bottom-color: rgba(0, 0, 0, 0);" />
+            <ui:Button text="Exit" display-tooltip-when-elided="true" name="ShopExitButton" class="match-button" style="background-color: rgba(200, 0, 0, 0);" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

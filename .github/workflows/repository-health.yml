@@ -1,0 +1,55 @@
+name: Repository Health
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Markdown Lint
+        run: |
+          npm install -g markdownlint-cli
+          markdownlint "**/*.md" --config .markdownlint.json --ignore "**/node_modules/**"
+
+  link-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Link Checker
+        uses: lycheeverse/lychee-action@v1.9.0
+        with:
+          args: --verbose --no-progress --exclude "milehigh-world.com" --exclude "docs.unity.com" --exclude "unity3d.com" "**/*.md"
+          fail: true
+
+  ts-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: plugins/vscode-extension/package-lock.json
+
+      - name: Install Dependencies
+        run: |
+          cd plugins/vscode-extension
+          npm install
+
+      - name: TypeScript Lint & Compile
+        run: |
+          cd plugins/vscode-extension
+          npm run lint
+          npm run compile

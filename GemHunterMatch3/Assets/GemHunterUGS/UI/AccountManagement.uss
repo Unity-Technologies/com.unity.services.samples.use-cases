@@ -1,0 +1,168 @@
+.link-account-container {
+    flex-grow: 1;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: space-around;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    align-content: stretch;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    flex-shrink: 1;
+    align-self: stretch;
+    width: auto;
+    height: 30px;
+    -unity-slice-scale: 1px;
+    -unity-slice-left: 0;
+    -unity-slice-top: 0;
+    -unity-slice-right: 0;
+    -unity-slice-bottom: 0;
+    -unity-background-scale-mode: stretch-to-fill;
+}
+
+.account-connected-icon {
+    flex-grow: 0;
+    background-image: url("project://database/Assets/GemHunterUGS/Art/UI_Assets-Updated.psd?fileID=-6053796608419976351&guid=ac8d91374d183b142b4426b3604fdc7d&type=3#ic_checkbox_bg_disable");
+    width: 120px;
+    height: 120px;
+    flex-shrink: 0;
+    justify-content: center;
+    align-self: center;
+    align-content: center;
+    align-items: center;
+    margin: 20px;
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+    position: relative;
+    flex-direction: column;
+    left: auto;
+    bottom: auto;
+    right: auto;
+    -unity-background-scale-mode: scale-to-fit;
+    display: flex;
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+}
+
+.unlink-account-button {
+    background-image: url("project://database/Assets/GemHunterUGS/Art/UI_Assets-Updated.psd?fileID=5158897372892210589&guid=ac8d91374d183b142b4426b3604fdc7d&type=3#btn_delete");
+    width: 120px;
+    height: 120px;
+    align-self: center;
+    color: rgba(230, 230, 230, 0);
+    background-color: rgba(188, 188, 188, 0);
+    border-left-color: rgba(149, 149, 149, 0);
+    border-right-color: rgba(149, 149, 149, 0);
+    border-top-color: rgba(149, 149, 149, 0);
+    border-bottom-color: rgba(149, 149, 149, 0);
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+    margin: 20px;
+    align-items: center;
+    align-content: center;
+    position: relative;
+    right: auto;
+    left: auto;
+    flex-shrink: 0;
+    flex-grow: 0;
+    -unity-background-scale-mode: scale-to-fit;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 20px;
+    justify-content: center;
+    display: flex;
+}
+
+.account-buttons {
+    background-color: rgba(255, 255, 255, 0);
+    max-width: none;
+    max-height: none;
+    margin-top: 4px;
+    margin-right: 4px;
+    margin-bottom: 4px;
+    margin-left: 4px;
+    background-image: url("project://database/Assets/GemHunterUGS/Art/UI_Assets-Updated.psd?fileID=2295555946769010844&guid=ac8d91374d183b142b4426b3604fdc7d&type=3#btn_red_medium");
+    -unity-background-scale-mode: scale-to-fit;
+    flex-shrink: 0;
+    flex-grow: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 14px;
+    padding-left: 0;
+    width: 302px;
+    height: 141px;
+    -unity-font-definition: url("project://database/Assets/GemHunterMatch/Fonts/CurseCasual/Curse%20Casual%20SDF.asset?fileID=11400000&guid=0a460f6750bafb142b0340a5e205adf4&type=2#Curse Casual SDF");
+    font-size: 50px;
+    overflow: visible;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    align-content: auto;
+    justify-content: space-around;
+    color: rgb(237, 237, 237);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.account-buttons {
+    background-color: rgba(255, 255, 255, 0);
+    max-width: none;
+    max-height: none;
+    margin-top: 4px;
+    margin-right: 4px;
+    margin-bottom: 4px;
+    margin-left: 4px;
+    background-image: url("project://database/Assets/GemHunterUGS/Art/UI_Assets-Updated.psd?fileID=2295555946769010844&guid=ac8d91374d183b142b4426b3604fdc7d&type=3#btn_red_medium");
+    -unity-background-scale-mode: scale-to-fit;
+    flex-shrink: 0;
+    flex-grow: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 14px;
+    padding-left: 0;
+    width: 302px;
+    height: 141px;
+    -unity-font-definition: url("project://database/Assets/GemHunterMatch/Fonts/CurseCasual/Curse%20Casual%20SDF.asset?fileID=11400000&guid=0a460f6750bafb142b0340a5e205adf4&type=2#Curse Casual SDF");
+    font-size: 50px;
+    overflow: visible;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    align-content: auto;
+    justify-content: space-around;
+    color: rgb(237, 237, 237);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+#TestingTextField #unity-text-input {
+    background-image: url("project://database/Assets/GemHunterUGS/Art/UI_Assets-Updated.psd?fileID=7035183003079888374&guid=ac8d91374d183b142b4426b3604fdc7d&type=3#input_bg");
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    -unity-background-scale-mode: stretch-to-fill;
+    -unity-slice-left: 77;
+    -unity-slice-top: 77;
+    -unity-slice-right: 77;
+    -unity-slice-bottom: 77;
+    -unity-slice-scale: 1px;
+    padding-left: 40px;
+    padding-bottom: 20px;
+}

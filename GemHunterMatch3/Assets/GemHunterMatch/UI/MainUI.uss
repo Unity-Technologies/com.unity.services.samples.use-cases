@@ -1,0 +1,658 @@
+:root {
+    --design-width: 1080px;
+    --design-height: 1920px;
+    --main-color: rgb(0, 127, 226);
+    --main-radius: 20px;
+    --main-text-color: white;
+    --secondary-color: rgb(0, 159, 249);
+    --goal-gem-size: 85px;
+    -unity-font: url("project://database/Assets/GemHunterMatch/Fonts/CurseCasual/Curse%20Casual.ttf?fileID=12800000&guid=31797353ab4fc7043a0f62eacf5ea3a9&type=3#Curse Casual");
+    -unity-font-definition: url("project://database/Assets/GemHunterMatch/Fonts/CurseCasual/Curse%20Casual%20SDF.asset?fileID=11400000&guid=0a460f6750bafb142b0340a5e205adf4&type=2#Curse Casual SDF");
+    color: rgb(38, 41, 104);
+    text-shadow: 0 2.9px 0 rgb(38, 41, 104);
+}
+
+#FullContent {
+    flex-grow: 1;
+    width: 100%;
+    align-self: center;
+    opacity: 1;
+    position: relative;
+}
+
+#TopBar {
+    height: 364px;
+    width: 100%;
+    padding: 16px 8px;
+    flex-direction: row;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    top: -4%;
+}
+
+.button-booster-container {
+    min-width: 80px;
+    width: 180px;
+    height: 180px;
+    margin-right: 20px;
+    transition-property: scale;
+    transition-duration: 0.1s;
+}
+
+.selected .button-booster-container {
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out-back;
+    transition-property: scale;
+    scale: 1.2 1.2;
+    -unity-background-scale-mode: stretch-to-fill;
+    background-image: url("project://database/Assets/GemHunterMatch/Images/UI/Sprite_UI_booster_glow.png?fileID=21300000&guid=69efe69291e4b49c780b6afb6f2215d8&type=3#Sprite_UI_booster_glow");
+    -unity-background-image-tint-color: rgb(255, 252, 160);
+}
+
+.button-booster {
+    background-image: url("project://database/Assets/GemHunterMatch/Images/UI/Sprite_UI_booster.png?fileID=21300000&guid=9cd5722168f304daa826dd2aabb7d8ea&type=3#Sprite_UI_booster");
+    -unity-background-scale-mode: scale-to-fit;
+    align-self: center;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.topBarTitle {
+    border-color: var(--secondary-color);
+    border-width: 4px;
+    border-radius: 10px;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    position: absolute;
+    top: -61px;
+    align-self: center;
+    color: rgb(255, 255, 255);
+    font-size: 41px;
+    flex-grow: 1;
+    -unity-text-align: upper-center;
+}
+
+.topSection {
+    border-radius: var(--main-radius);
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    height: 401px;
+    flex-direction: row;
+    justify-content: flex-end;
+    flex-grow: 1;
+}
+
+.goalGem {
+    width: var(--goal-gem-size);
+    height: var(--goal-gem-size);
+    margin-left: 15px;
+    margin-right: 15px;
+    margin-bottom: 10px;
+}
+
+.goalGem > #Checkmark {
+    bottom: -10px;
+    right: -10px;
+    top: 30px;
+    left: 30px;
+    color: rgb(255, 255, 255);
+    margin: 0;
+    -unity-text-align: lower-right;
+    -unity-font-style: bold;
+    font-size: 50px;
+    border-radius: 20px;
+    flex: 0 0 auto;
+}
+
+.portraitScreen {
+    width: var(--design-width);
+    height: 100%;
+    align-self: center;
+}
+
+#TopSectionBackground {
+    background-image: url("project://database/Assets/GemHunterMatch/Images/UI/Sprite_UI_TopBar_BG.png?fileID=2800000&guid=a813ffe38437ee14a94f35b5ce548247&type=3#Sprite_UI_TopBar_BG");
+    -unity-background-scale-mode: stretch-to-fill;
+    height: 128%;
+    width: 100%;
+    position: absolute;
+    left: 0;
+    -unity-slice-bottom: 155;
+    top: -25%;
+}
+
+#LeftTopSection {
+    flex-grow: 1;
+}
+
+#MiddleTopSection {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    flex-shrink: 0;
+    height: 494px;
+    width: 384px;
+    flex-direction: column;
+}
+
+#RightTopSection {
+    flex-grow: 1;
+}
+
+#GemContent {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+    padding: 12px;
+    padding-top: 0;
+    justify-content: center;
+    align-self: center;
+}
+
+#MoveCounter {
+    color: rgb(255, 255, 255);
+    font-size: 136px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    flex-grow: 1;
+    text-shadow: 0 11.7px 0 rgb(38, 41, 104);
+    translate: 0 -4px;
+}
+
+#BottomBar {
+    bottom: 0;
+    height: 220px;
+    width: 100%;
+    position: absolute;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    align-self: center;
+}
+
+#EndScreen {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.9);
+    flex-grow: 1;
+    width: 100%;
+    height: 100%;
+    align-self: center;
+}
+
+#EndTopBar {
+    background-color: rgba(0, 0, 0, 0);
+    flex-shrink: 0;
+    height: 364px;
+    width: 100%;
+    align-items: center;
+    align-self: center;
+    background-image: url("project://database/Assets/GemHunterMatch/Images/UI/Sprite_UI_TopBar_BG.png?fileID=2800000&guid=a813ffe38437ee14a94f35b5ce548247&type=3#Sprite_UI_TopBar_BG");
+    padding-bottom: 28px;
+}
+
+#EndTitleContent {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+#Spacer {
+    height: 60%;
+}
+
+.end-title {
+    height: 100%;
+    color: white;
+    -unity-text-align: middle-center;
+    align-content: center;
+    font-size: 150px;
+    justify-content: flex-end;
+    flex-direction: column-reverse;
+}
+
+.end-title-text {
+    height: 342px;
+    margin-top: auto;
+    margin-bottom: auto;
+    -unity-text-outline-color: rgb(0, 0, 0);
+    color: rgb(246, 211, 146);
+    -unity-text-align: middle-center;
+    padding-bottom: 96px;
+    margin-right: auto;
+    margin-left: auto;
+    text-shadow: 0 15.2px 0 rgb(38, 41, 104);
+    width: 1018px;
+}
+
+.match-button {
+    border-radius: var(--main-radius);
+    color: white;
+    margin-right: 5%;
+    margin-left: 5%;
+    font-size: 66px;
+    -unity-font-style: bold;
+    flex-grow: 1;
+    background-image: url("project://database/Assets/GemHunterMatch/Images/UI/Sprite_Button_Blue.png?fileID=2800000&guid=3e154db55e714bc499bdaecb3f0b36e8&type=3#Sprite_Button_Blue");
+    -unity-slice-scale: 1px;
+    -unity-slice-left: 129;
+    -unity-slice-top: 67;
+    -unity-slice-right: 129;
+    -unity-slice-bottom: 71;
+    border-left-width: 0;
+    border-right-width: 0;
+    border-top-width: 0;
+    border-bottom-width: 0;
+    padding-bottom: 22px;
+    display: flex;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.match-button:hover {
+    -unity-background-image-tint-color: rgb(255, 244, 151);
+}
+
+#ReturnToMenuButtonZone {
+    margin: 2% 20%;
+    height: 200px;
+}
+
+#ShopAgainButtonsZone {
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+    margin: 2% 20%;
+    height: 150px;
+}
+
+#LevelSelectionTitle {
+    height: 206px;
+    align-content: center;
+    justify-content: center;
+    width: 100%;
+}
+
+#LevelSelectionTitle > Label {
+    color: rgb(255, 255, 255);
+    font-size: 72px;
+    width: 100%;
+    height: 100%;
+    -unity-text-align: middle-center;
+}
+
+#LevelSelectionContainer {
+    flex-grow: 1;
+    align-self: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    padding: 30px;
+    padding-top: 58px;
+    flex-direction: row;
+    padding-right: 58px;
+    padding-bottom: 58px;
+    padding-left: 58px;
+    background-image: url("project://database/Assets/GemHunterMatch/Images/UI/Sprite_Window.png?fileID=2800000&guid=100f2a6061a71d4439534b2ee96e042d&type=3#Sprite_Window");
+    -unity-slice-left: 64;
+    -unity-slice-top: 64;
+    -unity-slice-right: 64;
+    -unity-slice-bottom: 80;
+    align-items: flex-start;
+    margin-bottom: 162px;
+}
+
+.level-entry {
+    width: 174px;
+    height: 174px;
+    margin: 15px;
+    border-radius: var(--main-radius);
+    border-width: 2px;
+    background-image: url("project://database/Assets/GemHunterMatch/Images/UI/Sprite_LevelEntry_Bg.png?fileID=2800000&guid=0ee29eb796d59384c9593e955a9ceb63&type=3#Sprite_LevelEntry_Bg");
+}
+
+.level-entry:hover {
+    border-color: rgb(255, 255, 255);
+    background-image: url("project://database/Assets/GemHunterMatch/Images/UI/Sprite_LevelEntry_Bg_hover.png?fileID=2800000&guid=b6752ef52af69d14e921a5f2eaa763b3&type=3#Sprite_LevelEntry_Bg_hover");
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+}
+
+.level-entry > Label {
+    width: 100%;
+    height: 100%;
+    -unity-text-align: middle-center;
+    color: rgb(255, 255, 255);
+    font-size: 80px;
+    margin: 0;
+    padding: 0;
+    text-shadow: 0 4.8px 0 rgb(38, 41, 104);
+    margin-top: -24px;
+    -unity-font-style: bold;
+}
+
+#Shop {
+    width: var(--design-width);
+    align-self: center;
+    min-width: 100%;
+    min-height: 100%;
+    height: 100%;
+    justify-content: center;
+}
+
+#ShopBackground {
+    position: relative;
+    background-color: rgba(0, 127, 226, 0);
+    border-radius: var(--main-radius);
+    flex-direction: column;
+    align-self: center;
+    bottom: auto;
+    top: auto;
+    background-image: url("project://database/Assets/GemHunterMatch/Images/UI/Sprite_Window.png?fileID=2800000&guid=100f2a6061a71d4439534b2ee96e042d&type=3#Sprite_Window");
+    -unity-slice-left: 64;
+    -unity-slice-right: 65;
+    -unity-slice-top: 44;
+    -unity-slice-bottom: 78;
+    max-width: 1000px;
+    max-height: 1500px;
+    margin-top: auto;
+    margin-bottom: auto;
+    width: 1000px;
+    height: 1500px;
+    min-width: 1000px;
+    min-height: 1000px;
+}
+
+#ShopTitle {
+    width: 100%;
+    height: 150px;
+    font-size: 100px;
+    -unity-text-align: middle-center;
+    -unity-font-style: bold;
+    color: rgb(255, 255, 255);
+}
+
+#ShopContentScroll {
+    flex-grow: 1;
+    margin: 20px 30px;
+    border-width: 3px;
+    border-color: var(--secondary-color);
+}
+
+#ShopExitButton {
+    width: 60%;
+    height: 150px;
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-bottom: 50px;
+    flex-grow: 0;
+    background-color: rgb(200, 0, 0);
+}
+
+.shop-entry {
+    height: 150px;
+    background-color: rgb(228, 180, 48);
+    margin: 10px 20px;
+    border-radius: var(--main-radius);
+    flex-direction: row;
+    align-content: center;
+}
+
+.shop-entry > * {
+    flex-grow: 1;
+}
+
+.shop-entry > #ItemIcon {
+    height: 100px;
+    width: 100px;
+    margin: 25px 25px;
+    flex-grow: 0;
+}
+
+.shop-entry > Label {
+    -unity-text-align: middle-center;
+    font-size: 50px;
+    color: var(--main-text-color);
+}
+
+.shop-entry > #ItemPrice {
+    width: 150px;
+    flex-grow: 0;
+    -unity-text-align: middle-right;
+}
+
+.shop-entry > #BuyButton {
+    flex-grow: 0;
+    width: 200px;
+    margin: 25px 25px;
+    background-color: rgb(0, 150, 0);
+}
+
+.bonus-item {
+    flex-direction: row;
+    flex-grow: 0;
+    width: 250px;
+    margin: 10px;
+}
+
+.bonus-item.selected {
+    border-width: 4px;
+    border-color: white;
+    background-color: var(--secondary-color);
+}
+
+.bonus-item > #ItemIcon {
+    width: 100px;
+    height: 100px;
+    flex-grow: 0;
+    align-self: center;
+}
+
+.bonus-item > Label {
+    width: 30px;
+    font-size: 25px;
+    color: var(--main-text-color);
+    -unity-text-align: middle-center;
+}
+
+.top-panel {
+    background-image: url("project://database/Assets/GemHunterMatch/Images/UI/SPrite_UI_Panel_rounded.png?fileID=2800000&guid=1baa9f714ef6372408888463a7268fbe&type=3#SPrite_UI_Panel_rounded");
+    height: 240px;
+    width: 364px;
+    max-height: 240px;
+    max-width: 364px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 0;
+    margin-bottom: 0;
+    align-self: center;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+#AvatarFrame {
+    width: 308px;
+    height: 308px;
+    min-width: 308px;
+    min-height: 308px;
+    background-image: url("project://database/Assets/GemHunterMatch/Images/UI/Sprite_UI_Avatar_frame.png?fileID=2800000&guid=b48fb1d80189c3b4596d0a8022b4cdb0&type=3#Sprite_UI_Avatar_frame");
+    max-height: 308px;
+    max-width: 308px;
+    margin-left: auto;
+    margin-right: auto;
+    bottom: 60px;
+}
+
+#TopBarBottomFrameMiddle {
+    background-image: url("project://database/Assets/GemHunterMatch/Images/UI/Sprite_UI_TopBar_BG_round2.png?fileID=2800000&guid=650f756dc57256a4db2aab79d7bd20c3&type=3#Sprite_UI_TopBar_BG_round2");
+}
+
+#AvatarFrameOverlay {
+    background-image: url("project://database/Assets/GemHunterMatch/Images/UI/Sprite_UI_Avatar_frame_FG.png?fileID=2800000&guid=d5373a0673c054f4c8f431c82a256ff1&type=3#Sprite_UI_Avatar_frame_FG");
+    height: 154px;
+    flex-shrink: 0;
+    position: absolute;
+    bottom: 0;
+}
+
+.button-green {
+    background-image: url("project://database/Assets/GemHunterMatch/Images/UI/Sprite_Button_green.png?fileID=2800000&guid=2b72ed0757b2e7b4bb73630d21bc8a32&type=3#Sprite_Button_green");
+}
+
+.labelPanel {
+    background-color: rgba(0, 0, 0, 0);
+    background-image: url("project://database/Assets/GemHunterMatch/Images/UI/Sprite_UI_Panel_rounded_rectangle.png?fileID=2800000&guid=8893c2607a1ac57458260a420462f304&type=3#Sprite_UI_Panel_rounded_rectangle");
+    -unity-slice-scale: 1px;
+    -unity-slice-left: 70;
+    -unity-slice-right: 70;
+}
+
+#Cover {
+    width: 100%;
+    height: 100%;
+    min-width: 100%;
+    min-height: 100%;
+    background-color: rgb(0, 0, 0);
+    position: absolute;
+    transition-duration: 2s;
+}
+
+.no-transition {
+    transition-duration: 0s;
+}
+
+.winlose-title {
+    justify-content: center;
+    flex-grow: 1;
+    transition: scale 2s ease-in-elastic;
+}
+
+.top-container #Background {
+    background-color: rgba(0, 0, 0, 0);
+    background-image: url("project://database/Assets/GemHunterMatch/Images/UI/Sprite_UI_Panel_rounded_rectangle.png?fileID=2800000&guid=8893c2607a1ac57458260a420462f304&type=3#Sprite_UI_Panel_rounded_rectangle");
+    -unity-slice-left: 25;
+    -unity-slice-top: 30;
+    -unity-slice-right: 16;
+    -unity-slice-bottom: 23;
+}
+
+.setting-slider {
+    width: 88%;
+    align-self: center;
+    height: 215px;
+}
+
+.setting-slider Label {
+    font-size: 50px;
+    -unity-text-align: middle-left;
+    padding: 0;
+    text-shadow: 0 2.9px 0 rgb(136, 84, 84);
+    color: rgb(176, 118, 62);
+}
+
+.setting-slider .unity-base-slider__tracker {
+    height: 40px;
+    translate: 0 -10%;
+    background-image: url("project://database/Assets/GemHunterMatch/Images/UI/Sprite_Slider.png?fileID=2800000&guid=8d59804c270f37f49809cf69569ef605&type=3#Sprite_Slider");
+    background-color: rgba(2, 2, 2, 0);
+    -unity-slice-left: 26;
+    -unity-slice-right: 33;
+    border-left-color: rgba(13, 13, 13, 0);
+    border-right-color: rgba(13, 13, 13, 0);
+    border-top-color: rgba(13, 13, 13, 0);
+    border-bottom-color: rgba(13, 13, 13, 0);
+}
+
+.setting-slider .unity-base-slider__dragger {
+    height: 90px;
+    top: 39%;
+    width: 70px;
+    background-image: url("project://database/Assets/GemHunterMatch/Images/UI/Sprite_SliderHandle.png?fileID=21300000&guid=e3992b56350ca0e4f89a9165b487d037&type=3#Sprite_SliderHandle");
+    background-color: rgba(0, 0, 0, 0);
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+}
+
+.fullscreen-dark {
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.92);
+    align-items: center;
+    justify-content: center;
+}
+
+#PopUpWindow {
+    width: 70%;
+    height: 50%;
+    max-width: 1080px;
+    min-width: 500px;
+    min-height: 500px;
+    max-height: 1200px;
+    background-image: url("project://database/Assets/GemHunterMatch/Images/UI/Sprite_Window.png?fileID=2800000&guid=100f2a6061a71d4439534b2ee96e042d&type=3#Sprite_Window");
+    -unity-slice-left: 64;
+    -unity-slice-top: 64;
+    -unity-slice-right: 64;
+    -unity-slice-bottom: 80;
+}
+
+#CloseButton {
+    background-image: url("project://database/Assets/GemHunterMatch/Images/UI/Sprite_Close.png?fileID=2800000&guid=17ee14b883ad93e49bde2c96c49bf8e7&type=3#Sprite_Close");
+    display: flex;
+    width: 123px;
+    height: 138px;
+}
+
+#ShopContentScroll #unity-content-and-vertical-scroll-container {
+}
+
+#ShopBlockerBackground {
+    min-width: 100%;
+    min-height: 100%;
+}
+
+#WinTitle Label {
+    background-image: url("project://database/Assets/GemHunterMatch/Images/UI/Sprite_ribbon_victory.png?fileID=2800000&guid=9b417c29c2b154a4dbda0f7f4c36491a&type=3#Sprite_ribbon_victory");
+}
+
+#LoseTitle Label {
+    background-image: url("project://database/Assets/GemHunterMatch/Images/UI/Sprite_ribbon_defeat.png?fileID=2800000&guid=e17e6d87931fdbf4aa4716633a8ed8da&type=3#Sprite_ribbon_defeat");
+}
+
+#MainLogo {
+    background-image: url("project://database/Assets/GemHunterMatch/Images/UI/Sprite_GemHunterMatch_Logo@2x.png?fileID=2800000&guid=600de3337dbc1ce428ba9e7723b0c8c0&type=3#Sprite_GemHunterMatch_Logo@2x");
+    width: 1092px;
+    height: 300px;
+    align-self: center;
+    -unity-background-scale-mode: scale-to-fit;
+    max-height: 300px;
+    flex-grow: initial;
+    margin-top: 322px;
+    margin-bottom: 138px;
+}
+
+.popup-info-scroll-view {
+    margin-right: 50px;
+}

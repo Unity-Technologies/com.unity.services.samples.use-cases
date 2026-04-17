@@ -1,0 +1,5 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" editor-extension-mode="False">
+    <ui:VisualElement name="LevelEntry" class="level-entry">
+        <ui:Label tabindex="-1" text="Label" display-tooltip-when-elided="true" name="LevelNumber" />
+    </ui:VisualElement>
+</ui:UXML>

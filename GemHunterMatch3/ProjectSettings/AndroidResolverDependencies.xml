@@ -1,0 +1,40 @@
+<dependencies>
+  <packages>
+    <package>com.android.support:appcompat-v7:25.3.1</package>
+    <package>com.android.support:cardview-v7:25.3.1</package>
+    <package>com.android.support:customtabs:25.3.1</package>
+    <package>com.android.support:support-v4:25.3.1</package>
+    <package>com.facebook.android:facebook-applinks:[18.0.0,19)</package>
+    <package>com.facebook.android:facebook-core:[18.0.0,19)</package>
+    <package>com.facebook.android:facebook-gamingservices:[18.0.0,19)</package>
+    <package>com.facebook.android:facebook-login:[18.0.0,19)</package>
+    <package>com.facebook.android:facebook-share:[18.0.0,19)</package>
+    <package>com.google.android.gms:play-services-ads-identifier:18.1.0</package>
+    <package>com.google.games:gpgs-plugin-support:2.0.0</package>
+    <package>com.parse.bolts:bolts-android:1.4.0</package>
+    <package>com.unity3d.ads:unity-ads:4.15.0</package>
+    <package>com.unity3d.ads-mediation:mediation-sdk:8.9.1</package>
+    <package>com.unity3d.ads-mediation:unityads-adapter:4.3.55</package>
+  </packages>
+  <files>
+    <file>Assets/GeneratedLocalRepo/GooglePlayGames/com.google.play.games/Editor/m2repository/com/google/games/gpgs-plugin-support/2.0.0/gpgs-plugin-support-2.0.0.aar</file>
+    <file>Assets/GeneratedLocalRepo/GooglePlayGames/com.google.play.games/Editor/m2repository/com/google/games/gpgs-plugin-support/2.0.0/gpgs-plugin-support-2.0.0.pom</file>
+  </files>
+  <settings>
+    <setting name="androidAbis" value="arm64-v8a" />
+    <setting name="bundleId" value="com.unity.match3" />
+    <setting name="explodeAars" value="True" />
+    <setting name="gradleBuildEnabled" value="True" />
+    <setting name="gradlePropertiesTemplateEnabled" value="True" />
+    <setting name="gradleTemplateEnabled" value="True" />
+    <setting name="installAndroidPackages" value="True" />
+    <setting name="localMavenRepoDir" value="Assets/GeneratedLocalRepo" />
+    <setting name="packageDir" value="Assets/Plugins/Android" />
+    <setting name="patchAndroidManifest" value="True" />
+    <setting name="patchMainTemplateGradle" value="True" />
+    <setting name="projectExportEnabled" value="False" />
+    <setting name="useFullCustomMavenRepoPathWhenExport" value="True" />
+    <setting name="useFullCustomMavenRepoPathWhenNotExport" value="False" />
+    <setting name="useJetifier" value="False" />
+  </settings>
+</dependencies>

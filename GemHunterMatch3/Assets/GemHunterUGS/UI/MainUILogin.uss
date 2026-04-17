@@ -1,0 +1,708 @@
+#InfoScrollView > #unity-content-and-vertical-scroll-container > .unity-scroll-view__vertical-scroller {
+    flex-shrink: 1;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    align-items: auto;
+    width: auto;
+    align-content: auto;
+    flex-grow: 1;
+    left: auto;
+}
+
+#InfoScrollView > #unity-content-and-vertical-scroll-container > .unity-scroll-view__vertical-scroller > #unity-low-button {
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+    overflow: hidden;
+    height: auto;
+    max-height: none;
+    -unity-background-scale-mode: stretch-to-fill;
+    opacity: 0;
+}
+
+#InfoScrollView > #unity-content-and-vertical-scroll-container > .unity-scroll-view__vertical-scroller > #unity-high-button {
+    -unity-background-scale-mode: stretch-to-fill;
+    background-color: rgba(0, 0, 0, 0);
+    -unity-background-image-tint-color: rgba(0, 0, 0, 0);
+    -unity-font-definition: initial;
+    opacity: 0;
+}
+
+#InfoScrollView > #unity-content-and-vertical-scroll-container > .unity-scroll-view__vertical-scroller > #unity-slider {
+    align-items: auto;
+    flex-shrink: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    width: auto;
+    align-self: auto;
+    align-content: auto;
+    border-left-color: rgba(255, 0, 0, 0);
+    border-right-color: rgba(255, 0, 0, 0);
+    border-top-color: rgba(255, 0, 0, 0);
+    border-bottom-color: rgba(255, 0, 0, 0);
+    justify-content: flex-start;
+}
+
+#InfoScrollView > #unity-content-and-vertical-scroll-container > .unity-scroll-view__vertical-scroller > #unity-slider > .unity-slider__input {
+    align-self: auto;
+    align-content: auto;
+    align-items: stretch;
+    flex-shrink: 1;
+    width: auto;
+}
+
+#InfoScrollView > #unity-content-and-vertical-scroll-container > .unity-scroll-view__vertical-scroller > #unity-slider > .unity-slider__input > #unity-drag-container {
+    width: 16px;
+    align-self: auto;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    align-content: auto;
+    flex-direction: column;
+    flex-grow: 1;
+    justify-content: flex-start;
+    align-items: auto;
+    flex-wrap: nowrap;
+    display: flex;
+    overflow: visible;
+    visibility: visible;
+}
+
+#InfoScrollView > #unity-content-and-vertical-scroll-container > .unity-scroll-view__vertical-scroller > #unity-slider > .unity-slider__input {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    -unity-background-scale-mode: stretch-to-fill;
+    align-content: auto;
+    align-items: auto;
+    align-self: auto;
+}
+
+#InfoScrollView > #unity-content-and-vertical-scroll-container > .unity-scroll-view__vertical-scroller > #unity-slider > .unity-slider__input > #unity-drag-container > #unity-tracker {
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    align-self: auto;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    align-content: auto;
+    background-position-y: center;
+    flex-shrink: 0;
+    display: flex;
+    align-items: auto;
+    -unity-background-scale-mode: stretch-to-fill;
+    justify-content: flex-start;
+    position: absolute;
+}
+
+#InfoScrollView > #unity-content-and-vertical-scroll-container > .unity-scroll-view__vertical-scroller > #unity-slider > .unity-slider__input > #unity-drag-container > #unity-dragger {
+    background-image: url("project://database/Assets/GemHunterUGS/Art/UI_Assets-Updated.psd?fileID=-4542658085920811927&guid=ac8d91374d183b142b4426b3604fdc7d&type=3#scrollbar_fill_small");
+    -unity-background-scale-mode: stretch-to-fill;
+    -unity-background-image-tint-color: rgb(255, 255, 255);
+    background-color: rgba(0, 0, 0, 0);
+    -unity-slice-scale: 1px;
+    -unity-slice-left: 0;
+    -unity-slice-top: 0;
+    -unity-slice-right: 0;
+    -unity-slice-bottom: 0;
+    flex-grow: 1;
+    background-size: 100% 100%;
+    background-position-y: center;
+    background-position-x: center;
+    width: 100%;
+    align-self: center;
+    align-items: auto;
+    align-content: auto;
+    flex-direction: column;
+    flex-shrink: 1;
+    justify-content: flex-start;
+    display: flex;
+    left: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    overflow: hidden;
+}
+
+#InfoScrollView > #unity-content-and-vertical-scroll-container > .unity-scroll-view__vertical-scroller > #unity-slider > .unity-slider__input > #unity-drag-container > #unity-dragger-border {
+    display: none;
+    visibility: hidden;
+    overflow: hidden;
+}
+
+.button-login {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    width: 617px;
+    height: 166px;
+    align-items: auto;
+    align-self: center;
+    justify-content: space-around;
+    background-color: rgba(137, 137, 137, 0);
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    -unity-font: url("project://database/Assets/GemHunterMatch/UI/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=2230732570650464555&guid=c215640d0f618c148bcebd2a26070cdd&type=3#NotInter-Regular");
+    -unity-font-style: normal;
+    color: rgb(230, 230, 230);
+    flex-grow: 0;
+    max-width: none;
+    max-height: none;
+    min-width: auto;
+    min-height: auto;
+    font-size: 40px;
+    flex-shrink: 0.8;
+    margin-top: 2px;
+    margin-right: 4px;
+    margin-bottom: 2px;
+    margin-left: 4px;
+    text-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    flex-direction: row;
+    align-content: auto;
+    overflow: visible;
+    background-image: url("project://database/Assets/GemHunterUGS/Art/UI_Assets-Updated.psd?fileID=3045994138414008387&guid=ac8d91374d183b142b4426b3604fdc7d&type=3#btn_green_small");
+    -unity-slice-left: 0;
+    -unity-slice-top: 0;
+    -unity-slice-right: 0;
+    -unity-slice-bottom: 0;
+    -unity-slice-scale: 1px;
+    -unity-background-scale-mode: scale-to-fit;
+    padding-left: 170px;
+    padding-bottom: 20px;
+    -unity-font-definition: url("project://database/Assets/GemHunterMatch/Fonts/CurseCasual/Curse%20Casual%20SDF.asset?fileID=11400000&guid=0a460f6750bafb142b0340a5e205adf4&type=2#Curse Casual SDF");
+    -unity-text-align: middle-left;
+    padding-top: 0;
+    padding-right: 0;
+    border-right-width: 0;
+}
+
+.button-login:hover {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    width: 617px;
+    height: 166px;
+    align-items: auto;
+    align-self: center;
+    justify-content: space-around;
+    background-color: rgba(137, 137, 137, 0);
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    -unity-font: url("project://database/Assets/GemHunterMatch/UI/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=2230732570650464555&guid=c215640d0f618c148bcebd2a26070cdd&type=3#NotInter-Regular");
+    -unity-font-style: normal;
+    color: rgb(230, 230, 230);
+    flex-grow: 0;
+    max-width: none;
+    max-height: none;
+    min-width: auto;
+    min-height: auto;
+    font-size: 40px;
+    flex-shrink: 0.8;
+    margin-top: 2px;
+    margin-right: 4px;
+    margin-bottom: 2px;
+    margin-left: 4px;
+    text-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    flex-direction: row;
+    align-content: auto;
+    overflow: visible;
+    background-image: url("project://database/Assets/GemHunterUGS/Art/UI_Assets-Updated.psd?fileID=3045994138414008387&guid=ac8d91374d183b142b4426b3604fdc7d&type=3#btn_green_small");
+    -unity-slice-left: 0;
+    -unity-slice-top: 0;
+    -unity-slice-right: 0;
+    -unity-slice-bottom: 0;
+    -unity-slice-scale: 1px;
+    -unity-background-scale-mode: scale-to-fit;
+    padding-left: 180px;
+    padding-bottom: 20px;
+    -unity-font-definition: url("project://database/Assets/GemHunterMatch/Fonts/CurseCasual/Curse%20Casual%20SDF.asset?fileID=11400000&guid=0a460f6750bafb142b0340a5e205adf4&type=2#Curse Casual SDF");
+    -unity-text-align: middle-left;
+    padding-top: 0;
+    padding-right: 0;
+    border-right-width: 0;
+    scale: 1.05 1.05;
+    transition-timing-function: ease-out-cubic;
+    transition-duration: 0.1s;
+}
+
+.button-login:active {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    width: 617px;
+    height: 166px;
+    align-items: auto;
+    align-self: center;
+    justify-content: space-around;
+    background-color: rgba(137, 137, 137, 0);
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    -unity-font: url("project://database/Assets/GemHunterMatch/UI/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=2230732570650464555&guid=c215640d0f618c148bcebd2a26070cdd&type=3#NotInter-Regular");
+    -unity-font-style: normal;
+    color: rgb(230, 230, 230);
+    flex-grow: 0;
+    max-width: none;
+    max-height: none;
+    min-width: auto;
+    min-height: auto;
+    font-size: 40px;
+    flex-shrink: 0.8;
+    margin-top: 2px;
+    margin-right: 4px;
+    margin-bottom: 2px;
+    margin-left: 4px;
+    text-shadow: 0 0 0 rgba(0, 0, 0, 0);
+    flex-direction: row;
+    align-content: auto;
+    overflow: visible;
+    background-image: url("project://database/Assets/GemHunterUGS/Art/UI_Assets-Updated.psd?fileID=3045994138414008387&guid=ac8d91374d183b142b4426b3604fdc7d&type=3#btn_green_small");
+    -unity-slice-left: 0;
+    -unity-slice-top: 0;
+    -unity-slice-right: 0;
+    -unity-slice-bottom: 0;
+    -unity-slice-scale: 1px;
+    -unity-background-scale-mode: scale-to-fit;
+    padding-left: 180px;
+    padding-bottom: 20px;
+    -unity-font-definition: url("project://database/Assets/GemHunterMatch/Fonts/CurseCasual/Curse%20Casual%20SDF.asset?fileID=11400000&guid=0a460f6750bafb142b0340a5e205adf4&type=2#Curse Casual SDF");
+    -unity-text-align: middle-left;
+    padding-top: 0;
+    padding-right: 0;
+    border-right-width: 0;
+    scale: 1.1 1.1;
+    -unity-background-image-tint-color: rgb(86, 255, 6);
+    transition-timing-function: ease-out-cubic;
+    transition-duration: 0.5s;
+    transition-delay: 0s;
+}
+
+.button-signup {
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.72);
+    background-color: rgba(0, 0, 0, 0);
+    background-image: url("project://database/Assets/GemHunterUGS/Art/UI_Assets-Updated.psd?fileID=-2743143917283875972&guid=ac8d91374d183b142b4426b3604fdc7d&type=3#btn_blue_medium");
+    font-size: 92px;
+    padding-bottom: 50px;
+    -unity-font-style: normal;
+    -unity-slice-left: 0;
+    -unity-slice-top: 0;
+    -unity-slice-right: 0;
+    -unity-slice-bottom: 0;
+    -unity-slice-scale: 1.5px;
+    width: 800px;
+    -unity-background-scale-mode: stretch-to-fill;
+    height: 260px;
+    max-height: none;
+    align-content: center;
+    justify-content: center;
+    background-size: 100% 100%;
+    max-width: none;
+    flex-shrink: 1;
+    flex-grow: 1;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.button-signup:hover {
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.72);
+    background-color: rgba(0, 0, 0, 0);
+    background-image: url("project://database/Assets/GemHunterUGS/Art/UI_Assets-Updated.psd?fileID=-2743143917283875972&guid=ac8d91374d183b142b4426b3604fdc7d&type=3#btn_blue_medium");
+    font-size: 92px;
+    padding-bottom: 50px;
+    -unity-font-style: normal;
+    -unity-slice-left: 0;
+    -unity-slice-top: 0;
+    -unity-slice-right: 0;
+    -unity-slice-bottom: 0;
+    -unity-slice-scale: 1.5px;
+    width: 800px;
+    -unity-background-scale-mode: stretch-to-fill;
+    height: 260px;
+    max-height: none;
+    align-content: center;
+    justify-content: center;
+    background-size: 100% 100%;
+    max-width: none;
+    flex-shrink: 1;
+    flex-grow: 1;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    margin-left: 0;
+    margin-right: 0;
+    scale: 1.05 1.05;
+    transition-duration: 0.1s;
+}
+
+.button-signup:active {
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.72);
+    background-color: rgba(0, 0, 0, 0);
+    background-image: url("project://database/Assets/GemHunterUGS/Art/UI_Assets-Updated.psd?fileID=-2743143917283875972&guid=ac8d91374d183b142b4426b3604fdc7d&type=3#btn_blue_medium");
+    font-size: 92px;
+    padding-bottom: 50px;
+    -unity-font-style: normal;
+    -unity-slice-left: 0;
+    -unity-slice-top: 0;
+    -unity-slice-right: 0;
+    -unity-slice-bottom: 0;
+    -unity-slice-scale: 1.5px;
+    width: 800px;
+    -unity-background-scale-mode: stretch-to-fill;
+    height: 260px;
+    max-height: none;
+    align-content: center;
+    justify-content: center;
+    background-size: 100% 100%;
+    max-width: none;
+    flex-shrink: 1;
+    flex-grow: 1;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    margin-left: 0;
+    margin-right: 0;
+    scale: 1.1 1.1;
+    transition-duration: 0.1s;
+    transition-timing-function: ease-out;
+}
+
+.guest-play-info-button {
+    position: absolute;
+    -unity-background-image-tint-color: rgba(255, 255, 255, 0);
+    background-color: rgba(188, 188, 188, 0);
+    top: 940px;
+    left: auto;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    right: 50px;
+    bottom: auto;
+    align-self: center;
+    align-content: center;
+    flex-shrink: 1;
+    flex-grow: 1;
+    flex-direction: column;
+    align-items: center;
+}
+
+.guest-play-info-button:hover {
+    position: absolute;
+    -unity-background-image-tint-color: rgba(255, 255, 255, 0);
+    background-color: rgba(188, 188, 188, 0);
+    top: 940px;
+    left: auto;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    right: 50px;
+    bottom: auto;
+    align-self: center;
+    align-content: center;
+    flex-shrink: 1;
+    flex-grow: 1;
+    flex-direction: column;
+    align-items: center;
+    scale: 1.05 1.05;
+    transition-timing-function: ease-out-cubic;
+    transition-duration: 0.1s;
+}
+
+.guest-play-info-button:active {
+    position: absolute;
+    -unity-background-image-tint-color: rgba(255, 255, 255, 0);
+    background-color: rgba(188, 188, 188, 0);
+    top: 940px;
+    left: auto;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    right: 50px;
+    bottom: auto;
+    align-self: center;
+    align-content: center;
+    flex-shrink: 1;
+    flex-grow: 1;
+    flex-direction: column;
+    align-items: center;
+    scale: 1.1 1.1;
+    transition-duration: 0.1s;
+    transition-timing-function: ease-out-cubic;
+}
+
+.close-button {
+    background-image: url("project://database/Assets/GemHunterMatch/Images/UI/Sprite_Close.png?fileID=2800000&guid=17ee14b883ad93e49bde2c96c49bf8e7&type=3#Sprite_Close");
+    margin-top: 9px;
+    margin-right: 9px;
+    margin-bottom: 9px;
+    margin-left: 9px;
+    width: 100px;
+    align-items: auto;
+    align-self: flex-end;
+    height: 100px;
+    background-color: rgba(255, 255, 255, 0);
+    border-left-color: rgba(255, 255, 255, 0);
+    border-right-color: rgba(255, 255, 255, 0);
+    border-top-color: rgba(255, 255, 255, 0);
+    border-bottom-color: rgba(255, 255, 255, 0);
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
+    visibility: visible;
+    right: -84px;
+    top: -84px;
+}
+
+.close-button:hover {
+    background-image: url("project://database/Assets/GemHunterMatch/Images/UI/Sprite_Close.png?fileID=2800000&guid=17ee14b883ad93e49bde2c96c49bf8e7&type=3#Sprite_Close");
+    margin-top: 9px;
+    margin-right: 9px;
+    margin-bottom: 9px;
+    margin-left: 9px;
+    width: 100px;
+    align-items: auto;
+    align-self: flex-end;
+    height: 100px;
+    background-color: rgba(255, 255, 255, 0);
+    border-left-color: rgba(255, 255, 255, 0);
+    border-right-color: rgba(255, 255, 255, 0);
+    border-top-color: rgba(255, 255, 255, 0);
+    border-bottom-color: rgba(255, 255, 255, 0);
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
+    visibility: visible;
+    right: -84px;
+    top: -84px;
+    scale: 1.05 1.05;
+    transition-timing-function: ease-out-cubic;
+    transition-duration: 0.1s;
+}
+
+.close-button:active {
+    background-image: url("project://database/Assets/GemHunterMatch/Images/UI/Sprite_Close.png?fileID=2800000&guid=17ee14b883ad93e49bde2c96c49bf8e7&type=3#Sprite_Close");
+    margin-top: 9px;
+    margin-right: 9px;
+    margin-bottom: 9px;
+    margin-left: 9px;
+    width: 100px;
+    align-items: auto;
+    align-self: flex-end;
+    height: 100px;
+    background-color: rgba(255, 255, 255, 0);
+    border-left-color: rgba(255, 255, 255, 0);
+    border-right-color: rgba(255, 255, 255, 0);
+    border-top-color: rgba(255, 255, 255, 0);
+    border-bottom-color: rgba(255, 255, 255, 0);
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
+    visibility: visible;
+    right: -84px;
+    top: -84px;
+    scale: 1.05 1.05;
+    transition-timing-function: ease-out-cubic;
+    transition-duration: 0.1s;
+}
+
+.sign-in-background {
+    flex-grow: 0;
+    background-color: rgb(241, 213, 161);
+    left: auto;
+    right: auto;
+    align-self: auto;
+    top: auto;
+    bottom: auto;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    -unity-text-align: middle-left;
+    justify-content: space-around;
+    max-width: none;
+    max-height: none;
+    flex-shrink: 0;
+    align-items: center;
+    width: 90%;
+    height: 70%;
+    padding-top: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    visibility: visible;
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    align-content: auto;
+}
+
+.account-button {
+    width: 40%;
+    height: 80%;
+    font-size: 50px;
+    -unity-font-style: normal;
+    margin-top: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    border-left-color: rgba(0, 0, 0, 0);
+    border-right-color: rgba(0, 0, 0, 0);
+    border-top-color: rgba(0, 0, 0, 0);
+    border-bottom-color: rgba(0, 0, 0, 0);
+    -unity-text-outline-width: 0;
+    background-color: rgba(0, 0, 0, 0);
+    color: rgb(230, 230, 230);
+    -unity-font-definition: url("project://database/Assets/GemHunterMatch/Fonts/CurseCasual/Curse%20Casual.ttf?fileID=12800000&guid=31797353ab4fc7043a0f62eacf5ea3a9&type=3#Curse Casual");
+    padding-bottom: 30px;
+    text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.7);
+    align-content: auto;
+    justify-content: space-around;
+}
+
+.close-button {
+    background-image: url("project://database/Assets/GemHunterMatch/Images/UI/Sprite_Close.png?fileID=2800000&guid=17ee14b883ad93e49bde2c96c49bf8e7&type=3#Sprite_Close");
+    margin-top: 9px;
+    margin-right: 9px;
+    margin-bottom: 9px;
+    margin-left: 9px;
+    width: 100px;
+    align-items: auto;
+    align-self: flex-end;
+    height: 100px;
+    background-color: rgba(255, 255, 255, 0);
+    border-left-color: rgba(255, 255, 255, 0);
+    border-right-color: rgba(255, 255, 255, 0);
+    border-top-color: rgba(255, 255, 255, 0);
+    border-bottom-color: rgba(255, 255, 255, 0);
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
+    visibility: visible;
+    right: -40px;
+    top: -40px;
+}
+
+.close-button {
+    background-image: url("project://database/Assets/GemHunterMatch/Images/UI/Sprite_Close.png?fileID=2800000&guid=17ee14b883ad93e49bde2c96c49bf8e7&type=3#Sprite_Close");
+    margin-top: 9px;
+    margin-right: 9px;
+    margin-bottom: 9px;
+    margin-left: 9px;
+    width: 100px;
+    align-items: auto;
+    align-self: flex-end;
+    height: 100px;
+    background-color: rgba(255, 255, 255, 0);
+    border-left-color: rgba(255, 255, 255, 0);
+    border-right-color: rgba(255, 255, 255, 0);
+    border-top-color: rgba(255, 255, 255, 0);
+    border-bottom-color: rgba(255, 255, 255, 0);
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
+    visibility: visible;
+    right: -84px;
+    top: -84px;
+    -unity-background-scale-mode: scale-to-fit;
+}
+
+.close-button {
+    background-image: url("project://database/Assets/GemHunterMatch/Images/UI/Sprite_Close.png?fileID=2800000&guid=17ee14b883ad93e49bde2c96c49bf8e7&type=3#Sprite_Close");
+    margin-top: 9px;
+    margin-right: 9px;
+    margin-bottom: 9px;
+    margin-left: 9px;
+    width: 100px;
+    align-items: auto;
+    align-self: flex-end;
+    height: 100px;
+    background-color: rgba(255, 255, 255, 0);
+    border-left-color: rgba(255, 255, 255, 0);
+    border-right-color: rgba(255, 255, 255, 0);
+    border-top-color: rgba(255, 255, 255, 0);
+    border-bottom-color: rgba(255, 255, 255, 0);
+    flex-direction: column;
+    justify-content: flex-end;
+    overflow: hidden;
+    visibility: visible;
+    right: -40px;
+    top: -40px;
+}
+
+ScrollView {
+    --unity-metrics-default-scroll_view_slider_width: 4;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.popup-info-scroll-view > .unity-scroller--vertical {
+    width: 30px;
+    margin: 0;
+    padding: 0;
+}
+
+popupinfoscrollview #unity-dragger {
+    width: 30px;
+    left: 0;
+    height: 60px;
+    background-image: url("project://database/Assets/GemHunterUGS/Art/UI_Assets-Updated.psd?fileID=-4542658085920811927&guid=ac8d91374d183b142b4426b3604fdc7d&type=3#scrollbar_fill_small");
+    -unity-background-scale-mode: stretch-to-fill;
+    background-color: rgba(0, 0, 0, 0);
+    border-width: 0;
+}

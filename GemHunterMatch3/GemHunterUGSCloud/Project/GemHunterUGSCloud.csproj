@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <Configurations>Debug;Release</Configurations>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Com.Unity.Services.CloudCode.Apis" Version="0.0.16" />
+      <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.1" />
+    </ItemGroup>
+
+    <PropertyGroup>
+        <PublishReadyToRunComposite>true</PublishReadyToRunComposite>
+    </PropertyGroup>
+
+<!--    <Target Name="Zip" AfterTargets="Publish">-->
+<!--        <Message Importance="high" Text="Zipping output!!"/>-->
+<!--        <Exec Command="zip -r $(SolutionDir)ExampleModule.ccm $(PublishDir)" />-->
+<!--    </Target>-->
+</Project>

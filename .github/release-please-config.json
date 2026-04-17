@@ -1,0 +1,16 @@
+{
+  "packages": {
+    ".": {
+      "release-type": "node",
+      "package-name": "into-the-void-root"
+    },
+    "plugins/vscode-extension": {
+      "release-type": "node",
+      "package-name": "into-the-void-extension"
+    },
+    "packages/amazonq": {
+      "release-type": "node",
+      "package-name": "amazonq"
+    }
+  }
+}

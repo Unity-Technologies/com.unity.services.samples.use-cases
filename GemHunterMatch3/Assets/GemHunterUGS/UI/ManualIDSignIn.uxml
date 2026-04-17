@@ -1,0 +1,11 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <ui:VisualElement name="UnityIDSignIn" style="flex-grow: 1; margin-top: 100px; margin-right: 8px; margin-bottom: 8px; margin-left: 8px;">
+        <ui:TextField picking-mode="Ignore" label="Name" value="username" name="Username" style="flex-direction: column;" />
+        <ui:TextField picking-mode="Ignore" label="Password" value="password" name="Password" style="flex-direction: column;" />
+        <ui:Button text="Sign In" parse-escape-sequences="true" display-tooltip-when-elided="true" name="SignInButton" style="margin-top: 16px; border-top-left-radius: 14px; border-top-right-radius: 14px; border-bottom-right-radius: 14px; border-bottom-left-radius: 14px; background-color: rgb(81, 175, 65); -unity-font-style: bold; color: rgb(255, 255, 255);" />
+        <ui:VisualElement name="LineSeparator" style="flex-grow: 1; background-color: rgb(13, 13, 13); max-width: 100%; max-height: 2px; align-items: center; justify-content: center; align-self: auto; margin-top: 10px; margin-bottom: 10px;" />
+        <ui:VisualElement name="CreateAccount" style="flex-grow: 1; justify-content: flex-start;">
+            <ui:Button text="Create Account" parse-escape-sequences="true" display-tooltip-when-elided="true" name="CreateAccountButton" style="border-top-left-radius: 14px; border-top-right-radius: 14px; border-bottom-right-radius: 14px; border-bottom-left-radius: 14px; background-color: rgb(231, 94, 120); -unity-font-style: bold; color: rgb(255, 255, 255);" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

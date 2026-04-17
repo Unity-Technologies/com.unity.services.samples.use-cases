@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf15de8e9fcfb3547b1b078b101a65c3, type: 3}
+  m_Name: HorisontalRocketBonus
+  m_EditorClassIdentifier: 
+  DisplaySprite: {fileID: 21300000, guid: a3c042e7079c8fc4b8d2ead6d6113868, type: 3}
+  NeedTarget: 1
+  UsedBonusGem: {fileID: 7805701772922581740, guid: d3d488c116784e14f8d9926759659256, type: 3}
