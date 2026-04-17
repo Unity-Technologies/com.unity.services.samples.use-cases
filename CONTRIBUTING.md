@@ -1,6 +1,8 @@
 # Contributing to Into the Void
 
-Thank you for your interest in contributing to the **Into the Void** ecosystem. To maintain architectural integrity and ensure seamless automated workflows, we enforce a strict set of contribution protocols. **Non-compliant contributions will be rejected without exception.**
+Thank you for your interest in contributing to the **Into the Void** ecosystem. To maintain architectural integrity and ensure seamless automated workflows, we enforce a strict set of contribution protocols.
+
+**ZERO-TOLERANCE POLICY:** This repository enforces a zero-tolerance policy for non-compliant contributions. Failure to adhere to the mandatory branching strategy, commit message protocols, or architectural standards will result in immediate rejection of the Pull Request without exception.
 
 ## Mandatory Branching Strategy
 

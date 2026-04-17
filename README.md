@@ -15,10 +15,11 @@ This project is a hybrid environment containing:
 
 To work with the TypeScript workspace and VS Code extension, ensure you have the following installed:
 
-*   **Node.js**: Version 18.x or 20.x (LTS) is strictly required for compatibility.
-*   **TypeScript**: Version 5.1.x or later must be used for compilation.
-*   **Unity Editor**: 6000.0.x (Unity 6) or later.
-*   **VS Code**: Latest version with the "Extension Development Host" capabilities.
+*   **Node.js**: Version 18.x or 20.x (LTS) is strictly required for compatibility. Verify with `node --version`.
+*   **npm**: Included with Node.js. Used for dependency management.
+*   **TypeScript**: Version 5.1.x or later must be used for compilation. Global install: `npm install -g typescript@5.1.x`.
+*   **Unity Editor**: 6000.0.x (Unity 6) or later. Required for core simulation logic.
+*   **VS Code**: Latest version with the "Extension Development Host" capabilities for debugging.
 
 ### Compilation Instructions
 
@@ -41,10 +42,13 @@ To work with the TypeScript workspace and VS Code extension, ensure you have the
 
 ### Unity & C# Pipeline Integration
 
-The VS Code extension interfaces with the Unity 6 environment via internal C# pipelines.
-*   **Entry Point**: `GemHunterMatch3/Assets/GemHunterUGS/Scripts/Core/GameInitializer.cs` manages the initialization of metagame systems.
-*   **Cloud Logic**: Server-authoritative logic is located in `GemHunterMatch3/GemHunterUGSCloud/`.
-*   **Visual Telemetry**: Captures 'Visual Performance Deltas' and 'Narrative Drift' using client-side systems, processed by the serverless `NarrativeObservabilityHub`.
+The VS Code extension serves as a high-performance bridge between external logic pipelines and the Unity 6 simulation.
+
+*   **Interface Layer**: The extension communicates with Unity via a standardized data protocol handled by `UnityDataService`.
+*   **C# Entry Point**: `GemHunterMatch3/Assets/GemHunterUGS/Scripts/Core/GameInitializer.cs` manages the initialization of metagame systems and state synchronization.
+*   **Cloud Logic**: Server-authoritative logic is located in `GemHunterMatch3/GemHunterUGSCloud/`, providing the source of truth for all competitive state.
+*   **Visual Telemetry**: Captures 'Visual Performance Deltas' and 'Narrative Drift' using client-side systems. This data is transmitted to the serverless `NarrativeObservabilityHub` for processing and analysis.
+*   **Optimization Standards**: All C# optimizations must be wrapped in `Profiler.BeginSample` / `Profiler.EndSample` blocks to ensure visibility in the Unity Profiler.
 
 ## Binaries & Artifact Management
 
@@ -54,17 +58,19 @@ Compiled artifacts (specifically `.vsix` packages) are distributed via GitHub Re
 
 1.  Download the latest `.vsix` and `checksums.txt` from the [Releases](https://github.com/evanwilson-arch/com.unity.services.samples.use-cases/releases) page.
 2.  Verify the SHA-256 integrity of the artifact before local installation:
+
+    **On Linux or macOS:**
     ```bash
-    # On Linux/macOS (Ensure the .vsix is in the same directory)
+    # Ensure the .vsix and checksums.txt are in the same directory
     sha256sum -c checksums.txt
-
-    # On Windows (PowerShell) - Comparing manually or via script
-    # To get the hash:
-    Get-FileHash ./into-the-void-extension.vsix -Algorithm SHA256
-
-    # To verify against the content of checksums.txt (Manual Example):
-    # (Get-FileHash ./into-the-void-extension.vsix).Hash -eq "EXPECTED_HASH_FROM_FILE"
     ```
+
+    **On Windows (PowerShell):**
+    ```powershell
+    # Compare the hash of the downloaded file with the expected value
+    (Get-FileHash ./into-the-void-extension.vsix -Algorithm SHA256).Hash -eq (Get-Content ./checksums.txt).Split(" ")[0]
+    ```
+
 3.  Install the verified extension in VS Code:
     ```bash
     code --install-extension into-the-void-extension.vsix

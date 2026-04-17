@@ -16,6 +16,8 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Inject Unity Services Config
+        # This step prevents sensitive or uninitialized Unity Services IDs from being committed.
+        # It dynamically injects environment variables into the Settings.json file during the build matrix.
         env:
           UNITY_SERVICES_ENVIRONMENT_ID: ${{ secrets.UNITY_SERVICES_ENVIRONMENT_ID }}
           UNITY_SERVICES_ENVIRONMENT_NAME: ${{ secrets.UNITY_SERVICES_ENVIRONMENT_NAME }}
