@@ -117,7 +117,7 @@ namespace Match3
         /// <param name="cellList">The list of cells in the match we test against</param>
         /// <param name="matchedCells">This will be filled by the cell this MatchShape used in the cell List if it could fit</param>
         /// <returns>True if the shape could fit, false otherwise</returns>
-        public bool FitIn(List<Vector3Int> cellList, ref List<Vector3Int> matchedCells)
+        public bool FitIn(List<Vector3Int> cellList, ref List<Vector3Int> matchedCells, bool[,] visitedBuffer = null, BoundsInt bounds = default)
         {
             var targetBound = GetBoundOf(cellList);
         
@@ -132,12 +132,12 @@ namespace Match3
             {
                 for (int x = targetBound.xMin; x <= targetBound.xMax - smallestBoundSize + 1; ++x)
                 {
-                    List<Vector3Int> matchingCells = new();
-                    List<Vector3Int> matching90Cells = new();
-                    List<Vector3Int> matching180Cells = new();
-                    List<Vector3Int> matching270Cells = new();
-                    List<Vector3Int> matchingHMirrorCells = new();
-                    List<Vector3Int> matchingVMirrorCells = new();
+                    List<Vector3Int> matchingCells = new(8);
+                    List<Vector3Int> matching90Cells = new(8);
+                    List<Vector3Int> matching180Cells = new(8);
+                    List<Vector3Int> matching270Cells = new(8);
+                    List<Vector3Int> matchingHMirrorCells = new(8);
+                    List<Vector3Int> matchingVMirrorCells = new(8);
                 
 
                     for (int iy = 0; iy <= largestBoundSize; ++iy)
@@ -147,7 +147,20 @@ namespace Match3
                             var normalShapeCell = new Vector3Int(ix + Bounds.xMin, iy + Bounds.yMin, 0);
                             var localCell = new Vector3Int(x + ix, y + iy, 0);
                         
-                            if (cellList.Contains(localCell))
+                            bool isInList = false;
+                            if (visitedBuffer != null)
+                            {
+                                int lx = localCell.x - bounds.xMin;
+                                int ly = localCell.y - bounds.yMin;
+                                if (lx >= 0 && lx <= bounds.width && ly >= 0 && ly <= bounds.height)
+                                    isInList = visitedBuffer[lx, ly];
+                            }
+                            else
+                            {
+                                isInList = cellList.Contains(localCell);
+                            }
+
+                            if (isInList)
                             {
                                 if (Cells.Contains(normalShapeCell))
                                     matchingCells.Add(localCell);
