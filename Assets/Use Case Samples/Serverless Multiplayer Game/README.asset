@@ -442,12 +442,12 @@ MonoBehaviour:
       url: https://docs.unity.com/authentication/IntroUnityAuthentication.html
     - linkText: Cloud Save
       url: https://docs.unity.com/cloud-save/index.html#Implementation
-    - linkText: Lobby
-      url: https://docs.unity.com/lobby/en/manual/lobby-sdk-installation
+    - linkText: Deployment
+      url: https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2
+    - linkText: Multiplayer Services
+      url: https://docs.unity3d.com/Packages/com.unity.services.multiplayer@latest
     - linkText: Netcode for GameObjects
       url: https://docs-multiplayer.unity3d.com/netcode/current/installation/install
-    - linkText: Relay
-      url: https://docs.unity.com/relay/en/manual/get-started
     - linkText: Remote Config
       url: https://docs.unity3d.com/Packages/com.unity.remote-config@latest
     - linkText: Deployment
@@ -495,10 +495,7 @@ MonoBehaviour:
   - subHeader1: 
     subHeader2: 
     subHeader3: 
-    body: There are two main ways of doing this, either by using the Deployment
-      package, or by manually entering them using the Dashboard. We recommend
-      the usage of the Deployment package since it will greatly accelerate this
-      process.
+    body: To configure these items you can use the Deployment package, or manually enter them using the Unity Cloud Dashboard. The recommended best practice is to use the Deployment package as it greatly accelerates this process.
     bodyFormat: 0
     boxCallout: 
     bulletList: []
@@ -525,9 +522,7 @@ MonoBehaviour:
   - subHeader1: 
     subHeader2: Using the Dashboard
     subHeader3: 
-    body: The Dashboard enables you to edit manually all your services
-        configuration by project and environment. Here are the details
-        necessary for the configuration of the current sample.
+    body: You can use the Unity Cloud Dashboard to manually configure your services by project and environment. Refer to the following sections to configure this sample.
     bodyFormat: 0
     boxCallout: 
     linkList:

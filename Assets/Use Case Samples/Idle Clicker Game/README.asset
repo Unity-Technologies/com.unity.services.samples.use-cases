@@ -36,8 +36,8 @@ MonoBehaviour:
       bulletList: []
       linkList: []
     - body: How to merge playing pieces to form more powerful pieces by utilizing
-        Inventory Items as playing pieces and upgrading them using Economy Virtual
-        Purchases.
+        Inventory Items as playing pieces and upgrading them using Virtual Purchases
+        processed by the SampleGameModule Cloud Code module.
       bodyFormat: 0
       bulletList: []
       linkList: []
@@ -105,16 +105,17 @@ MonoBehaviour:
       bodyFormat: 0
       bulletList: []
       linkList: []
-    - body: Retrieves and updates the player's currency balances from the Economy
-        service.
+    - body: Retrieves and updates the player's currency balances from the player's
+        player_economy Cloud Save key.
       bodyFormat: 0
       bulletList: []
       linkList: []
-    - body: "Retrieves or creates the current game state by calling the IdleClicker_GetUpdatedState.js
-        Cloud Code script. If this is a new game, this script will generate a random
+    - body: "Retrieves or creates the current game state by calling the IdleClicker_GetUpdatedState
+        Cloud Code module function. If this is a new game, this function will generate a random
         game playfield and reset the player's Water, otherwise it calculates the
-        amount of Water generated since the last update and calls the Economy service
-        to grant that amount to the player\u2019s currency balance. It also retrieves
+        amount of Water generated since the last update and grants that amount to the player\u2019s currency balance
+        in the player's player_economy Cloud Save record.
+        It also retrieves
         the state of the Unlock Manager."
       bodyFormat: 0
       bulletList: []
@@ -140,12 +141,13 @@ MonoBehaviour:
       bodyFormat: 0
       bulletList: []
       linkList: []
-    - body: 'Once the client validates the request, the Cloud Code script IdleClicker_PlaceWell.js
+    - body: 'Once the client validates the request, the Cloud Code module function IdleClicker_PlaceWell
         is called to perform the following steps:'
       bodyFormat: 0
       bulletList:
       - body: First it grants all Water generated since the last Cloud Code call
-          using the Economy service. Note that, until this occurs, the Water total
+          in the player's player_economy Cloud Save record. Note that, until this occurs, the
+          Water total
           the player is seeing in the Unity Client is just a simulation of how much
           Water he or she should have. Once Cloud Code determines the actual amount
           and grants it, the Client will be updated with this new total and will
@@ -200,7 +202,7 @@ MonoBehaviour:
       bodyFormat: 0
       bulletList: []
       linkList: []
-    - body: 'If the move is valid, the Cloud Code script IdleClicker_MoveWell.js
+    - body: 'If the move is valid, the Cloud Code module function IdleClicker_MoveWell
         is called to perform the following actions:'
       bodyFormat: 0
       bulletList:
@@ -269,13 +271,13 @@ MonoBehaviour:
   - subHeader1: 
     subHeader2: 
     subHeader3: 
-    body: 'If the merge is valid, the client will call Cloud Code script IdleClicker_MergeWells
+    body: 'If the merge is valid, the client will call Cloud Code module function IdleClicker_MergeWells
       to perform the following:'
     bodyFormat: 0
     boxCallout: 
     bulletList:
-    - body: First it grants all Water generated since the last Cloud Code call using
-        the Economy service.
+    - body: First it grants all Water generated since the last Cloud Code call in
+        the player's player_economy Cloud Save record.
       bodyFormat: 0
       bulletList: []
       linkList: []
@@ -309,9 +311,9 @@ MonoBehaviour:
       bodyFormat: 0
       bulletList: []
       linkList: []
-    - body: The Economy Virtual Purchase is attempted to consume the correct quantity
-        of Water. If the purchase fails, an exception will be thrown back to the
-        client.
+    - body: The Virtual Purchase consumes the correct quantity of Water from the
+        player's player_economy Cloud Save record. If the purchase fails, an
+        exception will be thrown back to the client.
       bodyFormat: 0
       bulletList: []
       linkList: []
@@ -355,12 +357,12 @@ MonoBehaviour:
     bodyFormat: 0
     boxCallout: 
     bulletList:
-    - body: Call Cloud Code script `IdleClicker_Reset` which clears the Cloud Save
+    - body: Call Cloud Code module function `IdleClicker_Reset` which clears the Cloud Save
         data so the state resembles that of a new player.
       bodyFormat: 0
       bulletList: []
       linkList: []
-    - body: Call Cloud Code script IdleClicker_GetUpdatedState. Since the Cloud Save
+    - body: Call Cloud Code module function IdleClicker_GetUpdatedState. Since the Cloud Save
         data is missing, it treats the get-state request as a new player and creates
         a random playfield, resets the player's Water currency to 1,000 and sets
         the starting values for the Unlock Manager.
@@ -408,8 +410,8 @@ MonoBehaviour:
       bodyFormat: 0
       bulletList: []
       linkList: []
-    - body: The Economy Service is called to grant the appropriate total quantity
-        of Water.
+    - body: The function grants the appropriate
+        total quantity of Water in the player's player_economy Cloud Save record.
       bodyFormat: 0
       bulletList: []
       linkList: []
@@ -421,8 +423,8 @@ MonoBehaviour:
   - subHeader1: 
     subHeader2: 
     subHeader3: Virtual Purchases
-    body: This sample illustrates how Virtual Purchases occur through the Economy
-      service. In this case, the Virtual Purchase for a Wood Well costs 100 Water.
+    body: This sample illustrates how Virtual Purchases occur through the SampleGameModule
+      Cloud Code module. In this case, the Virtual Purchase for a Wood Well costs 100 Water.
       Upgraded Wells cost more Water. For example, Bronze Wells cost 200 Water and
       remove 2 Wood Wells from the game state. Note that the Virtual Purchases themselves
       do not effect the Well information stored in Cloud Save. However, once the
@@ -545,7 +547,9 @@ MonoBehaviour:
       bulletList: []
       linkList: []
     - body: 'Cloud Save: Stores the game state, last update timestamp and unlock
-        data. Cloud Code checks and updates these values directly.'
+        data. Cloud Code checks and updates these values directly. It also stores
+        the player''s Water balance in the player_economy key, which the client reads
+        at runtime.'
       bodyFormat: 0
       bulletList: []
       linkList: []
@@ -554,9 +558,8 @@ MonoBehaviour:
       bodyFormat: 0
       bulletList: []
       linkList: []
-    - body: 'Deployment: In this context, it is used on the editor side to facilitate the
-        configuration of the different Unity services. It enables the display of the Deployment
-        window which allows the deployment of various service configuration assets.'
+    - body: 'Remote Config: Provides the economy catalog, including the Water currency
+        and the Well Virtual Purchase definitions.'
       bodyFormat: 0
       bulletList: []
       linkList: []
@@ -576,10 +579,10 @@ MonoBehaviour:
       url: https://docs.unity.com/cloud-code/implementation.html
     - linkText: Cloud Save
       url: https://docs.unity.com/cloud-save/index.html#Implementation
-    - linkText: Economy
-      url: https://docs.unity.com/economy/implementation.html
     - linkText: Deployment
       url: https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2
+    - linkText: Remote Config
+      url: https://docs.unity.com/remote-config
   - subHeader1: 
     subHeader2: 
     subHeader3: 
@@ -597,17 +600,14 @@ MonoBehaviour:
     body: 'To replicate this sample scene''s setup in your own Unity project, we need to configure the following items:'
     bodyFormat: 0
     boxCallout: 
-    bulletList: 
-    - body: Cloud Code scripts
-    - body: Economy items
+    bulletList:
+    - body: The SampleGameModule Cloud Code module
+    - body: Remote Config economy catalog values
     linkList: []
   - subHeader1: 
     subHeader2: 
     subHeader3: 
-    body: There are two main ways of doing this, either by using the Deployment
-      package, or by manually entering them using the Dashboard. We recommend
-      the usage of the Deployment package since it will greatly accelerate this
-      process.
+    body: To configure these items you can use the Deployment package, or manually enter them using the Unity Cloud Dashboard. The recommended best practice is to use the Deployment package as it greatly accelerates this process.
     bodyFormat: 0
     boxCallout: 
     bulletList: []
@@ -634,9 +634,7 @@ MonoBehaviour:
   - subHeader1: 
     subHeader2: Using the Dashboard
     subHeader3: 
-    body: The Dashboard enables you to edit manually all your services
-        configuration by project and environment. Here are the details
-        necessary for the configuration of the current sample.
+    body: You can use the Unity Cloud Dashboard to manually configure your services by project and environment. Refer to the following sections to configure this sample.
     bodyFormat: 0
     boxCallout: 
     linkList:
@@ -645,7 +643,7 @@ MonoBehaviour:
   - subHeader1: 
     subHeader2: 
     subHeader3: Cloud Code
-    body: 'Publish the following scripts in the LiveOps dashboard:'
+    body: 'The SampleGameModule Cloud Code module provides the following module functions. To publish them, deploy the module through Assets/Common/Config as Code/SampleGameModule.ccmr in the Deployment window:'
     bodyFormat: 0
     boxCallout: 
     bulletList:
@@ -660,7 +658,7 @@ MonoBehaviour:
       - body: 'Parameters: none'
         bodyFormat: 0
         bulletList: []
-      - body: Assets/Use Case Samples/Idle Clicker Game/Config as Code/IdleClicker_GetUpdatedState.js
+      - body: SampleGameModule/Project/Services/IdleClickerGameService.cs
         bodyFormat: 0
         bulletList: []
       linkList: []
@@ -668,9 +666,9 @@ MonoBehaviour:
       bodyFormat: 0
       bulletList:
       - body: "Updates currency balances since the last server call, validates the
-          player's moves, uses Economy service Virtual Purchases to \u201Cbuy\u201D
-          new Wells, and updates the game state appropriately (for example, adding
-          a Well to the game board)."
+          player's moves, uses Virtual Purchases to “buy” new Wells, and
+          updates the game state appropriately
+          (for example, adding a Well to the game board)."
         bodyFormat: 0
         bulletList: []
       - body: 'Parameters:'
@@ -681,7 +679,7 @@ MonoBehaviour:
           bulletList:
           - 'Type: JSON'
           - Position for Well.
-      - body: Assets/Use Case Samples/Idle Clicker Game/Config as Code/IdleClicker_PlaceWell.js
+      - body: SampleGameModule/Project/Services/IdleClickerGameService.cs
         bodyFormat: 0
         bulletList: []
       linkList: []
@@ -705,7 +703,7 @@ MonoBehaviour:
           bulletList:
           - 'Type: JSON'
           - Ending position for the Well after operation.
-      - body: Assets/Use Case Samples/Idle Clicker Game/Config as Code/IdleClicker_MoveWell.js
+      - body: SampleGameModule/Project/Services/IdleClickerGameService.cs
         bodyFormat: 0
         bulletList: []
       linkList: []
@@ -713,8 +711,8 @@ MonoBehaviour:
       bodyFormat: 0
       bulletList:
       - body: "Updates currency balances since the last server call, validates the
-          player's moves, uses Economy service Virtual Purchases to \u201Cbuy\u201D
-          the new Well, and updates the game state appropriately."
+          player's moves, uses Virtual Purchases to “buy” the new Well, and
+          updates the game state appropriately."
         bodyFormat: 0
         bulletList: []
       - body: 'Parameters:'
@@ -731,7 +729,7 @@ MonoBehaviour:
           - 'Type: JSON'
           - Position where second Well is and final position for the merged Well
             after operation.
-      - body: Assets/Use Case Samples/Idle Clicker Game/Config as Code/IdleClicker_MergeWells.js
+      - body: SampleGameModule/Project/Services/IdleClickerGameService.cs
         bodyFormat: 0
         bulletList: []
       linkList: []
@@ -744,15 +742,17 @@ MonoBehaviour:
       - body: 'Parameters: none.'
         bodyFormat: 0
         bulletList: []
-      - body: Assets/Use Case Samples/Idle Clicker Game/Config as Code/IdleClicker_Reset.js
+      - body: SampleGameModule/Project/Services/IdleClickerGameService.cs
         bodyFormat: 0
         bulletList: []
       linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: 
-    subHeader3: Economy
-    body: 'Configure the following resources in the LiveOps dashboard:'
+    subHeader3: Economy catalog (Remote Config)
+    body: 'The economy catalog is stored in Remote Config and deployed from Assets/Common/Config
+      as Code/economy_config.rc. The following resources are defined as entries in
+      the ECONOMY_CURRENCIES and ECONOMY_VIRTUAL_PURCHASES keys:'
     bodyFormat: 0
     boxCallout: 
     bulletList:

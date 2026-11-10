@@ -47,7 +47,7 @@ MonoBehaviour:
     body: 'This strategy reduces how many server calls need to be made in a game.
       Imagine a game that distributes rewards on the server after every Command,
       in particular rewarding a player XP by calling Cloud Save and Coins by calling
-      Economy. For example:'
+      the SampleGameModule Cloud Code module. For example:'
     bodyFormat: 0
     boxCallout: 
     bulletList:
@@ -68,13 +68,13 @@ MonoBehaviour:
     subHeader2: 
     subHeader3: 
     body: 'These three Commands would then result in a minimum of six calls to various
-      Unity Services (in this case Cloud Save and Economy). You can see how in a
-      full game this could end up with a lot of server calls being made while the
-      game is being played, potentially slowing the game. However, if all three of
-      these Commands are stored in a batch and processed at one time (described in
-      greater detail in the Implementation Overview section below), it would result
-      in just two Unity Services calls: one to Cloud Save to increase XP by 250,
-      and one to Economy to add 45 Coins.'
+      Unity Services (in this case Cloud Save and the SampleGameModule module).
+      You can see how in a full game this could end up with a lot of server calls
+      being made while the game is being played, potentially slowing the game. However,
+      if all three of these Commands are stored in a batch and processed at one time
+      (described in greater detail in the Implementation Overview section below),
+      it would result in just two Unity Services calls: one to Cloud Save to increase
+      XP by 250, and one to the SampleGameModule module to add 45 Coins.'
     bodyFormat: 0
     boxCallout: 
     bulletList: []
@@ -100,15 +100,15 @@ MonoBehaviour:
   - subHeader1: 
     subHeader2: 
     subHeader3: 
-    body: "The first step of the Cloud Code script is to unpack the json blob into
+    body: "The first step of the Cloud Code module function is to unpack the json blob into
       a list of Commands again. The next step is to verify that the batch contains
       exactly the number of Commands expected (in this example the batch is always
       the same number of Commands, however that does not have to be a requirement),
       and that the Commands are in an order that is legal game play (for example
       the Achieve Bonus Goal Command cannot be triggered until the Open Chest Command
       has occurred). If anything about the batch of Commands is deemed invalid, the
-      script will return a failure and the Commands' rewards will not be distributed
-      on the server. However if the batch is valid, the Cloud Code script will proceed
+      function will return a failure and the Commands' rewards will not be distributed
+      on the server. However if the batch is valid, the Cloud Code module function will proceed
       to the next step. This step is to determine what rewards should be distributed
       as a result of the Commands (for example, Command = \u201Cenemy defeated\u201D;
       reward = \u201Cadd 10 XP\u201D). This information is received from Remote Config.
@@ -117,10 +117,11 @@ MonoBehaviour:
       done locally by the client, as well as remotely by the server. The rewards
       for all the Commands in the batch are grouped by type (for example, all Commands
       may increase XP, these XP increases would be added up so that a single server
-      call updates the XP by the total amount). Finally, the Cloud Code script will
-      make all the necessary calls to the Unity Services APIs (in this case, Economy
-      and Cloud Save) to distribute the rewards. Once distribution is complete, the
-      script returns, indicating the successful action to the client."
+      call updates the XP by the total amount). Finally, the Cloud Code module function will
+      make all the necessary calls to the Unity Services APIs (in this case,
+      Cloud Save, which holds the player_economy record and the other stats) to distribute the rewards. Once
+      distribution is complete, the function returns, indicating the successful action
+      to the client."
     bodyFormat: 0
     boxCallout: 
     bulletList: []
@@ -128,12 +129,12 @@ MonoBehaviour:
   - subHeader1: 
     subHeader2: 
     subHeader3: 
-    body: Whenever the Cloud Code script returns (either on success or failure) the
+    body: Whenever the Cloud Code module function returns (either on success or failure) the
       client code calls the Unity Services to get their latest data. If the batch
       was processed successfully by the server, this should result in no visible
       change to the player's wallet or other stats (because from their perspective
       the rewards were distributed immediately during game play). However, if the
-      batch was invalid and the Cloud Code script failed to process the batch, the
+      batch was invalid and the Cloud Code module function failed to process the batch, the
       client will update the player's wallet and other stats back to where they were
       at before the game was played, overwriting the local state.
     bodyFormat: 0
@@ -173,11 +174,14 @@ MonoBehaviour:
       bulletList: []
       linkList: []
     - body: 'Cloud Save: Manages certain player stats (XP and Goals Achieved) that
-        are increased as rewards.'
+        are increased as rewards. Also stores the player''s currency balances in
+        the player_economy key, which the client reads at runtime.'
       bodyFormat: 0
       bulletList: []
       linkList: []
-    - body: 'Economy: Manages the currencies that are distributed as rewards.'
+    - body: 'Deployment: In this context, it is used on the editor side to facilitate the
+        configuration of the different Unity services. It enables the display of the Deployment
+        window which allows the deployment of various service configuration assets.'
       bodyFormat: 0
       bulletList: []
       linkList: []
@@ -208,8 +212,8 @@ MonoBehaviour:
       url: https://docs.unity.com/cloud-code/implementation.html
     - linkText: Cloud Save
       url: https://docs.unity.com/cloud-save/index.html#Implementation
-    - linkText: Economy
-      url: https://docs.unity.com/economy/implementation.html
+    - linkText: Deployment
+      url: https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2
     - linkText: Remote Config
       url: https://docs.unity3d.com/Packages/com.unity.remote-config@latest
     - linkText: Deployment
@@ -231,18 +235,15 @@ MonoBehaviour:
     body: 'To replicate this sample scene''s setup in your own Unity project, we need to configure the following items:'
     bodyFormat: 0
     boxCallout: 
-    bulletList: 
-    - body: Cloud Code scripts
-    - body: Economy items
+    bulletList:
+    - body: The SampleGameModule Cloud Code module
+    - body: Remote Config economy catalog values
     - body: Remote Config values
     linkList: []
   - subHeader1: 
     subHeader2: 
     subHeader3: 
-    body: There are two main ways of doing this, either by using the Deployment
-      package, or by manually entering them using the Dashboard. We recommend
-      the usage of the Deployment package since it will greatly accelerate this
-      process.
+    body: To configure these items you can use the Deployment package, or manually enter them using the Unity Cloud Dashboard. The recommended best practice is to use the Deployment package as it greatly accelerates this process.
     bodyFormat: 0
     boxCallout: 
     bulletList: []
@@ -269,9 +270,7 @@ MonoBehaviour:
   - subHeader1: 
     subHeader2: Using the Dashboard
     subHeader3: 
-    body: The Dashboard enables you to edit manually all your services
-        configuration by project and environment. Here are the details
-        necessary for the configuration of the current sample.
+    body: You can use the Unity Cloud Dashboard to manually configure your services by project and environment. Refer to the following sections to configure this sample.
     bodyFormat: 0
     boxCallout: 
     linkList:
@@ -279,10 +278,12 @@ MonoBehaviour:
       url: dashboard.unity3d.com
   - subHeader1: 
     subHeader2: 
-    subHeader3: Economy Items
-    body: 
+    subHeader3: Remote Config Economy Catalog
+    body: The economy catalog is stored in Remote Config and deployed from "Assets/Common/Config
+      as Code/economy_config.rc". The following currencies are defined under the ECONOMY_CURRENCIES
+      key.
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList:
     - body: Coin
       bodyFormat: 1
@@ -386,15 +387,15 @@ MonoBehaviour:
     boxCallout: Note that the Config Values (such as COMMANDBATCH_ACHIEVE_BONUS_GOAL
       and COMMANDBATCH_DEFEAT_RED_ENEMY) are specific commands and cannot be changed
       nor new ones created without making corresponding changes to the Unity C# and/or
-      Cloud Code scripts.
+      SampleGameModule module functions.
     bulletList: []
     linkList: []
   - subHeader1: 
     subHeader2: 
-    subHeader3: Cloud Code scripts
-    body: 
+    subHeader3: Cloud Code module functions
+    body: To publish them, deploy the SampleGameModule module through Assets/Common/Config as Code/SampleGameModule.ccmr in the Deployment window.
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList:
     - body: 'CommandBatching_ProcessBatch:'
       bodyFormat: 1
@@ -410,7 +411,7 @@ MonoBehaviour:
           - 'Example: ''{"commands": ["COMMANDBATCH_DEFEAT_RED_ENEMY", "COMMANDBATCH_OPEN_CHEST",
             "COMMANDBATCH_ACHIEVE_BONUS_GOAL", "COMMANDBATCH_DEFEAT_BLUE_ENEMY",
             "COMMANDBATCH_OPEN_CHEST", "COMMANDBATCH_ACHIEVE_BONUS_GOAL", "COMMANDBATCH_GAME_OVER"]}'''
-      - body: 'Script: "Assets/Use Case Samples/Command Batching/Config as Code/CommandBatching_ProcessBatch.js"'
+      - body: 'Location: "SampleGameModule/Project/Services/CommandBatchingService.cs"'
         bodyFormat: 0
         bulletList: []
       linkList: []

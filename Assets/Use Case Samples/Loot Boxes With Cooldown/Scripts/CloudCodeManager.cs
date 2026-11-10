@@ -52,7 +52,7 @@ namespace Unity.Services.Samples.LootBoxesWithCooldown
             {
                 Debug.Log("Calling Cloud Code 'LootBoxesWithCooldown_GetStatus' to determine cooldown status.");
 
-                return await CloudCodeService.Instance.CallEndpointAsync<GrantCooldownResult>(
+                return await CloudCodeService.Instance.CallModuleEndpointAsync<GrantCooldownResult>("SampleGameModule", 
                     "LootBoxesWithCooldown_GetStatus",
                     new Dictionary<string, object>());
             }
@@ -73,7 +73,7 @@ namespace Unity.Services.Samples.LootBoxesWithCooldown
             {
                 Debug.Log("Calling Cloud Code 'LootBoxesWithCooldown_Claim' to claim the loot box.");
 
-                return await CloudCodeService.Instance.CallEndpointAsync<GrantResult>(
+                return await CloudCodeService.Instance.CallModuleEndpointAsync<GrantResult>("SampleGameModule", 
                     "LootBoxesWithCooldown_Claim",
                     new Dictionary<string, object>());
             }

@@ -1,56 +1,69 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using GemHunterUGSCloud.Models;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using Unity.Services.CloudCode.Apis;
 using Unity.Services.CloudCode.Core;
-using Unity.Services.Economy.Model;
 
 namespace GemHunterUGSCloud.Services;
 
+/// <summary>
+/// Grants real-money store products and the one-time free coin pack.
+///
+/// The client validates each purchase with Unity IAP before calling <c>HandlePurchase</c>
+/// (Google Play receipts locally through <c>CrossPlatformValidator</c>; Apple receipts are
+/// StoreKit 2 JWS tokens). A production game should verify the receipt again here against the
+/// store's server API before granting. Replays of a transaction are refused by
+/// <see cref="PlayerEconomyService.GrantPurchase"/>, so a retried or restored purchase never pays twice.
+/// </summary>
 public class StoreService
 {
-    private readonly ILogger<StoreService> m_Logger;
-    private IGameApiClient m_GameApiClient;
-    private readonly PlayerEconomyService m_PlayerEconomyService;
+    readonly ILogger<StoreService> m_Logger;
+    readonly PlayerEconomyService m_PlayerEconomyService;
 
-    private readonly int m_FreeCoinPackReward = 10;
-    
-    private readonly record struct BundleReward(int LargeBombs, int ColorBonuses, bool InfiniteHeart, int Coins);
-    private readonly record struct CoinReward(int Coins);
+    readonly int m_FreeCoinPackReward = 10;
 
-    private enum ProductType { Bundle, CoinPack }
-        
-    // Using a dictionary of tuples to identify reward type and data
-    private static readonly Dictionary<string, (ProductType Type, object Data)> s_Rewards = new()
+    /// <summary>What a store product grants once the store has charged the player.</summary>
+    record PurchaseReward(Dictionary<string, int> Currencies, Dictionary<string, int> Items, bool InfiniteHeart);
+
+    static readonly Dictionary<string, PurchaseReward> s_Rewards = new()
     {
         // Bundle Packs
-        { 
-            EconomyConstants.Products.k_BundlePack, 
-            (ProductType.Bundle, new BundleReward(LargeBombs: 2, ColorBonuses: 3, InfiniteHeart: true, Coins: 50))
+        {
+            EconomyConstants.Products.k_BundlePack,
+            new PurchaseReward(Coins(50),
+                new() { { EconomyConstants.Items.k_LargeBomb, 2 }, { EconomyConstants.Items.k_ColorBonus, 3 } },
+                InfiniteHeart: true)
         },
-        { 
-            EconomyConstants.Products.k_MegaPack, 
-            (ProductType.Bundle, new BundleReward(LargeBombs: 4, ColorBonuses: 6, InfiniteHeart: true, Coins: 500))
+        {
+            EconomyConstants.Products.k_MegaPack,
+            new PurchaseReward(Coins(500),
+                new() { { EconomyConstants.Items.k_LargeBomb, 4 }, { EconomyConstants.Items.k_ColorBonus, 6 } },
+                InfiniteHeart: true)
         },
-            
+
         // Coin Packs
-        { EconomyConstants.Products.k_CoinPack100, (ProductType.CoinPack, new CoinReward(100)) },
-        { EconomyConstants.Products.k_CoinPack500, (ProductType.CoinPack, new CoinReward(500)) },
-        { EconomyConstants.Products.k_CoinPack1000, (ProductType.CoinPack, new CoinReward(1000)) },
-        { EconomyConstants.Products.k_CoinPack5000, (ProductType.CoinPack, new CoinReward(5000)) },
-        { EconomyConstants.Products.k_CoinPack10000, (ProductType.CoinPack, new CoinReward(10000)) }
+        { EconomyConstants.Products.k_CoinPack100, CoinPack(100) },
+        { EconomyConstants.Products.k_CoinPack500, CoinPack(500) },
+        { EconomyConstants.Products.k_CoinPack1000, CoinPack(1000) },
+        { EconomyConstants.Products.k_CoinPack5000, CoinPack(5000) },
+        { EconomyConstants.Products.k_CoinPack10000, CoinPack(10000) }
     };
-    
-    public StoreService(ILogger<StoreService> logger, IGameApiClient gameApiClient, PlayerEconomyService playerEconomyService)
+
+    // Unity IAP's store names, lower-cased: GooglePlay.Name, AppleAppStore.Name, FakeStore.Name.
+    const string k_AppleAppStore = "appleappstore";
+    static readonly HashSet<string> s_SupportedStores = new() { "googleplay", k_AppleAppStore, "fake" };
+
+    static Dictionary<string, int> Coins(int amount) => new() { { EconomyConstants.Currencies.k_Coin, amount } };
+    static PurchaseReward CoinPack(int coins) => new(Coins(coins), new(), InfiniteHeart: false);
+
+    public StoreService(ILogger<StoreService> logger, PlayerEconomyService playerEconomyService)
     {
         m_Logger = logger;
-        m_GameApiClient = gameApiClient;
         m_PlayerEconomyService = playerEconomyService;
     }
-    
+
     [CloudCodeFunction("HandlePurchase")]
     public async Task<PlayerEconomyData> HandlePurchase(
         IExecutionContext context,
@@ -64,70 +77,37 @@ public class StoreService
             {
                 throw new ArgumentException($"Invalid product ID: {productId}");
             }
-            
+
+            if (string.IsNullOrEmpty(transactionId))
+            {
+                throw new ArgumentException("Transaction ID is required");
+            }
+
             // Parse receipt to get store information
             var receiptData = JsonConvert.DeserializeAnonymousType(receipt, new { Store = "", Payload = "" });
             var store = receiptData?.Store?.ToLower();
-            var payload = receiptData?.Payload;
-            
-            if (string.IsNullOrEmpty(store) || string.IsNullOrEmpty(payload))
+            // App Store receipts carry an empty Payload when the device has no app receipt.
+            if (string.IsNullOrEmpty(store) || (store != k_AppleAppStore && string.IsNullOrEmpty(receiptData?.Payload)))
             {
                 throw new ArgumentException("Invalid receipt format");
             }
-            
-            m_Logger.LogInformation("Processing transaction {TransactionId} for product {ProductId}", 
-                transactionId, productId);
-            
-            try 
-            {
-                switch(store.ToLower())
-                {
-                    case "googleplay":
-                        var googleRequest = new PlayerPurchaseGoogleplaystoreRequest
-                        {
-                            Id = productId,
-                            PurchaseData = receipt,
-                            PurchaseDataSignature = transactionId
-                        };
-                        await m_GameApiClient.EconomyPurchases.RedeemGooglePlayPurchaseAsync(
-                            context,
-                            context.AccessToken,
-                            context.ProjectId,
-                            context.PlayerId,
-                            googleRequest);
-                        break;
 
-                    case "apple":
-                        var appleRequest = new PlayerPurchaseAppleappstoreRequest
-                        {
-                            Id = productId,
-                            Receipt = receipt
-                        };
-                        await m_GameApiClient.EconomyPurchases.RedeemAppleAppStorePurchaseAsync(
-                            context,
-                            context.AccessToken,
-                            context.ProjectId,
-                            context.PlayerId,
-                            appleRequest);
-                        break;
-                    
-                    case "fake":
-                        m_Logger.LogInformation("Using fake store - skipping receipt validation");
-                        break;
-
-                    default:
-                        throw new ArgumentException($"Unsupported store type: {store}");
-                }
-            }
-            catch (Exception e) when (e.Message.Contains("purchase already redeemed"))
+            if (!s_SupportedStores.Contains(store))
             {
-                // If Economy service says this receipt was already redeemed, stop here
-                m_Logger.LogWarning("Receipt already redeemed. Possible duplicate purchase attempt.");
-                throw;
+                throw new ArgumentException($"Unsupported store type: {store}");
             }
-            await GrantRewards(context, reward.Type, reward.Data);
-            
-            return await m_PlayerEconomyService.GetPlayerEconomyData(context) 
+
+            m_Logger.LogInformation("Processing {Store} transaction {TransactionId} for product {ProductId}",
+                store, transactionId, productId);
+
+            var granted = await m_PlayerEconomyService.GrantPurchase(context, transactionId,
+                reward.Currencies, reward.Items, reward.InfiniteHeart);
+            if (!granted)
+            {
+                m_Logger.LogWarning("Transaction {TransactionId} was already redeemed; nothing granted again", transactionId);
+            }
+
+            return await m_PlayerEconomyService.GetPlayerEconomyData(context)
                 ?? throw new InvalidOperationException("Failed to get player economy data");
         }
         catch (Exception e)
@@ -136,46 +116,13 @@ public class StoreService
             throw;
         }
     }
-    
-    private async Task GrantRewards(IExecutionContext context, ProductType type, object rewardData)
-    {
-        switch (type)
-        {
-            case ProductType.Bundle when rewardData is BundleReward bundle:
-                var bundleTasks = new List<Task>
-                {
-                    m_PlayerEconomyService.CleanupZeroAmountItems(context),
-                    m_PlayerEconomyService.UpdateInventoryItem(context, EconomyConstants.Items.k_LargeBomb, bundle.LargeBombs),
-                    m_PlayerEconomyService.UpdateInventoryItem(context, EconomyConstants.Items.k_ColorBonus, bundle.ColorBonuses),
-                    m_PlayerEconomyService.UpdatePlayerCurrency(context, EconomyConstants.Currencies.k_Coin, bundle.Coins)
-                };
-
-                if (bundle.InfiniteHeart)
-                {
-                    bundleTasks.Add(m_PlayerEconomyService.AddInfiniteHeart(context, EconomyConstants.Items.k_InfiniteHeart));
-                }
-
-                await Task.WhenAll(bundleTasks);
-                break;
-
-            case ProductType.CoinPack when rewardData is CoinReward coins:
-                await Task.WhenAll(
-                    m_PlayerEconomyService.CleanupZeroAmountItems(context),
-                    m_PlayerEconomyService.UpdatePlayerCurrency(context, EconomyConstants.Currencies.k_Coin, coins.Coins)
-                );
-                break;
-
-            default:
-                throw new ArgumentException($"Unknown reward type: {type}");
-        }
-    }
 
     [CloudCodeFunction("HandleFreeCoinPackPurchase")]
     public async Task<PlayerEconomyData> HandleFreeCoinPackPurchase(IExecutionContext context)
     {
         try
         {
-            var economyData = await m_PlayerEconomyService.GetPlayerEconomyData(context) 
+            var economyData = await m_PlayerEconomyService.GetPlayerEconomyData(context)
                 ?? throw new InvalidOperationException("Failed to get player economy data");
 
             if (economyData.HasPurchasedFreeCoinPack == false)
@@ -183,15 +130,15 @@ public class StoreService
                 await m_PlayerEconomyService.UpdatePlayerCurrency(context, EconomyConstants.Currencies.k_Coin, m_FreeCoinPackReward);
                 economyData.HasPurchasedFreeCoinPack = true;
                 await m_PlayerEconomyService.MarkFreePackAsClaimed(context);
-                return await m_PlayerEconomyService.GetPlayerEconomyData(context) 
+                return await m_PlayerEconomyService.GetPlayerEconomyData(context)
                     ?? throw new InvalidOperationException("Failed to get player economy data");
             }
             m_Logger.LogWarning("Free pack already purchased");
             return economyData;
         }
-    
+
         catch (Exception e)
-        { 
+        {
             m_Logger.LogError(e, "Error processing purchase for free coin pack");
             throw;
         }

@@ -23,9 +23,9 @@ When the scene loads, the `InGameMailboxSceneManager` script performs the follow
 
 1. Initializes Unity Gaming Services.
 2. Signs in the player [anonymously](https://docs.unity.com/authentication/UsingAnonSignIn.html) using the Authentication service. If you’ve previously initialized any of the other sample scenes, Authentication will use your cached Player ID instead of creating a new one.
-3. Refreshes the Economy configuration data. If new Economy items were created since the last time the player opened the app, this will initialize those items in the player's configuration.
-4. Retrieves and updates currency balances from the Economy service for that authenticated user.
-5. Uses the sprite addresses stored in the Economy item configuration's custom data to load all possible currency and inventory item sprites from Addressables.
+3. Refreshes the economy catalog configuration data from Remote Config (the `ECONOMY_CURRENCIES` and `ECONOMY_ITEMS` keys). If new catalog items were created since the last time the player opened the app, this will initialize those items in the player's configuration.
+4. Retrieves and updates currency balances from the player's `player_economy` Cloud Save key for that authenticated user.
+5. Uses the sprite addresses stored in each catalog entry's custom data to load all possible currency and inventory item sprites from Addressables.
 6. Retrieves the updated message info for the player's inbox:
    1. Downloads the list of all possible messages from Remote Config.
    2. Retrieves the player's current inbox data from Cloud Save.
@@ -53,16 +53,17 @@ When you select a message from the list, the following occurs:
 1. The full details of the message appears on the right side of the scene.
 2. The message is marked as read, and that status is saved to Cloud Save.
 
-If the message has an attachment, there is also an indication of which Economy items are attached, along with a button to claim them.
+If the message has an attachment, there is also an indication of which currency and inventory items are attached, along with a button to claim them.
 
 ##### Claim an attachment
 
-When you press the **Claim** button, the client code calls the `InGameMailbox_ClaimAttachment.js` Cloud Code script with the selected message's ID included as a parameter. The following occurs on the backend:
+When you press the **Claim** button, the client code calls the `InGameMailbox_ClaimAttachment` function of the `SampleGameModule` Cloud Code module with the selected message's ID and the current audience as parameters. The following occurs on the backend:
 
-1. The client requests the Cloud Save inbox data, and locates the message with the supplied ID.
-2. The script checks whether the message has an unclaimed attachment.
-3. Assuming the message does have an unclaimed attachment, the script makes an Economy `makeVirtualPurchase` call using the Virtual Purchase ID from the `message.messageInfo.attachment` field.
-4. If the purchase processes successfully, the `message.metadata.hasUnclaimedAttachment` field is set to `false` and saved in Cloud Save, so that the player cannot claim the attachment again.
+1. The function reads the Cloud Save inbox data, and locates the message with the supplied ID.
+2. The function looks the message up in Remote Config for the given audience. The message must be listed in `MESSAGES_ALL`, and its attachment is taken from Remote Config, never from the inbox: the player writes the inbox, so a modified client could put any attachment there.
+3. The function checks the `MESSAGES_CLAIMED` Cloud Save key to make sure the attachment hasn't been claimed yet, and adds the message ID to it.
+4. The function grants the attachment's Virtual Purchase. If the purchase fails, the message ID is removed from `MESSAGES_CLAIMED` again.
+5. The `message.metadata.hasUnclaimedAttachment` field is set to `false` in the inbox, so the view shows the attachment as claimed.
 
 #### Delete a message
 
@@ -75,14 +76,12 @@ When you press the delete button for a message:
 
 #### Claim all attachments
 
-When you press the **Claim All** button, the client code makes a call to the `InGameMailbox_ClaimAllAttachments.js` Cloud Code script. The following occurs on the backend:
+When you press the **Claim All** button, the client code makes a call to the `InGameMailbox_ClaimAllAttachments` function of the `SampleGameModule` Cloud Code module. The following occurs on the backend:
 
-1. The client requests inbox data from Cloud Save.
-2. Cloud Save returns a list of inbox messages filtered to only show messages with `message.metadata.hasUnclaimedAttachment` set to `true`.
-3. For each message in this filtered list:
-   1. The script makes an Economy `makeVirtualPurchase` call using the Virtual Purchase ID from the `message.messageInfo.attachment` field.
-   2. If the purchase processes successfully, `message.metadata.hasUnclaimedAttachment` is set to `false`, and `message.metadata.isRead` is set to `true`.
-4. Once all message attachments are claimed, the updated message list is saved in Cloud Save.
+1. The function reads the inbox data from Cloud Save.
+2. It keeps the inbox messages that Remote Config lists in `MESSAGES_ALL` for the current audience, have an attachment in Remote Config, and are not in `MESSAGES_CLAIMED` yet.
+3. It adds those message IDs to `MESSAGES_CLAIMED`, then grants all of their Virtual Purchases in one economy write.
+4. For each of those messages, `message.metadata.hasUnclaimedAttachment` is set to `false`, and `message.metadata.isRead` is set to `true`, and the updated message list is saved in Cloud Save.
 
 **Note**: Saving changes in Cloud Save after each attachment is claimed would make the process more fault tolerant. However, it would also require more server calls and therefore be less efficient than the selected approach. It is up to the developer which advantage to prioritize.
 
@@ -90,7 +89,7 @@ When you press the **Claim All** button, the client code makes a call to the `In
 
 When you press the **Delete Read** button:
 
-1. The script loops through the list of inbox messages, and removes each message that has both `message.metadata.isRead` set to `true` and `message.metadata.hasUnclaimedAttachment` set to `false`. This implementation does not delete messages with unclaimed attachments, to prevent players from accidentally deleting messages with available attachments.
+1. The client loops through the list of inbox messages, and removes each message that has both `message.metadata.isRead` set to `true` and `message.metadata.hasUnclaimedAttachment` set to `false`. This implementation does not delete messages with unclaimed attachments, to prevent players from accidentally deleting messages with available attachments.
 2. If the inbox was previously full, such that deleting the message created space for a new message, the client rechecks the list of all possible messages downloaded from Remote Config against the message ID of the last message saved in Cloud Save to see if there are any new messages to add to the inbox. If there are, it adds as many of those messages to the inbox as will fit.
 3. The updated list of inbox messages is then saved in Cloud Save.
 4. Finally, the view refreshes to show the updated list. If the deleted message was previously selected, this also updates the UI to not display the deleted message's detail view.
@@ -109,7 +108,7 @@ Each of the non-default audiences adds a message to the message list that is spe
 
 When you reset the inbox for the given audience, the following occurs:
 
-1. The scene resets, clearing the selected message field and deleting the Cloud Save inbox data.
+1. The scene resets, clearing the selected message field and deleting the Cloud Save inbox data. The client also calls `InGameMailbox_ResetForDebug`, which deletes `MESSAGES_CLAIMED` so the reset inbox can claim its gifts again. This function exists for testing only; remove it from a real game.
 2. The client queries Remote Config with the specified audience, to retrieve the list of potential messages that includes any audience specific ones that were previously omitted.
 3. The maximum number of messages are added to the inbox from the Remote Config data, and saved in Cloud Save.
 4. The view refreshes to show the new list of messages.
@@ -118,7 +117,7 @@ When you reset the inbox for the given audience, the following occurs:
 
 When you press the inventory bag icon, the following occurs:
 
-1. The client calls `EconomyService.Instance.PlayerInventory.GetInventoryAsync()` to refresh the player's list of owned Economy inventory items.
+1. The client calls `PlayerEconomy.Instance.GetInventoryAsync()` to refresh the player's list of owned inventory items from the `player_economy` Cloud Save key.
 2. A pop-up window displays the resulting list of inventory items.
 
 ## Setup
@@ -129,14 +128,13 @@ To replicate this use case, you need the following [Unity packages](https://docs
 
 | **Package**                                                                                                            | **Role**                                                                                                                                                                                                                                                                                                                                                               |
 |------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [Addressables](https://docs.unity3d.com/Packages/com.unity.addressables@latest)                                        | Allows developers to retrieve an asset by using its address. In this sample, the service looks up Economy item sprites based on the information stored in the Economy item's custom data.                                                                                                                                                                              |
+| [Addressables](https://docs.unity3d.com/Packages/com.unity.addressables@latest)                                        | Allows developers to retrieve an asset by using its address. In this sample, the service looks up currency and inventory item sprites based on the information stored in each catalog entry's custom data.                                                                                                                                                             |
 | [Authentication](https://docs.unity.com/authentication/IntroUnityAuthentication.html)                                  | Automatically signs in the user anonymously to keep track of their data server-side.                                                                                                                                                                                                                                                                                   |
-| [Cloud Code](https://docs.unity.com/cloud-code/implementation.html)                                                    | Stores important validation logic server-side. In this use case it is used to validate that message attachments haven't already been claimed, and to process the virtual purchase that stores the attachment rewards.                                                                                                                                                  |
-| [Cloud Save](https://docs.unity.com/cloud-save/index.html#Implementation)                                              | Stores the player's inbox state, including the message info downloaded from Remote Config, and the player-specific message metadata like whether the message has been read yet.                                                                                                                                                                                        |
+| [Cloud Code](https://docs.unity.com/cloud-code/implementation.html)                                                    | Stores important validation logic server-side. In this use case it is used to validate that message attachments haven't already been claimed, and to process the virtual purchase that grants the attachment rewards through the `SampleGameModule` module.                                                                                                      |
+| [Cloud Save](https://docs.unity.com/cloud-save/index.html#Implementation)                                              | Stores the player's inbox state, including the message info downloaded from Remote Config, and the player-specific message metadata like whether the message has been read yet. Also stores the player's wallet and inventory in the `player_economy` key, which the client reads at runtime. The inbox (`MESSAGES_INBOX_STATE`, `MESSAGES_LAST_MESSAGE_DOWNLOADED_ID`) is in the default access class because the client writes it. The record of claimed messages (`MESSAGES_CLAIMED`) and `player_economy` are in the protected [access class](https://docs.unity.com/ugs/en-us/manual/cloud-save/manual/concepts/player-data#Access_Classes): the client can read them and only `SampleGameModule` can write them. |
 | [Deployment](https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2)                                      | The Deployment package provides a cohesive interface to deploy assets for Cloud Services.                                                                                                                                                                                                                                                                              |
-| [Economy](https://docs.unity.com/economy/implementation.html)                                                          | Maintains the player's wallet and inventory, and the virtual purchase info associated with a given message's attachment.                                                                                                                                                                                                                                               |
 | [Game Overrides](https://docs.unity3d.com/Packages/com.unity.remote-config@3.2/manual/GameOverridesAndSettings.html)\* | Defines the audience grouping and message data for those messages that we want to only send to a certain audience.                                                                                                                                                                                                                                                     |
-| [Remote Config](https://docs.unity3d.com/Packages/com.unity.remote-config@latest)                                      | Provides key-value pairs where the value that is mapped to a given key can change on the server side, either manually or based on specific Game Overrides. In this sample, we store the message info in Remote Config, and for messages that should only be sent to a particular audience, we store them as blank messages (they'll get filled in by Game Overrides).  |
+| [Remote Config](https://docs.unity3d.com/Packages/com.unity.remote-config@latest)                                      | Provides key-value pairs where the value that is mapped to a given key can change on the server side, either manually or based on specific Game Overrides. In this sample, we store the message info in Remote Config, and for messages that should only be sent to a particular audience, we store them as blank messages (they'll get filled in by Game Overrides). Remote Config also stores the economy catalog (`ECONOMY_CURRENCIES`, `ECONOMY_ITEMS`, `ECONOMY_VIRTUAL_PURCHASES`), including the virtual purchase info associated with a given message's attachment.  |
 
 \* Note that though it is listed as a package and requires separate dashboard configuration, Game Overrides doesn't actually have an SDK to install from Package Manager. It is a server side offering that affects values returned from other services, like Remote Config.
 
@@ -146,8 +144,8 @@ To use these services in your game, activate each service for your Organization 
 
 To replicate this sample scene's setup in your own Unity project, configure the following items:
 
-- Cloud Code scripts
-- Economy items
+- The `SampleGameModule` Cloud Code module
+- Remote Config economy catalog values
 - Remote Config values
 - Remote Config Game Overrides
 
@@ -164,8 +162,8 @@ To deploy configurations using the Deployment package:
 
 This deploys the following items:
 
-- Cloud Code scripts
-- Economy items
+- The `SampleGameModule` Cloud Code module
+- Remote Config economy catalog values
 - Remote Config values
 - Remote Config Game Overrides
 
@@ -210,16 +208,19 @@ Configure the following [Overrides](https://docs.unity.com/gameoverrides/CreateA
 
 ##### Cloud Code
 
-[Publish the following scripts](https://docs.unity.com/cloud-code/implementation.html#Writing_your_first_script) in the Unity Cloud Dashboard:
+The `SampleGameModule` C# Cloud Code module provides the following [module functions](https://docs.unity.com/ugs/en-us/manual/cloud-code/manual/modules):
 
-| **Script**                          | **Parameters**                                                                                               | **Description**                                                                                                                                                                                                                     | **Location in project**                                                                       |
+| **Module function**                 | **Parameters**                                                                                               | **Description**                                                                                                                                                                                                                     | **Location in project**                                                                       |
 |-------------------------------------|--------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|
-| `InGameMailbox_ClaimAttachment`     | `messageId`<br><br>`STRING`<br><br>The id of the message that owns the attachment the player wants to claim. | Fetches the appropriate attachment for the given message, validates that the attachment hasn't already been claimed, calls Economy's process purchase method for that Virtual Purchase, and marks the attachment as claimed.        | `Assets/Use Case Samples/In-Game Mailbox/Config as Code/InGameMailbox_ClaimAttachment.js`     |
-| `InGameMailbox_ClaimAllAttachments` | none                                                                                                         | Gets the list of messages in a player's inbox, finds all messages that have an unclaimed attachment, and calls Economy's process purchase method for each Virtual Purchase, marking each message as read and attachment as claimed. | `Assets/Use Case Samples/In-Game Mailbox/Config as Code/InGameMailbox_ClaimAllAttachments.js` |
+| `InGameMailbox_ClaimAttachment`     | `messageId`<br><br>`STRING`<br><br>The id of the message that owns the attachment the player wants to claim.<br><br>`audience`<br><br>`STRING`<br><br>The audience the inbox was downloaded for. | Fetches the message's attachment from Remote Config for the audience, validates that it hasn't already been claimed, records it in `MESSAGES_CLAIMED`, makes that Virtual Purchase, and marks the attachment as claimed.        | `SampleGameModule/Project/Services/InGameMailboxService.cs`                                   |
+| `InGameMailbox_ResetForDebug`       | none                                                                                                         | Deletes `MESSAGES_CLAIMED`, so a reset inbox can claim its gifts again. For testing only.                                                                                                     | `SampleGameModule/Project/Services/InGameMailboxService.cs`                                   |
+| `InGameMailbox_ClaimAllAttachments` | `audience`<br><br>`STRING`<br><br>The audience the inbox was downloaded for.                                 | Gets the list of messages in a player's inbox, finds all messages that have an unclaimed attachment, and makes each Virtual Purchase, marking each message as read and attachment as claimed. | `SampleGameModule/Project/Services/InGameMailboxService.cs`                                   |
 
-##### Economy
+To publish them, deploy the `SampleGameModule` module (in the repo root `SampleGameModule/` folder) through `Assets/Common/Config as Code/SampleGameModule.ccmr` in the Deployment window, or upload it from the Unity Cloud Dashboard.
 
-Configure the following [resources](https://docs.unity.com/economy/) in the Unity Cloud Dashboard:
+##### Economy catalog (Remote Config)
+
+The economy catalog is stored in Remote Config and deployed from `Assets/Common/Config as Code/economy_config.rc`. The following resources are defined under the `ECONOMY_CURRENCIES` and `ECONOMY_ITEMS` keys:
 
 | **Resource type** | **Resource item** | **ID**    | **Custom Data**                                   | **Description**                             |
 |-------------------|-------------------|-----------|---------------------------------------------------|---------------------------------------------|
@@ -228,7 +229,7 @@ Configure the following [resources](https://docs.unity.com/economy/) in the Unit
 | Inventory Item    | Sword             | `SWORD`   | `{ "spriteAddress": "Sprites/Inventory/Sword" }`  | An inventory item gifted by some messages.  |
 | Inventory Item    | Shield            | `SHIELD`  | `{ "spriteAddress": "Sprites/Inventory/Shield" }` | An inventory item gifted by some messages.  |
 
-In addition, [configure the following virtual purchases](https://docs.unity.com/economy/item-types.html#Virtual_purchase):
+In addition, the following virtual purchases are defined as entries in the `ECONOMY_VIRTUAL_PURCHASES` key:
 
 | **Item name**                          | **ID**                         | **This purchase rewards**         | **This purchase costs** |
 |----------------------------------------|--------------------------------|-----------------------------------|-------------------------|

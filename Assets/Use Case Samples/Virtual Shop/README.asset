@@ -76,8 +76,8 @@ MonoBehaviour:
       bodyFormat: 0
       bulletList: []
       linkList: []
-    - body: Retrieves and updates the player's currency balances from the Economy
-        service.
+    - body: Retrieves and updates the player's currency balances from the player's
+        player_economy Cloud Save key.
       bodyFormat: 0
       bulletList: []
       linkList: []
@@ -124,12 +124,14 @@ MonoBehaviour:
     subHeader2: 
     subHeader3: Virtual Purchases
     body: The shop interface shows the items for sale, along with their respective
-      costs. Click any item to attempt a Virtual Purchase through the Economy service.
-      A pop-up appears to confirm if the purchase succeeded or failed.
+      costs. Click any item to attempt a Virtual Purchase through the SampleGameModule
+      Cloud Code module. A pop-up appears to confirm if the purchase succeeded or
+      failed.
     bodyFormat: 0
     boxCallout: Most games will disable buttons for purchases the user cannot afford.
       However, this sample allows you to attempt all purchases regardless, to facilitate
-      testing how the Economy service verifies Virtual Purchases.
+      testing how the SampleGameModule Cloud Code module verifies Virtual Purchases
+      server-side.
     bulletList: []
     linkList: []
   - subHeader1: 
@@ -164,8 +166,12 @@ MonoBehaviour:
       url: https://docs.unity3d.com/Packages/com.unity.addressables@latest
     - linkText: Authentication
       url: https://docs.unity.com/authentication/IntroUnityAuthentication.html
-    - linkText: Economy
-      url: https://docs.unity.com/economy/implementation.html
+    - linkText: Deployment
+      url: https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2
+    - linkText: Cloud Code
+      url: https://docs.unity.com/cloud-code/implementation.html
+    - linkText: Cloud Save
+      url: https://docs.unity.com/cloud-save
     - linkText: Remote Config
       url: https://docs.unity3d.com/Packages/com.unity.remote-config@latest
     - linkText: Deployment
@@ -188,16 +194,13 @@ MonoBehaviour:
     bodyFormat: 0
     boxCallout: 
     bulletList: 
-    - body: Economy items
-    - body: Remote Config values
+    - body: The SampleGameModule Cloud Code module
+    - body: Remote Config values (including the economy catalog)
     linkList: []
   - subHeader1: 
     subHeader2: 
     subHeader3: 
-    body: There are two main ways of doing this, either by using the Deployment
-      package, or by manually entering them using the Dashboard. We recommend
-      the usage of the Deployment package since it will greatly accelerate this
-      process.
+    body: To configure these items you can use the Deployment package, or manually enter them using the Unity Cloud Dashboard. The recommended best practice is to use the Deployment package as it greatly accelerates this process.
     bodyFormat: 0
     boxCallout: 
     bulletList: []
@@ -224,9 +227,7 @@ MonoBehaviour:
   - subHeader1: 
     subHeader2: Using the Dashboard
     subHeader3: 
-    body: The Dashboard enables you to edit manually all your services
-        configuration by project and environment. Here are the details
-        necessary for the configuration of the current sample.
+    body: You can use the Unity Cloud Dashboard to manually configure your services by project and environment. Refer to the following sections to configure this sample. You must also publish the SampleGameModule C# Cloud Code module (in the repo root SampleGameModule/ folder), which validates and processes all Virtual Purchases server-side.
     bodyFormat: 0
     boxCallout: 
     linkList:
@@ -234,8 +235,8 @@ MonoBehaviour:
       url: dashboard.unity3d.com
   - subHeader1: 
     subHeader2: 
-    subHeader3: Economy
-    body: 'Configure the following resource in the LiveOps dashboard:'
+    subHeader3: Economy catalog (Remote Config)
+    body: 'The economy catalog is stored in Remote Config and deployed from Assets/Common/Config as Code/economy_config.rc. Configure the following resources as entries in the ECONOMY_CURRENCIES and ECONOMY_ITEMS keys:'
     bodyFormat: 0
     boxCallout: 
     bulletList:
@@ -340,25 +341,17 @@ MonoBehaviour:
   - subHeader1: 
     subHeader2: 
     subHeader3: 
-    body: 'This sample uses Addressable Assets to implement the sprite icons for
-      all Economy resources. As the developer, you can add the Addressables address
-      of the icon for each currency directly in the Economy dashboard, and then retrieve
-      it at runtime without needing to change your code. This is helpful if for example,
-      you want to update currency icons by changing the address in your dashboard
-      instead of updating your app. To do this for each resource:'
+    body: 'This sample uses Addressable Assets to implement the sprite icons for all economy resources. As the developer, you can add the Addressables address of the icon for each currency directly in the catalog entry''s customData, and then retrieve it at runtime without needing to change your code. This is helpful if for example, you want to update currency icons by changing the address in your configuration instead of updating your app. To do this for each resource:'
     bodyFormat: 2
     boxCallout: 
     bulletList:
-    - body: Select the currency you want to edit.
+    - body: Find the catalog entry you want to edit in the ECONOMY_CURRENCIES or
+        ECONOMY_ITEMS key.
       bodyFormat: 0
       bulletList: []
       linkList: []
-    - body: Under Custom data, click the plus (+) icon to add a custom JSON script.
-      bodyFormat: 0
-      bulletList: []
-      linkList: []
-    - body: Add the spriteAddress value, along with the corresponding Addressable
-        address string listed in the table.
+    - body: In its customData JSON, add the spriteAddress value, along with the corresponding
+        Addressable address string listed in the table.
       bodyFormat: 0
       bulletList: []
       linkList: []
@@ -380,8 +373,8 @@ MonoBehaviour:
   - subHeader1: 
     subHeader2: 
     subHeader3: 
-    body: 'In addition, configure the following virtual purchases for the virtual
-      shop:'
+    body: 'In addition, configure the following virtual purchases as entries in the
+      ECONOMY_VIRTUAL_PURCHASES key:'
     bodyFormat: 0
     boxCallout: 
     bulletList:

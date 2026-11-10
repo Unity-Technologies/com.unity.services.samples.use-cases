@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using Unity.Services.Economy.Model;
+using Unity.Services.Samples.Economy;
 using UnityEngine;
 
 namespace Unity.Services.Samples

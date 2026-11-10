@@ -34,6 +34,11 @@ ExportedObj/
 *.suo
 *.tmp
 *.user
+
+# The Cloud Code module is a hand-authored .NET project, not Unity-generated
+!/SampleGameModule/SampleGameModule.sln
+!/SampleGameModule/Project/SampleGameModule.csproj
+!/SampleGameModule/Tests/SampleGameModule.Tests.csproj
 *.userprefs
 *.pidb
 *.booproj
@@ -42,6 +47,7 @@ ExportedObj/
 *.mdb
 *.opendb
 *.VC.db
+.vsconfig
 
 # Unity3D generated meta files
 *.pidb.meta
@@ -55,12 +61,19 @@ sysinfo.txt
 *.apk
 *.unitypackage
 
+# now including Plugins folder because we've simplified the Android stuff to a mainTemplate.gradle file
+# [Aa]ssets/[Pp]lugins
+# [Aa]ssets/[Pp]lugins.meta
+
 # Crashlytics generated file
 crashlytics-build.properties
 
-# Editor settings file
-/[Uu]serSettings/EditorUserSettings.asset
+# User Settings Folder
+/[Uu]serSettings
 
 .DS_Store
 .idea/
+/InitCodeMarker
 /ProjectSettings/Packages
+
+/CCDBuildData

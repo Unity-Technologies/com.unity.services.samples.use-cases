@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
-using Unity.Services.Economy;
-using Unity.Services.Economy.Model;
+using Unity.Services.Samples.Economy;
 using UnityEngine;
 
 namespace Unity.Services.Samples.VirtualShop

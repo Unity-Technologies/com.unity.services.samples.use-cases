@@ -44,8 +44,8 @@ MonoBehaviour:
     subHeader2: 
     subHeader3: 
     body: 'This sample demonstrates how to initialize Unity Services, retrieve and
-      update current values from the Economy service, call Cloud Code to retrieve
-      the updated status and claim each day''s reward. '
+      update current values from the player''s player_economy Cloud Save key, call
+      Cloud Code to retrieve the updated status and claim each day''s reward. '
     bodyFormat: 0
     boxCallout: 
     bulletList: []
@@ -79,10 +79,10 @@ MonoBehaviour:
     body: 'An added feature of this Use Case Sample is how it implements the Currency
       icon Sprites for all Currencies. A key feature of this implementation is that
       you, as a developer, can add the Addressables address to the Currency icon
-      for each Currency directly in the Custom Data on the Economy Dashboard and
-      retrieve it at runtime without need to change your code. This permits, for
-      example, swapping in holiday-themed Sprites simply by changing the address
-      used on the Economy Dashboard without needing to update your app. '
+      for each Currency directly in the Custom Data of its catalog entry in the ECONOMY_CURRENCIES
+      Remote Config key and retrieve it at runtime without need to change your code.
+      This permits, for example, swapping in holiday-themed Sprites simply by changing
+      the address used in the catalog entry without needing to update your app. '
     bodyFormat: 0
     boxCallout: 
     bulletList: []
@@ -90,8 +90,8 @@ MonoBehaviour:
   - subHeader1: 
     subHeader2: 
     subHeader3: 
-    body: 'To implement, "spriteAddress" values are added to each Economy Currency''s
-      Custom Data json, allowing this Use Case sample to determine each Currency''s
+    body: 'To implement, "spriteAddress" values are added to each Currency catalog
+      entry''s Custom Data json, allowing this Use Case sample to determine each Currency''s
       Addressables address and initialize all Currency icon Sprites at startup. Later,
       when Sprites are needed (for example, when showing the rewards granted for
       claiming a Daily Reward), the Currency''s key (for example, "COIN") is used
@@ -115,7 +115,7 @@ MonoBehaviour:
   - subHeader1: 
     subHeader2: 
     subHeader3: 
-    body: 'The Economy Dashboard Configuration contains the following data to facilitate
+    body: 'The ECONOMY_CURRENCIES catalog entries contain the following data to facilitate
       these Currency icon Addressables: '
     bodyFormat: 0
     boxCallout: 
@@ -185,16 +185,21 @@ MonoBehaviour:
       bulletList: []
       linkList: []
     - body: 'Cloud Save: Stores and retrieves the event status such as start epoch
-        time, days claimed, etc. '
+        time, days claimed, etc., as well as the player''s currency balances in the
+        player_economy key. '
       bodyFormat: 0
       bulletList: []
       linkList: []
-    - body: 'Economy: Retrieves the starting and updated currency balances at runtime.'
+    - body: 'Deployment: In this context, it is used on the editor side to facilitate the
+        configuration of the different Unity services. It enables the display of the Deployment
+        window which allows the deployment of various service configuration assets.'
       bodyFormat: 0
       bulletList: []
       linkList: []
     - body: 'Remote Config: Defines parameters for the Daily Rewards event including
-        rewards granted on each day, day duration, number of days, etc. '
+        rewards granted on each day, day duration, number of days, etc. Also stores
+        the economy catalog with the currency definitions in the ECONOMY_CURRENCIES
+        key. '
       bodyFormat: 0
       bulletList: []
       linkList: []
@@ -222,8 +227,8 @@ MonoBehaviour:
       url: https://docs.unity.com/cloud-code/implementation.html
     - linkText: Cloud Save
       url: https://docs.unity.com/cloud-save/index.html#Implementation
-    - linkText: Economy
-      url: https://docs.unity.com/economy/implementation.html
+    - linkText: Deployment
+      url: https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2
     - linkText: Remote Config
       url: https://docs.unity3d.com/Packages/com.unity.remote-config@latest
     - linkText: Deployment
@@ -245,18 +250,15 @@ MonoBehaviour:
     body: 'To replicate this sample scene''s setup in your own Unity project, we need to configure the following items:'
     bodyFormat: 0
     boxCallout: 
-    bulletList: 
-    - body: Cloud Code scripts
-    - body: Economy items
+    bulletList:
+    - body: The SampleGameModule Cloud Code module
+    - body: Remote Config economy catalog values
     - body: Remote Config values
     linkList: []
   - subHeader1: 
     subHeader2: 
     subHeader3: 
-    body: There are two main ways of doing this, either by using the Deployment
-      package, or by manually entering them using the Dashboard. We recommend
-      the usage of the Deployment package since it will greatly accelerate this
-      process.
+    body: To configure these items you can use the Deployment package, or manually enter them using the Unity Cloud Dashboard. The recommended best practice is to use the Deployment package as it greatly accelerates this process.
     bodyFormat: 0
     boxCallout: 
     bulletList: []
@@ -283,9 +285,7 @@ MonoBehaviour:
   - subHeader1: 
     subHeader2: Using the Dashboard
     subHeader3: 
-    body: The Dashboard enables you to edit manually all your services
-        configuration by project and environment. Here are the details
-        necessary for the configuration of the current sample.
+    body: You can use the Unity Cloud Dashboard to manually configure your services by project and environment. Refer to the following sections to configure this sample.
     bodyFormat: 0
     boxCallout: 
     linkList:
@@ -293,8 +293,10 @@ MonoBehaviour:
       url: dashboard.unity3d.com
   - subHeader1: 
     subHeader2: 
-    subHeader3: Economy Items
-    body: 
+    subHeader3: Remote Config Economy Catalog
+    body: 'The economy catalog is stored in Remote Config and deployed from Assets/Common/Config
+      as Code/economy_config.rc. The following resources are defined as entries in
+      the ECONOMY_CURRENCIES key:'
     bodyFormat: 0
     boxCallout: 
     bulletList:
@@ -341,8 +343,8 @@ MonoBehaviour:
     linkList: []
   - subHeader1: 
     subHeader2: 
-    subHeader3: Cloud Code Scripts
-    body: 
+    subHeader3: Cloud Code module functions
+    body: To publish them, deploy the SampleGameModule module through Assets/Common/Config as Code/SampleGameModule.ccmr in the Deployment window.
     bodyFormat: 0
     boxCallout: 
     bulletList:
@@ -356,14 +358,14 @@ MonoBehaviour:
       - body: 'Parameters: none'
         bodyFormat: 0
         bulletList: []
-      - body: 'Script: "Assets/Use Case Samples/Daily Rewards/Config as Code/DailyRewards_GetStatus.js"'
+      - body: 'Location: "SampleGameModule/Project/Services/DailyRewardsService.cs"'
         bodyFormat: 0
         bulletList: []
       linkList: []
     - body: DailyRewards_Claim
       bodyFormat: 1
       bulletList:
-      - body: Called in response to a claim Daily Reward request, this script verifies
+      - body: Called in response to a claim Daily Reward request, this function verifies
           eligibility, grants the appropriate day's rewards and updates the state
           on Cloud Save.
         bodyFormat: 0
@@ -371,21 +373,21 @@ MonoBehaviour:
       - body: 'Parameters: none'
         bodyFormat: 0
         bulletList: []
-      - body: 'Script: "Assets/Use Case Samples/Daily Rewards/Config as Code/DailyRewards_Claim.js"'
+      - body: 'Location: "SampleGameModule/Project/Services/DailyRewardsService.cs"'
         bodyFormat: 0
         bulletList: []
       linkList: []
     - body: DailyRewards_ResetEvent
       bodyFormat: 1
       bulletList:
-      - body: For demonstration purposes, this script resets the Daily Rewards state
+      - body: For demonstration purposes, this function resets the Daily Rewards state
           on the client so a new month's rewards can be granted.
         bodyFormat: 0
         bulletList: []
       - body: 'Parameters: none'
         bodyFormat: 0
         bulletList: []
-      - body: 'Script: "Assets/Use Case Samples/Daily Rewards/Config as Code/DailyRewards_ResetEvent.js"'
+      - body: 'Location: "SampleGameModule/Project/Services/DailyRewardsService.cs"'
         bodyFormat: 0
         bulletList: []
       linkList: []

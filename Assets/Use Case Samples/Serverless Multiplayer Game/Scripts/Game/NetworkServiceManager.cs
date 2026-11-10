@@ -35,7 +35,7 @@ namespace Unity.Services.Samples.ServerlessMultiplayerGame
             Allocation allocation = await RelayService.Instance.CreateAllocationAsync(maxPlayerCount);
             var joinCode = await RelayService.Instance.GetJoinCodeAsync(allocation.AllocationId);
 
-            NetworkEndPoint endPoint = NetworkEndPoint.Parse(allocation.RelayServer.IpV4,
+            NetworkEndpoint endPoint = NetworkEndpoint.Parse(allocation.RelayServer.IpV4,
                 (ushort)allocation.RelayServer.Port);
 
              var ipAddress = endPoint.Address.Split(':')[0];
@@ -56,7 +56,7 @@ namespace Unity.Services.Samples.ServerlessMultiplayerGame
         public async Task InitializeClient(string relayJoinCode)
         {
             var joinAllocation = await RelayService.Instance.JoinAllocationAsync(relayJoinCode);
-            var endPoint = NetworkEndPoint.Parse(joinAllocation.RelayServer.IpV4,
+            var endPoint = NetworkEndpoint.Parse(joinAllocation.RelayServer.IpV4,
                 (ushort)joinAllocation.RelayServer.Port);
 
             var ipAddress = endPoint.Address.Split(':')[0];

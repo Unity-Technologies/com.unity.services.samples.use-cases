@@ -218,9 +218,9 @@ public class DailyRewardsStatusService
             k_PlayerStatusKey,
             playerStatus);
 
-        await m_GameApiClient.CloudSaveData.SetItemAsync(
+        await m_GameApiClient.CloudSaveData.SetProtectedItemAsync(
             context,
-            context.AccessToken,
+            context.ServiceToken,
             context.ProjectId,
             context.PlayerId,
             setItemBody);

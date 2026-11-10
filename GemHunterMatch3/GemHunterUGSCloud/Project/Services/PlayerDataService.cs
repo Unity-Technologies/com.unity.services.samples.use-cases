@@ -233,18 +233,13 @@ public class PlayerDataService
             var playerData = CreateDefaultPlayerData();
             var profilePicture = CreateStartingProfilePicture();
 
-            // Initialize economy data
-            var economyTasks = new[]
-            {
-                m_PlayerEconomyService.AddBonusNewPlayerCurrencies(context),
-                m_PlayerEconomyService.InitializeNewPlayerInventoryItems(context)
-            };
+            var economyTask = m_PlayerEconomyService.InitializeNewPlayerEconomy(context);
             
             // Run economy initialization in parallel with player data save
             var savePlayerDataTask = SaveAllPlayerData(context, playerData);
             var saveProfileTask = SavePublicPlayerProfilePicture(context, profilePicture);
             
-            await Task.WhenAll(economyTasks.Concat(new[] { savePlayerDataTask, saveProfileTask }));
+            await Task.WhenAll(economyTask, savePlayerDataTask, saveProfileTask);
 
             // Get the initialized economy data
             var economyData = await m_PlayerEconomyService.GetPlayerEconomyData(context);

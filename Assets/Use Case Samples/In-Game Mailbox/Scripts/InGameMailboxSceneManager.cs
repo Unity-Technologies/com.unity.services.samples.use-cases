@@ -206,7 +206,11 @@ namespace Unity.Services.Samples.InGameMailbox
                 selectedMessageId = "";
                 var desiredAudience = (RemoteConfigManager.SampleAudience)sceneView.audienceDropdown.value;
                 RemoteConfigManager.instance.UpdateAudienceType(desiredAudience);
-                await CloudSaveManager.instance.ResetCloudSaveData();
+                // The inbox is the player's own Cloud Save data; the record of claimed gifts belongs to
+                // SampleGameModule, so a reset asks the module to forget it too.
+                await Task.WhenAll(
+                    CloudSaveManager.instance.ResetCloudSaveData(),
+                    CloudCodeManager.instance.CallResetForDebugEndpoint());
                 if (this == null) return;
 
                 await FetchUpdatedInboxData();

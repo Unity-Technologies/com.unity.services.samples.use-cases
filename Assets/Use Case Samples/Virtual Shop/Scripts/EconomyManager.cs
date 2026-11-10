@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Unity.Services.Economy;
-using Unity.Services.Economy.Model;
+using Unity.Services.Samples.Economy;
 using UnityEngine;
 
 namespace Unity.Services.Samples.VirtualShop
@@ -52,19 +51,19 @@ namespace Unity.Services.Samples.VirtualShop
 
         public async Task RefreshEconomyConfiguration()
         {
-            // Calling SyncConfigurationAsync(), will update the cached configuration list (the lists of Currency,
-            // Inventory Item, and Purchase definitions) with any definitions that have been published or changed by
-            // Economy or overriden by Game Overrides since the last time the player's configuration was cached. It also
-            // ensures that other services like Cloud Code are working with the same configuration that has been cached.
-            await EconomyService.Instance.Configuration.SyncConfigurationAsync();
+            // Calling FetchAsync(), will update the cached catalog (the lists of Currency, Inventory Item, and
+            // Purchase definitions) with the latest values published to the ECONOMY_CURRENCIES, ECONOMY_ITEMS and
+            // ECONOMY_VIRTUAL_PURCHASES Remote Config keys, including any changes made by Game Overrides. It also
+            // ensures that services like Cloud Code are working with the same configuration that has been cached.
+            await EconomyCatalog.Instance.FetchAsync();
 
             // Check that scene has not been unloaded while processing async wait to prevent throw.
             if (this == null)
                 return;
 
-            currencyDefinitions = EconomyService.Instance.Configuration.GetCurrencies();
-            inventoryItemDefinitions = EconomyService.Instance.Configuration.GetInventoryItems();
-            m_VirtualPurchaseDefinitions = EconomyService.Instance.Configuration.GetVirtualPurchases();
+            currencyDefinitions = EconomyCatalog.Instance.GetCurrencies();
+            inventoryItemDefinitions = EconomyCatalog.Instance.GetInventoryItems();
+            m_VirtualPurchaseDefinitions = EconomyCatalog.Instance.GetVirtualPurchases();
         }
 
         public async Task RefreshCurrencyBalances()
@@ -95,7 +94,7 @@ namespace Unity.Services.Samples.VirtualShop
         static Task<GetBalancesResult> GetEconomyBalances()
         {
             var options = new GetBalancesOptions { ItemsPerFetch = 100 };
-            return EconomyService.Instance.PlayerBalances.GetBalancesAsync(options);
+            return PlayerEconomy.Instance.GetBalancesAsync(options);
         }
 
         public async Task RefreshInventory()
@@ -128,7 +127,7 @@ namespace Unity.Services.Samples.VirtualShop
         static Task<GetInventoryResult> GetEconomyPlayerInventory()
         {
             var options = new GetInventoryOptions { ItemsPerFetch = 100 };
-            return EconomyService.Instance.PlayerInventory.GetInventoryAsync(options);
+            return PlayerEconomy.Instance.GetInventoryAsync(options);
         }
 
         public void InitializeVirtualPurchaseLookup()
@@ -167,7 +166,7 @@ namespace Unity.Services.Samples.VirtualShop
         {
             try
             {
-                return await EconomyService.Instance.Purchases.MakeVirtualPurchaseAsync(virtualPurchaseId);
+                return await PlayerEconomy.Instance.MakeVirtualPurchaseAsync(virtualPurchaseId);
             }
             catch (EconomyException e)
                 when (e.ErrorCode == k_EconomyPurchaseCostsNotMetStatusCode)
@@ -188,7 +187,7 @@ namespace Unity.Services.Samples.VirtualShop
         {
             try
             {
-                await EconomyService.Instance.PlayerBalances.IncrementBalanceAsync(currencyId, amount);
+                await PlayerEconomy.Instance.IncrementBalanceAsync(currencyId, amount);
             }
             catch (Exception e)
             {

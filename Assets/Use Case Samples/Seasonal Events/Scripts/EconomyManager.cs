@@ -1,7 +1,6 @@
 using System;
 using System.Threading.Tasks;
-using Unity.Services.Economy;
-using Unity.Services.Economy.Model;
+using Unity.Services.Samples.Economy;
 using UnityEngine;
 
 namespace Unity.Services.Samples.SeasonalEvents
@@ -26,11 +25,11 @@ namespace Unity.Services.Samples.SeasonalEvents
 
         public async Task RefreshEconomyConfiguration()
         {
-            // Calling SyncConfigurationAsync(), will update the cached configuration list (the lists of Currency,
-            // Inventory Item, and Purchase definitions) with any definitions that have been published or changed by
-            // Economy or overriden by Game Overrides since the last time the player's configuration was cached. It also
-            // ensures that other services like Cloud Code are working with the same configuration that has been cached.
-            await EconomyService.Instance.Configuration.SyncConfigurationAsync();
+            // Calling FetchAsync(), will update the cached catalog (the lists of Currency, Inventory Item, and
+            // Purchase definitions) with the latest values published to the ECONOMY_CURRENCIES, ECONOMY_ITEMS and
+            // ECONOMY_VIRTUAL_PURCHASES Remote Config keys, including any changes made by Game Overrides. It also
+            // ensures that services like Cloud Code are working with the same configuration that has been cached.
+            await EconomyCatalog.Instance.FetchAsync();
         }
 
         public async Task RefreshCurrencyBalances()
@@ -60,7 +59,7 @@ namespace Unity.Services.Samples.SeasonalEvents
         static Task<GetBalancesResult> GetEconomyBalances()
         {
             var options = new GetBalancesOptions { ItemsPerFetch = 100 };
-            return EconomyService.Instance.PlayerBalances.GetBalancesAsync(options);
+            return PlayerEconomy.Instance.GetBalancesAsync(options);
         }
 
         public void SetCurrencyBalance(string currencyId, long balance)

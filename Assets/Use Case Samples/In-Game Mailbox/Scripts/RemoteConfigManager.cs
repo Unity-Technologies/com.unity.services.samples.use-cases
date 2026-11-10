@@ -14,6 +14,8 @@ namespace Unity.Services.Samples.InGameMailbox
         SampleAudience m_CurrentAudience = SampleAudience.Default;
         List<string> m_OrderedMessageIds;
 
+        public SampleAudience currentAudience => m_CurrentAudience;
+
         void Awake()
         {
             if (instance != null && instance != this)

@@ -19,39 +19,39 @@ The `CloudAIMiniGameSceneManager.cs` script performs the following initializatio
 
 1. Initializes Unity Gaming Services.
 2. Signs in the player [anonymously](https://docs.unity.com/authentication/UsingAnonSignIn.html) using the Authentication service. If you’ve previously initialized any of the other sample scenes, Authentication will use your cached Player ID instead of creating a new one.
-3. Retrieves and updates currency balances from the Economy service for that authenticated user.
-4. Calls the `CloudAiMiniGame_GetState.js` Cloud Code script to retrieve the current game state from the Cloud Save service, and updates the game state for the current tic-tac-toe game or creates a new one.
+3. Retrieves and updates currency balances from the player's `player_economy` Cloud Save key for that authenticated user.
+4. Calls the `CloudAiMiniGame_GetState` function of the `SampleGameModule` Cloud Code module to retrieve the current game state from the Cloud Save service, and updates the game state for the current tic-tac-toe game or creates a new one.
 
 ### Functionality
 
 When you click the **New Game** button (or the **Forfeit** button when a game is in progress), the following occurs on the backend:
 
-1. The button’s `OnClick` method calls the `CloudAiMiniGame_StartNewGame.js` Cloud Code script to check if a game is in progress (the `isGameOver` variable is `false`).
+1. The button’s `OnClick` method calls the `CloudAiMiniGame_StartNewGame` function of the `SampleGameModule` Cloud Code module to check if a game is in progress (the `isGameOver` variable is `false`).
 2. If a game is in progress, the player receives a loss for forfeiting.
-3. The script then creates a new game, clearing the board and randomly choosing the player or AI to go first.
+3. The function then creates a new game, clearing the board and randomly choosing the player or AI to go first.
 4. If the AI is selected to go first, the AI places a piece on a random spot on the board.
 5. The new game state is returned to the client.
 
 When a game is in progress you can click on a game tile to attempt to place a piece. The following occurs on the backend:
 
-1. The client calls the `CloudAiMiniGame_ValidatePlayerMoveAndRespond.js` Cloud Code script, passing your click coordinates to the script.
+1. The client calls the `CloudAiMiniGame_ValidatePlayerMoveAndRespond` function of the `SampleGameModule` Cloud Code module, passing your click coordinates to the function.
 2. The move is validated based on the coordinate inputs. If the game is over or the tile is occupied, the move is invalid.
 
-3. If the move is valid, the script updates the game state to reflect the new piece placement, then places the piece on the client-side game board.
+3. If the move is valid, the function updates the game state to reflect the new piece placement, then places the piece on the client-side game board.
 
-4. The script checks to see if the new move triggers a game-over condition (either three in a row, or the board is full).
+4. The function checks to see if the new move triggers a game-over condition (either three in a row, or the board is full).
 
-5. If the game is not over, the script places an AI piece according to the following logic:
+5. If the game is not over, the function places an AI piece according to the following logic:
 
    1. If the AI can win, it always will (for example, if the AI has 2 pieces in a row with an empty space, it will make the winning play).
    2. If the player has 2 in a row, the AI will always block the player's winning move.
    3. If neither a or b are true, it plays randomly.
 
-6. If the game is over, the script calls the Economy service to distribute rewards directly, according to the win condition detected. If the player won, they receive 100 Coins. If the board is full, they receive 25 Coins.
+6. If the game is over, the function grants the rewards in the player's `player_economy` Cloud Save record, according to the win condition detected. If the player won, they receive 100 Coins. If the board is full, they receive 25 Coins.
 
 The Cloud Save service keeps a JSON record of the full game state, using the `CLOUD_AI_GAME_STATE` key string. The associated value stores sequential moves made by each player, the overall state, flags for game-over, player turn, whether this is a new game or move, and a persistent counter for wins, losses, and ties.
 
-The **Reset Game** button exists to demonstrate the full game cycle. At the start of the first game (or when manually resetting the game), Cloud Code removes the `CLOUD_AI_GAME_STATE` key from Cloud Save and calls the `CloudAiMiniGame_GetState.js` Cloud Code script to reset the Coin balance to 0, create a new save state with all counters set to 0, generate a new game board, and choose a random starting player.
+The **Reset Game** button exists to demonstrate the full game cycle. At the start of the first game (or when manually resetting the game), Cloud Code removes the `CLOUD_AI_GAME_STATE` key from Cloud Save and calls the `CloudAiMiniGame_GetState` function of the `SampleGameModule` Cloud Code module to reset the Coin balance to 0, create a new save state with all counters set to 0, generate a new game board, and choose a random starting player.
 
 #### Example Cloud Save game states
 
@@ -99,10 +99,10 @@ To replicate this use case, you need the following [Unity packages](https://docs
 | **Package**                                                                           | **Role**                                                                                                            |
 |---------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------|
 | [Authentication](https://docs.unity.com/authentication/IntroUnityAuthentication.html) | Automatically signs in the player as an anonymous user to keep track of their data server-side.                     |
-| [Cloud Code](https://docs.unity.com/cloud-code/implementation.html)                   | Generates random games, validates game logic, executes AI turns, and grants Economy rewards based on game outcomes. |
-| [Cloud Save](https://docs.unity.com/cloud-save/index.html#Implementation)             | Stores the active game state.                                                                                       |
-| [Economy](https://docs.unity.com/economy/implementation.html)                         | Retrieves the starting and updated currency balances at runtime.                                                    |
+| [Cloud Code](https://docs.unity.com/cloud-code/implementation.html)                   | Generates random games, validates game logic, executes AI turns, and grants currency rewards through the `SampleGameModule` module based on game outcomes. |
+| [Cloud Save](https://docs.unity.com/cloud-save/index.html#Implementation)             | Stores the active game state and the player's currency balances (`player_economy` key). The `CLOUD_AI_GAME_STATE` and `player_economy` keys are in the protected [access class](https://docs.unity.com/ugs/en-us/manual/cloud-save/manual/concepts/player-data#Access_Classes): the client can read them and only `SampleGameModule` can write them. |
 | [Deployment](https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2)     | The Deployment package provides a cohesive interface to deploy assets for Cloud Services.                           |
+| [Remote Config](https://docs.unity.com/remote-config)                                 | Provides the currency definitions used by the sample.                                                               |
 
 To use these services in your game, activate each service for your Organization and project in the[Unity Dashboard](https://dashboard.unity3d.com/).
 
@@ -110,8 +110,8 @@ To use these services in your game, activate each service for your Organization 
 
 To replicate this sample scene's setup in your own Unity project, we need to configure the following items:
 
-- Cloud Code scripts
-- Economy items
+- The `SampleGameModule` Cloud Code module
+- Remote Config economy catalog values
 
 There are two main ways of doing this, either by [using the Deployment package](#using-the-deployment-package), or by [manually entering them using the Dashboard](#using-the-dashboard).
 We recommend the usage of the Deployment package since it will greatly accelerate this process.
@@ -133,17 +133,20 @@ Here are the details necessary for the configuration of the current sample.
 
 ##### Cloud Code
 
-[Publish the following scripts](https://docs.unity.com/cloud-code/implementation.html#Writing_your_first_script) in the **LiveOps** dashboard:
+The `SampleGameModule` C# Cloud Code module provides the following [module functions](https://docs.unity.com/ugs/en-us/manual/cloud-code/manual/modules):
 
-| **Script**                                     | **Parameters**                                                                                                  | **Description**                                                                                                                                                                                                                                                                                                                                                                                                   | **Location in project**                                                                                     |
+| **Module function**                            | **Parameters**                                                                                                  | **Description**                                                                                                                                                                                                                                                                                                                                                                                                   | **Location in project**                                                                                     |
 |------------------------------------------------|-----------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|
-| `CloudAiMiniGame_GetState`                     | None                                                                                                            | Creates and saves a random game if no game is in progress. If it’s the player's first game (or their first game after clicking the **Reset Game** button, it also resets the Coin quantity to 0, then returns the current game state.                                                                                                                                                                             | `Assets/Use Case Samples/Cloud AI Mini Game/Config as Code/CloudAiMiniGame_GetState.js`                     |
-| `CloudAiMiniGame_ValidatePlayerMoveAndRespond` | `coord`<br><br>`JSON`<br><br>The {x,y} coordinate for the player piece to add.<br><br>Example: `{"x":0, "y":0}` | Validates the player's requested move and adds it to the game state based on the coordinates of the mouse click. After updating the game state, it checks for game-over conditions. if the game is not over, it places an AI piece then checks for game-over conditions again, and returns the final updated state to the client. If the player wins or ties, it awards Coins directly using the Economy service. | `Assets/Use Case Samples/Cloud AI Mini Game/Config as Code/CloudAiMiniGame_ValidatePlayerMoveAndRespond.js` |
-| `CloudAiMiniGame_StartNewGame`                 | None                                                                                                            | Called when clicking the **New Game** or **Forfeit** button, to assign the player a loss in the case of a forfeit and generate a new random game with a random starting player.                                                                                                                                                                                                                                   | `Assets/Use Case Samples/Cloud AI Mini Game/Config as Code/CloudAiMiniGame_StartNewGame.js`                 |
+| `CloudAiMiniGame_GetState`                     | None                                                                                                            | Creates and saves a random game if no game is in progress. If it’s the player's first game (or their first game after clicking the **Reset Game** button, it also resets the Coin quantity to 0, then returns the current game state.                                                                                                                                                                             | `SampleGameModule/Project/Services/CloudAiMiniGameService.cs`                                               |
+| `CloudAiMiniGame_ValidatePlayerMoveAndRespond` | `coord`<br><br>`JSON`<br><br>The {x,y} coordinate for the player piece to add.<br><br>Example: `{"x":0, "y":0}` | Validates the player's requested move and adds it to the game state based on the coordinates of the mouse click. After updating the game state, it checks for game-over conditions. if the game is not over, it places an AI piece then checks for game-over conditions again, and returns the final updated state to the client. If the player wins or ties, it awards Coins through the `SampleGameModule` module. | `SampleGameModule/Project/Services/CloudAiMiniGameService.cs`                                               |
+| `CloudAiMiniGame_ResetState`                   | None                                                                                                            | Called when clicking the **Reset Game** button, to delete the saved game so the next `CloudAiMiniGame_GetState` call starts over as a first game.                                                                                                                                                                                                                                 | `SampleGameModule/Project/Services/CloudAiMiniGameService.cs`                                               |
+| `CloudAiMiniGame_StartNewGame`                 | None                                                                                                            | Called when clicking the **New Game** or **Forfeit** button, to assign the player a loss in the case of a forfeit and generate a new random game with a random starting player.                                                                                                                                                                                                                                   | `SampleGameModule/Project/Services/CloudAiMiniGameService.cs`                                               |
 
-##### Economy
+To publish them, deploy the `SampleGameModule` module (in the repo root `SampleGameModule/` folder) through `Assets/Common/Config as Code/SampleGameModule.ccmr` in the Deployment window, or upload it from the Unity Cloud Dashboard.
 
-[Configure the following resource](https://docs.unity.com/economy/) in the **LiveOps** dashboard:
+##### Remote Config
+
+The economy catalog is stored in Remote Config and deployed from `Assets/Common/Config as Code/economy_config.rc`. The following currency is defined under the `ECONOMY_CURRENCIES` key:
 
 | **Resource type** | **Resource item** | **ID** | **Description**                     |
 | ----------------- | ----------------- | ------ | ----------------------------------- |

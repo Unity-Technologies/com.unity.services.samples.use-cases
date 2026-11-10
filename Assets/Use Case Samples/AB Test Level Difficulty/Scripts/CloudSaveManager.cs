@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Unity.Services.CloudSave;
+using Unity.Services.CloudSave.Models.Data.Player;
 using UnityEngine;
 
 namespace Unity.Services.Samples.ABTestLevelDifficulty
@@ -43,48 +44,22 @@ namespace Unity.Services.Samples.ABTestLevelDifficulty
         {
             try
             {
-                var savedData = await CloudSaveService.Instance.Data.LoadAllAsync();
+                // SampleGameModule keeps level and XP in the protected access class: the client reads them,
+                // only the module writes them.
+                var savedData = await CloudSaveService.Instance.Data.Player.LoadAllAsync(
+                    new LoadAllOptions(new ProtectedReadAccessClassOptions()));
 
                 // Check that scene has not been unloaded while processing async wait to prevent throw.
                 if (this == null) return;
 
-                var missingData = new Dictionary<string, object>();
-                if (savedData.ContainsKey(k_PlayerLevelKey))
-                {
-                    m_CachedCloudData[k_PlayerLevelKey] = int.Parse(savedData[k_PlayerLevelKey]);
-                }
-                else
-                {
-                    missingData.Add(k_PlayerLevelKey, k_NewPlayerLevel);
-                    m_CachedCloudData[k_PlayerLevelKey] = k_NewPlayerLevel;
-                }
-
-                if (savedData.ContainsKey(k_PlayerXPKey))
-                {
-                    m_CachedCloudData[k_PlayerXPKey] = int.Parse(savedData[k_PlayerXPKey]);
-                }
-                else
-                {
-                    missingData.Add(k_PlayerXPKey, k_NewPlayerXP);
-                    m_CachedCloudData[k_PlayerXPKey] = k_NewPlayerXP;
-                }
-
-                if (missingData.Count > 0)
-                {
-                    await SaveUpdatedData(missingData);
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.LogException(e);
-            }
-        }
-
-        async Task SaveUpdatedData(Dictionary<string, object> data)
-        {
-            try
-            {
-                await CloudSaveService.Instance.Data.ForceSaveAsync(data);
+                // Only SampleGameModule writes these keys. A new player has neither yet, and the module
+                // treats missing keys as level 1 with 0 XP, so the client shows the same defaults.
+                m_CachedCloudData[k_PlayerLevelKey] = savedData.TryGetValue(k_PlayerLevelKey, out var level)
+                    ? level.Value.GetAs<int>()
+                    : k_NewPlayerLevel;
+                m_CachedCloudData[k_PlayerXPKey] = savedData.TryGetValue(k_PlayerXPKey, out var xp)
+                    ? xp.Value.GetAs<int>()
+                    : k_NewPlayerXP;
             }
             catch (Exception e)
             {

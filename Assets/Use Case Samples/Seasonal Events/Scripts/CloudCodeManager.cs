@@ -43,11 +43,11 @@ namespace Unity.Services.Samples.SeasonalEvents
             {
                 Debug.Log("Collecting event rewards via Cloud Code...");
 
-                // The CallEndpointAsync method requires two objects to be passed in: the name of the script being
-                // called, and a struct for any arguments that need to be passed to the script. In this sample,
+                // The CallModuleEndpointAsync method takes the module name, the name of the function being
+                // called, and a struct for any arguments that need to be passed to the function. In this sample,
                 // we didn't need to pass any additional arguments, so we're passing an empty struct. Alternatively,
                 // you could pass an empty string.
-                var updatedRewardBalances = await CloudCodeService.Instance.CallEndpointAsync<GrantEventRewardResult>(
+                var updatedRewardBalances = await CloudCodeService.Instance.CallModuleEndpointAsync<GrantEventRewardResult>("SampleGameModule", 
                     "SeasonalEvents_GrantEventReward",
                     new Dictionary<string, object>());
 
@@ -80,7 +80,7 @@ namespace Unity.Services.Samples.SeasonalEvents
         {
             try
             {
-                return await CloudCodeService.Instance.CallEndpointAsync<long>(
+                return await CloudCodeService.Instance.CallModuleEndpointAsync<long>("SampleGameModule", 
                     "SeasonalEvents_GetServerTime",
                     new Dictionary<string, object>());
             }

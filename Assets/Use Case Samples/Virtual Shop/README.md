@@ -19,7 +19,7 @@ When the scene loads, the `VirtualShopSceneManager.cs` script performs the follo
 
 1. Initializes Unity Gaming Services.
 2. Signs in the player [anonymously](https://docs.unity.com/authentication/UsingAnonSignIn.html) using the Authentication service. If you’ve previously initialized any of the other sample scenes, Authentication will use your cached Player ID instead of creating a new one.
-3. Retrieves and updates the player's currency balances from the Economy service.
+3. Retrieves and updates the player's currency balances from the player's `player_economy` Cloud Save key.
 4. Queries the Remote Config service to fetch the Virtual Shop configuration data. This includes:
     1. Currency and inventory item sprites from the Addressables service so they can be displayed in the shop UI.
     2. Virtual Purchase Transactions for use in the store. The Remote Config data determines which categories to put each transaction in, and which icons to use.
@@ -37,9 +37,9 @@ The **+30** Gems button in the bottom-right corner adds currency for testing pur
 
 #### Virtual Purchases
 
-The shop interface shows the items for sale, along with their respective costs. Click any item to attempt a Virtual Purchase through the Economy service. A pop-up appears to confirm if the purchase succeeded or failed.
+The shop interface shows the items for sale, along with their respective costs. Click any item to attempt a Virtual Purchase through the `SampleGameModule` Cloud Code module. A pop-up appears to confirm if the purchase succeeded or failed.
 
-**Note:** Most games will disable buttons for purchases the user cannot afford. However, this sample allows you to attempt all purchases regardless, to facilitate testing how the Economy service verifies Virtual Purchases.
+**Note:** Most games will disable buttons for purchases the user cannot afford. However, this sample allows you to attempt all purchases regardless, to facilitate testing how the `SampleGameModule` Cloud Code module verifies Virtual Purchases server-side.
 
 #### Category buttons
 
@@ -61,9 +61,10 @@ To replicate this use case, you need the following [Unity packages](https://docs
 |---------------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [Addressables](https://docs.unity3d.com/Packages/com.unity.addressables@latest)       | Allows developers to ask for an asset via its address. Wherever the asset resides (local or remote), the system will locate it and its dependencies, then return it.                                                                                                                   |
 | [Authentication](https://docs.unity.com/authentication/IntroUnityAuthentication.html) | Automatically signs in the user anonymously to keep track of their data on the server side.                                                                                                                                                                                            |
-| [Economy](https://docs.unity.com/economy/implementation.html)                         | Keeps track of the player's currencies and inventory items, as well as definitions for all currencies, inventory items and Virtual Purchase transactions. Currencies and inventory items all include Custom data to identify which icon sprites to use in the shop.                    |
-| [Remote Config](https://docs.unity3d.com/Packages/com.unity.remote-config@latest)     | Provides key-value pairs where the value that is mapped to a given key can be changed on the server-side, either manually or based on specific Game Overrides. The `VIRTUAL_SHOPS_CONFIG` entry stores all details for Virtual Purchase transactions to be available in each Category. |
+| [Cloud Code](https://docs.unity.com/cloud-code/implementation.html)                   | Runs the `SampleGameModule` module, which validates and processes Virtual Purchases server-side and updates the player's currency balances and inventory items.                                                                                                                  |
+| [Cloud Save](https://docs.unity.com/cloud-save)                                       | Stores the player's currency balances and inventory items in the `player_economy` key, which the client reads at runtime. The `player_economy` key is in the protected [access class](https://docs.unity.com/ugs/en-us/manual/cloud-save/manual/concepts/player-data#Access_Classes): the client can read it and only `SampleGameModule` can write it. |
 | [Deployment](https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2)     | The Deployment package provides a cohesive interface to deploy assets for Cloud Services.                                                                                                                                                                                              |
+| [Remote Config](https://docs.unity3d.com/Packages/com.unity.remote-config@latest)     | Provides key-value pairs where the value that is mapped to a given key can be changed on the server-side, either manually or based on specific Game Overrides. The `VIRTUAL_SHOPS_CONFIG` entry stores all details for Virtual Purchase transactions to be available in each Category, and the `ECONOMY_CURRENCIES`, `ECONOMY_ITEMS` and `ECONOMY_VIRTUAL_PURCHASES` entries store the economy catalog. Currency and inventory item entries all include custom data to identify which icon sprites to use in the shop. |
 
 To use these services in your game, activate each service for your Organization and project in the [Unity Dashboard](https://dashboard.unity3d.com/).
 
@@ -71,8 +72,8 @@ To use these services in your game, activate each service for your Organization 
 
 To replicate this sample scene's setup in your own Unity project, we need to configure the following items:
 
-- Economy items
-- Remote Config values
+- The `SampleGameModule` Cloud Code module
+- Remote Config values (including the economy catalog)
 
 There are two main ways of doing this, either by [using the Deployment package](#using-the-deployment-package), or by [manually entering them using the Dashboard](#using-the-dashboard).
 We recommend the usage of the Deployment package since it will greatly accelerate this process.
@@ -92,9 +93,11 @@ This will deploy all the necessary items.
 The [Dashboard](dashboard.unity3d.com) enables you to edit manually all your services configuration by project and environment.
 Here are the details necessary for the configuration of the current sample.
 
-##### Economy
+You must also publish the `SampleGameModule` C# Cloud Code module (in the repo root `SampleGameModule/` folder), which validates and processes all Virtual Purchases server-side.
 
-[Configure the following resource](https://docs.unity.com/economy/) in the **LiveOps** dashboard:
+##### Economy catalog (Remote Config)
+
+The economy catalog is stored in Remote Config and deployed from `Assets/Common/Config as Code/economy_config.rc`. Configure the following resources as entries in the `ECONOMY_CURRENCIES` and `ECONOMY_ITEMS` keys:
 
 | **Resource type**  | **Resource item**  | **ID**   | **Custom data**                                 | **Description**                                            |
 |:-------------------|:-------------------|:---------|:------------------------------------------------|:-----------------------------------------------------------|
@@ -105,15 +108,14 @@ Here are the details necessary for the configuration of the current sample.
 | Inventory Item     | Sword              | `SWORD`  | `{"spriteAddress": "Sprites/Inventory/Sword"}`  | An item you can purchase in the virtual shop.              |
 | Inventory Item     | Shield             | `SHIELD` | `{"spriteAddress": "Sprites/Inventory/Shield"}` | An item you can purchase in the virtual shop.              |
 
-\* This sample uses Addressable Assets to implement the sprite icons for all Economy resources. As the developer, you can add the Addressables address of the icon for each currency directly in the Economy dashboard, and then retrieve it at runtime without needing to change your code. This is helpful if for example, you want to update currency icons by changing the address in your dashboard instead of updating your app. To do this for each resource:
+\* This sample uses Addressable Assets to implement the sprite icons for all economy resources. As the developer, you can add the Addressables address of the icon for each currency directly in the catalog entry's `customData`, and then retrieve it at runtime without needing to change your code. This is helpful if for example, you want to update currency icons by changing the address in your configuration instead of updating your app. To do this for each resource:
 
-1. Select the currency you want to edit.
-2. Under **Custom data**, click the plus (**+**) icon to add a custom JSON script.
-3. Add the `spriteAddress` value, along with the corresponding Addressable address string listed in the table.
+1. Find the catalog entry you want to edit in the `ECONOMY_CURRENCIES` or `ECONOMY_ITEMS` key.
+2. In its `customData` JSON, add the `spriteAddress` value, along with the corresponding Addressable address string listed in the table.
 
 When the client needs to initialize sprites (for example, to display the costs and rewards for each virtual purchase for sale in the shop), the resource’s ID acts as a dictionary key to quickly find the associated spirit. The client calls the `AddressablesManager.cs` script’s `PreloadAllEconomySprites()` method at startup to initialize the dictionary with all icon sprites, and the `preloadedSpritesByEconomyId` dictionary is used to look up Economy IDs to find the associated sprite to use in the shop display.
 
-In addition, [configure the following virtual purchases](https://docs.unity.com/economy/item-types.html#Virtual_purchase) for the virtual shop:
+In addition, configure the following virtual purchases as entries in the `ECONOMY_VIRTUAL_PURCHASES` key:
 
 | **Item name**      | **ID**                            | **This purchase buys**  | **This purchase costs** |
 | :----------------- | :-------------------------------- | :---------------------- | :---------------------- |

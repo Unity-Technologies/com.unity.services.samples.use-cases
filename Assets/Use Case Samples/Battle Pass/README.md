@@ -28,21 +28,21 @@ When the scene loads, the `BattlePassSceneManager` script performs the following
 
 1. Initializes Unity Gaming Services.
 2. Signs in the player [anonymously](https://docs.unity.com/authentication/UsingAnonSignIn.html) using the Authentication service. If you’ve previously initialized any of the other sample scenes, Authentication will use your cached Player ID instead of creating a new one.
-3. Retrieves and updates currency balances from the Economy service for that authenticated user.
+3. Retrieves and updates currency balances from the player's `player_economy` Cloud Save key for that authenticated user.
 4. Uses Cloud Code to query the Remote Config service for the current values of event-related keys, such as Battle Pass content.
 
 **Note**: The default tier configurations stored in Remote Config are empty. You’ll download varying tier configurations depending on which Game Override is currently active. When the event is scheduled to end, the client calls Remote Config (via Cloud Code) again to get new values and refresh the UI.
 
 ### Functionality
 
-The Battle Pass ownership token and reward system is entirely powered by Cloud Code scripts.
+The Battle Pass ownership token and reward system is entirely powered by `SampleGameModule` Cloud Code module functions.
 
 #### Play the Game
 
 Each time you click the **Play the Game** button, you earn 85 Season XP. The following occurs on the backend:
 
-1. The button’s `OnClick` method calls the `BattlePass_GainSeasonXP.js` Cloud Code script to validate the current Battle Pass season in case it needs to reset the player’s Season XP.
-2. The same script then grants a fixed amount of Season XP.
+1. The button’s `OnClick` method calls the `BattlePass_GainSeasonXP` function of the `SampleGameModule` Cloud Code module to validate the current Battle Pass season in case it needs to reset the player’s Season XP.
+2. The same function then grants a fixed amount of Season XP.
 3. If the Season XP gain results in a tier increase, it updates the reward track accordingly and updates the player’s progress in Cloud Save.
 
 The Season XP bar indicates your active reward tier and your progress towards unlocking the next tier. Each time you unlock a reward tier, its icon changes from a lock to an exclamation mark, indicating that you can claim the reward.
@@ -51,7 +51,7 @@ The Season XP bar indicates your active reward tier and your progress towards un
 
 When you click an unlocked reward icon, a pop-up window prompts you to claim that reward tier. When you click the **Claim!** button, the following occurs on the backend:
 
-1. The button’s `OnClick` method calls the `BattlePass_ClaimTier.js` Cloud Code script to validate the current Battle Pass season in case it needs to reset the player’s Season XP.
+1. The button’s `OnClick` method calls the `BattlePass_ClaimTier` function of the `SampleGameModule` Cloud Code module to validate the current Battle Pass season in case it needs to reset the player’s Season XP.
 2. The icon changes to a check mark, to indicate the reward has been claimed.
 3. The player’s tier progress is updated again in Cloud Save.
 
@@ -59,17 +59,17 @@ When the season event ends, all Season XP and tier levels reset, but the claimed
 
 #### Buy Battle Pass
 
-Click the **Buy Battle Pass** button to purchase the Battle Pass for 10 Gems. Purchasing the Battle Pass retroactively grants the player Battle Pass-exclusive rewards for all previously obtained reward tiers, and makes them eligible to claim exclusive rewards for subsequent tiers. For testing purposes, you can click the **+30** Gems button as many times as you want to add virtual currency to your account through the [Economy](http://www.docs.unity.com/Economy) service. The following occurs on the backend when you click **Buy Battle Pass**:
+Click the **Buy Battle Pass** button to purchase the Battle Pass for 10 Gems. Purchasing the Battle Pass retroactively grants the player Battle Pass-exclusive rewards for all previously obtained reward tiers, and makes them eligible to claim exclusive rewards for subsequent tiers. For testing purposes, you can click the **+30** Gems button as many times as you want to add virtual currency to your account through the `SampleGameModule` Cloud Code module. The following occurs on the backend when you click **Buy Battle Pass**:
 
-1. The button’s `OnClick` method calls the `BattlePass_PurchaseBattlePass.js` Cloud Code script, which validates that the player has enough Gems to make the Virtual Purchase through the Economy service.
-2. If the player has enough Gems to purchase the Battle Pass, the Cloud Code script grants any previously unlocked Battle Pass rewards through the Economy service.
-3. Finally, the Cloud Code script updates the player’s Battle Pass ownership status in Cloud Save, and the UI code disables the **Buy Battle Pass** button until the next season.
+1. The button’s `OnClick` method calls the `BattlePass_PurchaseBattlePass` function of the `SampleGameModule` Cloud Code module, which validates that the player has enough Gems to make the Virtual Purchase.
+2. If the player has enough Gems to purchase the Battle Pass, the module function grants any previously unlocked Battle Pass rewards in the player's `player_economy` Cloud Save record.
+3. Finally, the module function updates the player’s Battle Pass ownership status in Cloud Save, and the UI code disables the **Buy Battle Pass** button until the next season.
 
 **Tip**: You can click the backpack icon to view inventory items that you’ve claimed.
 
 **Note**: This sample uses currencies as premium rewards, though most multiplayer games are designed to award cosmetic items at the premium level, or other items that do not give players a gameplay advantage.
 
-At first glance, it may appear that some of these actions could be simpler calls directly to each service. For example, to get the player's progress, you could download the current player state directly from the Cloud Save SDK, and to purchase a Battle Pass you could make a call directly to the Economy SDK. However, these actions have potential ripple effects that are safer being server-authoritative:
+At first glance, it may appear that some of these actions could be simpler calls directly to each service. For example, to get the player's progress, you could download the current player state directly from the Cloud Save SDK, and to purchase a Battle Pass you could call the `SampleGameModule` module's purchase endpoint directly from the client. However, these actions have potential ripple effects that are safer being server-authoritative:
 
 - When retrieving the player's progress, you also need to reset the player's progress if the season has changed.
 - When purchasing a Battle Pass, you also want to grant any premium rewards for tiers the player has already claimed.
@@ -85,13 +85,12 @@ To replicate this use case, you need the following [Unity packages](https://docs
 | [Addressables](https://docs.unity3d.com/Packages/com.unity.addressables@latest)                                        | Allows developers to retrieve an asset by using its address. In this sample, the service looks up event-specific images and prefabs based on the information received from Remote Config.                                                                                                                                                                                                                                                                            |
 | [Authentication](https://docs.unity.com/authentication/IntroUnityAuthentication.html)                                  | Automatically signs in the user anonymously to keep track of their data server-side.                                                                                                                                                                                                                                                                                                                                                                                 |
 | [Cloud Code](https://docs.unity.com/cloud-code/implementation.html)                                                    | Stores important validation logic server-side. In this sample, it has four main purposes:<br><ul><li>Retrieving the player's season progress, or resetting their progress if the season has changed.</li><li>Gaining season XP, potentially unlocking new reward tiers.</li><li>Claiming a reward tier, granting currency or inventory items.</li><li>Purchasing a battle pass, which unlocks more rewards and possibly grants rewards for previously claimed tiers. |
-| [Cloud Save](https://docs.unity.com/cloud-save/index.html#Implementation)\*                                            | Stores the player's season XP progress and battle pass ownership token. This sample doesn't actually use the Cloud Save methods in C#, as all of the Cloud Save work occurs in Cloud Code scripts.                                                                                                                                                                                                                                                                   |
+| [Cloud Save](https://docs.unity.com/cloud-save/index.html#Implementation)                                              | Stores the player's season XP progress and battle pass ownership token, as well as the player's currency balances and inventory in the `player_economy` key, which the client reads at runtime. The `BATTLE_PASS_*` and `player_economy` keys are in the protected [access class](https://docs.unity.com/ugs/en-us/manual/cloud-save/manual/concepts/player-data#Access_Classes): the client can read them and only `SampleGameModule` can write them. |
 | [Deployment](https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2)                                      | The Deployment package provides a cohesive interface to deploy assets for Cloud Services.                                                                                                                                                                                                                                                                                                                                                                            |
-| [Economy](https://docs.unity.com/economy/implementation.html)                                                          | Retrieves the starting and updated currency balances at runtime.                                                                                                                                                                                                                                                                                                                                                                                                     |
 | [Game Overrides](https://docs.unity3d.com/Packages/com.unity.remote-config@3.2/manual/GameOverridesAndSettings.html)\* | Configures the four battle pass seasons and returns different reward tiers based on which Game Override is deemed active based on the current time. Note: These season configurations are shared with the Seasonal Events use case sample.                                                                                                                                                                                                                           |                                                                                                                                                                                                                                                                                                                                                                                                                                                                   |
-| [Remote Config](https://docs.unity3d.com/Packages/com.unity.remote-config@latest)\*                                    | Provides key-value pairs where the value that is mapped to a given key can change on the server side, either manually or based on specific Game Overrides.                                                                                                                                                                                                                                                                                                           |
+| [Remote Config](https://docs.unity3d.com/Packages/com.unity.remote-config@latest)                                      | Provides key-value pairs where the value that is mapped to a given key can change on the server side, either manually or based on specific Game Overrides. Also stores the economy catalog in the `ECONOMY_CURRENCIES`, `ECONOMY_ITEMS` and `ECONOMY_VIRTUAL_PURCHASES` keys.                                                                                                                                                                                        |
 
- \*In this sample, the Cloud Save, Remote Config and Game Overrides services are only used on the Cloud Code (server) side. While these services play important roles in the use case, you aren’t required to install their SDKs in your Unity project.
+ \*In this sample, the Game Overrides service is only used on the Cloud Code (server) side. While it plays an important role in the use case, you aren’t required to install its SDK in your Unity project.
 
 To use these services in your game, activate each service for your Organization and project in the [Unity Cloud Dashboard](https://dashboard.unity3d.com/).
 
@@ -99,8 +98,8 @@ To use these services in your game, activate each service for your Organization 
 
 To replicate this sample scene's setup in your own Unity project, configure the following items:
 
-- Cloud Code scripts
-- Economy items
+- The `SampleGameModule` Cloud Code module
+- Remote Config economy catalog values
 - Remote Config values
 - Remote Config Game Overrides
 
@@ -117,8 +116,8 @@ To deploy configurations using the Deployment package:
 
 This deploys the following items:
 
-- Cloud Code scripts
-- Economy items
+- The `SampleGameModule` Cloud Code module
+- Remote Config economy catalog values
 - Remote Config values
 - Remote Config Game Overrides
 
@@ -128,6 +127,8 @@ You can use the [Unity Cloud Dashboard](dashboard.unity3d.com) to manually confi
 Refer to the following sections to configure this sample.
 
 ##### Game Overrides
+
+**Config as Code:** the four season Game Overrides and the `EVENT_NAME`, `EVENT_KEY`, `EVENT_END_TIME` and `EVENT_TOTAL_DURATION_MINUTES` keys are shared with the Seasonal Events sample. They are deployed from `Assets/Common/Config as Code/Seasons/` (`seasons_config.rc` and the `<season>_event.ugo` files) as the "Battle Pass and Seasonal Events" deployment definition, so deploy that folder once for both samples. The manual dashboard steps below describe the same overrides.
 
 Configure the following [Overrides](https://docs.unity.com/gameoverrides/CreateAnOverride.html) in the Unity Cloud  Dashboard:
 
@@ -163,18 +164,20 @@ Configure the following [Overrides](https://docs.unity.com/gameoverrides/CreateA
 
 ##### Cloud Code
 
-Publish the following [scripts](https://docs.unity.com/cloud-code/implementation.html#Writing_your_first_script) in the Unity Cloud Dashboard:
+The `SampleGameModule` C# Cloud Code module provides the following [module functions](https://docs.unity.com/ugs/en-us/manual/cloud-code/manual/modules):
 
-| **Script**                      | **Parameters**                                                                                                         | **Description**                                                                                                                                                                   | **Location in project**                                                           |
+| **Module function**             | **Parameters**                                                                                                         | **Description**                                                                                                                                                                   | **Location in project**                                                           |
 |---------------------------------|------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------|
-| `BattlePass_GetState`           | None                                                                                                                   | Retrieves and validates the current event configuration.                                                                                                                          | `Assets/Use Case Samples/Battle Pass/Config as Code/BattlePass_GetState.js`           |
-| `BattlePass_GainSeasonXP`       | `amount`<br><br>`NUMERIC`<br><br>The numeric amount of Season XP gained upon clicking the **Play the Game** button.    | Checks to validate the current Battle Pass season in case it needs to reset the player’s Season XP, then grants a fixed amount of Season XP.                                      | `Assets/Use Case Samples/Battle Pass/Config as Code/BattlePass_GainSeasonXP.js`       |
-| `BattlePass_ClaimTier`          | `tierIndex`<br><br>`NUMERIC`<br><br>The 0-based index of the reward tier to grant upon clicking the **Claim!** button. | Grants rewards from the appropriate indexed reward tier.                                                                                                                          | `Assets/Use Case Samples/Battle Pass/Config as Code/BattlePass_ClaimTier.js`          |
-| `BattlePass_PurchaseBattlePass` | None                                                                                                                   | Executes a Virtual Purchase for the Battle Pass by updating the player’s ownership token, deducting Gems, and retroactively granting any previously unlocked Battle Pass rewards. | `Assets/Use Case Samples/Battle Pass/Config as Code/BattlePass_PurchaseBattlePass.js` |
+| `BattlePass_GetState`           | None                                                                                                                   | Retrieves and validates the current event configuration.                                                                                                                          | `SampleGameModule/Project/Services/BattlePassService.cs`                              |
+| `BattlePass_GainSeasonXP`       | `amount`<br><br>`NUMERIC`<br><br>The numeric amount of Season XP gained upon clicking the **Play the Game** button.    | Checks to validate the current Battle Pass season in case it needs to reset the player’s Season XP, then grants a fixed amount of Season XP.                                      | `SampleGameModule/Project/Services/BattlePassService.cs`                              |
+| `BattlePass_ClaimTier`          | `tierIndex`<br><br>`NUMERIC`<br><br>The 0-based index of the reward tier to grant upon clicking the **Claim!** button. | Grants rewards from the appropriate indexed reward tier.                                                                                                                          | `SampleGameModule/Project/Services/BattlePassService.cs`                              |
+| `BattlePass_PurchaseBattlePass` | None                                                                                                                   | Executes a Virtual Purchase for the Battle Pass by updating the player’s ownership token, deducting Gems, and retroactively granting any previously unlocked Battle Pass rewards. | `SampleGameModule/Project/Services/BattlePassService.cs`                              |
 
-##### Economy
+To publish them, deploy the `SampleGameModule` module (in the repo root `SampleGameModule/` folder) through `Assets/Common/Config as Code/SampleGameModule.ccmr` in the Deployment window, or upload it from the Unity Cloud Dashboard.
 
-Configure the following [resources](https://docs.unity.com/economy/) in the Unity Cloud Dashboard:
+##### Economy catalog (Remote Config)
+
+The economy catalog is stored in Remote Config and deployed from `Assets/Common/Config as Code/economy_config.rc`. The following resources are defined under the `ECONOMY_CURRENCIES` and `ECONOMY_ITEMS` keys:
 
 | **Resource type** | **Resource item** | **ID**    | **Description**                                                                                                    |
 |-------------------|-------------------|-----------|--------------------------------------------------------------------------------------------------------------------|
@@ -185,7 +188,7 @@ Configure the following [resources](https://docs.unity.com/economy/) in the Unit
 | Inventory Item    | Sword             | `SWORD`   | An inventory item granted by some Battle Pass reward tiers.                                                        |
 | Inventory Item    | Shield            | `SHIELD`  | An inventory item granted by some Battle Pass reward tiers.                                                        |
 
-In addition, configure the following [virtual purchase](https://docs.unity.com/economy/item-types.html#Virtual_purchase) for the battle pass:
+In addition, the following virtual purchase for the battle pass is defined as an entry in the `ECONOMY_VIRTUAL_PURCHASES` key:
 
 | **Item name**        | **ID**                 | **This purchase buys** | **This purchase costs** |
 |----------------------|------------------------|------------------------|-------------------------|

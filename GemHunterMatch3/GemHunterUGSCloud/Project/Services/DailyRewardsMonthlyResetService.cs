@@ -58,9 +58,9 @@ namespace GemHunterUGSCloud.Services
         {
             try
             {
-                await m_GameApiClient.CloudSaveData.SetItemAsync(
+                await m_GameApiClient.CloudSaveData.SetProtectedItemAsync(
                     context,
-                    context.AccessToken,
+                    context.ServiceToken,
                     context.ProjectId, 
                     context.PlayerId,
                     new SetItemBody
@@ -80,9 +80,9 @@ namespace GemHunterUGSCloud.Services
         {
             try
             {
-                await m_GameApiClient.CloudSaveData.DeleteItemAsync(
+                await m_GameApiClient.CloudSaveData.DeleteProtectedItemAsync(
                     context,
-                    context.AccessToken,
+                    context.ServiceToken,
                     DailyRewardsStatusService.k_PlayerStatusKey,
                     context.ProjectId,
                     context.PlayerId);

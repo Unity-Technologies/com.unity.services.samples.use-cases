@@ -53,8 +53,14 @@ namespace Unity.Services.Samples.InGameMailbox
 
                 Debug.Log($"Claiming attachment for message {messageId} via Cloud Code...");
 
-                await CloudCodeService.Instance.CallEndpointAsync("InGameMailbox_ClaimAttachment",
-                    new Dictionary<string, object> { { "messageId", messageId } });
+                // The module looks the attachment up in Remote Config for the same audience the inbox was
+                // downloaded for, so the client never decides what a message pays.
+                await CloudCodeService.Instance.CallModuleEndpointAsync("SampleGameModule", "InGameMailbox_ClaimAttachment",
+                    new Dictionary<string, object>
+                    {
+                        { "messageId", messageId },
+                        { "audience", RemoteConfigManager.instance.currentAudience.ToString() }
+                    });
             }
             catch (CloudCodeException e)
             {
@@ -81,8 +87,9 @@ namespace Unity.Services.Samples.InGameMailbox
 
                 Debug.Log("Claiming all message attachments via Cloud Code...");
 
-                var result = await CloudCodeService.Instance.CallEndpointAsync<ClaimAllResult>(
-                    "InGameMailbox_ClaimAllAttachments", new Dictionary<string, object>());
+                var result = await CloudCodeService.Instance.CallModuleEndpointAsync<ClaimAllResult>("SampleGameModule",
+                    "InGameMailbox_ClaimAllAttachments",
+                    new Dictionary<string, object> { { "audience", RemoteConfigManager.instance.currentAudience.ToString() } });
                 if (this == null) return;
 
                 var rewards = GetAggregatedRewardDetails(result.processedTransactions);
@@ -105,6 +112,23 @@ namespace Unity.Services.Samples.InGameMailbox
                 {
                     sceneView.SetInteractable(true);
                 }
+            }
+        }
+
+        public async Task CallResetForDebugEndpoint()
+        {
+            try
+            {
+                await CloudCodeService.Instance.CallModuleEndpointAsync("SampleGameModule", "InGameMailbox_ResetForDebug",
+                    new Dictionary<string, object>());
+            }
+            catch (CloudCodeException e)
+            {
+                HandleCloudCodeException(e);
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
             }
         }
 

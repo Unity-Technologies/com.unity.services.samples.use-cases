@@ -1,0 +1,12 @@
+{
+  "entries": {
+    "EVENT_NAME": "",
+    "EVENT_KEY": "",
+    "EVENT_END_TIME": 0,
+    "EVENT_TOTAL_DURATION_MINUTES": 0
+  },
+  "types": {
+    "EVENT_END_TIME": "INT",
+    "EVENT_TOTAL_DURATION_MINUTES": "INT"
+  }
+}

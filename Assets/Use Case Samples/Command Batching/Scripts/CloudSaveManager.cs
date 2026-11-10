@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Unity.Services.CloudSave;
+using Unity.Services.CloudSave.Models.Data.Player;
 using UnityEngine;
 
 namespace Unity.Services.Samples.CommandBatching
@@ -31,7 +33,11 @@ namespace Unity.Services.Samples.CommandBatching
         {
             try
             {
-                m_CachedCloudData = await CloudSaveService.Instance.Data.LoadAllAsync();
+                // SampleGameModule keeps this sample's keys in the protected access class: the client reads
+                // them, only the module writes them.
+                var savedData = await CloudSaveService.Instance.Data.Player.LoadAllAsync(
+                    new LoadAllOptions(new ProtectedReadAccessClassOptions()));
+                m_CachedCloudData = savedData.ToDictionary(item => item.Key, item => item.Value.Value.GetAsString());
             }
             catch (Exception e)
             {

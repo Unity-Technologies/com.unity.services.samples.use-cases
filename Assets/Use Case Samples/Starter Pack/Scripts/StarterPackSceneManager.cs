@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Unity.Services.Authentication;
 using Unity.Services.CloudSave;
+using Unity.Services.CloudSave.Models.Data.Player;
 using Unity.Services.Core;
-using Unity.Services.Economy;
+using Unity.Services.Samples.Economy;
 using UnityEngine;
 
 namespace Unity.Services.Samples.StarterPack
@@ -84,7 +85,7 @@ namespace Unity.Services.Samples.StarterPack
             {
                 StarterPackSampleView.instance.SetInteractable(false);
 
-                var balanceResponse = await EconomyService.Instance.PlayerBalances.IncrementBalanceAsync("GEM", 10);
+                var balanceResponse = await PlayerEconomy.Instance.IncrementBalanceAsync("GEM", 10);
                 if (this == null) return;
 
                 EconomyManager.instance.SetCurrencyBalance(balanceResponse.CurrencyId, balanceResponse.Balance);
@@ -108,10 +109,9 @@ namespace Unity.Services.Samples.StarterPack
             {
                 StarterPackSampleView.instance.SetInteractable(false);
 
-                // Delete the Starter-Pack-purchased key ("STARTER_PACK_STATUS") from Cloud Save so
-                // Starter Pack can be purchased again. This is used for testing to permit repurchasing
-                // this one-time-only product.
-                await CloudSaveService.Instance.Data.ForceDeleteAsync(k_StarterPackCloudSaveKey);
+                // Ask SampleGameModule to forget the purchase ("STARTER_PACK_STATUS") so Starter Pack can be
+                // purchased again. This is used for testing to permit repurchasing this one-time-only product.
+                await CloudCodeManager.instance.CallResetForDebugEndpoint();
                 if (this == null) return;
 
                 await RefreshStarterPackStatus();
@@ -135,13 +135,16 @@ namespace Unity.Services.Samples.StarterPack
 
             try
             {
-                // Read the "STARTER_PACK_STATUS" key from Cloud Save
-                var starterPackStatusCloudSaveResult = await CloudSaveService.Instance.Data.LoadAsync(
-                    new HashSet<string> { k_StarterPackCloudSaveKey });
+                // Read the "STARTER_PACK_STATUS" key from the protected access class, where only
+                // SampleGameModule can write it
+                var starterPackStatusCloudSaveResult = await CloudSaveService.Instance.Data.Player.LoadAsync(
+                    new HashSet<string> { k_StarterPackCloudSaveKey },
+                    new LoadOptions(new ProtectedReadAccessClassOptions()));
 
                 // If key is found, mark it as purchased if it it contains:  "claimed":true
-                if (starterPackStatusCloudSaveResult.TryGetValue(k_StarterPackCloudSaveKey, out var result))
+                if (starterPackStatusCloudSaveResult.TryGetValue(k_StarterPackCloudSaveKey, out var item))
                 {
+                    var result = item.Value.GetAsString();
                     Debug.Log($"{k_StarterPackCloudSaveKey} value: {result}");
 
                     if (result.Contains("\"claimed\":true"))
