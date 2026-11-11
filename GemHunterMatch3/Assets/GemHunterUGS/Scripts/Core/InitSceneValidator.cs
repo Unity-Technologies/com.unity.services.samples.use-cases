@@ -14,6 +14,7 @@ namespace GemHunterUGS.Scripts.Core
     {
         private static bool s_HasInitialized = false;
         private const int k_InitIndex = 0;
+        private const string k_TestScenePrefix = "InitTestScene";
         private const string k_ErrorMessage = "<b><size=17>🚫 Game must be started from InitGemHunterUGS scene.\nCurrent scene: {0}</size></b>";
         
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
@@ -24,6 +25,13 @@ namespace GemHunterUGS.Scripts.Core
                 return;
             }
             
+            // The Test Runner plays its own bootstrap scene; stopping play mode there makes it start over forever.
+            if (SceneManager.GetActiveScene().name.StartsWith(k_TestScenePrefix))
+            {
+                s_HasInitialized = true;
+                return;
+            }
+
             if (SceneManager.GetActiveScene().buildIndex > k_InitIndex)
             { 
                 Debug.LogError(string.Format(k_ErrorMessage, SceneManager.GetActiveScene().name));

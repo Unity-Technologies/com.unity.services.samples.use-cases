@@ -45,29 +45,30 @@ MonoBehaviour:
   - subHeader1: Implementation Overview
     subHeader2: 
     subHeader3: 
-    body: 'This sample uses 3 Cloud Code scripts to manage the game: '
+    body: 'This sample uses 3 SampleGameModule Cloud Code module functions to manage the game: '
     bodyFormat: 0
     boxCallout: 
     bulletList:
     - body: CloudAiMiniGame_GetState is called once at startup to return the existing
-        game if possible or generate a random game if none exists. This script will
+        game if possible or generate a random game if none exists. This function will
         also clear the player's Coin total to 0 at the start of the first game so
         win/tie count should reflect the current Coin quantity, unless other Use
         Case Samples are visited.
       bodyFormat: 0
       bulletList: []
       linkList: []
-    - body: CloudAiMiniGame_PlayerMove is called for each player move. The script
+    - body: CloudAiMiniGame_PlayerMove is called for each player move. The function
         is called with x,y coordinates and Cloud Code validates the player's move,
         makes an AI move if the game isn't over, determines if the game should end,
-        and returns the final updated state. This script also maintains a win/loss/tie
-        count and calls Economy to grant Coins for Wins and Ties.
+        and returns the final updated state. This function also maintains a win/loss/tie
+        count and grants Coins in the player's player_economy Cloud Save record
+        for Wins and Ties.
       bodyFormat: 0
       bulletList: []
       linkList: []
     - body: CloudAiMiniGame_StartNewGame is called when the player presses the [New
         Game] or [Forfeit] button (Forfeit replaces New Game whenever a game is in
-        progress). This script checks if a game is in progress (isGameOver is false),
+        progress). This function checks if a game is in progress (isGameOver is false),
         and if so, the Loss Count is increased. Next, a new game is created, a random
         starting player is selected, and if AI is to go first, a piece is added at
         a random location on the board. Finally, the new game state is then returned
@@ -125,9 +126,7 @@ MonoBehaviour:
   - subHeader1: 
     subHeader2: 
     subHeader3: 
-    body: 'Cloud Code directly accesses the Economy service to set a starting Coin
-      quantity when no Cloud Save file is found (for example, the first time a player
-      ever plays the game), as well as to grant Coins as a reward. '
+    body: 'Cloud Code sets a starting Coin quantity in the player''s player_economy Cloud Save record when no Cloud Save file is found (for example, the first time a player ever plays the game), as well as granting Coins as a reward. '
     bodyFormat: 0
     boxCallout: 
     bulletList: []
@@ -161,12 +160,13 @@ MonoBehaviour:
       bodyFormat: 0
       bulletList: []
       linkList: []
-    - body: 'Cloud Code: 3 scripts used to generate random games, validate game logic,
-        execute AI turns, and grant Economy rewards based on game outcomes.'
+    - body: 'Cloud Code: 3 module functions used to generate random games, validate game logic,
+        execute AI turns, and grant currency rewards through the SampleGameModule
+        module based on game outcomes.'
       bodyFormat: 0
       bulletList: []
       linkList: []
-    - body: 'Cloud Save: Stores game state.'
+    - body: 'Cloud Save: Stores game state and the player''s currency balances (player_economy key).'
       bodyFormat: 0
       bulletList: []
       linkList: []
@@ -175,9 +175,7 @@ MonoBehaviour:
       bodyFormat: 0
       bulletList: []
       linkList: []
-    - body: 'Deployment: In this context, it is used on the editor side to facilitate the
-        configuration of the different Unity services. It enables the display of the Deployment
-        window which allows the deployment of various service configuration assets.'
+    - body: 'Remote Config: Provides the currency definitions used by the sample.'
       bodyFormat: 0
       bulletList: []
       linkList: []
@@ -197,10 +195,10 @@ MonoBehaviour:
       url: https://docs.unity.com/cloud-code/implementation.html
     - linkText: Cloud Save
       url: https://docs.unity.com/cloud-save/index.html#Implementation
-    - linkText: Economy
-      url: https://docs.unity.com/economy/implementation.html
     - linkText: Deployment
       url: https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2
+    - linkText: Remote Config
+      url: https://docs.unity.com/remote-config
   - subHeader1: 
     subHeader2: 
     subHeader3: 
@@ -218,17 +216,14 @@ MonoBehaviour:
     body: 'To replicate this sample scene''s setup in your own Unity project, we need to configure the following items:'
     bodyFormat: 0
     boxCallout: 
-    bulletList: 
-    - body: Cloud Code scripts
-    - body: Economy items
+    bulletList:
+    - body: The SampleGameModule Cloud Code module
+    - body: Remote Config economy catalog values
     linkList: []
   - subHeader1: 
     subHeader2: 
     subHeader3: 
-    body: There are two main ways of doing this, either by using the Deployment
-      package, or by manually entering them using the Dashboard. We recommend
-      the usage of the Deployment package since it will greatly accelerate this
-      process.
+    body: To configure these items you can use the Deployment package, or manually enter them using the Unity Cloud Dashboard. The recommended best practice is to use the Deployment package as it greatly accelerates this process.
     bodyFormat: 0
     boxCallout: 
     bulletList: []
@@ -255,9 +250,7 @@ MonoBehaviour:
   - subHeader1: 
     subHeader2: Using the Dashboard
     subHeader3: 
-    body: The Dashboard enables you to edit manually all your services
-        configuration by project and environment. Here are the details
-        necessary for the configuration of the current sample.
+    body: You can use the Unity Cloud Dashboard to manually configure your services by project and environment. Refer to the following sections to configure this sample.
     bodyFormat: 0
     boxCallout: 
     linkList:
@@ -265,15 +258,17 @@ MonoBehaviour:
       url: dashboard.unity3d.com
   - subHeader1: 
     subHeader2: 
-    subHeader3: Economy Item
-    body: 
+    subHeader3: Remote Config Economy Catalog
+    body: The economy catalog is stored in Remote Config and deployed from "Assets/Common/Config
+      as Code/economy_config.rc". The following currency is defined under the ECONOMY_CURRENCIES
+      key.
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList:
     - body: Coin
       bodyFormat: 1
       bulletList:
-      - body: Granted by the Cloud Code script CloudAiMiniGame_PlayerMove for Wins
+      - body: Granted by the Cloud Code module function CloudAiMiniGame_PlayerMove for Wins
           and, in a lesser quantity, for Ties.
         bodyFormat: 0
         bulletList: []
@@ -283,10 +278,10 @@ MonoBehaviour:
       linkList: []
     linkList: []
   - subHeader1: 
-    subHeader3: Cloud Code scripts
-    body: 
+    subHeader3: Cloud Code module functions
+    body: To publish them, deploy the SampleGameModule module through Assets/Common/Config as Code/SampleGameModule.ccmr in the Deployment window.
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList:
     - body: 'CloudAiMiniGame_GetState:'
       bodyFormat: 1
@@ -299,7 +294,7 @@ MonoBehaviour:
       - body: 'Parameters: none'
         bodyFormat: 0
         bulletList: []
-      - body: 'Script: "Assets/Use Case Samples/Cloud AI Mini Game/Config as Code/CloudAiMiniGame_GetState.js"'
+      - body: 'Location: "SampleGameModule/Project/Services/CloudAiMiniGameService.cs"'
         bodyFormat: 0
         bulletList: []
       linkList: []
@@ -309,7 +304,8 @@ MonoBehaviour:
       - body: Validate the player's requested move and add it to the game state based
           on coordinate passed, detect game over, if not game over then place 'AI'
           piece, detect game over again, and return final updated state to client.
-          If player wins or draws, coins are awarded using the Economy service.
+          If player wins or draws, coins are awarded through the SampleGameModule
+          module.
         bodyFormat: 0
         bulletList: []
       - body: 'Parameters:'
@@ -320,7 +316,7 @@ MonoBehaviour:
           bulletList:
           - 'Type: JSON'
           - '{x,y} coordinate for the player piece to add.'
-      - body: 'Script: "Assets/Use Case Samples/Cloud AI Mini Game/Config as Code/CloudAiMiniGame_ValidatePlayerMoveAndRespond.js"'
+      - body: 'Location: "SampleGameModule/Project/Services/CloudAiMiniGameService.cs"'
         bodyFormat: 0
         bulletList: []
       linkList: []
@@ -335,7 +331,7 @@ MonoBehaviour:
       - body: 'Parameters: none'
         bodyFormat: 0
         bulletList: []
-      - body: 'Script: "Assets/Use Case Samples/Cloud AI Mini Game/Config as Code/CloudAiMiniGame_StartNewGame.js"'
+      - body: 'Location: "SampleGameModule/Project/Services/CloudAiMiniGameService.cs"'
         bodyFormat: 0
         bulletList: []
       linkList: []

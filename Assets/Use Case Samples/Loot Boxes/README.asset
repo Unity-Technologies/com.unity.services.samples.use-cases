@@ -40,11 +40,7 @@ MonoBehaviour:
   - subHeader1: Implementation Overview
     subHeader2: 
     subHeader3: 
-    body: 'This sample demonstrates how to initialize Unity Services, log in, retrieve
-      & update Currency balances from the Economy service and call Cloud Code to
-      pick a currency at random from an internal list, choose a random quantity,
-      then call the Currency service directly to grant the Currency, and return the
-      results to the calling Unity C# script. '
+    body: 'This sample demonstrates how to initialize Unity Services, log in, retrieve & update Currency balances from the player''s Cloud Save data and call Cloud Code to pick a currency at random from an internal list, choose a random quantity, then grant the Currency in the player''s player_economy Cloud Save record, and return the results to the calling Unity C# script. '
     bodyFormat: 0
     boxCallout: 
     bulletList: []
@@ -61,8 +57,11 @@ MonoBehaviour:
       bodyFormat: 0
       bulletList: []
       linkList: []
-    - body: 'Cloud Code: Picks and grants random currency for the loot box through
-        the Economy server and returns the result.'
+    - body: 'Cloud Code: Picks and grants random currency for the loot box through the SampleGameModule module and returns the result.'
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: 'Cloud Save: Stores the player''s currency balances in the player_economy key, which the client reads at runtime.'
       bodyFormat: 0
       bulletList: []
       linkList: []
@@ -70,9 +69,7 @@ MonoBehaviour:
       bodyFormat: 0
       bulletList: []
       linkList: []
-    - body: 'Deployment: In this context, it is used on the editor side to facilitate the
-        configuration of the different Unity services. It enables the display of the Deployment
-        window which allows the deployment of various service configuration assets.'
+    - body: 'Remote Config: Provides the currency definitions used by the sample.'
       bodyFormat: 0
       bulletList: []
       linkList: []
@@ -90,10 +87,12 @@ MonoBehaviour:
       url: https://docs.unity.com/authentication/IntroUnityAuthentication.html
     - linkText: Cloud Code
       url: https://docs.unity.com/cloud-code/implementation.html
-    - linkText: Economy
-      url: https://docs.unity.com/economy/implementation.html
+    - linkText: Cloud Save
+      url: https://docs.unity.com/cloud-save
     - linkText: Deployment
       url: https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2
+    - linkText: Remote Config
+      url: https://docs.unity.com/remote-config
   - subHeader1: 
     subHeader2: 
     subHeader3: 
@@ -111,17 +110,14 @@ MonoBehaviour:
     body: 'To replicate this sample scene''s setup in your own Unity project, we need to configure the following items:'
     bodyFormat: 0
     boxCallout: 
-    bulletList: 
-    - body: Cloud Code scripts
-    - body: Economy items
+    bulletList:
+    - body: The SampleGameModule Cloud Code module
+    - body: Remote Config economy catalog values
     linkList: []
   - subHeader1: 
     subHeader2: 
     subHeader3: 
-    body: There are two main ways of doing this, either by using the Deployment
-      package, or by manually entering them using the Dashboard. We recommend
-      the usage of the Deployment package since it will greatly accelerate this
-      process.
+    body: To configure these items you can use the Deployment package, or manually enter them using the Unity Cloud Dashboard. The recommended best practice is to use the Deployment package as it greatly accelerates this process.
     bodyFormat: 0
     boxCallout: 
     bulletList: []
@@ -148,9 +144,7 @@ MonoBehaviour:
   - subHeader1: 
     subHeader2: Using the Dashboard
     subHeader3: 
-    body: The Dashboard enables you to edit manually all your services
-        configuration by project and environment. Here are the details
-        necessary for the configuration of the current sample.
+    body: You can use the Unity Cloud Dashboard to manually configure your services by project and environment. Refer to the following sections to configure this sample.
     bodyFormat: 0
     boxCallout: 
     linkList:
@@ -158,10 +152,12 @@ MonoBehaviour:
       url: dashboard.unity3d.com
   - subHeader1: 
     subHeader2: 
-    subHeader3: Economy Items
-    body: 
+    subHeader3: Remote Config Economy Catalog
+    body: The economy catalog is stored in Remote Config and deployed from "Assets/Common/Config
+      as Code/economy_config.rc". The following currencies are defined under the ECONOMY_CURRENCIES
+      key.
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList:
     - body: Coin
       bodyFormat: 1
@@ -206,10 +202,10 @@ MonoBehaviour:
     linkList: []
   - subHeader1: 
     subHeader2: 
-    subHeader3: Cloud Code Scripts
-    body: 
+    subHeader3: Cloud Code module functions
+    body: To publish them, deploy the SampleGameModule module through Assets/Common/Config as Code/SampleGameModule.ccmr in the Deployment window.
     bodyFormat: 0
-    boxCallout: 
+    boxCallout:
     bulletList:
     - body: 'LootBoxes_GrantRandomCurrency:'
       bodyFormat: 1
@@ -217,7 +213,7 @@ MonoBehaviour:
       - body: 'Parameters: `none`'
         bodyFormat: 0
         bulletList: []
-      - body: 'Script: "Assets/Use Case Samples/Loot Boxes/Config as Code/LootBoxes_GrantRandomCurrency.js"'
+      - body: 'Location: "SampleGameModule/Project/Services/LootBoxesService.cs"'
         bodyFormat: 0
         bulletList: []
       linkList: []

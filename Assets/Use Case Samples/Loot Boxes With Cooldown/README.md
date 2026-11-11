@@ -18,14 +18,14 @@ To see this use case in action:
 ### Initialization
 
 1. The `DailyRewardsSceneManager` script initializes Unity Gaming Services in its `Start` function.
-2. The game retrieves and updates values from the Economy service.
+2. The game retrieves and updates values from the player's `player_economy` Cloud Save key.
 
 ### Functionality
 
 When you click the **Claim Daily Reward** button, you receive a random amount of rewards from the available pool (indicated in the currency HUD). For demonstration purposes, the cooldown is set to 60 seconds. The following occurs on the backend:
 
 1. The button's `OnClick` method calls Cloud Code to execute the `GrantTimedRandomReward` function, which picks random currencies and inventory items from internal lists to award.
-2. The Economy service directly grants the reward and returns the final results to the calling Unity C# script.
+2. The function grants the reward in the player's `player_economy` Cloud Save record (wallet and inventory) and returns the final results to the calling Unity C# script.
 
 This example also uses Cloud Code to access Cloud Save to implement a cooldown between rewards and returns:
 
@@ -33,7 +33,7 @@ This example also uses Cloud Code to access Cloud Save to implement a cooldown b
 - The current cooldown in seconds.
 - The default cooldown needed to reset the timer locally when a reward is claimed.
 
-**Note**: This sample also includes enhanced error handling to catch and resolve issues that arise from calling the Economy service too frequently (more than five times per second), which triggers theEconomyException exception with the RateLimited reason. This sample catches the exception, pauses .1 seconds with exponential back-off, and then retries until it succeeds.
+**Note**: This sample also includes enhanced error handling to catch and resolve issues that arise from calling the backend services too frequently (more than five times per second), which triggers an exception with a rate-limited reason. This sample catches the exception, pauses .1 seconds with exponential back-off, and then retries until it succeeds.
 
 ## Setup
 
@@ -44,10 +44,10 @@ To replicate this use case, you need the following [Unity packages](https://docs
 | **Package**                                                                           | **Role**                                                                                                                                                   |
 |---------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [Authentication](https://docs.unity.com/authentication/IntroUnityAuthentication.html) | Automatically signs in the player as an anonymous user to keep track of their data server-side.                                                            |
-| [Cloud Code](https://docs.unity.com/cloud-code/implementation.html)                   | Accesses the cooldown status, picks and grants random currency and inventory items through the Economy server, and then returns the result of the reward.  |
-| [Cloud Save](https://docs.unity.com/cloud-save/index.html#Implementation)             | Stores and retrieves the last granted reward time to allow cooldown values to persist between sessions.                                                    |
-| [Economy](https://docs.unity.com/economy/implementation.html)                         | Retrieves the starting and updated currency balances at runtime.                                                                                           |
+| [Cloud Code](https://docs.unity.com/cloud-code/implementation.html)                   | Accesses the cooldown status, picks and grants random currency and inventory items through the `SampleGameModule` module, and then returns the result of the reward. |
+| [Cloud Save](https://docs.unity.com/cloud-save/index.html#Implementation)             | Stores the player's currency balances and inventory in the `player_economy` key, and the last granted reward time to allow cooldown values to persist between sessions. The `LOOT_BOX_COOLDOWN_GRANT_REWARD_TIME` and `player_economy` keys are in the protected [access class](https://docs.unity.com/ugs/en-us/manual/cloud-save/manual/concepts/player-data#Access_Classes): the client can read them and only `SampleGameModule` can write them. |
 | [Deployment](https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2)     | The Deployment package provides a cohesive interface to deploy assets for Cloud Services.                                                                  |
+| [Remote Config](https://docs.unity.com/remote-config)                                 | Provides the currency and inventory item definitions used by the sample.                                                                                   |
 
 To use these services in your game, activate each service for your Organization and project in the [Unity Dashboard](https://dashboard.unity3d.com/).
 
@@ -55,8 +55,8 @@ To use these services in your game, activate each service for your Organization 
 
 To replicate this sample scene's setup in your own Unity project, we need to configure the following items:
 
-- Cloud Code scripts
-- Economy items
+- The `SampleGameModule` Cloud Code module
+- Remote Config economy catalog values
 
 There are two main ways of doing this, either by [using the Deployment package](#using-the-deployment-package), or by [manually entering them using the Dashboard](#using-the-dashboard).
 We recommend the usage of the Deployment package since it will greatly accelerate this process.
@@ -78,16 +78,18 @@ Here are the details necessary for the configuration of the current sample.
 
 ##### Cloud Code
 
-[Publish the following scripts](https://docs.unity.com/cloud-code/implementation.html#Writing_your_first_script) in the **LiveOps** dashboard:
+The `SampleGameModule` C# Cloud Code module provides the following [module functions](https://docs.unity.com/ugs/en-us/manual/cloud-code/manual/modules):
 
-| **Script**                         | **Parameters** | **Description**                                                                                                                                                                  | **Location in project**                                                                              |
+| **Module function**                | **Parameters** | **Description**                                                                                                                                                                  | **Location in project**                                                                              |
 |------------------------------------|----------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------|
-| `LootBoxesWithCooldown_Claim`      | None           | Checks if the cooldown has expired (or was never set), then selects a random reward from the reward pool, grants the reward to the player, and then updates the cooldown timer.  | `Assets/Use Case Samples/Loot Boxes With Cooldown/Config as Code/LootBoxesWithCooldown_Claim.js`     |
-| `LootBoxesWithCooldown_GetStatus`  | None           | Checks for the last grant time and returns a flag indicating if the player is eligible for a reward, and how many seconds are left in cooldown.                                  | `Assets/Use Case Samples/Loot Boxes With Cooldown/Config as Code/LootBoxesWithCooldown_GetStatus.js` |
+| `LootBoxesWithCooldown_Claim`      | None           | Checks if the cooldown has expired (or was never set), then selects a random reward from the reward pool, grants the reward to the player, and then updates the cooldown timer.  | `SampleGameModule/Project/Services/LootBoxesWithCooldownService.cs`                                  |
+| `LootBoxesWithCooldown_GetStatus`  | None           | Checks for the last grant time and returns a flag indicating if the player is eligible for a reward, and how many seconds are left in cooldown.                                  | `SampleGameModule/Project/Services/LootBoxesWithCooldownService.cs`                                  |
 
-##### Economy
+To publish them, deploy the `SampleGameModule` module (in the repo root `SampleGameModule/` folder) through `Assets/Common/Config as Code/SampleGameModule.ccmr` in the Deployment window, or upload it from the Unity Cloud Dashboard.
 
-[Configure the following resources](https://docs.unity.com/economy/) in the **LiveOps** dashboard:
+##### Remote Config
+
+The economy catalog is stored in Remote Config and deployed from `Assets/Common/Config as Code/economy_config.rc`. The following currencies are defined under the `ECONOMY_CURRENCIES` key and inventory items under the `ECONOMY_ITEMS` key:
 
 | **Resource type** | **Resource name** | **ID**     | **Description**                                             |
 |-------------------|-------------------|------------|-------------------------------------------------------------|

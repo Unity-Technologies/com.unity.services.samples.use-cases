@@ -48,7 +48,7 @@ namespace Unity.Services.Samples.CommandBatching
             {
                 Debug.Log("Processing command batch via Cloud Code...");
 
-                await CloudCodeService.Instance.CallEndpointAsync(
+                await CloudCodeService.Instance.CallModuleEndpointAsync("SampleGameModule", 
                     "CommandBatching_ProcessBatch",
                     new Dictionary<string, object> { { "commands", commands } });
 

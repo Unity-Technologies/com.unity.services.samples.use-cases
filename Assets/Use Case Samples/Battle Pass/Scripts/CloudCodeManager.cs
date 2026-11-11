@@ -57,12 +57,12 @@ namespace Unity.Services.Samples.BattlePass
             {
                 Debug.Log("Getting current Battle Pass progress via Cloud Code...");
 
-                // The CallEndpointAsync method requires two objects to be passed in: the name of the script being
-                // called, and a struct for any arguments that need to be passed to the script. In this sample,
+                // The CallModuleEndpointAsync method takes the module name, the name of the function being
+                // called, and a struct for any arguments that need to be passed to the function. In this sample,
                 // we didn't need to pass any additional arguments, so we're passing an empty string. You could
                 // pass an empty struct. See CallGainSeasonXpEndpoint for an example with non-empty args.
 
-                return await CloudCodeService.Instance.CallEndpointAsync<GetStateResult>(
+                return await CloudCodeService.Instance.CallModuleEndpointAsync<GetStateResult>("SampleGameModule", 
                     "BattlePass_GetState",
                     new Dictionary<string, object>());
             }
@@ -87,7 +87,7 @@ namespace Unity.Services.Samples.BattlePass
             {
                 Debug.Log("Gaining Season XP via Cloud Code...");
 
-                return await CloudCodeService.Instance.CallEndpointAsync<GainSeasonXpResult>(
+                return await CloudCodeService.Instance.CallModuleEndpointAsync<GainSeasonXpResult>("SampleGameModule", 
                     "BattlePass_GainSeasonXP",
                     new Dictionary<string, object> { { "amount", xpToGain } });
             }
@@ -112,7 +112,7 @@ namespace Unity.Services.Samples.BattlePass
             {
                 Debug.Log("Purchasing the current Battle Pass via Cloud Code...");
 
-                return await CloudCodeService.Instance.CallEndpointAsync<PurchaseBattlePassResult>(
+                return await CloudCodeService.Instance.CallModuleEndpointAsync<PurchaseBattlePassResult>("SampleGameModule", 
                     "BattlePass_PurchaseBattlePass",
                     new Dictionary<string, object>());
             }
@@ -137,7 +137,7 @@ namespace Unity.Services.Samples.BattlePass
             {
                 Debug.Log($"Claiming tier {tierIndexToClaim + 1} via Cloud Code...");
 
-                return await CloudCodeService.Instance.CallEndpointAsync<ClaimTierResult>(
+                return await CloudCodeService.Instance.CallModuleEndpointAsync<ClaimTierResult>("SampleGameModule", 
                     "BattlePass_ClaimTier",
                     new Dictionary<string, object> { { "tierIndex", tierIndexToClaim } });
             }

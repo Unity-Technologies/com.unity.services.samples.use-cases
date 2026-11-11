@@ -11,10 +11,10 @@ This Unity Gaming Services (UGS) Samples package contains a collection of sample
 
 ## Getting Started
 
-- Download Unity Editor 2021.3 or later
-  - [Unity Hub](unityhub://2021.3.32f1/3b9dae9532f5)
-  - [Download (Win)](https://download.unity3d.com/download_unity/3b9dae9532f5/UnityDownloadAssistant-2021.3.32f1.exe)
-  - [Download (Mac)](https://download.unity3d.com/download_unity/3b9dae9532f5/UnityDownloadAssistant-2021.3.32f1.dmg)
+- Download Unity 6000.0 LTS (6000.0.82f1) or later
+  - [Unity Hub](unityhub://6000.0.82f1/2fb0dae735e1)
+  - [Download (Win)](https://download.unity3d.com/download_unity/2fb0dae735e1/UnityDownloadAssistant-6000.0.82f1.exe)
+  - [Download (Mac)](https://download.unity3d.com/download_unity/2fb0dae735e1/UnityDownloadAssistant-6000.0.82f1.dmg)
 - Clone the repository: `git clone https://github.com/Unity-Technologies/com.unity.services.samples.use-cases.git`
 - Open the project from the Unity Hub or Unity Editor
 
@@ -22,7 +22,13 @@ To view each sample in action, open the Start Here scene in the Assets directory
 
 _Note: This project is tied to a Unity Services Account that allows read-only testing in the Editor. The messages "Unable to link project to Unity Services" in Project Settings and "Unable to access Unity Services" in Build Settings are expected. Additionally, you will be unable to create a device build of this project._
 
-_Note: This project uses the Unity Mediation package, which requires [CocoaPods](https://cocoapods.org/) to be installed if building for iOS. If your project uses the Unity Mediation package, see that package's [documentation](https://docs.unity.com/mediation) on [requirements](https://docs.unity.com/mediation/SDKIntegrationUnityRequirements.html) and [troubleshooting](https://docs.unity.com/mediation/TroubleshootingIntegrationsiOS.html), before building for iOS._
+## How the backend is built
+
+Every sample's server logic lives in one C# Cloud Code module, `SampleGameModule` (repo root `SampleGameModule/`, one service class per sample), deployed through `Assets/Common/Config as Code/SampleGameModule.ccmr`. The player's wallet and inventory are a single Cloud Save key, `player_economy`, that only the module writes, and the economy catalog (currencies, inventory items, virtual purchases) is Remote Config data deployed from `Assets/Common/Config as Code/economy_config.rc`. The client reads both through `Assets/Common/Scripts/Economy/`. The Deployment window deploys the module and every sample's configuration from the `Config as Code` folders.
+
+Every Cloud Save key the module writes is in the protected [access class](https://docs.unity.com/ugs/en-us/manual/cloud-save/manual/concepts/player-data#Access_Classes): the client reads it with `ProtectedReadAccessClassOptions`, and only the module, which holds the service token, can write it. A modified client therefore cannot set its own balance, progress or cooldowns. Keys that only the player's own UI cares about stay in the default class, which the client writes itself: the In-Game Mailbox inbox and the Serverless Multiplayer Game stats. Copy that rule into your game: if the server decides a value, keep it protected.
+
+The `Economy_ModifyBalance`, `Economy_SetBalance`, `Economy_ModifyInventoryItem`, `StarterPack_ResetForDebug` and `InGameMailbox_ResetForDebug` functions let the samples demonstrate themselves, and any client can call them. Remove them from a real game, or a modified client can still mint currency through them.
 
 ## List of Samples
 
@@ -33,15 +39,14 @@ _Note: This project uses the Unity Mediation package, which requires [CocoaPods]
 - [Daily Rewards](Assets/Use%20Case%20Samples/Daily%20Rewards/README.md) - A prevalent engagement feature that can boost retention by showing players an escalating series of rewards incentivizes them to keep logging in to claim better and better prizes.
 - [Idle Clicker Game](Assets/Use%20Case%20Samples/Idle%20Clicker%20Game/README.md) - Update server authoritative game state in real time, similar to idle clicker and social games with a merging mechanic and a generic Unlock Manager.
 - [In-Game Mailbox](Assets/Use%20Case%20Samples/In-Game%20Mailbox/README.md) - Demonstrates a way that developers can send in-game messages to their players, including with gifts of various game currencies and inventory items.
-- [Loot Boxes](Assets/Use%20Case%20Samples/Loot%20Boxes/README.md) - Reward players with a random Economy currency using Cloud Code to perform the Economy grants.
+- [Loot Boxes](Assets/Use%20Case%20Samples/Loot%20Boxes/README.md) - Reward players with a random currency granted by Cloud Code.
 - [Loot Boxes With Cooldown](Assets/Use%20Case%20Samples/Loot%20Boxes%20With%20Cooldown/README.md) - Grant players random collections of both Currencies and Inventory Items at timed intervals.
 - [Seasonal Events](Assets/Use%20Case%20Samples/Seasonal%20Events/README.md) - Update game content remotely based on timed special events.
 - [Serverless Multiplayer Game](Assets/Use%20Case%20Samples/Serverless%20Multiplayer%20Game/README.md) - Demonstrates how to utilize game lobbies and compete in a simple, serverless, real-time arena-style game where players collect coins for points.
 - [Starter Packs](Assets/Use%20Case%20Samples/Starter%20Pack/README.md) - Allow players to purchase a Starter Pack using Cloud Code to implement the one-time-only purchase.
 - [Virtual Shop](Assets/Use%20Case%20Samples/Virtual%20Shop/README.md) - Demonstrates a key feature in many games: allowing players to use in-game currency to purchase items and resources to facilitate a server-authoritative in-game economy with multiple store pages and server-managed badges.
 
-_Tested with Unity 2021.3 for PC and Mac._
-
+_Tested with Unity 6000.0.82f1 for PC and Mac._
 
 - [GemHunterMatch3](GemHunterMatch3/README.md) - Official Unity sample project showcasing common features found in mobile and live service games. The project demonstrates a player hub or metagame with social features, a progression system, and an in-game store.
 

@@ -1,7 +1,0 @@
-{
-  "$schema": "https://ugs-config-schemas.unity3d.com/v1/economy/economy-inventory.schema.json",
-  "name": "Shield",
-  "customData": {
-    "spriteAddress": "Sprites/Inventory/Shield"
-  }
-}

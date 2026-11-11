@@ -49,7 +49,7 @@ namespace Unity.Services.Samples.DailyRewards
 
             try
             {
-                await CloudCodeService.Instance.CallEndpointAsync(
+                await CloudCodeService.Instance.CallModuleEndpointAsync("SampleGameModule", 
                     "DailyRewards_ResetEvent",
                     new Dictionary<string, object>());
             }
@@ -68,7 +68,7 @@ namespace Unity.Services.Samples.DailyRewards
 
             try
             {
-                return await CloudCodeService.Instance.CallEndpointAsync<DailyRewardsEventManager.GetStatusResult>(
+                return await CloudCodeService.Instance.CallModuleEndpointAsync<DailyRewardsEventManager.GetStatusResult>("SampleGameModule", 
                     "DailyRewards_GetStatus",
                     new Dictionary<string, object>());
             }
@@ -87,7 +87,7 @@ namespace Unity.Services.Samples.DailyRewards
 
             try
             {
-                return await CloudCodeService.Instance.CallEndpointAsync<DailyRewardsEventManager.ClaimResult>(
+                return await CloudCodeService.Instance.CallModuleEndpointAsync<DailyRewardsEventManager.ClaimResult>("SampleGameModule", 
                     "DailyRewards_Claim",
                     new Dictionary<string, object>());
             }

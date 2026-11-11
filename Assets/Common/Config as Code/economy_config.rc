@@ -1,0 +1,249 @@
+{
+  "entries": {
+    "ECONOMY_CURRENCIES": {
+      "COIN": {
+        "name": "Coin",
+        "max": 0,
+        "customData": {
+          "spriteAddress": "Sprites/Currency/Coin"
+        }
+      },
+      "GEM": {
+        "name": "Gem",
+        "max": 0,
+        "customData": {
+          "spriteAddress": "Sprites/Currency/Gem"
+        }
+      },
+      "PEARL": {
+        "name": "Pearl",
+        "max": 0,
+        "customData": {
+          "spriteAddress": "Sprites/Currency/Pearl"
+        }
+      },
+      "STAR": {
+        "name": "Star",
+        "max": 0,
+        "customData": {
+          "spriteAddress": "Sprites/Currency/Star"
+        }
+      },
+      "WATER": {
+        "name": "Water",
+        "initial": 1000,
+        "max": 0,
+        "customData": {
+          "spriteAddress": "Sprites/Currency/Water"
+        }
+      }
+    },
+    "ECONOMY_ITEMS": {
+      "SHIELD": {
+        "name": "Shield",
+        "customData": {
+          "spriteAddress": "Sprites/Inventory/Shield"
+        }
+      },
+      "SWORD": {
+        "name": "Sword",
+        "customData": {
+          "spriteAddress": "Sprites/Inventory/Sword"
+        }
+      }
+    },
+    "ECONOMY_VIRTUAL_PURCHASES": {
+      "BATTLE_PASS_PURCHASE": {
+        "name": "Battle Pass Purchase",
+        "costs": [
+          { "id": "GEM", "amount": 10 }
+        ],
+        "rewards": []
+      },
+      "IDLE_CLICKER_GAME_PURCHASE_WELL_LEVEL_1": {
+        "name": "Idle Clicker Game Purchase Well Level 1",
+        "costs": [
+          { "id": "WATER", "amount": 100 }
+        ],
+        "rewards": []
+      },
+      "IDLE_CLICKER_GAME_PURCHASE_WELL_LEVEL_2": {
+        "name": "Idle Clicker Game Purchase Well Level 2",
+        "costs": [
+          { "id": "WATER", "amount": 200 }
+        ],
+        "rewards": []
+      },
+      "IDLE_CLICKER_GAME_PURCHASE_WELL_LEVEL_3": {
+        "name": "Idle Clicker Game Purchase Well Level 3",
+        "costs": [
+          { "id": "WATER", "amount": 300 }
+        ],
+        "rewards": []
+      },
+      "IDLE_CLICKER_GAME_PURCHASE_WELL_LEVEL_4": {
+        "name": "Idle Clicker Game Purchase Well Level 4",
+        "costs": [
+          { "id": "WATER", "amount": 400 }
+        ],
+        "rewards": []
+      },
+      "MESSAGE_003_GIFT_NEW_PLAYERS": {
+        "name": "Message 003 Gift for New Players",
+        "costs": [],
+        "rewards": [
+          { "id": "SWORD", "amount": 1 },
+          { "id": "SHIELD", "amount": 1 },
+          { "id": "COIN", "amount": 100 }
+        ]
+      },
+      "MESSAGE_004_GIFT_UNENGAGED": {
+        "name": " Message 004 Gift for Unengaged Players",
+        "costs": [],
+        "rewards": [
+          { "id": "GEM", "amount": 50 }
+        ]
+      },
+      "MESSAGE_005_GIFT": {
+        "name": "Message 005 Gift",
+        "costs": [],
+        "rewards": [
+          { "id": "COIN", "amount": 50 }
+        ]
+      },
+      "MESSAGE_008_GIFT": {
+        "name": "Message 008 Gift",
+        "costs": [],
+        "rewards": [
+          { "id": "COIN", "amount": 100 },
+          { "id": "GEM", "amount": 50 }
+        ]
+      },
+      "MESSAGE_010_GIFT": {
+        "name": "Message 010 Gift",
+        "costs": [],
+        "rewards": [
+          { "id": "GEM", "amount": 50 }
+        ]
+      },
+      "MESSAGE_011_GIFT": {
+        "name": "Message 011 Gift",
+        "costs": [],
+        "rewards": [
+          { "id": "SWORD", "amount": 1 }
+        ]
+      },
+      "STARTER_PACK_PURCHASE": {
+        "name": "Starter Pack Purchase",
+        "costs": [
+          { "id": "GEM", "amount": 10 }
+        ],
+        "rewards": [
+          { "id": "COIN", "amount": 100 },
+          { "id": "SWORD", "amount": 1 },
+          { "id": "PEARL", "amount": 10 }
+        ]
+      },
+      "VIRTUAL_SHOP_1000_COIN_FOR_GEMS": {
+        "name": "Virtual Shop 1000 Coin for Gems",
+        "costs": [
+          { "id": "GEM", "amount": 25 }
+        ],
+        "rewards": [
+          { "id": "COIN", "amount": 1000 }
+        ]
+      },
+      "VIRTUAL_SHOP_100_COIN_FOR_GEMS": {
+        "name": "Virtual Shop 100 Coin for Gems",
+        "costs": [
+          { "id": "GEM", "amount": 7 }
+        ],
+        "rewards": [
+          { "id": "COIN", "amount": 100 }
+        ]
+      },
+      "VIRTUAL_SHOP_1_SHIELD_FOR_COINS": {
+        "name": "Virtual Shop 1 Shield for Coins",
+        "costs": [
+          { "id": "COIN", "amount": 10 }
+        ],
+        "rewards": [
+          { "id": "SHIELD", "amount": 1 }
+        ]
+      },
+      "VIRTUAL_SHOP_1_STAR_FOR_COINS": {
+        "name": "Virtual Shop 1 Star for Coins",
+        "costs": [
+          { "id": "COIN", "amount": 25 }
+        ],
+        "rewards": [
+          { "id": "STAR", "amount": 1 }
+        ]
+      },
+      "VIRTUAL_SHOP_1_SWORD_FOR_COINS": {
+        "name": "Virtual Shop 1 Sword for Coins",
+        "costs": [
+          { "id": "COIN", "amount": 15 }
+        ],
+        "rewards": [
+          { "id": "SWORD", "amount": 1 }
+        ]
+      },
+      "VIRTUAL_SHOP_250_COIN_FOR_GEMS": {
+        "name": "Virtual Shop 250 Coin for Gems",
+        "costs": [
+          { "id": "GEM", "amount": 15 }
+        ],
+        "rewards": [
+          { "id": "COIN", "amount": 250 }
+        ]
+      },
+      "VIRTUAL_SHOP_2_SHIELD_FOR_COINS": {
+        "name": "Virtual Shop 2 Shield for Coins",
+        "costs": [
+          { "id": "COIN", "amount": 15 }
+        ],
+        "rewards": [
+          { "id": "SHIELD", "amount": 2 }
+        ]
+      },
+      "VIRTUAL_SHOP_2_SWORD_FOR_COINS": {
+        "name": "Virtual Shop 2 Sword for Coins",
+        "costs": [
+          { "id": "COIN", "amount": 20 }
+        ],
+        "rewards": [
+          { "id": "SWORD", "amount": 2 }
+        ]
+      },
+      "VIRTUAL_SHOP_3_PEARL_FOR_COINS": {
+        "name": "Virtual Shop 3 Pearl for Coins",
+        "costs": [
+          { "id": "COIN", "amount": 50 }
+        ],
+        "rewards": [
+          { "id": "PEARL", "amount": 3 }
+        ]
+      },
+      "VIRTUAL_SHOP_3_SHIELD_FOR_COINS": {
+        "name": "Virtual Shop 3 Shield for Coins",
+        "costs": [
+          { "id": "COIN", "amount": 20 }
+        ],
+        "rewards": [
+          { "id": "SHIELD", "amount": 3 }
+        ]
+      },
+      "VIRTUAL_SHOP_3_SWORD_FOR_COINS": {
+        "name": "Virtual Shop 3 Sword for Coins",
+        "costs": [
+          { "id": "COIN", "amount": 30 }
+        ],
+        "rewards": [
+          { "id": "SWORD", "amount": 3 }
+        ]
+      }
+    }
+  },
+  "types": {}
+}

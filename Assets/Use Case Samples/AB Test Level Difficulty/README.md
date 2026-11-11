@@ -24,8 +24,8 @@ For diagnostic purposes, the player's test group is also displayed (A, B, C, D, 
 2. The same `InitializeServices` task sends a `SceneOpened` custom event to the Analytics service.
    This, along with the `SceneSessionLength` custom event (sent when you click the back button), tracks the player's session length in the scene as an example of how you can implement analytics to evaluate the results of your test.
 3. The same `InitializeServices` task signs in the player using the Authentication service, which assigns the player an anonymous player ID and fetches their data from the Cloud Save service.
-   If it’s a new user (not a cached anonymous player), the player's initial level (1) and XP (0) are saved in Cloud Save instead of loading existing data.
-4. After authentication succeeds, the same script retrieves and updates currency balances from the Economy service for that user.
+   If it’s a new user (not a cached anonymous player), Cloud Save has no level or XP yet, and the client shows level 1 with 0 XP. Only the `SampleGameModule` module writes these keys.
+4. After authentication succeeds, the same script retrieves and updates currency balances from the player's `player_economy` Cloud Save key for that user.
 5. The client queries the Remote Config service to fetch the appropriate test group name and corresponding XP threshold for leveling up.
 6. All of this updated data is displayed in the scene, and the **Gain XP** button becomes interactive.
 
@@ -37,15 +37,15 @@ When you click the **Gain XP** button, the simulated player gains 10 XP.
 When the XP bar is full (according to the test group threshold), the simulated player levels up and receives currency.
 The following occurs:
 
-1. The button’s `OnClick` method sends an `ActionButtonPressed` custom event to the Analytics service and makes a call to the Cloud Code `ABTestLevelDifficulty_GainXPAndLevelIfReady` script.
+1. The button’s `OnClick` method sends an `ActionButtonPressed` custom event to the Analytics service and makes a call to the `ABTestLevelDifficulty_GainXPAndLevelIfReady` function of the `SampleGameModule` Cloud Code module.
 2. This server-authoritative call fetches the player's information from Cloud Save and Remote Config, increases the XP by the amount specified by Remote Config (in this case, 10), then tests whether the new player XP total equals or exceeds the level-up threshold.
    * If the player did not level up, their new XP is saved in Cloud Save and returned to the client, which updates the values and shows text that indicates how much XP increased.
-   * If the player did level up, it calls the Economy service to distribute the level-up rewards (in this case, 100 Coins), and calls Cloud Save to save the increased player level and new player XP before it returns that information to the client code.
+   * If the player did level up, the function grants the level-up rewards (in this case, 100 Coins) in the player's `player_economy` Cloud Save record, and calls Cloud Save to save the increased player level and new player XP before it returns that information to the client code.
 3. The client code opens a level-up dialog and updates the relevant data in the scene UI.
    Note that this step provides an opportunity to show players different art based on their segmentation, and a convenient way to retrieve additional data for a specific currency at runtime.
 
 **Note:** In this example, a cross-reference dictionary located in Remote Config and initialized at start-up converts the rewarded currency ID (in this case, `COIN`) to an [Addressables](https://docs.unity3d.com/Packages/com.unity.addressables@latest/index.html) address, which you can use to display the sprite (in this case, `Sprites/Currency/Coin`).
-A simpler approach to displaying different art according to a player’s segmentation is to attach additional information to the custom data associated with Currencies in the Economy configuration data.
+A simpler approach to displaying different art according to a player’s segmentation is to attach additional information to the custom data associated with Currencies in the economy catalog (the `ECONOMY_CURRENCIES` Remote Config value).
 However, here the data was added to the Campaigns to demonstrate the flexibility of the Remote Config service.
 
 #### Sign In As New Player
@@ -72,9 +72,8 @@ To replicate this use case, you need the following [Unity packages](https://docs
 | [Analytics](https://docs.unity.com/analytics/SDKInstallation.html)                                                     | Sends events that track the player's in-game interactions, retention metrics, and other information that you can use to analyze and improve the game experience.                              |
 | [Authentication](https://docs.unity.com/authentication/IntroUnityAuthentication.html)                                  | Automatically signs in the player as an anonymous user to keep track of their data server-side.                                                                                               |
 | [Cloud Code](https://docs.unity.com/cloud-code/implementation.html)                                                    | Stores validation logic for increasing XP and leveling up the player server-side.                                                                                                             |
-| [Cloud Save](https://docs.unity.com/cloud-save/index.html#Implementation)                                              | Provides a server-authoritative way to save player data and the game state. In this example, the service stores the player's level and XP.                                                    |
+| [Cloud Save](https://docs.unity.com/cloud-save/index.html#Implementation)                                              | Provides a server-authoritative way to save player data and the game state. In this example, the service stores the player's level and XP, as well as their currency balances in the `player_economy` key. The `AB_TEST_PLAYER_LEVEL`, `AB_TEST_PLAYER_XP` and `player_economy` keys are in the protected [access class](https://docs.unity.com/ugs/en-us/manual/cloud-save/manual/concepts/player-data#Access_Classes): the client can read them and only `SampleGameModule` can write them. |
 | [Deployment](https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2)                                      | The Deployment package provides a cohesive interface to deploy assets for Cloud Services.                                                                                                     |
-| [Economy](https://docs.unity.com/economy/implementation.html)                                                          | Retrieves the starting and updated currency balances at runtime.                                                                                                                              |
 | [Game Overrides](https://docs.unity3d.com/Packages/com.unity.remote-config@3.2/manual/GameOverridesAndSettings.html)\* | Assigns players to different groups based on the requested distribution values. Players receive a different configuration of XP needed to level up depending on which group they're in.       |
 | [Remote Config](https://docs.unity3d.com/Packages/com.unity.remote-config@latest)                                      | Provides key-value pairs that you can map and change server-side, either manually or based on specific Game Overrides. Also stores data associated with currency icon Addressable addresses.  |
 
@@ -86,8 +85,8 @@ To use these services in your game, activate each service for your Organization 
 
 To replicate this sample scene's setup in your own Unity project, configure the following items:
 
-* Cloud Code scripts
-* Economy items
+* The `SampleGameModule` Cloud Code module
+* Remote Config economy catalog values
 * Remote Config values
 * Remote Config Game Overrides
 * Custom events and parameters for the Analytics service
@@ -105,8 +104,8 @@ To deploy configurations using the Deployment package:
 
 This deploys the following items:
 
-* Cloud Code scripts
-* Economy items
+* The `SampleGameModule` Cloud Code module
+* Remote Config economy catalog values
 * Remote Config values
 * Remote Config Game Overrides with "Variants"
 
@@ -166,15 +165,17 @@ Configure the following [Overrides](https://docs.unity.com/gameoverrides/CreateA
 
 ##### Cloud Code
 
-Publish the following [script](https://docs.unity.com/cloud-code/implementation.html#Writing_your_first_script) in the Unity Cloud Dashboard:
+The `SampleGameModule` C# Cloud Code module provides the following [module functions](https://docs.unity.com/ugs/en-us/manual/cloud-code/manual/modules):
 
-| **Script**                                    | **Parameters** | **Description**                                                                                                                   | Location in project                                                                                              |
+| **Module function**                           | **Parameters** | **Description**                                                                                                                   | Location in project                                                                                              |
 |-----------------------------------------------|----------------|-----------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------|
-| `ABTestLevelDifficulty_GainXPAndLevelIfReady` | None           | Increments the player's XP and checks to see if the cumulative XP exceeds the level-up threshold defined by their A/B test group. | `Assets/Use Case Samples/AB Test Level Difficulty/Config as Code/ABTestLevelDifficulty_GainXPAndLevelIfReady.js` |
+| `ABTestLevelDifficulty_GainXPAndLevelIfReady` | None           | Increments the player's XP and checks to see if the cumulative XP exceeds the level-up threshold defined by their A/B test group. | `SampleGameModule/Project/Services/ABTestLevelDifficultyService.cs`                                              |
 
-##### Economy
+To publish them, deploy the `SampleGameModule` module (in the repo root `SampleGameModule/` folder) through `Assets/Common/Config as Code/SampleGameModule.ccmr` in the Deployment window, or upload it from the Unity Cloud Dashboard.
 
-Configure the following [resources](https://docs.unity.com/economy/) in the Unity Cloud Dashboard:
+##### Remote Config Economy Catalog
+
+The economy catalog is stored in Remote Config and deployed from `Assets/Common/Config as Code/economy_config.rc`. The following currency is defined under the `ECONOMY_CURRENCIES` key:
 
 | **Resource type** | **Resource item** | **ID** | **Description**                                                          |
 |-------------------|-------------------|--------|--------------------------------------------------------------------------|

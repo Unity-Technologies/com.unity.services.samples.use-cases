@@ -17,3 +17,4 @@ TemporaryKeystore
 bin
 !GemHunterUGSCloud/GemHunterUGSCloud.sln
 !GemHunterUGSCloud/Project/GemHunterUGSCloud.csproj
+!GemHunterUGSCloud/Tests/GemHunterUGSCloud.Tests.csproj

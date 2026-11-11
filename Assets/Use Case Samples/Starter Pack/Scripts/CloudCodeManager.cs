@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Unity.Services.CloudCode;
-using Unity.Services.Economy.Model;
+using Unity.Services.Samples.Economy;
 using UnityEngine;
 
 namespace Unity.Services.Samples.StarterPack
@@ -54,8 +54,26 @@ namespace Unity.Services.Samples.StarterPack
         {
             try
             {
-                await CloudCodeService.Instance.CallEndpointAsync<MakeVirtualPurchaseResult>(
+                await CloudCodeService.Instance.CallModuleEndpointAsync<MakeVirtualPurchaseResult>("SampleGameModule", 
                     "StarterPack_PurchaseStarterPack",
+                    new Dictionary<string, object>());
+            }
+            catch (CloudCodeException e)
+            {
+                HandleCloudCodeException(e);
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+            }
+        }
+
+        public async Task CallResetForDebugEndpoint()
+        {
+            try
+            {
+                await CloudCodeService.Instance.CallModuleEndpointAsync("SampleGameModule",
+                    "StarterPack_ResetForDebug",
                     new Dictionary<string, object>());
             }
             catch (CloudCodeException e)

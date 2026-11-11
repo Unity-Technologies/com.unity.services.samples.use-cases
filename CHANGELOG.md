@@ -4,6 +4,39 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [3.0.0] - 2026-11-10
+
+Economy is swapped for Cloud Save + Remote Config, and the Cloud Code JavaScript scripts for one C# Cloud Code module. The client code, scenes and prefabs are untouched: every sample's `EconomyManager` keeps its public API.
+
+### Changed
+
+* Player wallets and inventories live in a single Cloud Save key, `player_economy`, that only the server writes. The currency, inventory item and virtual purchase catalog is Remote Config data deployed from `Assets/Common/Config as Code/economy_config.rc`; the catalog content moved over verbatim. The client reads both through `Assets/Common/Scripts/Economy/` (`EconomyCatalog`, `PlayerEconomy`).
+* The 25 Cloud Code JavaScript scripts are now `SampleGameModule`, one C# module at the repository root with one service class per use case and the same function names, deployed through `Assets/Common/Config as Code/SampleGameModule.ccmr`. Clients call `CallModuleEndpointAsync("SampleGameModule", ...)`. 87 xunit tests cover it.
+* `GemHunterMatch3` makes the same move: `PlayerEconomyService` in the `GemHunterUGSCloud` module (.NET 9) keeps each player's wallet, inventory, infinite heart and free pack in one Cloud Save key behind write-lock retries, and real-money purchases are granted once per store transaction. `StoreClient` runs on Unity IAP 5 (`com.unity.purchasing` 5.4.4) and is the only code that connects to the store: Codeless IAP auto-initialization is off. The module's function signatures are unchanged, so the generated client bindings are untouched.
+* The Serverless Multiplayer Game depends on `com.unity.services.multiplayer` (2.4.1) instead of the deprecated `com.unity.services.lobby` and `com.unity.services.relay` packages. It ships the same `Unity.Services.Lobbies` and `Unity.Services.Relay` SDKs, so the sample code is unchanged.
+* Upgraded the use cases project to Unity 6000.0 LTS (6000.0.82f1) and `GemHunterMatch3` to Unity 6000.3 LTS (6000.3.14f1), with packages updated to the versions verified for them.
+* Every README and README asset describes the module backend. No Cloud Code script, Economy service or Unity Mediation references remain.
+* Every Cloud Save key the modules write is in the protected access class: clients read it with `ProtectedReadAccessClassOptions` and only the module can write it, so a modified client cannot set its own balance, progress or cooldowns. The In-Game Mailbox inbox and the Serverless Multiplayer Game stats stay in the default class, which the client writes. Progress saved by 2.0.0 is not carried over.
+
+### Added
+
+* Live PlayMode suites that drive the deployed modules: `Assets/Common/Tests/Economy` (the use cases), `Assets/Use Case Samples/Serverless Multiplayer Game/Tests` (Lobby and Relay) and `GemHunterMatch3/Assets/GemHunterUGS/Tests/EconomyIntegration` (the GemHunter module).
+* `CloudAiMiniGame_ResetState`, `StarterPack_ResetForDebug` and `InGameMailbox_ResetForDebug` module functions, so the samples' reset buttons no longer delete server-owned keys from the client. The two debug functions, like `Economy_ModifyBalance`, `Economy_SetBalance` and `Economy_ModifyInventoryItem`, are testing aids to remove from a real game.
+
+### Removed
+
+* `com.unity.services.economy` and the 45 `.ecc`/`.eci`/`.ecv`/`.ecr` Economy configuration files across both projects. The `GemHunterMatch3` catalog lives in the module's `EconomyConstants` and `StoreService`.
+* The per-sample Cloud Code JavaScript scripts under each `Config as Code/` folder.
+* The deployment definitions of Loot Boxes, Loot Boxes With Cooldown, Starter Pack, Cloud AI Mini Game and Idle Clicker Game, which had nothing left to deploy; their READMEs say to deploy `Common` alone.
+
+### Fixed
+
+* `GemHunterMatch3` real-money purchases paid twice on Google Play and the App Store: Economy's redeem granted the catalog rewards and the module granted them again.
+* `GemHunterMatch3`'s `InitSceneValidator` stopped play mode for the Test Runner's bootstrap scene, which made every PlayMode test run restart forever.
+* `GemHunterMatch3` iOS players were charged by Apple and received nothing: `HandlePurchase` accepted the store `apple`, but Unity IAP labels App Store receipts `AppleAppStore`, and it also refused the empty Payload IAP sends when the device has no app receipt. The order stayed unconfirmed and failed again on every launch.
+* In-Game Mailbox claims paid whatever attachment the player-written inbox held. They now pay the attachment Remote Config serves for the message and the player's audience, once per message (recorded in the protected `MESSAGES_CLAIMED` key).
+* `GemHunterMatch3` wrote a new player's `DAILY_REWARDS_STATUS` in the default access class but read it from the protected one, so the status did not stick until the first claim.
+
 ## [2.0.0] - 2024-02-01
 
 ### Changed

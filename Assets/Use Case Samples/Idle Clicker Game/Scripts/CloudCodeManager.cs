@@ -62,7 +62,7 @@ namespace Unity.Services.Samples.IdleClickerGame
         {
             try
             {
-                var updatedState = await CloudCodeService.Instance.CallEndpointAsync<IdleClickerResult>(
+                var updatedState = await CloudCodeService.Instance.CallModuleEndpointAsync<IdleClickerResult>("SampleGameModule", 
                     "IdleClicker_GetUpdatedState",
                     new Dictionary<string, object>());
 
@@ -80,7 +80,7 @@ namespace Unity.Services.Samples.IdleClickerGame
         {
             try
             {
-                var updatedState = await CloudCodeService.Instance.CallEndpointAsync<IdleClickerResult>(
+                var updatedState = await CloudCodeService.Instance.CallModuleEndpointAsync<IdleClickerResult>("SampleGameModule", 
                     "IdleClicker_PlaceWell",
                     new Dictionary<string, object>
                     {
@@ -101,7 +101,7 @@ namespace Unity.Services.Samples.IdleClickerGame
         {
             try
             {
-                var updatedState = await CloudCodeService.Instance.CallEndpointAsync<IdleClickerResult>(
+                var updatedState = await CloudCodeService.Instance.CallModuleEndpointAsync<IdleClickerResult>("SampleGameModule", 
                     "IdleClicker_MergeWells",
                     new Dictionary<string, object>
                     {
@@ -123,7 +123,7 @@ namespace Unity.Services.Samples.IdleClickerGame
         {
             try
             {
-                var updatedState = await CloudCodeService.Instance.CallEndpointAsync<IdleClickerResult>(
+                var updatedState = await CloudCodeService.Instance.CallModuleEndpointAsync<IdleClickerResult>("SampleGameModule", 
                     "IdleClicker_MoveWell",
                     new Dictionary<string, object>
                     {
@@ -145,7 +145,7 @@ namespace Unity.Services.Samples.IdleClickerGame
         {
             try
             {
-                await CloudCodeService.Instance.CallEndpointAsync(
+                await CloudCodeService.Instance.CallModuleEndpointAsync("SampleGameModule", 
                     "IdleClicker_Reset", new Dictionary<string, object>());
             }
             catch (CloudCodeException e)

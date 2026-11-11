@@ -19,7 +19,7 @@ The `SeasonalEventsSceneManager.cs` script performs the following initialization
 
 1. Initializes Unity Gaming Services.
 2. Signs in the player [anonymously](https://docs.unity.com/authentication/UsingAnonSignIn.html) using the Authentication service. If you’ve previously initialized any of the other sample scenes, Authentication will use your cached Player ID instead of creating a new one.
-3. Retrieves and updates the player's currency balances from the Economy service.
+3. Retrieves and updates the player's currency balances from the `player_economy` Cloud Save key.
 4. Calls the `GetServerTime` Cloud Code function in order to base Game Override and Remote Config data off the server time.
 5. Queries the Remote Config service to get the current values for event-related keys (see section on event parameters below).
 
@@ -39,12 +39,12 @@ The **Play** button on the left is *not interactable*, and is just added to demo
 
 The **Play Challenge** button is an abstraction for gameplay that the player might engage in to earn event rewards. Clicking it opens a popup where players can collect rewards for "winning" the challenge. When you click the **Collect Rewards** button, the following occurs on the backend:
 
-1. The button’s `OnClick` method calls the `SeasonalEvents_GrantEventReward.js` Cloud Code script, which queries the Remote Config service to determine which rewards to distribute.
+1. The button’s `OnClick` method calls the `SeasonalEvents_GrantEventReward` function of the `SampleGameModule` Cloud Code module, which queries the Remote Config service to determine which rewards to distribute.
 <br>**Note**: Rewards could potentially differ from what the player expects, if they're altering their device clock or if they initiated their claim at the very end of an event.
-2. Cloud Code then calls the Economy service to grant the appropriate rewards and update the player’s currency/inventory balance.
+2. The function then grants the appropriate rewards and updates the player’s currency/inventory balance in the `player_economy` Cloud Save record.
 3. Once rewards are distributed, the calling script updates the currency HUD and closes the collect rewards popup.
 
-You can only play the challenge once per active event, so after the Cloud Code script distributes rewards, it saves the current event name and timestamp to Cloud Save. The client uses this information to determine whether the current event has already been played, and if it has, to disable the **Play Challenge** button.
+You can only play the challenge once per active event, so after the module function distributes rewards, it saves the current event name and timestamp to Cloud Save. The client uses this information to determine whether the current event has already been played, and if it has, to disable the **Play Challenge** button.
 
 ## Setup
 
@@ -57,9 +57,8 @@ To replicate this use case, you need the following [Unity packages](https://docs
 | [Addressables](https://docs.unity3d.com/Packages/com.unity.addressables@latest)                                        | Allows asset retrieval by address. Wherever the asset resides (local or remote), the system will locate it and its dependencies and then return it. In this sample, it retrieves event-specific images and prefabs based on information from Remote Config.              |
 | [Authentication](https://docs.unity.com/authentication/IntroUnityAuthentication.html)                                  | Automatically signs in the user anonymously to keep track of their data on the server side.                                                                                                                                                                              |
 | [Cloud Code](https://docs.unity.com/cloud-code/implementation.html)                                                    | Contains important validation logic on the server side. In this sample, it distributes rewards for the event challenge. It also independently verifies the timestamp at the time of reward distribution on the server-side to confirm which event rewards to distribute. |
-| [Cloud Save](https://docs.unity.com/cloud-save/index.html#Implementation)                                              | Stores a flag for whether the current challenge has already been played, to prevent the player from participating multiple times.                                                                                                                                        |
+| [Cloud Save](https://docs.unity.com/cloud-save/index.html#Implementation)                                              | Stores a flag for whether the current challenge has already been played, to prevent the player from participating multiple times. Also stores the player's currency balances in the `player_economy` key, which the client reads at runtime. The `SEASONAL_EVENTS_LAST_COMPLETED_EVENT`, `SEASONAL_EVENTS_LAST_COMPLETED_EVENT_TIMESTAMP` and `player_economy` keys are in the protected [access class](https://docs.unity.com/ugs/en-us/manual/cloud-save/manual/concepts/player-data#Access_Classes): the client can read them and only `SampleGameModule` can write them. |
 | [Deployment](https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2)                                      | The Deployment package provides a cohesive interface to deploy assets for Cloud Services.                                                                                                                                                                                |
-| [Economy](https://docs.unity.com/economy/implementation.html)                                                          | Retrieves the player's starting and updated currency balances at runtime.                                                                                                                                                                                                |
 | [Game Overrides](https://docs.unity3d.com/Packages/com.unity.remote-config@3.2/manual/GameOverridesAndSettings.html)\* | Maintains the four seasonal events and returns different values for certain keys based on which Game Override is deemed active.                                                                                                                                          |                                                                                                                                                                                                                                                                      |
 | [Remote Config](https://docs.unity3d.com/Packages/com.unity.remote-config@latest)                                      | Provides key-value pairs that can be changed server-side, either manually or based on specific Game Overrides.                                                                                                                                                           |
 
@@ -71,8 +70,8 @@ To use these services in your game, activate each service for your Organization 
 
 To replicate this sample scene's setup in your own Unity project, configure the following items:
 
-- Cloud Code scripts
-- Economy items
+- The `SampleGameModule` Cloud Code module
+- Remote Config economy catalog values
 - Remote Config values
 - Remote Config Game Overrides
 
@@ -89,8 +88,8 @@ To deploy configurations using the Deployment package:
 
 This deploys the following items:
 
-- Cloud Code scripts
-- Economy items
+- The `SampleGameModule` Cloud Code module
+- Remote Config economy catalog values
 - Remote Config values
 - Remote Config Game Overrides
 
@@ -101,12 +100,16 @@ Refer to the following sections to configure this sample.
 
 ##### Cloud Code
 
-| **Script**                        | **Parameters** | **Description**                                                                                       | **Location**                                                                                |
+| **Module function**               | **Parameters** | **Description**                                                                                       | **Location**                                                                                |
 |-----------------------------------|----------------|-------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------|
-| `SeasonalEvents_GrantEventReward` | None           | Verifies and distributes event rewards.                                                               | `Assets/Use Case Samples/Seasonal Events/Config as Code/SeasonalEvents_GrantEventReward.js` |
-| `SeasonalEvents_GetServerTime`    | None           | Retrieves the current timestamp from the server in order to base the UI on server-authoritative time. | `Assets/Use Case Samples/Seasonal Events/Config as Code/SeasonalEvents_GetServerTime.js`    |
+| `SeasonalEvents_GrantEventReward` | None           | Verifies and distributes event rewards.                                                               | `SampleGameModule/Project/Services/SeasonalEventsService.cs`                                |
+| `SeasonalEvents_GetServerTime`    | None           | Retrieves the current timestamp from the server in order to base the UI on server-authoritative time. | `SampleGameModule/Project/Services/SeasonalEventsService.cs`                                |
 
-##### Economy
+To publish them, deploy the `SampleGameModule` module (in the repo root `SampleGameModule/` folder) through `Assets/Common/Config as Code/SampleGameModule.ccmr` in the Deployment window, or upload it from the Unity Cloud Dashboard.
+
+##### Remote Config economy catalog
+
+The economy catalog is stored in Remote Config and deployed from `Assets/Common/Config as Code/economy_config.rc`. The following currencies are defined under the `ECONOMY_CURRENCIES` key:
 
 | **Resource type** | **Resource name** | **ID**  | **Description**                                                |
 |-------------------|-------------------|---------|----------------------------------------------------------------|
@@ -127,6 +130,8 @@ Set up the following [config values](https://docs.unity.com/remote-config/HowDoe
 | `SEASONAL_EVENTS_CHALLENGE_REWARD` | JSON     | The JSON that specifies what rewards to distribute when a challenge is "won".                                                       | `{ "rewards": \[{ "id": "COIN", "quantity": 100, "sprite_address": "Sprites/Currency/Coin" }] }` |
 
 ##### Game Overrides
+
+**Config as Code:** the four season Game Overrides and the `EVENT_NAME`, `EVENT_KEY`, `EVENT_END_TIME` and `EVENT_TOTAL_DURATION_MINUTES` keys are shared with the Battle Pass sample. They are deployed from `Assets/Common/Config as Code/Seasons/` (`seasons_config.rc` and the `<season>_event.ugo` files) as the "Battle Pass and Seasonal Events" deployment definition, so deploy that folder once for both samples. The manual dashboard steps below describe the same overrides.
 
 Configure the following [Overrides](https://docs.unity.com/gameoverrides/CreateAnOverride.html) in the Unity Cloud Dashboard:
 

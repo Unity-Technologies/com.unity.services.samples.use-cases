@@ -56,8 +56,8 @@ namespace Unity.Services.Samples.LootBoxes
 
                 Debug.Log("Calling Cloud Code 'LootBoxes_GrantRandomCurrency' to grant random reward now.");
 
-                var grantResult = await CloudCodeService.Instance.CallEndpointAsync<GrantRandomCurrencyResult>(
-                    "LootBoxes_GrantRandomCurrency",
+                var grantResult = await CloudCodeService.Instance.CallModuleEndpointAsync<GrantRandomCurrencyResult>(
+                    "SampleGameModule", "LootBoxes_GrantRandomCurrency",
                     new Dictionary<string, object>());
 
                 // Check that scene has not been unloaded while processing async wait to prevent throw.

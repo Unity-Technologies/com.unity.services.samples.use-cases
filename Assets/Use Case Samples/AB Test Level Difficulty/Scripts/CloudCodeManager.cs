@@ -43,7 +43,7 @@ namespace Unity.Services.Samples.ABTestLevelDifficulty
         {
             try
             {
-                var gainXPAndLevelResults = await CloudCodeService.Instance.CallEndpointAsync<GainXPAndLevelResult>(
+                var gainXPAndLevelResults = await CloudCodeService.Instance.CallModuleEndpointAsync<GainXPAndLevelResult>("SampleGameModule", 
                     "ABTestLevelDifficulty_GainXPAndLevelIfReady",
                     new Dictionary<string, object>());
 

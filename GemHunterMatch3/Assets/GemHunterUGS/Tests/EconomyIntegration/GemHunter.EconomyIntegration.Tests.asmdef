@@ -1,0 +1,26 @@
+{
+    "name": "GemHunter.EconomyIntegration.Tests",
+    "rootNamespace": "GemHunterUGS.Tests.Economy",
+    "references": [
+        "UnityEngine.TestRunner",
+        "Unity.Services.Core",
+        "Unity.Services.Core.Environments",
+        "Unity.Services.Authentication",
+        "Unity.Services.CloudCode",
+        "Unity.Services.CloudSave",
+        "Unity.Services.CloudCode.GeneratedBindings"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

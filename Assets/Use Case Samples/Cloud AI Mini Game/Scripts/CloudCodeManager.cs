@@ -51,7 +51,7 @@ namespace Unity.Services.Samples.CloudAIMiniGame
         {
             try
             {
-                var updatedState = await CloudCodeService.Instance.CallEndpointAsync<UpdatedState>(
+                var updatedState = await CloudCodeService.Instance.CallModuleEndpointAsync<UpdatedState>("SampleGameModule", 
                     "CloudAiMiniGame_GetState",
                     new Dictionary<string, object>());
 
@@ -70,7 +70,7 @@ namespace Unity.Services.Samples.CloudAIMiniGame
         {
             try
             {
-                var updatedState = await CloudCodeService.Instance.CallEndpointAsync<UpdatedState>(
+                var updatedState = await CloudCodeService.Instance.CallModuleEndpointAsync<UpdatedState>("SampleGameModule", 
                     "CloudAiMiniGame_ValidatePlayerMoveAndRespond",
                     new Dictionary<string, object> { { "coord", coord } });
 
@@ -89,7 +89,7 @@ namespace Unity.Services.Samples.CloudAIMiniGame
         {
             try
             {
-                var updatedState = await CloudCodeService.Instance.CallEndpointAsync<UpdatedState>(
+                var updatedState = await CloudCodeService.Instance.CallModuleEndpointAsync<UpdatedState>("SampleGameModule", 
                     "CloudAiMiniGame_StartNewGame",
                     new Dictionary<string, object>());
 
@@ -101,6 +101,23 @@ namespace Unity.Services.Samples.CloudAIMiniGame
 
                 throw new CloudCodeResultUnavailableException(
                     e, $"Handled exception in {nameof(CallStartNewGameEndpoint)}.");
+            }
+        }
+
+        public async Task CallResetStateEndpoint()
+        {
+            try
+            {
+                await CloudCodeService.Instance.CallModuleEndpointAsync("SampleGameModule",
+                    "CloudAiMiniGame_ResetState",
+                    new Dictionary<string, object>());
+            }
+            catch (CloudCodeException e)
+            {
+                HandleCloudCodeException(e);
+
+                throw new CloudCodeResultUnavailableException(
+                    e, $"Handled exception in {nameof(CallResetStateEndpoint)}.");
             }
         }
 

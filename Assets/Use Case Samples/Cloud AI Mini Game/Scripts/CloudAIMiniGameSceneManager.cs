@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Unity.Services.Authentication;
-using Unity.Services.CloudSave;
 using Unity.Services.Core;
 using UnityEngine;
 
@@ -149,7 +148,7 @@ namespace Unity.Services.Samples.CloudAIMiniGame
 
                 sceneView.SetInteractable(false);
 
-                await CloudSaveService.Instance.Data.ForceDeleteAsync("CLOUD_AI_GAME_STATE");
+                await CloudCodeManager.instance.CallResetStateEndpoint();
                 if (this == null) return;
 
                 m_UpdatedState = await CloudCodeManager.instance.CallGetStateEndpoint();

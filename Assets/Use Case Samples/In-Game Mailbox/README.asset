@@ -100,20 +100,20 @@ MonoBehaviour:
       linkList:
       - linkText: Using Anonymous Sign In Docs
         url: https://docs.unity.com/authentication/UsingAnonSignIn.html
-    - body: Refreshes the Economy configuration data. If new Economy items were created
+    - body: Refreshes the economy catalog configuration data from Remote Config (the
+        ECONOMY_CURRENCIES and ECONOMY_ITEMS keys). If new catalog items were created
         since the last time the player opened the app, this will initialize those
         items in the player's configuration.
       bodyFormat: 0
       bulletList: []
       linkList: []
-    - body: Retrieves and updates currency balances from the Economy service for
-        that authenticated user.
+    - body: Retrieves and updates currency balances from the player's player_economy
+        Cloud Save key for that authenticated user.
       bodyFormat: 0
       bulletList: []
       linkList: []
-    - body: Uses the sprite addresses stored in the Economy item configuration's
-        custom data to load all possible currency and inventory item sprites from
-        Addressables.
+    - body: Uses the sprite addresses stored in each catalog entry's custom data
+        to load all possible currency and inventory item sprites from Addressables.
       bodyFormat: 0
       bulletList: []
       linkList: []
@@ -201,7 +201,7 @@ MonoBehaviour:
     subHeader2: 
     subHeader3: 
     body: 'If the message has an attachment, there is also an indication of which
-      Economy items are attached, along with a button to claim them. '
+      currency and inventory items are attached, along with a button to claim them. '
     bodyFormat: 0
     boxCallout: 
     bulletList: []
@@ -209,8 +209,8 @@ MonoBehaviour:
   - subHeader1: 
     subHeader2: 
     subHeader3: Claim an attachment
-    body: 'When you press the "Claim" button, the client code calls the "InGameMailbox_ClaimAttachment.js"
-      Cloud Code script with the selected message''s ID included as a parameter.
+    body: 'When you press the "Claim" button, the client code calls the "InGameMailbox_ClaimAttachment"
+      Cloud Code module function with the selected message''s ID included as a parameter.
       The following occurs on the backend: '
     bodyFormat: 0
     boxCallout: 
@@ -223,24 +223,23 @@ MonoBehaviour:
     bodyFormat: 0
     boxCallout: 
     bulletList:
-    - body: The client requests the Cloud Save inbox data, and locates the message
-        with the supplied ID.
+    - body: The function reads the Cloud Save inbox data, and locates the message with the supplied ID.
       bodyFormat: 0
       bulletList: []
       linkList: []
-    - body: The script checks whether the message has an unclaimed attachment.
+    - body: The function looks the message up in Remote Config for the audience the client sends. The message must be listed in "MESSAGES_ALL", and its attachment is taken from Remote Config, never from the inbox, because the player writes the inbox.
       bodyFormat: 0
       bulletList: []
       linkList: []
-    - body: Assuming the message does have an unclaimed attachment, the script makes
-        an Economy "makeVirtualPurchase" call using the Virtual Purchase ID from
-        the "message.messageInfo.attachment" field.
+    - body: The function checks the "MESSAGES_CLAIMED" Cloud Save key to make sure the attachment has not been claimed yet, and adds the message ID to it.
       bodyFormat: 0
       bulletList: []
       linkList: []
-    - body: If the purchase processes successfully, the "message.metadata.hasUnclaimedAttachment'
-        field is set to "false" and saved in Cloud Save, so that the player cannot
-        claim the attachment again.
+    - body: The function grants the attachment's Virtual Purchase. If the purchase fails, the message ID is removed from "MESSAGES_CLAIMED" again.
+      bodyFormat: 0
+      bulletList: []
+      linkList: []
+    - body: The "message.metadata.hasUnclaimedAttachment" field is set to "false" in the inbox, so the view shows the attachment as claimed.
       bodyFormat: 0
       bulletList: []
       linkList: []
@@ -287,7 +286,7 @@ MonoBehaviour:
     subHeader2: 
     subHeader3: Claim all attachments
     body: 'When you press the "Claim All" button, the client code makes a call to
-      the "InGameMailbox_ClaimAllAttachments.js" Cloud Code script. The following
+      the "InGameMailbox_ClaimAllAttachments" Cloud Code module function. The following
       occurs on the backend: '
     bodyFormat: 0
     boxCallout: 
@@ -300,29 +299,19 @@ MonoBehaviour:
     bodyFormat: 0
     boxCallout: 
     bulletList:
-    - body: The client requests inbox data from Cloud Save.
+    - body: The function reads the inbox data from Cloud Save.
       bodyFormat: 0
       bulletList: []
       linkList: []
-    - body: Cloud Save returns a list of inbox messages filtered to only show messages
-        with "message.metadata.hasUnclaimedAttachment" set to "true".
+    - body: It keeps the inbox messages that Remote Config lists in "MESSAGES_ALL" for the current audience, have an attachment in Remote Config, and are not in "MESSAGES_CLAIMED" yet.
       bodyFormat: 0
       bulletList: []
       linkList: []
-    - body: 'For each message in this filtered list:'
+    - body: It adds those message IDs to "MESSAGES_CLAIMED", then grants all of their Virtual Purchases in one economy write.
       bodyFormat: 0
-      bulletList:
-      - body: The script makes an Economy "makeVirtualPurchase" call using the Virtual
-          Purchase ID from the "message.messageInfo.attachment" field.
-        bodyFormat: 0
-        bulletList: []
-      - body: If the purchase processes successfully, "message.metadata.hasUnclaimedAttachment"
-          is set to "false", and "message.metadata.isRead" is set to "true".
-        bodyFormat: 0
-        bulletList: []
+      bulletList: []
       linkList: []
-    - body: Once all message attachments are claimed, the updated message list is
-        saved in Cloud Save.
+    - body: For each of those messages, "message.metadata.hasUnclaimedAttachment" is set to "false" and "message.metadata.isRead" is set to "true", and the updated message list is saved in Cloud Save.
       bodyFormat: 0
       bulletList: []
       linkList: []
@@ -353,7 +342,7 @@ MonoBehaviour:
     bodyFormat: 0
     boxCallout: 
     bulletList:
-    - body: The script loops through the list of inbox messages, and removes each
+    - body: The client loops through the list of inbox messages, and removes each
         message that has both "message.metadata.isRead" set to "true" and "message.metadata.hasUnclaimedAttachment"
         set to "false". This implementation does not delete messages with unclaimed
         attachments, to prevent players from accidentally deleting messages with
@@ -443,7 +432,9 @@ MonoBehaviour:
     boxCallout: 
     bulletList:
     - body: The scene resets, clearing the selected message field and deleting the
-        Cloud Save inbox data.
+        Cloud Save inbox data. The client also calls "InGameMailbox_ResetForDebug",
+        which deletes "MESSAGES_CLAIMED" so the reset inbox can claim its gifts again.
+        This function exists for testing only; remove it from a real game.
       bodyFormat: 0
       bulletList: []
       linkList: []
@@ -478,8 +469,9 @@ MonoBehaviour:
     bodyFormat: 0
     boxCallout: 
     bulletList:
-    - body: The client calls "EconomyService.Instance.PlayerInventory.GetInventoryAsync()"
-        to refresh the player's list of owned Economy inventory items.
+    - body: The client calls "PlayerEconomy.Instance.GetInventoryAsync()" to refresh
+        the player's list of owned inventory items from the player_economy Cloud
+        Save key.
       bodyFormat: 0
       bulletList: []
       linkList: []
@@ -505,8 +497,8 @@ MonoBehaviour:
       url: https://docs.unity.com/cloud-code/implementation.html
     - linkText: Cloud Save
       url: https://docs.unity.com/cloud-save/index.html#Implementation
-    - linkText: Economy
-      url: https://docs.unity.com/economy/implementation.html
+    - linkText: Deployment
+      url: https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2
     - linkText: Game Overrides
       url: https://docs.unity3d.com/Packages/com.unity.remote-config@3.2/manual/GameOverridesAndSettings.html
     - linkText: Remote Config
@@ -541,19 +533,16 @@ MonoBehaviour:
     body: 'To replicate this sample scene''s setup in your own Unity project, we need to configure the following items:'
     bodyFormat: 0
     boxCallout: 
-    bulletList: 
-    - body: Cloud Code scripts
-    - body: Economy items
+    bulletList:
+    - body: The SampleGameModule Cloud Code module
+    - body: Remote Config economy catalog values
     - body: Remote Config values
     - body: Remote Config Game Overrides
     linkList: []
   - subHeader1: 
     subHeader2: 
     subHeader3: 
-    body: There are two main ways of doing this, either by using the Deployment
-      package, or by manually entering them using the Dashboard. We recommend
-      the usage of the Deployment package since it will greatly accelerate this
-      process.
+    body: To configure these items you can use the Deployment package, or manually enter them using the Unity Cloud Dashboard. The recommended best practice is to use the Deployment package as it greatly accelerates this process.
     bodyFormat: 0
     boxCallout: 
     bulletList: []
@@ -578,13 +567,13 @@ MonoBehaviour:
     bodyFormat: 0
     boxCallout: 
     bulletList:
-    - body: Cloud Code scripts
-    - body: Economy items
+    - body: The SampleGameModule Cloud Code module
+    - body: Remote Config economy catalog values
     - body: Remote Config values
   - subHeader1: 
     subHeader2: 
     subHeader3: 
-    body: 'The following items are not managed by the Deployment package at this time:'
+    body: 'The Deployment package doesn''t support the following items:'
     bodyFormat: 0
     boxCallout: 
     bulletList:
@@ -599,9 +588,7 @@ MonoBehaviour:
   - subHeader1: 
     subHeader2: Using the Dashboard
     subHeader3: 
-    body: The Dashboard enables you to edit manually all your services
-        configuration by project and environment. Here are the details
-        necessary for the configuration of the current sample.
+    body: You can use the Unity Cloud Dashboard to manually configure your services by project and environment. Refer to the following sections to configure this sample.
     bodyFormat: 0
     boxCallout: 
     linkList:
@@ -732,7 +719,7 @@ MonoBehaviour:
   - subHeader1: 
     subHeader2: 
     subHeader3: Cloud Code
-    body: 'Publish the following scripts in the LiveOps dashboard: '
+    body: 'The SampleGameModule Cloud Code module provides the following module functions. To publish them, deploy the module through Assets/Common/Config as Code/SampleGameModule.ccmr in the Deployment window:'
     bodyFormat: 0
     boxCallout: 
     bulletList: []
@@ -748,8 +735,8 @@ MonoBehaviour:
       bodyFormat: 1
       bulletList:
       - body: Fetches the appropriate attachment for the given message, validates
-          that the attachment hasn't already been claimed, calls Economy's process
-          purchase method for that Virtual Purchase, and marks the attachment as
+          that the attachment hasn't already been claimed, makes that Virtual Purchase,
+          and marks the attachment as
           claimed.
         bodyFormat: 0
         bulletList: []
@@ -761,7 +748,7 @@ MonoBehaviour:
           bulletList:
           - 'Type: STRING'
           - The id of the message that owns the attachment the player wants to claim.
-      - body: 'Script: "Assets/Use Case Samples/In-Game Mailbox/Config as Code/InGameMailbox_ClaimAttachment.js"'
+      - body: 'Location: "SampleGameModule/Project/Services/InGameMailboxService.cs"'
         bodyFormat: 0
         bulletList: []
       linkList: []
@@ -769,23 +756,24 @@ MonoBehaviour:
       bodyFormat: 1
       bulletList:
       - body: Gets the list of messages in a player's inbox, finds all messages that
-          have an unclaimed attachment, and calls Economy's process purchase method
-          for each Virtual Purchase, marking each message as read and attachment
+          have an unclaimed attachment, and makes each Virtual Purchase, marking each message as read and attachment
           as claimed.
         bodyFormat: 0
         bulletList: []
       - body: 'Parameters: none'
         bodyFormat: 0
         bulletList: []
-      - body: 'Script: "Assets/Use Case Samples/In-Game Mailbox/Config as Code/InGameMailbox_ClaimAllAttachments.js"'
+      - body: 'Location: "SampleGameModule/Project/Services/InGameMailboxService.cs"'
         bodyFormat: 0
         bulletList: []
       linkList: []
     linkList: []
   - subHeader1: 
     subHeader2: 
-    subHeader3: Economy
-    body: 'Configure the following resources in the LiveOps dashboard:'
+    subHeader3: Economy catalog (Remote Config)
+    body: 'The economy catalog is stored in Remote Config and deployed from Assets/Common/Config
+      as Code/economy_config.rc. The following resources are defined as entries in
+      the ECONOMY_CURRENCIES and ECONOMY_ITEMS keys:'
     bodyFormat: 0
     boxCallout: 
     bulletList: []
@@ -865,7 +853,8 @@ MonoBehaviour:
   - subHeader1: 
     subHeader2: 
     subHeader3: 
-    body: 'In addition, configure the following virtual purchases: '
+    body: 'In addition, the following virtual purchases are defined as entries in
+      the ECONOMY_VIRTUAL_PURCHASES key: '
     bodyFormat: 0
     boxCallout: 
     bulletList: []

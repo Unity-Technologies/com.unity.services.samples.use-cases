@@ -8,7 +8,7 @@ This sample demonstrates how to present a calendar of rewards that increase in v
 
 ## Overview
 
-This sample demonstrates how to initialize Unity Services, retrieve and update current values from the Economy service, call Cloud Code to retrieve the updated status, and then claim each day's reward.
+This sample demonstrates how to initialize Unity Services, retrieve and update current values from the player's `player_economy` Cloud Save key, call Cloud Code to retrieve the updated status, and then claim each day's reward.
 
 **Note**: Unity recommends implementing daily rewards by setting the start epoch time with Remote Config so all players experience the event starting on the first day of the month. However, to facilitate testing, this implementation saves the event start value to Cloud Save, so the event "month" starts when you first open the scene. Each "day" is also compressed into 30 seconds, which allows you to quickly test claiming an entire month's rewards.
 
@@ -25,7 +25,7 @@ The `DailyRewardsSceneManager.cs` script performs the following initialization t
 
 1. Initializes Unity Gaming Services.
 2. Signs in the player [anonymously](https://docs.unity.com/authentication/UsingAnonSignIn.html) using the Authentication service. If you’ve previously initialized any of the other sample scenes, Authentication will use your cached Player ID instead of creating a new one.
-3. Retrieves and updates currency balances from the Economy service.
+3. Retrieves and updates currency balances from the player's `player_economy` Cloud Save key.
 4. Retrieves all the currency sprites from the Addressables service so they can be displayed in the calendar.
 5. Retrieves the daily rewards event status from Remote Config, to display claimed days and days remaining in the calendar.
 
@@ -38,8 +38,8 @@ When you dismiss the event prompt, the scene begins tracking the passage of time
 
 When you click an active **Claim** button, you receive the reward for that day. The following occurs on the backend:
 
-1. The button's `OnClick` method executes the `DailyRewardsSceneManager` script's `OnClaimButtonPressed` function, which verifies that the player is signed in, and then calls the `DailyRewards_Claim` Cloud Code script to grant the reward and update the event state to record days collected and the last claim time.
-2. The Economy service updates the player's currency balances and returns the new values to the client to update the currencies HUD.
+1. The button's `OnClick` method executes the `DailyRewardsSceneManager` script's `OnClaimButtonPressed` function, which verifies that the player is signed in, and then calls the `DailyRewards_Claim` function of the `SampleGameModule` Cloud Code module to grant the reward and update the event state to record days collected and the last claim time.
+2. The function updates the player's currency balances in the player's `player_economy` Cloud Save record and returns the new values to the client to update the currencies HUD.
 
 If the client remains idle (you do not claim the reward within a day's timeframe), the **Days Left** UI indicator decreases, which indicates that you missed a day. If you miss a day, you can still claim the previous day's reward.
 
@@ -56,10 +56,9 @@ To replicate this use case, you need the following [Unity packages](https://docs
 | [Addressables](https://docs.unity3d.com/Packages/com.unity.addressables@latest)                   | Allows asset retrieval by address.                                                                                                                                                                                                                                                |
 | [Authentication](https://docs.unity.com/authentication/IntroUnityAuthentication.html)             | Automatically signs in the user anonymously to keep track of their data server-side.                                                                                                                                                                                              |
 | [Cloud Code](https://docs.unity.com/cloud-code/implementation.html)                               | Accesses the current event status, claims daily rewards, and resets the feature at the end of the month for demonstration purposes. It also calls Remote Config to determine the parameters to use for the daily rewards (such as which rewards to grant and in what quantities). |
-| [Cloud Save](https://docs.unity.com/cloud-save/index.html#Implementation)                         | Stores and retrieves event status data (such as start epoch time and the number of days successfully claimed).                                                                                                                                                                    |
-| [Economy](https://docs.unity.com/economy/implementation.html)                                     | Retrieves the player's starting and updated currency balances at runtime and receives requests directly from Cloud Code to grant rewards.                                                                                                                                         |
-| [Remote Config](https://docs.unity3d.com/Packages/com.unity.remote-config@latest)                 | Defines parameters for the daily rewards event.                                                                                                                                                                                                                                   |
+| [Cloud Save](https://docs.unity.com/cloud-save/index.html#Implementation)                         | Stores and retrieves event status data (such as start epoch time and the number of days successfully claimed), as well as the player's currency balances in the `player_economy` key, which the client reads at runtime. The `DAILY_REWARDS_START_EPOCH_TIME`, `DAILY_REWARDS_STATUS` and `player_economy` keys are in the protected [access class](https://docs.unity.com/ugs/en-us/manual/cloud-save/manual/concepts/player-data#Access_Classes): the client can read them and only `SampleGameModule` can write them. |
 | [Deployment](https://docs.unity3d.com/Packages/com.unity.services.deployment@1.2)                 | The Deployment package provides a cohesive interface to deploy assets for Cloud Services.                                                                                                                                                                                         |
+| [Remote Config](https://docs.unity3d.com/Packages/com.unity.remote-config@latest)                 | Defines parameters for the daily rewards event, and stores the economy catalog with the currency definitions in the `ECONOMY_CURRENCIES` key.                                                                                                                                     |
 
 To use these services in your game, activate each service for your Organization and project in the [Unity Dashboard](https://dashboard.unity3d.com/).
 
@@ -67,8 +66,8 @@ To use these services in your game, activate each service for your Organization 
 
 To replicate this sample scene's setup in your own Unity project, we need to configure the following items:
 
-- Cloud Code scripts
-- Economy items
+- The `SampleGameModule` Cloud Code module
+- Remote Config economy catalog values
 
 There are two main ways of doing this, either by [using the Deployment package](#using-the-deployment-package), or by [manually entering them using the Dashboard](#using-the-dashboard).
 We recommend the usage of the Deployment package since it will greatly accelerate this process.
@@ -90,17 +89,19 @@ Here are the details necessary for the configuration of the current sample.
 
 ##### Cloud Code
 
-[Publish the following scripts](https://docs.unity.com/cloud-code/implementation.html#Writing_your_first_script) in the **LiveOps** dashboard:
+The `SampleGameModule` C# Cloud Code module provides the following [module functions](https://docs.unity.com/ugs/en-us/manual/cloud-code/manual/modules):
 
-| **Script**                | **Parameters** | **Description**                                                                                                                                       | **Location in project**                                                       |
+| **Module function**       | **Parameters** | **Description**                                                                                                                                       | **Location in project**                                                       |
 |---------------------------| -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |-------------------------------------------------------------------------------|
-| `DailyRewards_GetStatus`  | None           | Called at startup to retrieve the current status of the event from Cloud Save, update it, and then return it to the client.                           | `Assets/Use Case Samples/Daily Rewards/Config as Code/DailyRewards_GetStatus.js`  |
-| `DailyRewards_Claim`      | None           | Called in response to a reward claim request to verify eligibility, grant the appropriate day's reward, and then update the user state on Cloud Save. | `Assets/Use Case Samples/Daily Rewards/Config as Code/DailyRewards_Claim.js`      |
-| `DailyRewards_ResetEvent` | None           | Resets the daily rewards state on the client to simulate the beginning of a new month's rewards.                                                      | `Assets/Use Case Samples/Daily Rewards/Config as Code/DailyRewards_ResetEvent.js` |
+| `DailyRewards_GetStatus`  | None           | Called at startup to retrieve the current status of the event from Cloud Save, update it, and then return it to the client.                           | `SampleGameModule/Project/Services/DailyRewardsService.cs`                        |
+| `DailyRewards_Claim`      | None           | Called in response to a reward claim request to verify eligibility, grant the appropriate day's reward, and then update the user state on Cloud Save. | `SampleGameModule/Project/Services/DailyRewardsService.cs`                        |
+| `DailyRewards_ResetEvent` | None           | Resets the daily rewards state on the client to simulate the beginning of a new month's rewards.                                                      | `SampleGameModule/Project/Services/DailyRewardsService.cs`                        |
 
-##### Economy
+To publish them, deploy the `SampleGameModule` module (in the repo root `SampleGameModule/` folder) through `Assets/Common/Config as Code/SampleGameModule.ccmr` in the Deployment window, or upload it from the Unity Cloud Dashboard.
 
-[Configure the following resources](https://docs.unity.com/economy/) in the **LiveOps** dashboard:
+##### Economy catalog (Remote Config)
+
+The economy catalog is stored in Remote Config and deployed from `Assets/Common/Config as Code/economy_config.rc`. The following resources are defined under the `ECONOMY_CURRENCIES` key:
 
 | **Resource type** | **Resource name** | **ID** | **Description**                                |
 | ----------------- | ----------------- | ------ | ---------------------------------------------- |
@@ -109,11 +110,10 @@ Here are the details necessary for the configuration of the current sample.
 | Currency          | Star              | `STAR` | A possible reward that populates the calendar. |
 | Currency          | Pearl             | `PEARL`| A bonus reward for completing the calendar.    |
 
-This sample also uses Addressable Assets to implement the sprite icons for all Economy currencies. As the developer, you can add the Addressables address of the icon for each currency directly in the Economy dashboard, and then retrieve it at runtime without needing to change your code. This is helpful if for example, you want to swap in holiday-themed sprites by changing the address in your dashboard instead of updating your app. To do this for each currency:
+This sample also uses Addressable Assets to implement the sprite icons for all currencies. As the developer, you can add the Addressables address of the icon for each currency directly in the catalog entry's `customData`, and then retrieve it at runtime without needing to change your code. This is helpful if for example, you want to swap in holiday-themed sprites by changing the address in your configuration instead of updating your app. To do this for each currency:
 
-1. Select the currency you want to edit.
-2. Under **Custom data**, click the plus (**+**) icon to add a custom JSON script.
-3. Add the `spriteAddress` value, along with the corresponding Addressable address string, as demonstrated by the following sample:
+1. Find the catalog entry you want to edit in the `ECONOMY_CURRENCIES` key.
+2. In its `customData` JSON, add the `spriteAddress` value, along with the corresponding Addressable address string, as demonstrated by the following sample:
 
 Coin custom data:
 
